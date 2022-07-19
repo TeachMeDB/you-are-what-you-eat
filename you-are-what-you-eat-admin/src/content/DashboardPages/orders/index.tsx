@@ -12,6 +12,7 @@ import Block5 from 'src/content/Dashboards/Orders/Block5';
 import Block6 from 'src/content/Dashboards/Orders/Block6';
 import Block7 from 'src/content/Dashboards/Orders/Block7';
 import Block8 from 'src/content/Dashboards/Orders/Block8';
+import RecentOrders from '@/content/Dashboards/Orders/RecentOrders';
 
 function DashboardExpensesContent() {
   return (
@@ -30,6 +31,9 @@ function DashboardExpensesContent() {
         alignItems="stretch"
         spacing={4}
       >
+        <Grid item xs={12}>
+          <RecentOrders />
+        </Grid>
         <Grid item xs={12}>
           <Block1 />
         </Grid>
