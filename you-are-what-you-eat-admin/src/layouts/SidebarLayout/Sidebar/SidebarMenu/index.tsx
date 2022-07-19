@@ -212,6 +212,21 @@ function SidebarMenu() {
         >
           <SubMenuWrapper>
             <List component="div">
+            <ListItem component="div">
+                <NextLink href="/dashboards/orders" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/dashboards/orders' ? 'active' : ''
+                    }
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    startIcon={<BrightnessLowTwoToneIcon />}
+                  >
+                    订单管理
+                  </Button>
+                </NextLink>
+              </ListItem>
               <ListItem component="div">
                 <NextLink href="/dashboards/crypto" passHref>
                   <Button
