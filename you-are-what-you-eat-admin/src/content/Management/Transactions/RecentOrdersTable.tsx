@@ -28,6 +28,7 @@ import {
 import Label from '@/components/Label';
 import { CryptoOrder, CryptoOrderStatus } from '@/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
 
@@ -343,7 +344,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         color="inherit"
                         size="small"
                       >
-                        <EditTwoToneIcon fontSize="small" />
+                        <RemoveRedEyeIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
 
@@ -353,7 +354,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                           '&:hover': {
                             background: theme.colors.primary.lighter
                           },
-                          color: theme.palette.warning.main
+                          color: theme.palette.primary.main
                         }}
                         color="inherit"
                         size="small"

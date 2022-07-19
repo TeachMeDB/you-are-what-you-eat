@@ -1,7 +1,7 @@
-import { Card } from '@mui/material';
 import { CryptoOrder } from '@/models/crypto_order';
 import RecentOrdersTable from './RecentOrdersTable';
-import { subDays } from 'date-fns';
+import OrderSummary from '@/content/Dashboards/Crypto/OrderSummary';
+import { Grid } from '@mui/material';
 
 function RecentOrders() {
   const cryptoOrders: CryptoOrder[] = [
@@ -77,10 +77,23 @@ function RecentOrders() {
     }
   ];
 
-  return (
-    <Card>
-      <RecentOrdersTable cryptoOrders={cryptoOrders} />
-    </Card>
+  return (  
+    <>   
+    <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={4}
+        >
+          <Grid item xs={12}>
+            <OrderSummary />
+          </Grid>
+          <Grid item xs={12}>
+          <RecentOrdersTable cryptoOrders={cryptoOrders} />
+          </Grid>
+        </Grid> 
+    </>
   );
 }
 
