@@ -42,16 +42,20 @@ interface Filters {
 
 const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
   const map = {
-    failed: {
-      text: 'Failed',
+    待处理: {
+      text: '待处理',
       color: 'error'
     },
-    completed: {
-      text: 'Completed',
+    已支付: {
+      text: '已支付',
+      color: 'primary'
+    },
+    已完成: {
+      text: '已完成',
       color: 'success'
     },
-    pending: {
-      text: 'Pending',
+    制作中: {
+      text: '制作中',
       color: 'warning'
     }
   };
@@ -98,19 +102,23 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const statusOptions = [
     {
       id: 'all',
-      name: 'All'
+      name: '全部'
     },
     {
-      id: 'completed',
-      name: 'Completed'
+      id: '待处理',
+      name: '待处理'
     },
     {
-      id: 'pending',
-      name: 'Pending'
+      id: '已支付',
+      name: '已支付'
     },
     {
-      id: 'failed',
-      name: 'Failed'
+      id: '已完成',
+      name: '已完成'
+    },
+    {
+      id: '制作中',
+      name: '制作中'
     }
   ];
 
@@ -132,7 +140,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   ): void => {
     setSelectedCryptoOrders(
       event.target.checked
-        ? cryptoOrders.map((cryptoOrder) => cryptoOrder.id)
+        ? cryptoOrders.map((cryptoOrder) => cryptoOrder.order_id)
         : []
     );
   };
@@ -186,7 +194,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
           action={
             <Box width={150}>
               <FormControl fullWidth variant="outlined">
-                <InputLabel>Status</InputLabel>
+                <InputLabel>筛选</InputLabel>
                 <Select
                   value={filters.status || 'all'}
                   onChange={handleStatusChange}
@@ -202,7 +210,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
               </FormControl>
             </Box>
           }
-          title="Recent Orders"
+          title="最近订单"
         />
       )}
       <Divider />
@@ -218,23 +226,23 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                   onChange={handleSelectAllCryptoOrders}
                 />
               </TableCell>
-              <TableCell>Order Details</TableCell>
-              <TableCell>Order ID</TableCell>
-              <TableCell>Source</TableCell>
-              <TableCell align="right">Amount</TableCell>
-              <TableCell align="right">Status</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell>订单号</TableCell>
+              <TableCell>创建时间</TableCell>
+              <TableCell>桌号</TableCell>
+              <TableCell align="right">金额</TableCell>
+              <TableCell align="right">状态</TableCell>
+              <TableCell align="right">操作</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {paginatedCryptoOrders.map((cryptoOrder) => {
               const isCryptoOrderSelected = selectedCryptoOrders.includes(
-                cryptoOrder.id
+                cryptoOrder.order_id
               );
               return (
                 <TableRow
                   hover
-                  key={cryptoOrder.id}
+                  key={cryptoOrder.order_id}
                   selected={isCryptoOrderSelected}
                 >
                   <TableCell padding="checkbox">
@@ -242,11 +250,24 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       color="primary"
                       checked={isCryptoOrderSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, cryptoOrder.id)
+                        handleSelectOneCryptoOrder(event, cryptoOrder.order_id)
                       }
                       value={isCryptoOrderSelected}
                     />
                   </TableCell>
+                  
+                  <TableCell align="left">
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {cryptoOrder.order_id}
+                    </Typography>
+                  </TableCell>
+                  
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -255,12 +276,13 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.orderDetails}
+                      {cryptoOrder.creation_time}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
-                    </Typography>
+                    {/*<Typography variant="body2" color="text.secondary" noWrap>
+                      {format(cryptoOrder.creation_time, 'MMMM dd yyyy')}
+                    </Typography>*/}
                   </TableCell>
+                  
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -269,24 +291,24 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.orderID}
+                      {cryptoOrder.table_id}
                     </Typography>
                   </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {cryptoOrder.sourceName}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {cryptoOrder.sourceDesc}
-                    </Typography>
-                  </TableCell>
+                  
                   <TableCell align="right">
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {cryptoOrder.total_price}
+                    </Typography>
+                  </TableCell>
+
+                  {/* 
+                   <TableCell align="right">
                     <Typography
                       variant="body1"
                       fontWeight="bold"
@@ -303,11 +325,14 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       )}
                     </Typography>
                   </TableCell>
+                  */}
+                  
                   <TableCell align="right">
                     {getStatusLabel(cryptoOrder.status)}
                   </TableCell>
+
                   <TableCell align="right">
-                    <Tooltip title="Edit Order" arrow>
+                    <Tooltip title="查看详情" arrow>
                       <IconButton
                         sx={{
                           '&:hover': {
@@ -321,19 +346,24 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="Delete Order" arrow>
+
+                    <Tooltip title="编辑" arrow>
                       <IconButton
                         sx={{
-                          '&:hover': { background: theme.colors.error.lighter },
-                          color: theme.palette.error.main
+                          '&:hover': {
+                            background: theme.colors.primary.lighter
+                          },
+                          color: theme.palette.warning.main
                         }}
                         color="inherit"
                         size="small"
                       >
-                        <DeleteTwoToneIcon fontSize="small" />
+                        <EditTwoToneIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
+                    
                   </TableCell>
+
                 </TableRow>
               );
             })}
