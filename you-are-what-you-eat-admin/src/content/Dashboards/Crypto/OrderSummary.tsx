@@ -18,6 +18,7 @@ import TrendingUp from '@mui/icons-material/TrendingUp';
 import Text from 'src/components/Text';
 import { Chart } from 'src/components/Chart';
 import type { ApexOptions } from 'apexcharts';
+import Brightness1Icon from '@mui/icons-material/Brightness1';
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -73,7 +74,7 @@ function OrderSummary() {
         }
       }
     },
-    colors: ['#ff9900', '#1c81c2', '#333', '#5c6ac0'],
+    colors: ['#DD0000', '#FFA500', '#008000', '#6169E1'],
     dataLabels: {
       enabled: true,
       formatter: function (val) {
@@ -213,10 +214,7 @@ function OrderSummary() {
                 >
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                      <img
-                        alt="BTC"
-                        src="/static/images/placeholders/logo/bitcoin.png"
-                      />
+                       <Brightness1Icon fontSize="large" color="error"/>
                     </ListItemAvatarWrapper>
                     <ListItemText
                       primary="待处理"
@@ -235,10 +233,7 @@ function OrderSummary() {
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                      <img
-                        alt="XRP"
-                        src="/static/images/placeholders/logo/ripple.png"
-                      />
+                      <Brightness1Icon fontSize="large" color="warning"/>
                     </ListItemAvatarWrapper>
                     <ListItemText
                       primary="制作中"
@@ -257,10 +252,7 @@ function OrderSummary() {
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                      <img
-                        alt="ADA"
-                        src="/static/images/placeholders/logo/cardano.png"
-                      />
+                      <Brightness1Icon fontSize="large" color="success"/>
                     </ListItemAvatarWrapper>
                     <ListItemText
                       primary="已完成"
@@ -279,10 +271,7 @@ function OrderSummary() {
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                      <img
-                        alt="ETH"
-                        src="/static/images/placeholders/logo/ethereum.png"
-                      />
+                      <Brightness1Icon fontSize="large" color="primary"/>
                     </ListItemAvatarWrapper>
                     <ListItemText
                       primary="已支付"
