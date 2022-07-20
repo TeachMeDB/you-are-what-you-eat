@@ -90,7 +90,7 @@ function RecentOrders() {
             <OrderSummary />
           </Grid>
           <Grid item xs={12}>
-          <RecentOrdersTable cryptoOrders={cryptoOrders} />
+            <RecentOrdersTable cryptoOrders={cryptoOrders} />
           </Grid>
         </Grid> 
     </>
