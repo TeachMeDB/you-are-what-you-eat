@@ -140,11 +140,15 @@ function Block3() {
   };
   const Box2Data = [
     {
-      name: 'Net Profit',
+      name: '午餐销量',
       data: [2.3, 3.1, 4.0, 3.8, 5.1, 3.6, 4.0, 3.8, 5.1, 3.6, 3.2]
     },
     {
-      name: 'Net Loss',
+      name: '午餐销量',
+      data: [2.3, 3.1, 4.0, 3.8, 5.1, 3.6, 4.0, 3.8, 5.1, 3.6, 3.2]
+    },
+    {
+      name: '晚餐销量',
       data: [2.1, 2.1, 3.0, 2.8, 4.0, 3.8, 5.1, 3.6, 4.1, 2.6, 1.2]
     }
   ];
@@ -164,7 +168,7 @@ function Block3() {
             {'View all'}
           </Button>
         }
-        title={t('Top sellers')}
+        title={t('销量最佳')}
       />
       <Divider />
       <Box

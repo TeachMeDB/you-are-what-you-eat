@@ -6,12 +6,11 @@ import { Grid } from '@mui/material';
 
 import Block1 from 'src/content/Dashboards/Orders/Block1';
 import Block2 from 'src/content/Dashboards/Orders/Block2';
-import Block3 from 'src/content/Dashboards/Orders/Block3';
 import Block4 from 'src/content/Dashboards/Orders/Block4';
 import Block5 from 'src/content/Dashboards/Orders/Block5';
 import Block6 from 'src/content/Dashboards/Orders/Block6';
 import Block7 from 'src/content/Dashboards/Orders/Block7';
-import Block8 from 'src/content/Dashboards/Orders/Block8';
+// import Block8 from 'src/content/Dashboards/Orders/Block8';
 import RecentOrders from '@/content/Dashboards/Orders/RecentOrders';
 
 function DashboardExpensesContent() {
@@ -40,9 +39,6 @@ function DashboardExpensesContent() {
         <Grid item xs={12}>
           <Block2 />
         </Grid>
-        <Grid item xs={12}>
-          <Block3 />
-        </Grid>
         <Grid item xs={12} md={6}>
           <Block4 />
         </Grid>
@@ -54,9 +50,6 @@ function DashboardExpensesContent() {
         </Grid>
         <Grid item xs={12} md={6}>
           <Block7 />
-        </Grid>
-        <Grid item xs={12}>
-          <Block8 />
         </Grid>
       </Grid>
       <Footer />
