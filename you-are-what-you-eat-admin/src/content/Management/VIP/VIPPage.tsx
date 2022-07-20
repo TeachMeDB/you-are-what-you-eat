@@ -1,6 +1,5 @@
 import { CryptoOrder } from '@/models/crypto_order';
 import VIPListTable from './VIPListTable';
-import OrderSummary from '@/content/Dashboards/Crypto/OrderSummary';
 import { Grid } from '@mui/material';
 
 function VIPPage() {
@@ -23,9 +22,6 @@ function VIPPage() {
           alignItems="stretch"
           spacing={4}
         >
-          <Grid item xs={12}>
-            <OrderSummary />
-          </Grid>
           <Grid item xs={12}>
             <VIPListTable cryptoOrders={cryptoOrders} />
           </Grid>

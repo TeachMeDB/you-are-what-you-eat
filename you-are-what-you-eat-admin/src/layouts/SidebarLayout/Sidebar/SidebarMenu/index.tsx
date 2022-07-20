@@ -272,6 +272,23 @@ function SidebarMenu() {
                   </Button>
                 </NextLink>
               </ListItem>
+              <ListItem component="div">
+                <NextLink href="/management/VIP" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/management/VIP'
+                        ? 'active'
+                        : ''
+                    }
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    startIcon={<TableChartTwoToneIcon />}
+                  >
+                    会员管理
+                  </Button>
+                </NextLink>
+              </ListItem>
             </List>
           </SubMenuWrapper>
         </List>
