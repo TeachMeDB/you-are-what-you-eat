@@ -1,0 +1,26 @@
+{
+  "name": "you-are-what-you-eat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TeachMeDB/you-are-what-you-eat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TeachMeDB/you-are-what-you-eat/issues"
+  },
+  "homepage": "https://github.com/TeachMeDB/you-are-what-you-eat#readme",
+  "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@mui/material": "^5.9.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
