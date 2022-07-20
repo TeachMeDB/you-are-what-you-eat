@@ -206,27 +206,40 @@ function SidebarMenu() {
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
-              Dashboards
+              订单管理
             </ListSubheader>
           }
         >
           <SubMenuWrapper>
             <List component="div">
             <ListItem component="div">
-                <NextLink href="/dashboards/orders" passHref>
+                <NextLink href="/orders/overview" passHref>
                   <Button
                     className={
-                      currentRoute === '/dashboards/orders' ? 'active' : ''
+                      currentRoute === '/orders/overview' ? 'active' : ''
                     }
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
                     startIcon={<BrightnessLowTwoToneIcon />}
                   >
-                    订单管理
+                    订单概览
                   </Button>
                 </NextLink>
               </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              Dashboards
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
               <ListItem component="div">
                 <NextLink href="/dashboards/crypto" passHref>
                   <Button

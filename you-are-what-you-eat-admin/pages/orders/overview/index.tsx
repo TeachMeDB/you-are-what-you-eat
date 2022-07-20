@@ -2,7 +2,7 @@ import Head from 'next/head';
 
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
-import DashboardExpensesContent from 'src/content/DashboardPages/orders';
+import DashboardExpensesContent from 'src/content/OrderPages/overview';
 
 function DashboardExpenses() {
   return (

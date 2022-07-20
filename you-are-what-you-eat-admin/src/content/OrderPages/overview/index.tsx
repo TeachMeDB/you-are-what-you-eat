@@ -1,17 +1,17 @@
-import PageHeader from 'src/content/Dashboards/Orders/PageHeader';
+import PageHeader from 'src/content/Orders/Overview/PageHeader';
 import Footer from 'src/components/Footer';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 
 import { Grid } from '@mui/material';
 
-import Block1 from 'src/content/Dashboards/Orders/Block1';
-import Block2 from 'src/content/Dashboards/Orders/Block2';
-import Block4 from 'src/content/Dashboards/Orders/Block4';
-import Block5 from 'src/content/Dashboards/Orders/Block5';
-import Block6 from 'src/content/Dashboards/Orders/Block6';
-import Block7 from 'src/content/Dashboards/Orders/Block7';
-// import Block8 from 'src/content/Dashboards/Orders/Block8';
-import RecentOrders from '@/content/Dashboards/Orders/RecentOrders';
+import Block1 from 'src/content/Orders/Overview/Block1';
+import Block2 from 'src/content/Orders/Overview/Block2';
+import Block4 from 'src/content/Orders/Overview/Block4';
+import Block5 from 'src/content/Orders/Overview/Block5';
+import Block6 from 'src/content/Orders/Overview/Block6';
+import Block7 from 'src/content/Orders/Overview/Block7';
+// import Block8 from 'src/content/Orders/Overview/Block8';
+import RecentOrders from '@/content/Orders/Overview/RecentOrders';
 
 function DashboardExpensesContent() {
   return (
