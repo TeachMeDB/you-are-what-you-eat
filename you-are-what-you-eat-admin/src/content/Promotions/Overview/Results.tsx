@@ -463,7 +463,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                             <Tooltip title={t('View')} arrow>
                               <IconButton
                                 component={Link}
-                                href="/management/invoices/single/1"
+                                href="/promotions/overview/single/2"
                                 color="primary"
                               >
                                 <LaunchTwoToneIcon fontSize="small" />
