@@ -100,7 +100,7 @@ function Block4() {
             {'View all'}
           </Button>
         }
-        title={t('Reports')}
+        title={t('订单报告')}
       />
       <Divider />
       <Stack
@@ -121,7 +121,7 @@ function Block4() {
         >
           <Box>
             <Typography gutterBottom variant="h4">
-              {t('Reports')}
+              {t('早餐订单')}
             </Typography>
             <Typography variant="subtitle2">
               {t('Monthly sales reports')}
@@ -142,7 +142,7 @@ function Block4() {
         >
           <Box>
             <Typography gutterBottom variant="h4">
-              {t('Stats')}
+              {t('早餐营业额')}
             </Typography>
             <Typography variant="subtitle2">
               {t('Last month targets')}
@@ -172,7 +172,7 @@ function Block4() {
         >
           <Box>
             <Typography gutterBottom variant="h4">
-              {t('Users')}
+              {t('午餐订单')}
             </Typography>
             <Typography variant="subtitle2">
               {t('Visitors last week')}
@@ -193,7 +193,7 @@ function Block4() {
         >
           <Box>
             <Typography gutterBottom variant="h4">
-              {t('Payments')}
+              {t('午餐营业额')}
             </Typography>
             <Typography variant="subtitle2">{t("Week's expenses")}</Typography>
           </Box>
@@ -221,7 +221,7 @@ function Block4() {
         >
           <Box>
             <Typography gutterBottom variant="h4">
-              {t('Sales')}
+              {t('晚餐订单')}
             </Typography>
             <Typography variant="subtitle2">
               {t('Total average weekly report')}
@@ -242,7 +242,7 @@ function Block4() {
         >
           <Box>
             <Typography gutterBottom variant="h4">
-              {t('Orders')}
+              {t('晚餐营业额')}
             </Typography>
             <Typography variant="subtitle2">
               {t('Total products ordered')}

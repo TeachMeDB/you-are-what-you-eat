@@ -1,17 +1,17 @@
-import PageHeader from 'src/content/Dashboards/Orders/PageHeader';
+import PageHeader from 'src/content/Orders/Overview/PageHeader';
 import Footer from 'src/components/Footer';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 
 import { Grid } from '@mui/material';
 
-import Block1 from 'src/content/Dashboards/Orders/Block1';
-import Block2 from 'src/content/Dashboards/Orders/Block2';
-import Block3 from 'src/content/Dashboards/Orders/Block3';
-import Block4 from 'src/content/Dashboards/Orders/Block4';
-import Block5 from 'src/content/Dashboards/Orders/Block5';
-import Block6 from 'src/content/Dashboards/Orders/Block6';
-import Block7 from 'src/content/Dashboards/Orders/Block7';
-import Block8 from 'src/content/Dashboards/Orders/Block8';
+import Block1 from 'src/content/Orders/Overview/Block1';
+import Block2 from 'src/content/Orders/Overview/Block2';
+import Block4 from 'src/content/Orders/Overview/Block4';
+import Block5 from 'src/content/Orders/Overview/Block5';
+import Block6 from 'src/content/Orders/Overview/Block6';
+import Block7 from 'src/content/Orders/Overview/Block7';
+// import Block8 from 'src/content/Orders/Overview/Block8';
+import RecentOrders from '@/content/Orders/Overview/RecentOrders';
 
 function DashboardExpensesContent() {
   return (
@@ -31,13 +31,13 @@ function DashboardExpensesContent() {
         spacing={4}
       >
         <Grid item xs={12}>
+          <RecentOrders />
+        </Grid>
+        <Grid item xs={12}>
           <Block1 />
         </Grid>
         <Grid item xs={12}>
           <Block2 />
-        </Grid>
-        <Grid item xs={12}>
-          <Block3 />
         </Grid>
         <Grid item xs={12} md={6}>
           <Block4 />
@@ -50,9 +50,6 @@ function DashboardExpensesContent() {
         </Grid>
         <Grid item xs={12} md={6}>
           <Block7 />
-        </Grid>
-        <Grid item xs={12}>
-          <Block8 />
         </Grid>
       </Grid>
       <Footer />
