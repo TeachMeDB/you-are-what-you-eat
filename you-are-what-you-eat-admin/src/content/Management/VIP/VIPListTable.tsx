@@ -30,6 +30,7 @@ import { CryptoVip,CryptoVipStatus } from '@/models/crypto_vip';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BulkActions from './BulkActions';
+import TextField from '@mui/material/TextField';
 
 interface VIPListTableProps {
   className?: string;
@@ -184,22 +185,26 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
       {!selectedBulkActions && (
         <CardHeader
           action={
-            <Box width={150}>
-              <FormControl fullWidth variant="outlined">
-                <InputLabel>筛选</InputLabel>
-                <Select
-                  value={filters.status || 'all'}
-                  onChange={handleStatusChange}
-                  label="Status"
-                  autoWidth
-                >
-                  {statusOptions.map((statusOption) => (
-                    <MenuItem key={statusOption.id} value={statusOption.id}>
-                      {statusOption.name}
-                    </MenuItem>
-                  ))}
-                </Select>
+            <Box width={400}>
+              <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
+                <TextField id="outlined-basic" label="搜索" variant="outlined" />
               </FormControl>
+
+              <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
+                   <InputLabel >筛选</InputLabel>
+                   <Select
+                     value={filters.status || 'all'}
+                    onChange={handleStatusChange}
+                    label="Status"
+                    autoWidth
+                   >
+                    {statusOptions.map((statusOption) => (
+                       <MenuItem key={statusOption.id} value={statusOption.id}>
+                          {statusOption.name}
+                      </MenuItem>
+                    ))}
+                   </Select>                            
+              </FormControl>              
             </Box>
           }
           title="会员"
@@ -295,7 +300,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.credit}
+                      {Number(cryptoOrder.credit).toFixed(2) }
                     </Typography>
                   </TableCell>
 

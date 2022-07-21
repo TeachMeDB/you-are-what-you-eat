@@ -30,6 +30,7 @@ import { CryptoOrder, CryptoOrderStatus } from '@/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BulkActions from './BulkActions';
+import TextField from '@mui/material/TextField';
 
 interface RecentOrdersTableProps {
   className?: string;
@@ -192,23 +193,27 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       {!selectedBulkActions && (
         <CardHeader
           action={
-            <Box width={150}>
-              <FormControl fullWidth variant="outlined">
-                <InputLabel>筛选</InputLabel>
-                <Select
-                  value={filters.status || 'all'}
+            <Box width={400}>
+            <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
+              <TextField id="outlined-basic" label="搜索" variant="outlined" />
+            </FormControl>
+
+            <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
+                 <InputLabel >筛选</InputLabel>
+                 <Select
+                   value={filters.status || 'all'}
                   onChange={handleStatusChange}
                   label="Status"
                   autoWidth
-                >
+                 >
                   {statusOptions.map((statusOption) => (
-                    <MenuItem key={statusOption.id} value={statusOption.id}>
-                      {statusOption.name}
+                     <MenuItem key={statusOption.id} value={statusOption.id}>
+                        {statusOption.name}
                     </MenuItem>
                   ))}
-                </Select>
-              </FormControl>
-            </Box>
+                 </Select>                            
+            </FormControl>              
+          </Box>
           }
           title="最近订单"
         />
@@ -303,7 +308,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.total_price}
+                      {Number(cryptoOrder.total_price).toFixed(2)}
                     </Typography>
                   </TableCell>
 
