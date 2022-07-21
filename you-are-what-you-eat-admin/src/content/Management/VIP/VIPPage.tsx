@@ -1,15 +1,15 @@
-import { CryptoOrder } from '@/models/crypto_order';
+import { CryptoVip } from '@/models/crypto_vip';
 import VIPListTable from './VIPListTable';
 import { Grid } from '@mui/material';
 
 function VIPPage() {
-  const cryptoOrders: CryptoOrder[] = [
+  const CryptoVip: CryptoVip[] = [
     {
-      order_id : 'sidfh3f7sdh',
-      creation_time : '2022-04-27 00:00:00',
-      table_id : 'A32',
-      status: '已支付',
-      total_price: 145.14
+      user_name : '田所浩二',
+      birthday : '2022-04-27 00:00:00',
+      gender : 1,
+      status: '正常',
+      credit: 145.14
     }
   ];
 
@@ -23,7 +23,7 @@ function VIPPage() {
           spacing={4}
         >
           <Grid item xs={12}>
-            <VIPListTable cryptoOrders={cryptoOrders} />
+            <VIPListTable cryptoVip={CryptoVip} />
           </Grid>
         </Grid> 
     </>

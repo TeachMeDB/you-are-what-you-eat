@@ -26,50 +26,46 @@ import {
 } from '@mui/material';
 
 import Label from '@/components/Label';
-import { CryptoOrder, CryptoOrderStatus } from '@/models/crypto_order';
+import { CryptoVip,CryptoVipStatus } from '@/models/crypto_vip';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BulkActions from './BulkActions';
 
 interface VIPListTableProps {
   className?: string;
-  cryptoOrders: CryptoOrder[];
+  cryptoVip: CryptoVip[];
 }
 
 interface Filters {
-  status?: CryptoOrderStatus;
+  status?: CryptoVipStatus;
 }
 
-const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
+const getStatusLabel = (cryptoVipStatus: CryptoVipStatus): JSX.Element => {
   const map = {
-    待处理: {
-      text: '待处理',
+    注销: {
+      text: '注销',
       color: 'error'
     },
-    已支付: {
-      text: '已支付',
+    正常: {
+      text: '正常',
       color: 'primary'
     },
-    已完成: {
-      text: '已完成',
-      color: 'success'
-    },
-    制作中: {
-      text: '制作中',
+    冻结: {
+      text: '冻结',
       color: 'warning'
     }
   };
 
-  const { text, color }: any = map[cryptoOrderStatus];
+  const { text, color }: any = map[cryptoVipStatus];
 
   return <Label color={color}>{text}</Label>;
 };
 
 const applyFilters = (
-  cryptoOrders: CryptoOrder[],
+  cryptoVip: CryptoVip[],
   filters: Filters
-): CryptoOrder[] => {
-  return cryptoOrders.filter((cryptoOrder) => {
+): CryptoVip[] => {
+  return cryptoVip.filter((cryptoOrder) => {
     let matches = true;
 
     if (filters.status && cryptoOrder.status !== filters.status) {
@@ -81,18 +77,18 @@ const applyFilters = (
 };
 
 const applyPagination = (
-  cryptoOrders: CryptoOrder[],
+  cryptoVip: CryptoVip[],
   page: number,
   limit: number
-): CryptoOrder[] => {
-  return cryptoOrders.slice(page * limit, page * limit + limit);
+): CryptoVip[] => {
+  return cryptoVip.slice(page * limit, page * limit + limit);
 };
 
-const VIPListTable: FC<VIPListTableProps> = ({ cryptoOrders }) => {
-  const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
+const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
+  const [selectedCryptoVip, setSelectedCryptoVip] = useState<string[]>(
     []
   );
-  const selectedBulkActions = selectedCryptoOrders.length > 0;
+  const selectedBulkActions = selectedCryptoVip.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [filters, setFilters] = useState<Filters>({
@@ -105,20 +101,16 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoOrders }) => {
       name: '全部'
     },
     {
-      id: '待处理',
-      name: '待处理'
+      id: '正常',
+      name: '正常'
     },
     {
-      id: '已支付',
-      name: '已支付'
+      id: '冻结',
+      name: '冻结'
     },
     {
-      id: '已完成',
-      name: '已完成'
-    },
-    {
-      id: '制作中',
-      name: '制作中'
+      id: '注销',
+      name: '注销'
     }
   ];
 
@@ -135,12 +127,12 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoOrders }) => {
     }));
   };
 
-  const handleSelectAllCryptoOrders = (
+  const handleSelectAllCryptoVip = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
-    setSelectedCryptoOrders(
+    setSelectedCryptoVip(
       event.target.checked
-        ? cryptoOrders.map((cryptoOrder) => cryptoOrder.order_id)
+        ? cryptoVip.map((cryptoOrder) => cryptoOrder.user_name)
         : []
     );
   };
@@ -149,13 +141,13 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoOrders }) => {
     _event: ChangeEvent<HTMLInputElement>,
     cryptoOrderId: string
   ): void => {
-    if (!selectedCryptoOrders.includes(cryptoOrderId)) {
-      setSelectedCryptoOrders((prevSelected) => [
+    if (!selectedCryptoVip.includes(cryptoOrderId)) {
+      setSelectedCryptoVip((prevSelected) => [
         ...prevSelected,
         cryptoOrderId
       ]);
     } else {
-      setSelectedCryptoOrders((prevSelected) =>
+      setSelectedCryptoVip((prevSelected) =>
         prevSelected.filter((id) => id !== cryptoOrderId)
       );
     }
@@ -169,17 +161,17 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoOrders }) => {
     setLimit(parseInt(event.target.value));
   };
 
-  const filteredCryptoOrders = applyFilters(cryptoOrders, filters);
-  const paginatedCryptoOrders = applyPagination(
-    filteredCryptoOrders,
+  const filteredCryptoVip = applyFilters(cryptoVip, filters);
+  const paginatedCryptoVip = applyPagination(
+    filteredCryptoVip,
     page,
     limit
   );
-  const selectedSomeCryptoOrders =
-    selectedCryptoOrders.length > 0 &&
-    selectedCryptoOrders.length < cryptoOrders.length;
-  const selectedAllCryptoOrders =
-    selectedCryptoOrders.length === cryptoOrders.length;
+  const selectedSomeCryptoVip =
+    selectedCryptoVip.length > 0 &&
+    selectedCryptoVip.length < cryptoVip.length;
+  const selectedAllCryptoVip =
+    selectedCryptoVip.length === cryptoVip.length;
   const theme = useTheme();
 
   return (
@@ -210,7 +202,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoOrders }) => {
               </FormControl>
             </Box>
           }
-          title="最近订单"
+          title="会员"
         />
       )}
       <Divider />
@@ -221,38 +213,38 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoOrders }) => {
               <TableCell padding="checkbox">
                 <Checkbox
                   color="primary"
-                  checked={selectedAllCryptoOrders}
-                  indeterminate={selectedSomeCryptoOrders}
-                  onChange={handleSelectAllCryptoOrders}
+                  checked={selectedAllCryptoVip}
+                  indeterminate={selectedSomeCryptoVip}
+                  onChange={handleSelectAllCryptoVip}
                 />
               </TableCell>
-              <TableCell>订单号</TableCell>
-              <TableCell>创建时间</TableCell>
-              <TableCell>桌号</TableCell>
-              <TableCell align="right">金额</TableCell>
+              <TableCell>用户名</TableCell>
+              <TableCell>出生日期</TableCell>
+              <TableCell>性别</TableCell>
+              <TableCell align="right">余额</TableCell>
               <TableCell align="right">状态</TableCell>
               <TableCell align="right">操作</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((cryptoOrder) => {
-              const isCryptoOrderSelected = selectedCryptoOrders.includes(
-                cryptoOrder.order_id
+            {paginatedCryptoVip.map((cryptoOrder) => {
+              const isCryptoVipelected = selectedCryptoVip.includes(
+                cryptoOrder.user_name
               );
               return (
                 <TableRow
                   hover
-                  key={cryptoOrder.order_id}
-                  selected={isCryptoOrderSelected}
+                  key={cryptoOrder.user_name}
+                  selected={isCryptoVipelected}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
                       color="primary"
-                      checked={isCryptoOrderSelected}
+                      checked={isCryptoVipelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, cryptoOrder.order_id)
+                        handleSelectOneCryptoOrder(event, cryptoOrder.user_name)
                       }
-                      value={isCryptoOrderSelected}
+                      value={isCryptoVipelected}
                     />
                   </TableCell>
                   
@@ -264,7 +256,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.order_id}
+                      {cryptoOrder.user_name}
                     </Typography>
                   </TableCell>
                   
@@ -276,7 +268,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.creation_time}
+                      {cryptoOrder.birthday}
                     </Typography>
                     {/*<Typography variant="body2" color="text.secondary" noWrap>
                       {format(cryptoOrder.creation_time, 'MMMM dd yyyy')}
@@ -291,7 +283,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.table_id}
+                      {cryptoOrder.gender==1?'男':'女'}
                     </Typography>
                   </TableCell>
                   
@@ -303,7 +295,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.total_price}
+                      {cryptoOrder.credit}
                     </Typography>
                   </TableCell>
 
@@ -373,7 +365,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoOrders }) => {
       <Box p={2}>
         <TablePagination
           component="div"
-          count={filteredCryptoOrders.length}
+          count={filteredCryptoVip.length}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}
@@ -386,11 +378,11 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoOrders }) => {
 };
 
 VIPListTable.propTypes = {
-  cryptoOrders: PropTypes.array.isRequired
+  cryptoVip: PropTypes.array.isRequired
 };
 
 VIPListTable.defaultProps = {
-  cryptoOrders: []
+  cryptoVip: []
 };
 
 export default VIPListTable;
