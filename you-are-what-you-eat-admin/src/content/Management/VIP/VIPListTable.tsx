@@ -39,6 +39,7 @@ interface VIPListTableProps {
 
 interface Filters {
   status?: CryptoVipStatus;
+  search?: string;
 }
 
 const getStatusLabel = (cryptoVipStatus: CryptoVipStatus): JSX.Element => {
@@ -73,6 +74,10 @@ const applyFilters = (
       matches = false;
     }
 
+    if (filters.search && cryptoOrder.user_name !== filters.search) {
+      matches = false;
+    }
+
     return matches;
   });
 };
@@ -93,7 +98,8 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [filters, setFilters] = useState<Filters>({
-    status: null
+    status: null,
+    search: null
   });
 
   const statusOptions = [
@@ -125,6 +131,19 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       status: value
+    }));
+  };
+
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    let value = null;
+
+    if (e.target.value !== null) {
+      value = e.target.value;
+    }
+
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      search: value
     }));
   };
 
@@ -187,7 +206,12 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
           action={
             <Box width={400}>
               <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
-                <TextField id="outlined-basic" label="搜索" variant="outlined" />
+                <TextField 
+                id="outlined-basic" 
+                label="搜索用户名" 
+                variant="outlined"
+                onChange={handleSearchChange} 
+                />
               </FormControl>
 
               <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>

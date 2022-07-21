@@ -39,6 +39,7 @@ interface RecentOrdersTableProps {
 
 interface Filters {
   status?: CryptoOrderStatus;
+  search?: string;
 }
 
 const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
@@ -74,6 +75,10 @@ const applyFilters = (
     let matches = true;
 
     if (filters.status && cryptoOrder.status !== filters.status) {
+      matches = false;
+    }
+
+    if (filters.search && cryptoOrder.order_id !== filters.search) {
       matches = false;
     }
 
@@ -136,6 +141,19 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     }));
   };
 
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    let value = null;
+
+    if (e.target.value !== null) {
+      value = e.target.value;
+    }
+
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      search: value
+    }));
+  };
+
   const handleSelectAllCryptoOrders = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
@@ -195,7 +213,12 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
           action={
             <Box width={400}>
             <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
-              <TextField id="outlined-basic" label="搜索" variant="outlined" />
+              <TextField 
+              id="outlined-basic" 
+              label="搜索订单号" 
+              variant="outlined" 
+              onChange={handleSearchChange}
+              />
             </FormControl>
 
             <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
