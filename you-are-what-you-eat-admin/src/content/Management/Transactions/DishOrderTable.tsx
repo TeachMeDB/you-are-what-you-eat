@@ -26,61 +26,63 @@ import {
 } from '@mui/material';
 
 import Label from '@/components/Label';
-import { CryptoVip,CryptoVipStatus } from '@/models/crypto_vip';
+import { CryptoDishOrder,CryptoDishOrderStatus } from '@/models/crypto_dishOrder';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BulkActions from './BulkActions';
 import TextField from '@mui/material/TextField';
 
-interface VIPListTableProps {
+import FullOrderView from './FullOrderView';
+
+interface RecentOrdersTableProps {
   className?: string;
-  cryptoVip: CryptoVip[];
+  cryptoDishOrder: CryptoDishOrder[];
 }
 
 interface Filters {
-  status?: CryptoVipStatus;
+  status?: CryptoDishOrderStatus;
   search?: string;
 }
 
-const getStatusLabel = (cryptoVipStatus: CryptoVipStatus): JSX.Element => {
+const getStatusLabel = (cryptoDishOrderStatus: CryptoDishOrderStatus): JSX.Element => {
   const map = {
-    注销: {
-      text: '注销',
+    待处理: {
+      text: '待处理',
       color: 'error'
     },
-    正常: {
-      text: '正常',
-      color: 'primary'
+    已完成: {
+      text: '已完成',
+      color: 'success'
     },
-    冻结: {
-      text: '冻结',
+    制作中: {
+      text: '制作中',
       color: 'warning'
     }
   };
 
-  const { text, color }: any = map[cryptoVipStatus];
+  const { text, color }: any = map[cryptoDishOrderStatus];
 
   return <Label color={color}>{text}</Label>;
 };
 
 const applyFilters = (
-  cryptoVip: CryptoVip[],
+  cryptoDishOrder: CryptoDishOrder[],
   filters: Filters
-): CryptoVip[] => {
-  return cryptoVip.filter((cryptoOrder) => {
+): CryptoDishOrder[] => {
+  return cryptoDishOrder.filter((cryptoOrder) => {
     let matches = true;
 
-    if (filters.status && cryptoOrder.status !== filters.status) {
+    if (filters.status && cryptoOrder.dish_status !== filters.status) {
       matches = false;
     }
 
     /*
-    if (filters.search && cryptoOrder.user_name !== filters.search) {
+    if (filters.search && cryptoOrder.order_id !== filters.search) {
       matches = false;
     }
     */
 
-    if(filters.search && !(cryptoOrder.user_name.includes(filters.search)))
+    if(filters.search && !(cryptoOrder.dish_order_id.includes(filters.search)))
     {
       matches=false;
     }
@@ -90,23 +92,23 @@ const applyFilters = (
 };
 
 const applyPagination = (
-  cryptoVip: CryptoVip[],
+  cryptoDishOrder: CryptoDishOrder[],
   page: number,
   limit: number
-): CryptoVip[] => {
-  return cryptoVip.slice(page * limit, page * limit + limit);
+): CryptoDishOrder[] => {
+  return cryptoDishOrder.slice(page * limit, page * limit + limit);
 };
 
-const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
-  const [selectedCryptoVip, setSelectedCryptoVip] = useState<string[]>(
+
+const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
+  const [selectedCryptoDishOrders, setSelectedCryptoDishOrders] = useState<string[]>(
     []
   );
-  const selectedBulkActions = selectedCryptoVip.length > 0;
+  const selectedBulkActions = selectedCryptoDishOrders.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [filters, setFilters] = useState<Filters>({
-    status: null,
-    search: null
+    status: null
   });
 
   const statusOptions = [
@@ -115,16 +117,16 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
       name: '全部'
     },
     {
-      id: '正常',
-      name: '正常'
+      id: '待处理',
+      name: '待处理'
     },
     {
-      id: '冻结',
-      name: '冻结'
+      id: '已完成',
+      name: '已完成'
     },
     {
-      id: '注销',
-      name: '注销'
+      id: '制作中',
+      name: '制作中'
     }
   ];
 
@@ -154,27 +156,27 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
     }));
   };
 
-  const handleSelectAllCryptoVip = (
+  const handleSelectAllCryptoDishOrders = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
-    setSelectedCryptoVip(
+    setSelectedCryptoDishOrders(
       event.target.checked
-        ? cryptoVip.map((cryptoOrder) => cryptoOrder.user_name)
+        ? cryptoDishOrder.map((cryptoOrder) => cryptoOrder.order_id)
         : []
     );
   };
 
-  const handleSelectOneCryptoOrder = (
+  const handleSelectOneCryptoDishOrder = (
     _event: ChangeEvent<HTMLInputElement>,
     cryptoOrderId: string
   ): void => {
-    if (!selectedCryptoVip.includes(cryptoOrderId)) {
-      setSelectedCryptoVip((prevSelected) => [
+    if (!selectedCryptoDishOrders.includes(cryptoOrderId)) {
+      setSelectedCryptoDishOrders((prevSelected) => [
         ...prevSelected,
         cryptoOrderId
       ]);
     } else {
-      setSelectedCryptoVip((prevSelected) =>
+      setSelectedCryptoDishOrders((prevSelected) =>
         prevSelected.filter((id) => id !== cryptoOrderId)
       );
     }
@@ -188,17 +190,18 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
     setLimit(parseInt(event.target.value));
   };
 
-  const filteredCryptoVip = applyFilters(cryptoVip, filters);
-  const paginatedCryptoVip = applyPagination(
-    filteredCryptoVip,
+
+  const filteredCryptoDishOrders = applyFilters(cryptoDishOrder, filters);
+  const paginatedCryptoDishOrders = applyPagination(
+    filteredCryptoDishOrders,
     page,
     limit
   );
-  const selectedSomeCryptoVip =
-    selectedCryptoVip.length > 0 &&
-    selectedCryptoVip.length < cryptoVip.length;
-  const selectedAllCryptoVip =
-    selectedCryptoVip.length === cryptoVip.length;
+  const selectedSomeCryptoDishOrders =
+    selectedCryptoDishOrders.length > 0 &&
+    selectedCryptoDishOrders.length < cryptoDishOrder.length;
+  const selectedAllCryptoDishOrders =
+    selectedCryptoDishOrders.length === cryptoDishOrder.length;
   const theme = useTheme();
 
   return (
@@ -212,33 +215,33 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
         <CardHeader
           action={
             <Box width={400}>
-              <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
-                <TextField 
-                id="outlined-basic" 
-                label="搜索用户名" 
-                variant="outlined"
-                onChange={handleSearchChange} 
-                />
-              </FormControl>
+            <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
+              <TextField 
+              id="outlined-basic" 
+              label="搜索点菜号" 
+              variant="outlined" 
+              onChange={handleSearchChange}
+              />
+            </FormControl>
 
-              <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
-                   <InputLabel >筛选</InputLabel>
-                   <Select
-                     value={filters.status || 'all'}
-                    onChange={handleStatusChange}
-                    label="Status"
-                    autoWidth
-                   >
-                    {statusOptions.map((statusOption) => (
-                       <MenuItem key={statusOption.id} value={statusOption.id}>
-                          {statusOption.name}
-                      </MenuItem>
-                    ))}
-                   </Select>                            
-              </FormControl>              
-            </Box>
+            <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
+                 <InputLabel >筛选</InputLabel>
+                 <Select
+                   value={filters.status || 'all'}
+                  onChange={handleStatusChange}
+                  label="Status"
+                  autoWidth
+                 >
+                  {statusOptions.map((statusOption) => (
+                     <MenuItem key={statusOption.id} value={statusOption.id}>
+                        {statusOption.name}
+                    </MenuItem>
+                  ))}
+                 </Select>                            
+            </FormControl>              
+          </Box>
           }
-          title="会员"
+          title="订单详情"
         />
       )}
       <Divider />
@@ -249,39 +252,37 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
               <TableCell padding="checkbox">
                 <Checkbox
                   color="primary"
-                  checked={selectedAllCryptoVip}
-                  indeterminate={selectedSomeCryptoVip}
-                  onChange={handleSelectAllCryptoVip}
+                  checked={selectedAllCryptoDishOrders}
+                  indeterminate={selectedSomeCryptoDishOrders}
+                  onChange={handleSelectAllCryptoDishOrders}
                 />
               </TableCell>
-              <TableCell>用户名</TableCell>
-              <TableCell>出生日期</TableCell>
-              <TableCell>性别</TableCell>
-              <TableCell align="right">余额</TableCell>
-              <TableCell align="right">积分</TableCell>
+              <TableCell>点菜号</TableCell>
+              <TableCell>所属订单</TableCell>
+              <TableCell>菜品名称</TableCell>
+              <TableCell align="right">结算价格</TableCell>
               <TableCell align="right">状态</TableCell>
-              <TableCell align="right">操作</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoVip.map((cryptoOrder) => {
-              const isCryptoVipelected = selectedCryptoVip.includes(
-                cryptoOrder.user_name
+            {paginatedCryptoDishOrders.map((cryptoOrder) => {
+              const isCryptoDishOrderSelected = selectedCryptoDishOrders.includes(
+                cryptoOrder.order_id
               );
               return (
                 <TableRow
                   hover
-                  key={cryptoOrder.user_name}
-                  selected={isCryptoVipelected}
+                  key={cryptoOrder.order_id}
+                  selected={isCryptoDishOrderSelected}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
                       color="primary"
-                      checked={isCryptoVipelected}
+                      checked={isCryptoDishOrderSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, cryptoOrder.user_name)
+                        handleSelectOneCryptoDishOrder(event, cryptoOrder.dish_order_id)
                       }
-                      value={isCryptoVipelected}
+                      value={isCryptoDishOrderSelected}
                     />
                   </TableCell>
                   
@@ -293,7 +294,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.user_name}
+                      {cryptoOrder.dish_order_id}
                     </Typography>
                   </TableCell>
                   
@@ -305,7 +306,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.birthday}
+                      {cryptoOrder.order_id}
                     </Typography>
                     {/*<Typography variant="body2" color="text.secondary" noWrap>
                       {format(cryptoOrder.creation_time, 'MMMM dd yyyy')}
@@ -320,7 +321,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.gender==1?'男':'女'}
+                      {cryptoOrder.dish_id}
                     </Typography>
                   </TableCell>
                   
@@ -332,19 +333,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
                       gutterBottom
                       noWrap
                     >
-                      {Number(cryptoOrder.balance).toFixed(2) }
-                    </Typography>
-                  </TableCell>
-
-                  <TableCell align="right">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {Number(cryptoOrder.credit).toFixed(2) }
+                      {Number(cryptoOrder.final_payment).toFixed(2)}
                     </Typography>
                   </TableCell>
 
@@ -369,28 +358,10 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
                   */}
                   
                   <TableCell align="right">
-                    {getStatusLabel(cryptoOrder.status)}
+                    {getStatusLabel(cryptoOrder.dish_status)}
                   </TableCell>
 
-                  <TableCell align="right">
-                    
-                    <Tooltip title="编辑" arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': {
-                            background: theme.colors.primary.lighter
-                          },
-                          color: theme.palette.primary.main
-                        }}
-                        color="inherit"
-                        size="small"
-                      >
-                        <EditTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    
-                  </TableCell>
-
+                
                 </TableRow>
               );
             })}
@@ -400,7 +371,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
       <Box p={2}>
         <TablePagination
           component="div"
-          count={filteredCryptoVip.length}
+          count={filteredCryptoDishOrders.length}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}
@@ -408,16 +379,16 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
           rowsPerPageOptions={[5, 10, 25, 30]}
         />
       </Box>
-    </Card>
+    </Card>    
   );
 };
 
-VIPListTable.propTypes = {
-  cryptoVip: PropTypes.array.isRequired
+DishOrderTable.propTypes = {
+  cryptoDishOrder: PropTypes.array.isRequired
 };
 
-VIPListTable.defaultProps = {
-  cryptoVip: []
+DishOrderTable.defaultProps = {
+  cryptoDishOrder: []
 };
 
-export default VIPListTable;
+export default DishOrderTable;

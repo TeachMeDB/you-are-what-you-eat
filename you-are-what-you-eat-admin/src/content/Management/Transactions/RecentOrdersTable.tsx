@@ -32,6 +32,8 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BulkActions from './BulkActions';
 import TextField from '@mui/material/TextField';
 
+import FullOrderView from './FullOrderView';
+
 interface RecentOrdersTableProps {
   className?: string;
   cryptoOrders: CryptoOrder[];
@@ -78,8 +80,15 @@ const applyFilters = (
       matches = false;
     }
 
+    /*
     if (filters.search && cryptoOrder.order_id !== filters.search) {
       matches = false;
+    }
+    */
+
+    if(filters.search && !(cryptoOrder.order_id.includes(filters.search)))
+    {
+      matches=false;
     }
 
     return matches;
@@ -93,6 +102,7 @@ const applyPagination = (
 ): CryptoOrder[] => {
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
+
 
 const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
@@ -187,6 +197,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setLimit(parseInt(event.target.value));
   };
+
 
   const filteredCryptoOrders = applyFilters(cryptoOrders, filters);
   const paginatedCryptoOrders = applyPagination(
@@ -361,18 +372,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
 
                   <TableCell align="right">
                     <Tooltip title="查看详情" arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': {
-                            background: theme.colors.primary.lighter
-                          },
-                          color: theme.palette.primary.main
-                        }}
-                        color="inherit"
-                        size="small"
-                      >
-                        <RemoveRedEyeIcon fontSize="small" />
-                      </IconButton>
+                      <FullOrderView id={cryptoOrder.order_id}/>                                                       
                     </Tooltip>
 
                     <Tooltip title="编辑" arrow>
@@ -409,7 +409,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
           rowsPerPageOptions={[5, 10, 25, 30]}
         />
       </Box>
-    </Card>
+    </Card>    
   );
 };
 
