@@ -9,11 +9,14 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import {useTheme} from '@mui/material';
 
-import { CryptoDishOrder,CryptoDishOrderStatus } from '@/models/crypto_dishOrder';
+import { CryptoVip,CryptoVipStatus } from '@/models/crypto_vip';
 import { Grid } from '@mui/material';
-import DishOrderTable from './DishOrderTable';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import {Select,MenuItem,InputLabel} from '@mui/material';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -33,6 +36,25 @@ export interface DialogTitleProps {
 export interface DialogIDProps{
     id: string;
 }
+
+export interface VipProps{
+  info:CryptoVip
+}
+
+const statusOptions = [
+  {
+    id: '正常',
+    name: '正常'
+  },
+  {
+    id: '冻结',
+    name: '冻结'
+  },
+  {
+    id: '注销',
+    name: '注销'
+  }
+];
 
 const BootstrapDialogTitle = (props: DialogTitleProps) => {
   const { children, onClose, ...other } = props;
@@ -58,7 +80,7 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
   );
 };
 
-export default function FullOrderView(props: DialogIDProps) {
+export default function ModifyDialog(props: VipProps) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -69,44 +91,6 @@ export default function FullOrderView(props: DialogIDProps) {
   };
 
   const theme = useTheme();
-
-  const cryptoDishOrders: CryptoDishOrder[] = [
-    {
-        dish_order_id : "283nx8ewyfs",
-        order_id: props.id,
-        dish_id: "迎宾红茶",
-        final_payment: 8.10,
-        dish_status: '已完成'
-    },
-    {
-        dish_order_id : "283nx8ewyfd",
-        order_id: props.id,
-        dish_id: "迎宾红茶",
-        final_payment: 8.10,
-        dish_status: '制作中'
-    },
-    {
-        dish_order_id : "283nx8ewyfe",
-        order_id: props.id,
-        dish_id: "迎宾红茶",
-        final_payment: 8.10,
-        dish_status: '已完成'
-    },
-    {
-        dish_order_id : "283nx8ewyff",
-        order_id: props.id,
-        dish_id: "迎宾红茶",
-        final_payment: 8.10,
-        dish_status: '待处理'
-    },
-    {
-        dish_order_id : "283nx8ewyfg",
-        order_id: props.id,
-        dish_id: "迎宾红茶",
-        final_payment: 8.10,
-        dish_status: '已完成'
-    }
-  ];
 
   return (
     <div>
@@ -121,7 +105,7 @@ export default function FullOrderView(props: DialogIDProps) {
             size="small"
             onClick={handleClickOpen}
                 >
-            <RemoveRedEyeIcon fontSize="small" />
+            <EditTwoToneIcon fontSize="small" />
         </IconButton>
       <BootstrapDialog
         onClose={handleClose}
@@ -129,19 +113,51 @@ export default function FullOrderView(props: DialogIDProps) {
         open={open}
       >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          订单：{props.id}
+          会员：{props.info.user_name}
         </BootstrapDialogTitle>
         <Grid
           container
           direction="row"
           justifyContent="center"
           alignItems="stretch"
-          spacing={4}
+          spacing={1}
         >
-          <Grid item xs={12}>
-            <DishOrderTable cryptoDishOrder={cryptoDishOrders}/>
-          </Grid>
-        </Grid> 
+          <Box
+            component="form"
+            sx={{
+            '& .MuiTextField-root': { m: 5, width: '30ch' },
+               }}
+            noValidate
+            autoComplete="off"
+           >
+           <TextField
+             required
+              id="outlined-required"
+              label="姓名"
+             defaultValue={props.info.user_name}             
+             />
+           <TextField
+             required
+              id="outlined-required"
+              label="积分"
+             defaultValue={props.info.credit}
+             />
+           <TextField
+             required
+             select
+              id="outlined-required"
+              label="状态"
+             defaultValue={props.info.credit}
+                     value={props.info.status}
+                   >
+                    {statusOptions.map((statusOption) => (
+                       <MenuItem key={statusOption.id} value={statusOption.id}>
+                          {statusOption.name}
+                      </MenuItem>
+                    ))}
+            </TextField>  
+          </Box>
+        </Grid>         
       </BootstrapDialog>
     </div>
   );

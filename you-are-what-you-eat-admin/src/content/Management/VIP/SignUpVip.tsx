@@ -8,6 +8,14 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
+import {useTheme} from '@mui/material';
+
+import { CryptoVip,CryptoVipStatus } from '@/models/crypto_vip';
+import { Grid } from '@mui/material';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -22,6 +30,14 @@ export interface DialogTitleProps {
   id: string;
   children?: React.ReactNode;
   onClose: () => void;
+}
+
+export interface DialogIDProps{
+    id: string;
+}
+
+export interface VipProps{
+  info:CryptoVip
 }
 
 const BootstrapDialogTitle = (props: DialogTitleProps) => {
@@ -48,7 +64,7 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
   );
 };
 
-export default function CustomizedDialogs() {
+export default function SignUpVip() {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -58,40 +74,61 @@ export default function CustomizedDialogs() {
     setOpen(false);
   };
 
+  const theme = useTheme();
+
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open dialog
-      </Button>
+        <Button
+          sx={{ mt: { xs: 2, md: 0 } }}
+          variant="contained"
+          startIcon={<AddTwoToneIcon fontSize="small" />}
+          onClick={handleClickOpen}
+        >
+          会员注册
+        </Button>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
       >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Modal title
+          会员注册
         </BootstrapDialogTitle>
-        <DialogContent dividers>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-            consectetur ac, vestibulum at eros.
-          </Typography>
-          <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
-            magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
-            ullamcorper nulla non metus auctor fringilla.
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Save changes
-          </Button>
-        </DialogActions>
+        <Box
+            component="form"
+            sx={{
+            '& .MuiTextField-root': { m: 2, width: '30ch' },
+               }}
+            noValidate
+            autoComplete="off"
+           >
+           <TextField
+             required
+             fullWidth
+              id="outlined-required"
+              label="姓名"
+             defaultValue=''             
+             />            
+           <TextField
+             required
+             fullWidth
+              id="outlined-required"
+              label="出生日期"
+             defaultValue=''
+             />
+           <TextField
+             required
+             fullWidth
+              id="outlined-required"
+              label="性别"
+             defaultValue=''
+             />
+          </Box>  
+          <Button
+          startIcon={<AddTwoToneIcon fontSize="small" />}
+          >
+          确认注册
+        </Button>     
       </BootstrapDialog>
     </div>
   );

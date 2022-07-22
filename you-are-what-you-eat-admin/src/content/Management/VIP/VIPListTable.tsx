@@ -32,6 +32,9 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BulkActions from './BulkActions';
 import TextField from '@mui/material/TextField';
 
+import ModifyDialog from './ModifyDialog'
+import SignUpVip from './SignUpVip'
+
 interface VIPListTableProps {
   className?: string;
   cryptoVip: CryptoVip[];
@@ -375,18 +378,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
                   <TableCell align="right">
                     
                     <Tooltip title="编辑" arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': {
-                            background: theme.colors.primary.lighter
-                          },
-                          color: theme.palette.primary.main
-                        }}
-                        color="inherit"
-                        size="small"
-                      >
-                        <EditTwoToneIcon fontSize="small" />
-                      </IconButton>
+                      <ModifyDialog info={cryptoOrder}/>
                     </Tooltip>
                     
                   </TableCell>
