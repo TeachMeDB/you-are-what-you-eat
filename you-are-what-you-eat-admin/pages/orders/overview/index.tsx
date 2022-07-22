@@ -2,7 +2,7 @@ import Head from 'next/head';
 
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
-import DashboardExpensesContent from 'src/content/OrderPages/overview';
+import OrderOverview from 'src/content/OrderPages/overview';
 
 function DashboardExpenses() {
   return (
@@ -10,7 +10,7 @@ function DashboardExpenses() {
       <Head>
         <title>Expenses Dashboard</title>
       </Head>
-      <DashboardExpensesContent />
+      <OrderOverview />
     </>
   );
 }

@@ -4,16 +4,14 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 
 import { Grid } from '@mui/material';
 
-import Block1 from 'src/content/Orders/Overview/Block1';
-import Block2 from 'src/content/Orders/Overview/Block2';
-import Block4 from 'src/content/Orders/Overview/Block4';
-import Block5 from 'src/content/Orders/Overview/Block5';
-import Block6 from 'src/content/Orders/Overview/Block6';
-import Block7 from 'src/content/Orders/Overview/Block7';
-// import Block8 from 'src/content/Orders/Overview/Block8';
+import DishSaleVolume from '@/content/Orders/Overview/DishSaleVolume';
+import BestSeller from '@/content/Orders/Overview/BestSeller';
+import OrderReport from '@/content/Orders/Overview/OrderReport';
+import ActiveVIP from '@/content/Orders/Overview/ActiveVIP';
 import RecentOrders from '@/content/Orders/Overview/RecentOrders';
+import StatisticCard from '@/content/Orders/Overview/StatisticCard';
 
-function DashboardExpensesContent() {
+function OrderOverviewContent() {
   return (
     <>
       <PageTitleWrapper>
@@ -34,22 +32,19 @@ function DashboardExpensesContent() {
           <RecentOrders />
         </Grid>
         <Grid item xs={12}>
-          <Block1 />
+          <StatisticCard />
         </Grid>
         <Grid item xs={12}>
-          <Block2 />
+          <DishSaleVolume />
         </Grid>
         <Grid item xs={12} md={6}>
-          <Block4 />
+          <BestSeller />
         </Grid>
         <Grid item xs={12} md={6}>
-          <Block5 />
+          <OrderReport />
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Block6 />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Block7 />
+        <Grid item xs={12}>
+          <ActiveVIP />
         </Grid>
       </Grid>
       <Footer />
@@ -57,4 +52,4 @@ function DashboardExpensesContent() {
   );
 }
 
-export default DashboardExpensesContent;
+export default OrderOverviewContent;
