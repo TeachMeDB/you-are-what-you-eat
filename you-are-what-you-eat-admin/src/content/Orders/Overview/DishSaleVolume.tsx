@@ -149,7 +149,7 @@ const TableHeadWrapper = styled(TableHead)(
   `
 );
 
-function Block2() {
+function DishSaleVolume() {
   const { t }: { t: any } = useTranslation();
   const theme = useTheme();
 
@@ -170,7 +170,7 @@ function Block2() {
             }}
             variant="h4"
           >
-            {t('本周销量')}
+            {t('单品销量')}
           </Typography>
           <Typography variant="subtitle2">
             {t('Reports for what we sold this week')}
@@ -187,11 +187,11 @@ function Block2() {
             <TableHeadWrapper>
               <TableRow>
                 <TableCell>{t('菜品')}</TableCell>
-                <TableCell align="left">{t('Income')}</TableCell>
-                <TableCell align="left">{t('Expenses')}</TableCell>
-                <TableCell align="center">{t('Status')}</TableCell>
-                <TableCell align="center">{t('Trends')}</TableCell>
-                <TableCell align="right">{t('Totals')}</TableCell>
+                <TableCell align="left">{t('总售价')}</TableCell>
+                <TableCell align="left">{t('单价')}</TableCell>
+                <TableCell align="center">{t('类型')}</TableCell>
+                <TableCell align="center">{t('趋势')}</TableCell>
+                <TableCell align="right">{t('售出份数')}</TableCell>
               </TableRow>
             </TableHeadWrapper>
             <TableBody>
@@ -469,4 +469,4 @@ function Block2() {
   );
 }
 
-export default Block2;
+export default DishSaleVolume;

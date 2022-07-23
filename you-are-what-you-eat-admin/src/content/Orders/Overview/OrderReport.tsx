@@ -22,7 +22,7 @@ const CardWrapper = styled(Card)(
   `
 );
 
-function Block4() {
+function OrderReport() {
   const { t }: { t: any } = useTranslation();
   const theme = useTheme();
 
@@ -277,4 +277,4 @@ function Block4() {
   );
 }
 
-export default Block4;
+export default OrderReport;

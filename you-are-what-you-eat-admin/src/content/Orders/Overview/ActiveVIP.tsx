@@ -61,7 +61,7 @@ const ListWrapper = styled(List)(
   `
 );
 
-function Block10() {
+function ActiveVIP() {
   const { t }: { t: any } = useTranslation();
   const theme = useTheme();
 
@@ -293,4 +293,4 @@ function Block10() {
   );
 }
 
-export default Block10;
+export default ActiveVIP;

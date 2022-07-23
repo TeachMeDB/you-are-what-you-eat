@@ -48,7 +48,7 @@ function PageHeader() {
           </AvatarPageTitle>
           <Box>
             <Typography variant="h3" component="h3" gutterBottom>
-              {t('Expenses')}
+              {t('订单管理')}
             </Typography>
             <Typography variant="subtitle2">
               {t('Dashboard to show the company expenses statistics')}
