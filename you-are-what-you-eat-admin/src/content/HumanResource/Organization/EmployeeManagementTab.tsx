@@ -23,38 +23,47 @@ import {
   TableRow,
   TableContainer,
   useTheme,
-  styled
+  styled,
+  TextField,
+  CardContent,
+  MenuItem
 } from '@mui/material';
 
-import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
+
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import { format, subHours, subWeeks, subDays } from 'date-fns';
+import { StuffMember } from './Profile/stuff';
 
-const ButtonError = styled(Button)(
-  ({ theme }) => `
-     background: ${theme.colors.error.main};
-     color: ${theme.palette.error.contrastText};
 
-     &:hover {
-        background: ${theme.colors.error.dark};
-     }
-    `
-);
+export interface Level {
+  amount: number;
+  /**
+   * 当前职位人数
+   */
+  count:      number;
+  occupation: string;
+}
 
-const AvatarSuccess = styled(Avatar)(
-  ({ theme }) => `
-    background: ${theme.colors.success.light};
-    width: ${theme.spacing(5)};
-    height: ${theme.spacing(5)};
-`
-);
 
-const AvatarWrapper = styled(Avatar)(
-  ({ theme }) => `
-    width: ${theme.spacing(5)};
-    height: ${theme.spacing(5)};
-`
-);
+
+const currencies = [
+  {
+    value: 'USD',
+    label: '$'
+  },
+  {
+    value: 'EUR',
+    label: '€'
+  },
+  {
+    value: 'BTC',
+    label: '฿'
+  },
+  {
+    value: 'JPY',
+    label: '¥'
+  }
+];
+
 
 function EmployeeManagementTab() {
   const theme = useTheme();
@@ -69,6 +78,13 @@ function EmployeeManagementTab() {
     setPage(newPage);
   };
 
+
+  const [currency, setCurrency] = useState('EUR');
+
+  const handleChange = (event) => {
+    setCurrency(event.target.value);
+  };
+
   const handleChangeRowsPerPage = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -76,41 +92,72 @@ function EmployeeManagementTab() {
     setPage(0);
   };
 
-  const logs = [
+
+  const levels:Level[]=[
     {
-      id: 1,
-      browser: ' Safari/537.36',
-      ipaddress: '3.70.73.142',
-      location: 'United States',
-      date: subDays(new Date(), 2).getTime()
+      "occupation": "consectetur quis labore ut",
+      "amount": 37,
+      "count": 19
     },
     {
-      id: 2,
-      browser: 'Chrome/36.0.1985.67',
-      ipaddress: '138.13.136.179',
-      location: 'China',
-      date: subDays(new Date(), 6).getTime()
+      "occupation": "officia esse nulla enim Ut",
+      "amount": 49,
+      "count": 55
     },
     {
-      id: 3,
-      browser: 'Googlebot/2.1',
-      ipaddress: '119.229.170.253',
-      location: 'China',
-      date: subHours(new Date(), 15).getTime()
+      "occupation": "adipisicing",
+      "amount": 8,
+      "count": 23
     },
     {
-      id: 4,
-      browser: 'AppleWebKit/535.1',
-      ipaddress: '206.8.99.49',
-      location: 'Philippines',
-      date: subDays(new Date(), 4).getTime()
+      "occupation": "ut consectetur irure laborum",
+      "amount": 17,
+      "count": 97
     },
     {
-      id: 5,
-      browser: 'Mozilla/5.0',
-      ipaddress: '235.40.59.85',
-      location: 'China',
-      date: subWeeks(new Date(), 3).getTime()
+      "occupation": "ea ex",
+      "amount": 94,
+      "count": 9
+    }
+  ];
+
+
+  const employees:StuffMember[]=[
+    {
+      "id": "43",
+      "name": "机每面以利",
+      "gender": "男",
+      "occupation": "ex amet culpa",
+      "attendance_rate": 66,
+      "award_times": 1267057860920,
+      "avatar": "http://dummyimage.com/100x100"
+    },
+    {
+      "id": "42",
+      "name": "引更龙接成真",
+      "gender": "男",
+      "occupation": "voluptate esse",
+      "attendance_rate": 90,
+      "award_times": 1107224790631,
+      "avatar": "http://dummyimage.com/100x100"
+    },
+    {
+      "id": "35",
+      "name": "于政有",
+      "gender": "女",
+      "occupation": "do ut",
+      "attendance_rate": 61,
+      "award_times": 1213420216522,
+      "avatar": "http://dummyimage.com/100x100"
+    },
+    {
+      "id": "29",
+      "name": "进对包",
+      "gender": "女",
+      "occupation": "velit",
+      "attendance_rate": 89,
+      "award_times": 1132758112786,
+      "avatar": "http://dummyimage.com/100x100"
     }
   ];
 
@@ -118,146 +165,384 @@ function EmployeeManagementTab() {
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Box pb={2}>
-          <Typography variant="h3">Social Accounts</Typography>
+          <Typography variant="h3">级别管理</Typography>
           <Typography variant="subtitle2">
-            Manage connected social accounts options
+            餐厅员工职级如下所示
           </Typography>
         </Box>
-        <Card>
-          <List>
-            <ListItem sx={{ p: 3 }}>
-              <ListItemAvatar sx={{ pr: 2 }}>
-                <AvatarWrapper src="/static/images/logo/google.svg" />
-              </ListItemAvatar>
-              <ListItemText
-                primaryTypographyProps={{ variant: 'h5', gutterBottom: true }}
-                secondaryTypographyProps={{
-                  variant: 'subtitle2',
-                  lineHeight: 1
-                }}
-                primary="Google"
-                secondary="A Google account hasn’t been yet added to your account"
-              />
-              <Button color="secondary" size="large" variant="contained">
-                Connect
-              </Button>
-            </ListItem>
-          </List>
-        </Card>
-      </Grid>
-      <Grid item xs={12}>
-        <Card>
-          <List>
-            <ListItem sx={{ p: 3 }}>
-              <ListItemAvatar sx={{ pr: 2 }}>
-                <AvatarSuccess>
-                  <DoneTwoToneIcon />
-                </AvatarSuccess>
-              </ListItemAvatar>
-              <ListItemText
-                primaryTypographyProps={{ variant: 'h5', gutterBottom: true }}
-                secondaryTypographyProps={{
-                  variant: 'subtitle2',
-                  lineHeight: 1
-                }}
-                primary="Facebook"
-                secondary="Your Facebook account has been successfully connected"
-              />
-              <ButtonError size="large" variant="contained">
-                Revoke access
-              </ButtonError>
-            </ListItem>
-            <Divider component="li" />
-            <ListItem sx={{ p: 3 }}>
-              <ListItemAvatar sx={{ pr: 2 }}>
-                <AvatarSuccess>
-                  <DoneTwoToneIcon />
-                </AvatarSuccess>
-              </ListItemAvatar>
-              <ListItemText
-                primaryTypographyProps={{ variant: 'h5', gutterBottom: true }}
-                secondaryTypographyProps={{
-                  variant: 'subtitle2',
-                  lineHeight: 1
-                }}
-                primary="Twitter"
-                secondary="Your Twitter account was last syncronized 6 days ago"
-              />
-              <ButtonError size="large" variant="contained">
-                Revoke access
-              </ButtonError>
-            </ListItem>
-          </List>
-        </Card>
-      </Grid>
-      <Grid item xs={12}>
-        <Box pb={2}>
-          <Typography variant="h3">Security</Typography>
-          <Typography variant="subtitle2">
-            Change your security preferences below
-          </Typography>
-        </Box>
-        <Card>
-          <List>
-            <ListItem sx={{ p: 3 }}>
-              <ListItemText
-                primaryTypographyProps={{ variant: 'h5', gutterBottom: true }}
-                secondaryTypographyProps={{
-                  variant: 'subtitle2',
-                  lineHeight: 1
-                }}
-                primary="Change Password"
-                secondary="You can change your password here"
-              />
-              <Button size="large" variant="outlined">
-                Change password
-              </Button>
-            </ListItem>
-            <Divider component="li" />
-            <ListItem sx={{ p: 3 }}>
-              <ListItemText
-                primaryTypographyProps={{ variant: 'h5', gutterBottom: true }}
-                secondaryTypographyProps={{
-                  variant: 'subtitle2',
-                  lineHeight: 1
-                }}
-                primary="Two-Factor Authentication"
-                secondary="Enable PIN verification for all sign in attempts"
-              />
-              <Switch color="primary" />
-            </ListItem>
-          </List>
-        </Card>
-      </Grid>
-      <Grid item xs={12}>
+
         <Card>
           <CardHeader
             subheaderTypographyProps={{}}
             titleTypographyProps={{}}
-            title="Access Logs"
-            subheader="Recent sign in activity logs"
+            title="员工职位表"
+            subheader="职位如下所示"
           />
           <Divider />
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Browser</TableCell>
-                  <TableCell>IP Address</TableCell>
-                  <TableCell>Location</TableCell>
-                  <TableCell>Date/Time</TableCell>
-                  <TableCell align="right">Actions</TableCell>
+                  <TableCell>职位</TableCell>
+                  <TableCell>薪资</TableCell>
+                  <TableCell>人数</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {logs.map((log) => (
-                  <TableRow key={log.id} hover>
-                    <TableCell>{log.browser}</TableCell>
-                    <TableCell>{log.ipaddress}</TableCell>
-                    <TableCell>{log.location}</TableCell>
+                {levels.map((level:Level) => (
+                  <TableRow key={level.occupation} hover>
+                    <TableCell>{level.occupation}</TableCell>
+                    <TableCell>{level.count}</TableCell>
+                    <TableCell>{level.amount}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Card>
+
+      </Grid>
+
+
+
+      
+      
+      <Grid item xs={12}>
+        <Box pb={2}>
+          <Typography variant="h3">添加新员工</Typography>
+          <Typography variant="subtitle2">
+            添加员工
+          </Typography>
+        </Box>
+        <Card>
+          <List>
+            <ListItem sx={{ p: 3 }}>
+              <Box
+                component="form"
+                sx={{
+                  '& .MuiTextField-root': { m: 1, width: '25ch' }
+                }}
+                noValidate
+                autoComplete="off"
+              >
+                <div>
+                  <TextField
+                    required
+                    id="outlined-required"
+                    label="Required"
+                    defaultValue="Hello World"
+                  />
+                  <TextField
+                    disabled
+                    id="outlined-disabled"
+                    label="Disabled"
+                    defaultValue="Hello World"
+                  />
+                  <TextField
+                    id="outlined-password-input"
+                    label="Password"
+                    type="password"
+                    autoComplete="current-password"
+                  />
+                  <TextField
+                    id="outlined-read-only-input"
+                    label="Read Only"
+                    defaultValue="Hello World"
+                    InputProps={{
+                      readOnly: true
+                    }}
+                  />
+                  <TextField
+                    id="outlined-number"
+                    label="Number"
+                    type="number"
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
+                  <TextField
+                    id="outlined-search"
+                    label="Search field"
+                    type="search"
+                  />
+                  <TextField
+                    id="outlined-helperText"
+                    label="Helper text"
+                    defaultValue="Default Value"
+                    helperText="Some important text"
+                  />
+                </div>
+                <div>
+                  <TextField
+                    required
+                    id="filled-required"
+                    label="Required"
+                    defaultValue="Hello World"
+                    variant="filled"
+                  />
+                  <TextField
+                    disabled
+                    id="filled-disabled"
+                    label="Disabled"
+                    defaultValue="Hello World"
+                    variant="filled"
+                  />
+                  <TextField
+                    id="filled-password-input"
+                    label="Password"
+                    type="password"
+                    autoComplete="current-password"
+                    variant="filled"
+                  />
+                  <TextField
+                    id="filled-read-only-input"
+                    label="Read Only"
+                    defaultValue="Hello World"
+                    InputProps={{
+                      readOnly: true
+                    }}
+                    variant="filled"
+                  />
+                  <TextField
+                    id="filled-number"
+                    label="Number"
+                    type="number"
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                    variant="filled"
+                  />
+                  <TextField
+                    id="filled-search"
+                    label="Search field"
+                    type="search"
+                    variant="filled"
+                  />
+                  <TextField
+                    id="filled-helperText"
+                    label="Helper text"
+                    defaultValue="Default Value"
+                    helperText="Some important text"
+                    variant="filled"
+                  />
+                </div>
+                <div>
+                  <TextField
+                    required
+                    id="standard-required"
+                    label="Required"
+                    defaultValue="Hello World"
+                    variant="standard"
+                  />
+                  <TextField
+                    disabled
+                    id="standard-disabled"
+                    label="Disabled"
+                    defaultValue="Hello World"
+                    variant="standard"
+                  />
+                  <TextField
+                    id="standard-password-input"
+                    label="Password"
+                    type="password"
+                    autoComplete="current-password"
+                    variant="standard"
+                  />
+                  <TextField
+                    id="standard-read-only-input"
+                    label="Read Only"
+                    defaultValue="Hello World"
+                    InputProps={{
+                      readOnly: true
+                    }}
+                    variant="standard"
+                  />
+                  <TextField
+                    id="standard-number"
+                    label="Number"
+                    type="number"
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                    variant="standard"
+                  />
+                  <TextField
+                    id="standard-search"
+                    label="Search field"
+                    type="search"
+                    variant="standard"
+                  />
+                  <TextField
+                    id="standard-helperText"
+                    label="Helper text"
+                    defaultValue="Default Value"
+                    helperText="Some important text"
+                    variant="standard"
+                  />
+                </div>
+              </Box>
+            </ListItem>
+            <Divider component="li" />
+            <ListItem sx={{ p: 3 }}>
+              
+            <Box
+                  component="form"
+                  sx={{
+                    '& .MuiTextField-root': { m: 1, width: '25ch' }
+                  }}
+                  noValidate
+                  autoComplete="off"
+                >
+                  <div>
+                    <TextField
+                      id="outlined-select-currency"
+                      select
+                      label="Select"
+                      value={currency}
+                      onChange={handleChange}
+                      helperText="Please select your currency"
+                    >
+                      {currencies.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    <TextField
+                      id="outlined-select-currency-native"
+                      select
+                      label="Native select"
+                      value={currency}
+                      onChange={handleChange}
+                      SelectProps={{
+                        native: true
+                      }}
+                      helperText="Please select your currency"
+                    >
+                      {currencies.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </div>
+                  <div>
+                    <TextField
+                      id="filled-select-currency"
+                      select
+                      label="Select"
+                      value={currency}
+                      onChange={handleChange}
+                      helperText="Please select your currency"
+                      variant="filled"
+                    >
+                      {currencies.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    <TextField
+                      id="filled-select-currency-native"
+                      select
+                      label="Native select"
+                      value={currency}
+                      onChange={handleChange}
+                      SelectProps={{
+                        native: true
+                      }}
+                      helperText="Please select your currency"
+                      variant="filled"
+                    >
+                      {currencies.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </div>
+                  <div>
+                    <TextField
+                      id="standard-select-currency"
+                      select
+                      label="Select"
+                      value={currency}
+                      onChange={handleChange}
+                      helperText="Please select your currency"
+                      variant="standard"
+                    >
+                      {currencies.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    <TextField
+                      id="standard-select-currency-native"
+                      select
+                      label="Native select"
+                      value={currency}
+                      onChange={handleChange}
+                      SelectProps={{
+                        native: true
+                      }}
+                      helperText="Please select your currency"
+                      variant="standard"
+                    >
+                      {currencies.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </TextField>
+                  </div>
+                </Box>
+            </ListItem>
+          </List>
+        </Card>
+      </Grid>
+      <Grid item xs={12}>
+      <Box pb={2}>
+          <Typography variant="h3">全体员工</Typography>
+          <Typography variant="subtitle2">
+            管理员工信息
+          </Typography>
+        </Box>
+
+        <Card>
+          <CardHeader
+            subheaderTypographyProps={{}}
+            titleTypographyProps={{}}
+            title="员工信息"
+            subheader="点击查看员工详细信息"
+          />
+          <Divider />
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>员工号</TableCell>
+                  <TableCell>员工头像</TableCell>
+                  <TableCell>员工名</TableCell>
+                  <TableCell>员工性别</TableCell>
+                  <TableCell>员工职位</TableCell>
+                  <TableCell>出勤率</TableCell>
+                  <TableCell>获奖次数</TableCell>
+                  <TableCell align="right">删除操作</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {employees.map((employee) => (
+                  <TableRow key={employee.id} hover>
+                    <TableCell>{employee.id}</TableCell>
                     <TableCell>
-                      {format(log.date, 'dd MMMM, yyyy - h:mm:ss a')}
+                      <Avatar src={employee.avatar} />
                     </TableCell>
+                    <TableCell>{employee.name}</TableCell>
+                    <TableCell>{employee.gender}</TableCell>
+                    <TableCell>{employee.occupation}</TableCell>
+                    <TableCell>{employee.attendance_rate}</TableCell>
+                    <TableCell>{employee.award_times}</TableCell>
                     <TableCell align="right">
                       <Tooltip placement="top" title="Delete" arrow>
                         <IconButton

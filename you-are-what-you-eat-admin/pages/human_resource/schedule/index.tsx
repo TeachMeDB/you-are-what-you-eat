@@ -13,7 +13,6 @@ import {
   styled,
   Divider,
   Drawer,
-  IconButton,
   useTheme
 } from '@mui/material';
 
@@ -106,6 +105,7 @@ function ManagementUserProfile() {
           spacing={3}>
 
           <PositionSchedule/>
+          <Divider/>
           <AvailableEmployee/>
 
         </Grid>

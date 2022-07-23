@@ -1,26 +1,21 @@
 import Head from 'next/head';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import PageHeader from '@/content/Management/Transactions/PageHeader';
-import PageTitleWrapper from '@/components/PageTitleWrapper';
-
-import ProfileCover from '@/content/Management/Users/details/ProfileCover';
-import RecentActivity from '@/content/Management/Users/details/RecentActivity';
-import Feed from '@/content/Management/Users/details/Feed';
-import PopularTags from '@/content/Management/Users/details/PopularTags';
-import MyCards from '@/content/Management/Users/details/MyCards';
-import Addresses from '@/content/Management/Users/details/Addresses';
-
 
 import { Container, Tabs, Tab, Grid } from '@mui/material';
 import Footer from '@/components/Footer';
 import { styled } from '@mui/material/styles';
 
+import { useState, ChangeEvent, ReactChild, ReactFragment, ReactPortal } from 'react';
+
+import ProfileCover from '@/content/HumanResource/Organization/Profile/ProfileCover';
+import QuickLink from '@/content/HumanResource/Organization/Profile/QuickLink';
+import Stuff from '@/content/HumanResource/Organization/Profile/stuff';
+import Summary from '@/content/HumanResource/Organization/Profile/Summary';
+
 import SelfManagementTab from '@/content/HumanResource/Organization/SelfManagementTab';
 import SalaryManagementTab from '@/content/HumanResource/Organization/SalaryManagementTab';
 import PrizeManagementTab from '@/content/HumanResource/Organization/PrizeManagementTab';
 import EmployeeManagementTab from '@/content/HumanResource/Organization/EmployeeManagementTab';
-
-import { useState, ChangeEvent } from 'react';
 
 const TabsWrapper = styled(Tabs)(
   () => `
@@ -35,26 +30,14 @@ function Organization() {
   const [currentTab, setCurrentTab] = useState<string>('SelfManagementTab');
 
   const tabs = [
-    { value: 'SelfManagementTab', label: 'SelfManagement' },
-    { value: 'EmployeeManagementTab', label: 'EmployeeManagement' },
-    { value: 'SalaryManagementTab', label: 'SalaryManagement' },
-    { value: 'PrizeManagementTab', label: 'PrizeManagement' }
+    { value: 'SelfManagementTab', label: '个人档案管理' },
+    { value: 'EmployeeManagementTab', label: '员工信息管理' },
+    { value: 'SalaryManagementTab', label: '员工薪资管理' },
+    { value: 'PrizeManagementTab', label: '员工奖金管理' }
   ];
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
-  };
-
-  const user = {
-    savedCards: 7,
-    name: 'Catherine Pike',
-    coverImg: '/static/images/placeholders/covers/5.jpg',
-    avatar: '/static/images/avatars/4.jpg',
-    description:
-      "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage",
-    jobtitle: 'Web Developer',
-    location: 'Barcelona, Spain',
-    followers: '465'
   };
 
   return (
@@ -62,9 +45,6 @@ function Organization() {
       <Head>
         <title> 组织管理</title>
       </Head>
-      <PageTitleWrapper>
-        <PageHeader />
-      </PageTitleWrapper>
       <Container sx={{ mt: 3 }} maxWidth="lg">
         <Grid
           container
@@ -74,26 +54,21 @@ function Organization() {
           spacing={3}
         >
           <Grid item xs={12} md={8}>
-            <ProfileCover user={user} />
+            <ProfileCover/>
           </Grid>
           <Grid item xs={12} md={4}>
-            <RecentActivity />
+            <Summary/>
           </Grid>
           <Grid item xs={12} md={8}>
-            <Feed />
+            <Stuff/>
           </Grid>
           <Grid item xs={12} md={4}>
-            <PopularTags />
-          </Grid>
-          <Grid item xs={12} md={7}>
-            <MyCards />
-          </Grid>
-          <Grid item xs={12} md={5}>
-            <Addresses />
+            <QuickLink/>
           </Grid>
         </Grid>
 
       </Container>
+
       <Container maxWidth="lg">
         <Grid
           container
@@ -130,7 +105,7 @@ function Organization() {
   );
 }
 
-Organization.getLayout = (page) => (
+Organization.getLayout = (page: boolean | ReactChild | ReactFragment | ReactPortal) => (
   <SidebarLayout>{page}</SidebarLayout>
 );
 
