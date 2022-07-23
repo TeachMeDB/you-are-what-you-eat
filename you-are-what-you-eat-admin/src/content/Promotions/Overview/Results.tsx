@@ -2,8 +2,6 @@ import { useState, ReactElement, Ref, forwardRef } from 'react';
 import type { FC, ChangeEvent } from 'react';
 import PropTypes from 'prop-types';
 
-import numeral from 'numeral';
-
 import {
   Avatar,
   Box,
@@ -29,7 +27,6 @@ import {
   FormControl,
   Select,
   InputLabel,
-  Zoom,
   InputAdornment,
   styled
 } from '@mui/material';
@@ -37,7 +34,6 @@ import Link from 'src/components/Link';
 
 import { TransitionProps } from '@mui/material/transitions';
 import CloseIcon from '@mui/icons-material/Close';
-// import type { Invoice, InvoiceStatus } from 'src/models/invoice';
 import type { Promotion, PromotionStatus } from 'src/models/promotion'
 import { useTranslation } from 'react-i18next';
 import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone';
@@ -45,7 +41,7 @@ import Label from 'src/components/Label';
 import BulkActions from './BulkActions';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import { useSnackbar } from 'notistack';
+// import { useSnackbar } from 'notistack';
 import { format, formatDistance } from 'date-fns';
 
 const DialogWrapper = styled(Dialog)(
@@ -129,7 +125,7 @@ const applyFilters = (
     let matches = true;
 
     if (query) {
-      const properties = ['clientName'];
+      const properties = ['name'];
       let containsQuery = false;
 
       properties.forEach((property) => {
@@ -185,20 +181,16 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
       name: 'Show all'
     },
     {
-      id: 'pending',
-      name: t('Pending Payment')
+      id: 'running',
+      name: t('进行中')
     },
     {
       id: 'completed',
-      name: t('Completed')
+      name: t('已结束')
     },
     {
-      id: 'draft',
-      name: t('Draft')
-    },
-    {
-      id: 'progress',
-      name: t('In Progress')
+      id: 'ready',
+      name: t('未开始')
     }
   ];
 
@@ -250,7 +242,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
   };
 
   const filteredInvoices = applyFilters(promotions, query, filters);
-  const paginatedInvoices = applyPagination(filteredInvoices, page, limit);
+  const paginatedPromotions = applyPagination(filteredInvoices, page, limit);
   const selectedBulkActions = selectedItems.length > 0;
   const selectedSomeInvoices =
     selectedItems.length > 0 && selectedItems.length < promotions.length;
@@ -303,7 +295,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                 m: 0
               }}
               onChange={handleQueryChange}
-              placeholder={t('Search invoices by client name ...')}
+              placeholder={t('输入活动名查找活动')}
               value={query}
               fullWidth
               variant="outlined"
@@ -349,9 +341,9 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
             >
               <Box>
                 <Typography component="span" variant="subtitle1">
-                  {t('Showing')}:
+                  {t('已显示')}:
                 </Typography>{' '}
-                <b>{paginatedInvoices.length}</b> <b>{t('invoices')}</b>
+                <b>{paginatedPromotions.length}</b> <b>{t('个促销活动')}</b>
               </Box>
               <TablePagination
                 component="div"
@@ -367,7 +359,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
         </Box>
         <Divider />
 
-        {paginatedInvoices.length === 0 ? (
+        {paginatedPromotions.length === 0 ? (
           <Typography
             sx={{
               py: 10
@@ -386,32 +378,31 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                 <TableHead>
                   <TableRow>
                     <TableCell>{t('#')}</TableCell>
-                    <TableCell>{t('Date')}</TableCell>
-                    <TableCell>{t('Client')}</TableCell>
-                    <TableCell>{t('Amount')}</TableCell>
-                    <TableCell>{t('Status')}</TableCell>
-                    <TableCell align="center">{t('Actions')}</TableCell>
+                    <TableCell>{t('日期')}</TableCell>
+                    <TableCell>{t('描述')}</TableCell>
+                    <TableCell>{t('状态')}</TableCell>
+                    <TableCell align="center">{t('操作')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {paginatedInvoices.map((promotion) => {
-                    const isInvoiceSelected = selectedItems.includes(
+                  {paginatedPromotions.map((promotion) => {
+                    const isPromotionSelected = selectedItems.includes(
                       promotion.id
                     );
                     return (
                       <TableRow
                         hover
                         key={promotion.id}
-                        selected={isInvoiceSelected}
+                        selected={isPromotionSelected}
                       >
                         <TableCell>
                           <Box display="flex" alignItems="center">
                             <Checkbox
-                              checked={isInvoiceSelected}
+                              checked={isPromotionSelected}
                               onChange={(event) =>
                                 handleSelectOneInvoice(event, promotion.id)
                               }
-                              value={isInvoiceSelected}
+                              value={isPromotionSelected}
                             />
                             <Box pl={1}>
                               <Typography noWrap variant="subtitle2">
@@ -425,7 +416,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                             {format(promotion.start, 'MMMM dd yyyy')}
                           </Typography>
                           <Typography noWrap variant="subtitle1">
-                            {t('Due')}{' '}
+                            {t('截止至')}{' '}
                             <b>
                               {formatDistance(
                                 promotion.end,
@@ -439,19 +430,10 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                         </TableCell>
                         <TableCell>
                           <Box display="flex" alignItems="center">
-                            {/* <Avatar
-                              sx={{
-                                mr: 1
-                              }}
-                              src={promotion.clientAvatar}
-                            /> */}
                             <Typography variant="h5">
-                              {promotion.name}
+                              {promotion.description}
                             </Typography>
                           </Box>
-                        </TableCell>
-                        <TableCell>
-                          {"haha"}
                         </TableCell>
                         <TableCell>
                           <Typography noWrap>
@@ -463,7 +445,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                             <Tooltip title={t('View')} arrow>
                               <IconButton
                                 component={Link}
-                                href="/promotions/overview/single/2"
+                                href={`/promotions/overview/single/${promotion.id}`}
                                 color="primary"
                               >
                                 <LaunchTwoToneIcon fontSize="small" />
@@ -527,7 +509,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
             }}
             variant="h3"
           >
-            {t('Do you really want to delete this invoice')}?
+            {t('你确定要删除该促销活动吗？')}?
           </Typography>
 
           <Typography

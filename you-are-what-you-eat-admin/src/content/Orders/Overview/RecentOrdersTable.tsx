@@ -1,6 +1,5 @@
 import { FC, ChangeEvent, useState } from 'react';
 import { format } from 'date-fns';
-import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import {
   Tooltip,
@@ -44,7 +43,7 @@ interface Filters {
 const getStatusLabel = (orderStatus: OrderStatus): JSX.Element => {
   const map = {
     failed: {
-      text: 'Failed',
+      text: '已取消',
       color: 'error'
     },
     completed: {
@@ -88,10 +87,10 @@ const applyPagination = (
 const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
   const { t }: { t: any } = useTranslation();
 
-  const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
+  const [selectedOrders, setselectedOrders] = useState<string[]>(
     []
   );
-  const selectedBulkActions = selectedCryptoOrders.length > 0;
+  const selectedBulkActions = selectedOrders.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [filters, setFilters] = useState<Filters>({
@@ -105,15 +104,15 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
     },
     {
       id: 'completed',
-      name: t('Completed')
+      name: t('已完成')
     },
     {
-      id: 'pending',
-      name: t('Pending')
+      id: 'running',
+      name: t('已支付')
     },
     {
       id: 'failed',
-      name: t('Failed')
+      name: t('已取消')
     }
   ];
 
@@ -133,7 +132,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
   const handleSelectAllCryptoOrders = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
-    setSelectedCryptoOrders(
+    setselectedOrders(
       event.target.checked
         ? orders.map((order) => order.id)
         : []
@@ -144,13 +143,13 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
     _event: ChangeEvent<HTMLInputElement>,
     cryptoOrderId: string
   ): void => {
-    if (!selectedCryptoOrders.includes(cryptoOrderId)) {
-      setSelectedCryptoOrders((prevSelected) => [
+    if (!selectedOrders.includes(cryptoOrderId)) {
+      setselectedOrders((prevSelected) => [
         ...prevSelected,
         cryptoOrderId
       ]);
     } else {
-      setSelectedCryptoOrders((prevSelected) =>
+      setselectedOrders((prevSelected) =>
         prevSelected.filter((id) => id !== cryptoOrderId)
       );
     }
@@ -171,10 +170,10 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
     limit
   );
   const selectedSomeCryptoOrders =
-    selectedCryptoOrders.length > 0 &&
-    selectedCryptoOrders.length < orders.length;
+    selectedOrders.length > 0 &&
+    selectedOrders.length < orders.length;
   const selectedAllCryptoOrders =
-    selectedCryptoOrders.length === orders.length;
+    selectedOrders.length === orders.length;
   const theme = useTheme();
 
   return (
@@ -205,7 +204,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
               </FormControl>
             </Box>
           }
-          title={t('Recent Orders')}
+          title={t('全部订单')}
         />
       )}
       <Divider />
@@ -221,17 +220,17 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                   onChange={handleSelectAllCryptoOrders}
                 />
               </TableCell>
-              <TableCell>{t('Order Details')}</TableCell>
-              <TableCell>{t('Order ID')}</TableCell>
-              <TableCell>{t('Source')}</TableCell>
-              <TableCell align="right">{t('Amount')}</TableCell>
-              <TableCell align="right">{t('Status')}</TableCell>
-              <TableCell align="right">{t('Actions')}</TableCell>
+              <TableCell>{t('订单号')}</TableCell>
+              <TableCell>{t('创建时间')}</TableCell>
+              <TableCell>{t('桌号')}</TableCell>
+              <TableCell align="right">{t('总价格')}</TableCell>
+              <TableCell align="right">{t('状态')}</TableCell>
+              <TableCell align="right">{t('操作')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {paginatedCryptoOrders.map((order) => {
-              const isCryptoOrderSelected = selectedCryptoOrders.includes(
+              const isCryptoOrderSelected = selectedOrders.includes(
                 order.id
               );
               return (
@@ -250,20 +249,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                       value={isCryptoOrderSelected}
                     />
                   </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {order.table_id}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {format(order.creation_time, 'MMMM dd yyyy')}
-                    </Typography>
-                  </TableCell>
+
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -275,6 +261,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                       {order.id}
                     </Typography>
                   </TableCell>
+
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -283,11 +270,27 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {111222}
+                      {format(order.creation_time, 'MMM dd yyyy')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" noWrap>
-                      {22211}
+                      {format(order.creation_time, 'hh:mm:ss')}
                     </Typography>
+                  </TableCell>
+                  
+                  {/*桌号栏*/}
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {order.table_id}
+                    </Typography>
+                    {/* <Typography variant="body2" color="text.secondary" noWrap>
+                      {22211}
+                    </Typography> */}
                   </TableCell>
                   <TableCell align="right">
                     <Typography
@@ -297,11 +300,10 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {333444}
-                      {444333}
+                      {order.price}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" noWrap>
-                      {12345}
+                      {`优惠 ￥${order.discount_price}`}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">

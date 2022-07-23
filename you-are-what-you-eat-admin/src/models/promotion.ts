@@ -1,6 +1,7 @@
 export interface PromotionDish {
     name:     string,
-    discount: number
+    discount: number,
+    price:    number,
 }
 
 export type PromotionStatus = "running" | "ready" | "completed"; 

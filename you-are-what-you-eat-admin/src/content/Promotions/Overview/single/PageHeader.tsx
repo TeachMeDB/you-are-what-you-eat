@@ -53,16 +53,13 @@ const PageHeader: FC<PageHeaderProps> = ({ promotion }) => {
                   {t('Home')}
                 </Link>
                 <Link color="inherit" href="#">
-                  {t('Management')}
+                  {t('促销活动管理')}
                 </Link>
                 <Link color="inherit" href="#">
-                  {t('Commerce')}
-                </Link>
-                <Link color="inherit" href="#">
-                  {t('Invoices')}
+                  {t('促销活动详情')}
                 </Link>
                 <Typography color="text.primary">
-                  {t('Invoice')} #{promotion.name}
+                  {t('促销活动')} #{promotion.name}
                 </Typography>
               </Breadcrumbs>
             </Box>
