@@ -9,18 +9,15 @@ import { Grid } from '@mui/material';
 
 import EnergyPanel from '@/content/Energy/Overview/EnergyPanel';
 import EnergySurplus from '@/content/Energy/Overview/EnergySurplus';
-import Block4 from 'src/content/Energy/Overview/Block4';
 import OverallUsage from 'src/content/Energy/Overview/OverallUsage';
 import TypesOverview from '@/content/Energy/Overview/EnergyTypesOverview';
-import EnergyPieChart from '@/content/Energy/Overview/EnergyPieChart';
-import RecordDownload from '@/content/Energy/Overview/RecordDownloader';
 
 function DataDisplayChartsLarge() {
 
   return (
     <>
       <Head>
-        <title>Charts Large Blocks</title>
+        <title>能源管理</title>
       </Head>
       <PageTitleWrapper>
         <PageHeader />
@@ -44,17 +41,8 @@ function DataDisplayChartsLarge() {
         <Grid item md={6} xs={12}>
           <TypesOverview />
         </Grid>
-        <Grid item md={6} xs={12}>
+        <Grid item xs={12}>
           <EnergySurplus />
-        </Grid>
-        <Grid item md={6} xs={12}>
-          <Block4 />
-        </Grid>
-        <Grid item md={6} xs={12}>
-          <EnergyPieChart />
-        </Grid>
-        <Grid item md={6} xs={12}>
-          <RecordDownload />
         </Grid>
       </Grid>
       <Footer />

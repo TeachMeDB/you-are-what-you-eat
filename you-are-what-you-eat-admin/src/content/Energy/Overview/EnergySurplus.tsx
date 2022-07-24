@@ -34,7 +34,7 @@ const LinearProgressError = styled(LinearProgress)(
 `
 );
 
-function Block3() {
+function EnergySurplus() {
   const { t }: { t: any } = useTranslation();
   const theme = useTheme();
 
@@ -223,4 +223,4 @@ function Block3() {
   );
 }
 
-export default Block3;
+export default EnergySurplus;
