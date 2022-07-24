@@ -91,7 +91,7 @@ const Transition = forwardRef(function Transition(
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-const getInvoiceStatusLabel = (promotionStatus: PromotionStatus): JSX.Element => {
+const getPromotionStatusLabel = (promotionStatus: PromotionStatus): JSX.Element => {
   const map = {
     ready: {
       text: '未开始',
@@ -164,7 +164,7 @@ const applyPagination = (
 };
 
 const Results: FC<ResultsProps> = ({ promotions }) => {
-  const [selectedItems, setSelectedInvoices] = useState<string[]>([]);
+  const [selectedItems, setSelectedPromotions] = useState<string[]>([]);
   const { t }: { t: any } = useTranslation();
   // const { enqueueSnackbar } = useSnackbar();
 
@@ -212,22 +212,22 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
     }));
   };
 
-  const handleSelectAllInvoices = (
+  const handleSelectAllPromotions = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
-    setSelectedInvoices(
+    setSelectedPromotions(
       event.target.checked ? promotions.map((promotion) => promotion.id) : []
     );
   };
 
-  const handleSelectOneInvoice = (
+  const handleSelectOnePromotion = (
     _event: ChangeEvent<HTMLInputElement>,
     promotionId: string
   ): void => {
     if (!selectedItems.includes(promotionId)) {
-      setSelectedInvoices((prevSelected) => [...prevSelected, promotionId]);
+      setSelectedPromotions((prevSelected) => [...prevSelected, promotionId]);
     } else {
-      setSelectedInvoices((prevSelected) =>
+      setSelectedPromotions((prevSelected) =>
         prevSelected.filter((id) => id !== promotionId)
       );
     }
@@ -241,12 +241,12 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
     setLimit(parseInt(event.target.value));
   };
 
-  const filteredInvoices = applyFilters(promotions, query, filters);
-  const paginatedPromotions = applyPagination(filteredInvoices, page, limit);
+  const filteredPromotions = applyFilters(promotions, query, filters);
+  const paginatedPromotions = applyPagination(filteredPromotions, page, limit);
   const selectedBulkActions = selectedItems.length > 0;
-  const selectedSomeInvoices =
+  const selectedSomePromotions =
     selectedItems.length > 0 && selectedItems.length < promotions.length;
-  const selectedAllInvoices = selectedItems.length === promotions.length;
+  const selectedAllPromotions = selectedItems.length === promotions.length;
 
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
 
@@ -322,9 +322,9 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
       <Card>
         <Box pl={2} display="flex" alignItems="center">
           <Checkbox
-            checked={selectedAllInvoices}
-            indeterminate={selectedSomeInvoices}
-            onChange={handleSelectAllInvoices}
+            checked={selectedAllPromotions}
+            indeterminate={selectedSomePromotions}
+            onChange={handleSelectAllPromotions}
           />
           {selectedBulkActions && (
             <Box flex={1} p={2}>
@@ -347,7 +347,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
               </Box>
               <TablePagination
                 component="div"
-                count={filteredInvoices.length}
+                count={filteredPromotions.length}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleLimitChange}
                 page={page}
@@ -400,7 +400,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                             <Checkbox
                               checked={isPromotionSelected}
                               onChange={(event) =>
-                                handleSelectOneInvoice(event, promotion.id)
+                                handleSelectOnePromotion(event, promotion.id)
                               }
                               value={isPromotionSelected}
                             />
@@ -437,7 +437,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                         </TableCell>
                         <TableCell>
                           <Typography noWrap>
-                            {getInvoiceStatusLabel(promotion.status)}
+                            {getPromotionStatusLabel(promotion.status)}
                           </Typography>
                         </TableCell>
                         <TableCell align="center">
@@ -470,7 +470,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
             <Box p={2}>
               <TablePagination
                 component="div"
-                count={filteredInvoices.length}
+                count={filteredPromotions.length}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleLimitChange}
                 page={page}
