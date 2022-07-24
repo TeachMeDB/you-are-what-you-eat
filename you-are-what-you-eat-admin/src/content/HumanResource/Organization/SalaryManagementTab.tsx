@@ -34,6 +34,12 @@ import {
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BadgeIcon from '@mui/icons-material/Badge';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
+
+import AddBoxIcon from '@mui/icons-material/AddBox';
+
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+
+
 export interface Level {
   amount: number;
   /**
@@ -86,91 +92,15 @@ export interface Employee {
 
 
 
-const Input = styled('input')({
-  display: 'none'
-});
 
-const AvatarWrapper = styled(Card)(
-  ({ theme }) => `
+export interface Payroll {
+  amount:     number;
+  id:         string;
+  name:       string;
+  occupation: string;
+  time:       string;
+}
 
-    position: relative;
-    overflow: visible;
-    display: inline-block;
-    margin-top: ${theme.spacing(9)};
-    margin-left: ${theme.spacing(2)};
-
-    .MuiAvatar-root {
-      width: ${theme.spacing(16)};
-      height: ${theme.spacing(16)};
-    }
-`
-);
-
-const ButtonUploadWrapper = styled(Box)(
-  ({ theme }) => `
-    position: absolute;
-    width: ${theme.spacing(4)};
-    height: ${theme.spacing(4)};
-    bottom: -${theme.spacing(1)};
-    right: -${theme.spacing(1)};
-
-    .MuiIconButton-root {
-      border-radius: 100%;
-      background: ${theme.colors.primary.main};
-      color: ${theme.palette.primary.contrastText};
-      box-shadow: ${theme.colors.shadows.primary};
-      width: ${theme.spacing(4)};
-      height: ${theme.spacing(4)};
-      padding: 0;
-  
-      &:hover {
-        background: ${theme.colors.primary.dark};
-      }
-    }
-`
-);
-
-const CardCover = styled(Card)(
-  ({ theme }) => `
-    // position: relative;
-
-    .MuiCardMedia-root {
-      width: ${theme.spacing(40)};
-      height: ${theme.spacing(20)};
-
-    }
-`
-);
-
-const CardCoverAction = styled(Box)(
-  ({ theme }) => `
-    // position: absolute;
-    // right: ${theme.spacing(2)};
-    // bottom: ${theme.spacing(2)};
-`
-);
-
-
-
-
-// const currencies = [
-//   {
-//     value: 'USD',
-//     label: '$'
-//   },
-//   {
-//     value: 'EUR',
-//     label: '€'
-//   },
-//   {
-//     value: 'BTC',
-//     label: '฿'
-//   },
-//   {
-//     value: 'JPY',
-//     label: '¥'
-//   }
-// ];
 
 
 function SalaryManagementTab() {
@@ -269,11 +199,43 @@ function SalaryManagementTab() {
     }
   ];
 
+  const payrolls:Payroll[]=[
+    {
+      "id": "64",
+      "name": "少代划离深军",
+      "occupation": "dolor consequat ex",
+      "time": "2012-06-12 03:02:43",
+      "amount": 45
+    },
+    {
+      "id": "35",
+      "name": "那起问群外",
+      "occupation": "dolore sint do cillum",
+      "time": "1982-10-29 11:17:29",
+      "amount": 2
+    },
+    {
+      "id": "36",
+      "name": "战儿层议",
+      "occupation": "sint in cillum ex sit",
+      "time": "1999-10-18 21:41:13",
+      "amount": 25
+    },
+    {
+      "id": "76",
+      "name": "层利难长",
+      "occupation": "nulla Duis",
+      "time": "2010-04-28 01:37:36",
+      "amount": 78
+    }
+  ];
+
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Box pb={2}>
-          <Typography variant="h3">级别管理</Typography>
+          <Typography variant="h3">职位管理</Typography>
           <Typography variant="subtitle2">
             餐厅员工职级如下所示
           </Typography>
@@ -314,9 +276,9 @@ function SalaryManagementTab() {
 
       <Grid item xs={12}>
         <Box pb={2}>
-          <Typography variant="h3">添加新员工</Typography>
+          <Typography variant="h3">添加新员工职位</Typography>
           <Typography variant="subtitle2">
-            添加员工
+            添加职位级别
           </Typography>
         </Box>
         <Card>
@@ -326,354 +288,88 @@ function SalaryManagementTab() {
               <Box
                 component="form"
                 sx={{
-                  '& .MuiTextField-root': { m: 1, width: '25ch' }
+                  '& .MuiTextField-root': { m: 1, width: '30ch' }
                 }}
                 noValidate
                 autoComplete="off"
               >
                 <div>
                   <TextField
-                    key="name"
                     required
-                    id="outlined-required"
-                    label="姓名"
-                  />
-                  <TextField
-                    key="gender"
-                    required
-                    id="outlined-disabled"
-                    label="性别"
-                  />
-                  <TextField
-                    key="occupation"
-                    required
-                    id="outlined-disabled"
-                    label="职位"
+                    id="occupation"
+                    label="职位名"
                   />
                   <TextField
                     required
-                    id="outlined-password-input"
-                    label="密码"
-                    type="password"
-                    autoComplete="current-password"
-                  />
-                  {/* <TextField
-                    id="outlined-read-only-input"
-                    label="Read Only"
-                    defaultValue="Hello World"
-                    InputProps={{
-                      readOnly: true
-                    }}
-                  />
-                  <TextField
-                    id="outlined-number"
-                    label="Number"
-                    type="number"
-                    InputLabelProps={{
-                      shrink: true
-                    }}
-                  />
-                  <TextField
-                    id="outlined-search"
-                    label="Search field"
-                    type="search"
-                  />
-                  <TextField
-                    id="outlined-helperText"
-                    label="Helper text"
-                    defaultValue="Default Value"
-                    helperText="Some important text"
-                  /> */}
-                </div>
-                {/* <div>
-                  <TextField
-                    required
-                    id="filled-required"
-                    label="Required"
-                    defaultValue="Hello World"
-                    variant="filled"
-                  />
-                  <TextField
-                    disabled
-                    id="filled-disabled"
-                    label="Disabled"
-                    defaultValue="Hello World"
-                    variant="filled"
-                  />
-                  <TextField
-                    id="filled-password-input"
-                    label="Password"
-                    type="password"
-                    autoComplete="current-password"
-                    variant="filled"
-                  />
-                  <TextField
-                    id="filled-read-only-input"
-                    label="Read Only"
-                    defaultValue="Hello World"
-                    InputProps={{
-                      readOnly: true
-                    }}
-                    variant="filled"
-                  />
-                  <TextField
-                    id="filled-number"
-                    label="Number"
-                    type="number"
-                    InputLabelProps={{
-                      shrink: true
-                    }}
-                    variant="filled"
-                  />
-                  <TextField
-                    id="filled-search"
-                    label="Search field"
-                    type="search"
-                    variant="filled"
-                  />
-                  <TextField
-                    id="filled-helperText"
-                    label="Helper text"
-                    defaultValue="Default Value"
-                    helperText="Some important text"
-                    variant="filled"
+                    id="amount"
+                    label="薪资"
                   />
                 </div>
-                <div>
-                  <TextField
-                    required
-                    id="standard-required"
-                    label="Required"
-                    defaultValue="Hello World"
-                    variant="standard"
-                  />
-                  <TextField
-                    disabled
-                    id="standard-disabled"
-                    label="Disabled"
-                    defaultValue="Hello World"
-                    variant="standard"
-                  />
-                  <TextField
-                    id="standard-password-input"
-                    label="Password"
-                    type="password"
-                    autoComplete="current-password"
-                    variant="standard"
-                  />
-                  <TextField
-                    id="standard-read-only-input"
-                    label="Read Only"
-                    defaultValue="Hello World"
-                    InputProps={{
-                      readOnly: true
-                    }}
-                    variant="standard"
-                  />
-                  <TextField
-                    id="standard-number"
-                    label="Number"
-                    type="number"
-                    InputLabelProps={{
-                      shrink: true
-                    }}
-                    variant="standard"
-                  />
-                  <TextField
-                    id="standard-search"
-                    label="Search field"
-                    type="search"
-                    variant="standard"
-                  />
-                  <TextField
-                    id="standard-helperText"
-                    label="Helper text"
-                    defaultValue="Default Value"
-                    helperText="Some important text"
-                    variant="standard"
-                  />
-                </div> */}
+
+                
+                
               </Box>
-            </ListItem>
-            <Divider component="li" />
-            <ListItem sx={{ p: 3 }}>
-
-              <Box
-                component="form"
-                // sx={{
-                //   '& .MuiTextField-root': { m: 1, width: '25ch' }
-                // }}
-                noValidate
-                autoComplete="off"
-              >
-                <Grid container direction="row">
-
-
-                  <Grid item xs={6}>
-                    <Typography variant='h3'> 封面：</Typography>
-                    <CardCover>
-
-                      <CardMedia image="" />
-                      <CardCoverAction>
-                        <Input accept="image/*" id="change-cover" multiple type="file" />
-                        <label htmlFor="change-cover">
-                          <Button
-                            startIcon={<UploadTwoToneIcon />}
-                            variant="contained"
-                            component="span"
-                          >
-                            更改封面
-                          </Button>
-                        </label>
-                      </CardCoverAction>
-                    </CardCover>
-
-                  </Grid>
-
-                  <Grid item xs={1}>
-
-                  </Grid>
-
-                  <Grid item xs={5}>
-
-                    <Typography variant='h3'> 头像：</Typography>
-                    <AvatarWrapper>
-
-                      <Avatar variant="rounded" alt="" src="" />
-                      <ButtonUploadWrapper>
-                        <Input
-                          accept="image/*"
-                          id="icon-button-file"
-                          name="icon-button-file"
-                          type="file"
-                        />
-                        <label htmlFor="icon-button-file">
-                          <IconButton component="span" color="primary">
-                            <UploadTwoToneIcon />
-                          </IconButton>
-                        </label>
-                      </ButtonUploadWrapper>
-                    </AvatarWrapper>
-
-                  </Grid>
-                </Grid>
-
-
-
-
-                {/* <div>
-                    <TextField
-                      id="outlined-select-currency"
-                      select
-                      label="Select"
-                      value={currency}
-                      onChange={handleChange}
-                      helperText="Please select your currency"
-                    >
-                      {currencies.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                    <TextField
-                      id="outlined-select-currency-native"
-                      select
-                      label="Native select"
-                      value={currency}
-                      onChange={handleChange}
-                      SelectProps={{
-                        native: true
-                      }}
-                      helperText="Please select your currency"
-                    >
-                      {currencies.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </div>
-                  <div>
-                    <TextField
-                      id="filled-select-currency"
-                      select
-                      label="Select"
-                      value={currency}
-                      onChange={handleChange}
-                      helperText="Please select your currency"
-                      variant="filled"
-                    >
-                      {currencies.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                    <TextField
-                      id="filled-select-currency-native"
-                      select
-                      label="Native select"
-                      value={currency}
-                      onChange={handleChange}
-                      SelectProps={{
-                        native: true
-                      }}
-                      helperText="Please select your currency"
-                      variant="filled"
-                    >
-                      {currencies.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </div>
-                  <div>
-                    <TextField
-                      id="standard-select-currency"
-                      select
-                      label="Select"
-                      value={currency}
-                      onChange={handleChange}
-                      helperText="Please select your currency"
-                      variant="standard"
-                    >
-                      {currencies.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                    <TextField
-                      id="standard-select-currency-native"
-                      select
-                      label="Native select"
-                      value={currency}
-                      onChange={handleChange}
-                      SelectProps={{
-                        native: true
-                      }}
-                      helperText="Please select your currency"
-                      variant="standard"
-                    >
-                      {currencies.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </div> */}
-              </Box>
+              <Grid item xs={3} textAlign="end">
+                <Button variant="contained" size="large">
+                <AddBoxIcon/>确认添加
+                </Button>
+              </Grid>
             </ListItem>
           </List>
         </Card>
       </Grid>
+
       <Grid item xs={12}>
         <Box pb={2}>
-          <Typography variant="h3">全体员工</Typography>
+          <Typography variant="h3">添加薪资发放记录</Typography>
           <Typography variant="subtitle2">
-            管理员工信息
+            添加薪资发放记录
+          </Typography>
+        </Box>
+        <Card>
+          <List>
+
+            <ListItem sx={{ p: 3 }}>
+              <Box
+                component="form"
+                sx={{
+                  '& .MuiTextField-root': { m: 1, width: '30ch' }
+                }}
+                noValidate
+                autoComplete="off"
+              >
+                <div>
+                  <TextField
+                    required
+                    id="id"
+                    label="员工号"
+                  />
+                  <TextField
+                    key="gender"
+                    disabled
+                    id="outlined-disabled"
+                    defaultValue={new Date().toISOString()}
+                  />
+                
+                </div>
+              </Box>
+              <Grid item xs={3} textAlign="end">
+                <Button variant="contained" size="large">
+                <AddCircleIcon/> 确认添加
+                </Button>
+              </Grid>
+            </ListItem>
+          </List>
+        </Card>
+      </Grid>
+
+
+
+      <Grid item xs={12}>
+        <Box pb={2}>
+          <Typography variant="h3">薪资发放记录</Typography>
+          <Typography variant="subtitle2">
+            查薪资发放记录
           </Typography>
         </Box>
 
@@ -681,8 +377,8 @@ function SalaryManagementTab() {
           <CardHeader
             subheaderTypographyProps={{}}
             titleTypographyProps={{}}
-            title="员工信息"
-            subheader="点击查看员工详细信息"
+            title="奖金发放记录表"
+            subheader="点击查看获奖员工详细信息"
           />
           <Divider />
           <TableContainer>
@@ -690,43 +386,21 @@ function SalaryManagementTab() {
               <TableHead>
                 <TableRow>
                   <TableCell>员工号</TableCell>
-                  <TableCell>员工头像</TableCell>
                   <TableCell>员工名</TableCell>
-                  <TableCell>员工性别</TableCell>
                   <TableCell>员工职位</TableCell>
-                  <TableCell>出勤率</TableCell>
-                  <TableCell>获奖次数</TableCell>
-                  <TableCell align="right">删除操作</TableCell>
+                  <TableCell>发放时间</TableCell>
+                  <TableCell>发放金额</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {employees.map((employee) => (
-                  <TableRow key={employee.id} hover>
-                    <TableCell>{employee.id}</TableCell>
-                    <TableCell>
-                      <Avatar src={employee.avatar} />
-                    </TableCell>
-                    <TableCell>{employee.name}</TableCell>
-                    <TableCell>{employee.gender}</TableCell>
-                    <TableCell>{employee.occupation}</TableCell>
-                    <TableCell>{employee.attendance_rate}</TableCell>
-                    <TableCell>{employee.award_times}</TableCell>
-                    <TableCell align="right">
-                      <Tooltip placement="top" title="Delete" arrow>
-                        <IconButton
-                          sx={{
-                            '&:hover': {
-                              background: theme.colors.error.lighter
-                            },
-                            color: theme.palette.error.main
-                          }}
-                          color="inherit"
-                          size="small"
-                        >
-                          <DeleteTwoToneIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
+                {payrolls.map((payroll) => (
+                  <TableRow key={payroll.id} hover>
+                    <TableCell>{payroll.id}</TableCell>
+                    <TableCell>{payroll.name}</TableCell>
+                    <TableCell>{payroll.occupation}</TableCell>
+                    <TableCell>{payroll.time}</TableCell>
+                    <TableCell>{payroll.amount}</TableCell>
+                    
                   </TableRow>
                 ))}
               </TableBody>

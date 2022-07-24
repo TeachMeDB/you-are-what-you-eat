@@ -32,10 +32,14 @@ import {
 
 
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import BadgeIcon from '@mui/icons-material/Badge';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
+
+
+
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 export interface Level {
   amount: number;
   /**
@@ -43,6 +47,15 @@ export interface Level {
    */
   count: number;
   occupation: string;
+}
+
+
+export interface Prize {
+  amount: number;
+  id:     string;
+  level:  string;
+  name:   string;
+  time:   string;
 }
 
 
@@ -176,7 +189,6 @@ const CardCoverAction = styled(Box)(
 
 
 function PrizeManagementTab() {
-  const theme = useTheme();
 
   const [page, setPage] = useState(2);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -265,6 +277,38 @@ function PrizeManagementTab() {
     }
   ];
 
+
+  const prizes:Prize[]=[
+    {
+      "id": "43",
+      "level": "Ut ex Excepteur",
+      "time": "1994-11-06 04:47:43",
+      "amount": 69,
+      "name": "我用织直证太"
+    },
+    {
+      "id": "65",
+      "level": "Ut amet elit qui deserunt",
+      "time": "2015-03-27 04:06:29",
+      "amount": 64,
+      "name": "精成院写具"
+    },
+    {
+      "id": "93",
+      "level": "non Excepteur",
+      "time": "1996-05-29 21:27:55",
+      "amount": 26,
+      "name": "法关素天"
+    },
+    {
+      "id": "35",
+      "level": "ullamco aliquip fugiat",
+      "time": "2012-03-29 18:57:23",
+      "amount": 46,
+      "name": "把须社土"
+    }
+  ];
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -287,8 +331,8 @@ function PrizeManagementTab() {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>职位</TableCell>
-                  <TableCell>薪资</TableCell>
+                  <TableCell>等级</TableCell>
+                  <TableCell>金额</TableCell>
                   <TableCell>人数</TableCell>
                 </TableRow>
               </TableHead>
@@ -310,9 +354,54 @@ function PrizeManagementTab() {
 
       <Grid item xs={12}>
         <Box pb={2}>
-          <Typography variant="h3">添加新奖励级别</Typography>
+          <Typography variant="h3">添加新奖励等级</Typography>
           <Typography variant="subtitle2">
-            添加奖励级别
+            添加奖励等级
+          </Typography>
+        </Box>
+        <Card>
+          <List>
+
+            <ListItem sx={{ p: 3 }}>
+              <Box
+                component="form"
+                sx={{
+                  '& .MuiTextField-root': { m: 1, width: '30ch' }
+                }}
+                noValidate
+                autoComplete="off"
+              >
+                <div>
+                  <TextField
+                    required
+                    id="occupation"
+                    label="奖励名"
+                  />
+                  <TextField
+                    required
+                    id="amount"
+                    label="金额"
+                  />
+                </div>
+
+                
+                
+              </Box>
+              <Grid item xs={3} textAlign="end">
+                <Button variant="contained" size="large">
+                <AddBoxIcon/>确认添加
+                </Button>
+              </Grid>
+            </ListItem>
+          </List>
+        </Card>
+      </Grid>
+
+      <Grid item xs={12}>
+      <Box pb={2}>
+          <Typography variant="h3">添加新奖励发放记录</Typography>
+          <Typography variant="subtitle2">
+            添加奖励发放记录
           </Typography>
         </Box>
         <Card>
@@ -329,103 +418,39 @@ function PrizeManagementTab() {
               >
                 <div>
                   <TextField
-                    key="name"
                     required
-                    id="outlined-required"
-                    label="姓名"
+                    id="id"
+                    label="员工号"
+                  />
+
+                  <TextField
+                    required
+                    id="occupation"
+                    label="奖励名"
                   />
                   <TextField
-                    key="gender"
-                    required
+                    disabled
                     id="outlined-disabled"
-                    label="性别"
+                    defaultValue={new Date().toISOString()}
                   />
-                  <TextField
-                    key="occupation"
-                    required
-                    id="outlined-disabled"
-                    label="职位"
-                  />
-                  <TextField
-                    required
-                    id="outlined-password-input"
-                    label="密码"
-                    type="password"
-                    autoComplete="current-password"
-                  />
-                </div>
                 
+                </div>
               </Box>
-            </ListItem>
-            <Divider component="li" />
-            <ListItem sx={{ p: 3 }}>
-
-              <Box
-                component="form"
-                noValidate
-                autoComplete="off"
-              >
-                <Grid container direction="row">
-
-
-                  <Grid item xs={6}>
-                    <Typography variant='h3'> 封面：</Typography>
-                    <CardCover>
-
-                      <CardMedia image="" />
-                      <CardCoverAction>
-                        <Input accept="image/*" id="change-cover" multiple type="file" />
-                        <label htmlFor="change-cover">
-                          <Button
-                            startIcon={<UploadTwoToneIcon />}
-                            variant="contained"
-                            component="span"
-                          >
-                            更改封面
-                          </Button>
-                        </label>
-                      </CardCoverAction>
-                    </CardCover>
-
-                  </Grid>
-
-                  <Grid item xs={1}>
-
-                  </Grid>
-
-                  <Grid item xs={5}>
-
-                    <Typography variant='h3'> 头像：</Typography>
-                    <AvatarWrapper>
-
-                      <Avatar variant="rounded" alt="" src="" />
-                      <ButtonUploadWrapper>
-                        <Input
-                          accept="image/*"
-                          id="icon-button-file"
-                          name="icon-button-file"
-                          type="file"
-                        />
-                        <label htmlFor="icon-button-file">
-                          <IconButton component="span" color="primary">
-                            <UploadTwoToneIcon />
-                          </IconButton>
-                        </label>
-                      </ButtonUploadWrapper>
-                    </AvatarWrapper>
-
-                  </Grid>
-                </Grid>
-              </Box>
+              <Grid item xs={3} textAlign="end">
+                <Button variant="contained" size="large">
+                <AddCircleIcon/> 确认添加
+                </Button>
+              </Grid>
             </ListItem>
           </List>
         </Card>
       </Grid>
+
       <Grid item xs={12}>
         <Box pb={2}>
-          <Typography variant="h3">全体员工</Typography>
+          <Typography variant="h3">奖金发放记录</Typography>
           <Typography variant="subtitle2">
-            管理员工信息
+            查询奖金发放记录
           </Typography>
         </Box>
 
@@ -433,8 +458,8 @@ function PrizeManagementTab() {
           <CardHeader
             subheaderTypographyProps={{}}
             titleTypographyProps={{}}
-            title="员工信息"
-            subheader="点击查看员工详细信息"
+            title="奖金发放记录表"
+            subheader="点击查看获奖员工详细信息"
           />
           <Divider />
           <TableContainer>
@@ -442,43 +467,21 @@ function PrizeManagementTab() {
               <TableHead>
                 <TableRow>
                   <TableCell>员工号</TableCell>
-                  <TableCell>员工头像</TableCell>
                   <TableCell>员工名</TableCell>
-                  <TableCell>员工性别</TableCell>
-                  <TableCell>员工职位</TableCell>
-                  <TableCell>出勤率</TableCell>
-                  <TableCell>获奖次数</TableCell>
-                  <TableCell align="right">删除操作</TableCell>
+                  <TableCell>奖励等级</TableCell>
+                  <TableCell>发放时间</TableCell>
+                  <TableCell>发放金额</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {employees.map((employee) => (
-                  <TableRow key={employee.id} hover>
-                    <TableCell>{employee.id}</TableCell>
-                    <TableCell>
-                      <Avatar src={employee.avatar} />
-                    </TableCell>
-                    <TableCell>{employee.name}</TableCell>
-                    <TableCell>{employee.gender}</TableCell>
-                    <TableCell>{employee.occupation}</TableCell>
-                    <TableCell>{employee.attendance_rate}</TableCell>
-                    <TableCell>{employee.award_times}</TableCell>
-                    <TableCell align="right">
-                      <Tooltip placement="top" title="Delete" arrow>
-                        <IconButton
-                          sx={{
-                            '&:hover': {
-                              background: theme.colors.error.lighter
-                            },
-                            color: theme.palette.error.main
-                          }}
-                          color="inherit"
-                          size="small"
-                        >
-                          <DeleteTwoToneIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
+                {prizes.map((prize) => (
+                  <TableRow key={prize.id} hover>
+                    <TableCell>{prize.id}</TableCell>
+                    <TableCell>{prize.name}</TableCell>
+                    <TableCell>{prize.level}</TableCell>
+                    <TableCell>{prize.time}</TableCell>
+                    <TableCell>{prize.amount}</TableCell>
+                    
                   </TableRow>
                 ))}
               </TableBody>
@@ -499,5 +502,7 @@ function PrizeManagementTab() {
     </Grid>
   );
 }
+
+
 
 export default PrizeManagementTab;
