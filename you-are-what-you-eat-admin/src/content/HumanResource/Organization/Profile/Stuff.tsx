@@ -5,9 +5,12 @@ import {
     CardHeader,
     Divider,
     Avatar,
-    Grid
+    Grid,
+    TablePagination
 } from '@mui/material';
 
+
+import { useState, MouseEvent, ChangeEvent } from 'react';
 
 export interface StuffMember {
     /**
@@ -32,6 +35,27 @@ export interface StuffMember {
 
 
 function Stuff() {
+
+
+  const [page, setPage] = useState(2);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handleChangePage = (
+    _event: MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+
+
     const employees:StuffMember[] = [
         {
             "id": "43",
@@ -97,6 +121,16 @@ function Stuff() {
                     ))}
                 </Grid>
             </Box>
+            <Box p={2}>
+          <TablePagination
+            component="p"
+            count={100}
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Box>
         </Card>
     );
 }

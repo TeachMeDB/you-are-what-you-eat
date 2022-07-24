@@ -23,38 +23,157 @@ import {
   TableRow,
   TableContainer,
   useTheme,
-  styled
+  styled,
+  TextField,
+  CardContent,
+  MenuItem,
+  CardMedia
 } from '@mui/material';
 
-import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
+
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import { format, subHours, subWeeks, subDays } from 'date-fns';
 
-const ButtonError = styled(Button)(
+
+import BadgeIcon from '@mui/icons-material/Badge';
+import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
+export interface Level {
+  amount: number;
+  /**
+   * 当前职位人数
+   */
+  count: number;
+  occupation: string;
+}
+
+
+
+
+export interface StuffMember {
+  /**
+   * 本月出勤率
+   */
+  attendance_rate: number;
+  /**
+   * 头像url
+   */
+  avatar: string;
+  /**
+   * 获奖次数
+   */
+  award_times: number;
+  gender: string;
+  id: string;
+  name: string;
+  occupation: string;
+}
+
+
+export interface Employee {
+  /**
+   * base64的图片
+   */
+  avater: string;
+  /**
+   * base64的图片
+   */
+  cover: string;
+  gender: string;
+  name: string;
+  occupation: string;
+  /**
+   * 员工密码
+   */
+  password: string;
+}
+
+
+
+const Input = styled('input')({
+  display: 'none'
+});
+
+const AvatarWrapper = styled(Card)(
   ({ theme }) => `
-     background: ${theme.colors.error.main};
-     color: ${theme.palette.error.contrastText};
 
-     &:hover {
-        background: ${theme.colors.error.dark};
-     }
-    `
-);
+    position: relative;
+    overflow: visible;
+    display: inline-block;
+    margin-top: ${theme.spacing(9)};
+    margin-left: ${theme.spacing(2)};
 
-const AvatarSuccess = styled(Avatar)(
-  ({ theme }) => `
-    background: ${theme.colors.success.light};
-    width: ${theme.spacing(5)};
-    height: ${theme.spacing(5)};
+    .MuiAvatar-root {
+      width: ${theme.spacing(16)};
+      height: ${theme.spacing(16)};
+    }
 `
 );
 
-const AvatarWrapper = styled(Avatar)(
+const ButtonUploadWrapper = styled(Box)(
   ({ theme }) => `
-    width: ${theme.spacing(5)};
-    height: ${theme.spacing(5)};
+    position: absolute;
+    width: ${theme.spacing(4)};
+    height: ${theme.spacing(4)};
+    bottom: -${theme.spacing(1)};
+    right: -${theme.spacing(1)};
+
+    .MuiIconButton-root {
+      border-radius: 100%;
+      background: ${theme.colors.primary.main};
+      color: ${theme.palette.primary.contrastText};
+      box-shadow: ${theme.colors.shadows.primary};
+      width: ${theme.spacing(4)};
+      height: ${theme.spacing(4)};
+      padding: 0;
+  
+      &:hover {
+        background: ${theme.colors.primary.dark};
+      }
+    }
 `
 );
+
+const CardCover = styled(Card)(
+  ({ theme }) => `
+    // position: relative;
+
+    .MuiCardMedia-root {
+      width: ${theme.spacing(40)};
+      height: ${theme.spacing(20)};
+
+    }
+`
+);
+
+const CardCoverAction = styled(Box)(
+  ({ theme }) => `
+    // position: absolute;
+    // right: ${theme.spacing(2)};
+    // bottom: ${theme.spacing(2)};
+`
+);
+
+
+
+
+// const currencies = [
+//   {
+//     value: 'USD',
+//     label: '$'
+//   },
+//   {
+//     value: 'EUR',
+//     label: '€'
+//   },
+//   {
+//     value: 'BTC',
+//     label: '฿'
+//   },
+//   {
+//     value: 'JPY',
+//     label: '¥'
+//   }
+// ];
+
 
 function PrizeManagementTab() {
   const theme = useTheme();
@@ -69,6 +188,7 @@ function PrizeManagementTab() {
     setPage(newPage);
   };
 
+
   const handleChangeRowsPerPage = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -76,41 +196,72 @@ function PrizeManagementTab() {
     setPage(0);
   };
 
-  const logs = [
+
+  const levels: Level[] = [
     {
-      id: 1,
-      browser: ' Safari/537.36',
-      ipaddress: '3.70.73.142',
-      location: 'United States',
-      date: subDays(new Date(), 2).getTime()
+      "occupation": "consectetur quis labore ut",
+      "amount": 37,
+      "count": 19
     },
     {
-      id: 2,
-      browser: 'Chrome/36.0.1985.67',
-      ipaddress: '138.13.136.179',
-      location: 'China',
-      date: subDays(new Date(), 6).getTime()
+      "occupation": "officia esse nulla enim Ut",
+      "amount": 49,
+      "count": 55
     },
     {
-      id: 3,
-      browser: 'Googlebot/2.1',
-      ipaddress: '119.229.170.253',
-      location: 'China',
-      date: subHours(new Date(), 15).getTime()
+      "occupation": "adipisicing",
+      "amount": 8,
+      "count": 23
     },
     {
-      id: 4,
-      browser: 'AppleWebKit/535.1',
-      ipaddress: '206.8.99.49',
-      location: 'Philippines',
-      date: subDays(new Date(), 4).getTime()
+      "occupation": "ut consectetur irure laborum",
+      "amount": 17,
+      "count": 97
     },
     {
-      id: 5,
-      browser: 'Mozilla/5.0',
-      ipaddress: '235.40.59.85',
-      location: 'China',
-      date: subWeeks(new Date(), 3).getTime()
+      "occupation": "ea ex",
+      "amount": 94,
+      "count": 9
+    }
+  ];
+
+
+  const employees: StuffMember[] = [
+    {
+      "id": "43",
+      "name": "机每面以利",
+      "gender": "男",
+      "occupation": "ex amet culpa",
+      "attendance_rate": 66,
+      "award_times": 1267057860920,
+      "avatar": "http://dummyimage.com/100x100"
+    },
+    {
+      "id": "42",
+      "name": "引更龙接成真",
+      "gender": "男",
+      "occupation": "voluptate esse",
+      "attendance_rate": 90,
+      "award_times": 1107224790631,
+      "avatar": "http://dummyimage.com/100x100"
+    },
+    {
+      "id": "35",
+      "name": "于政有",
+      "gender": "女",
+      "occupation": "do ut",
+      "attendance_rate": 61,
+      "award_times": 1213420216522,
+      "avatar": "http://dummyimage.com/100x100"
+    },
+    {
+      "id": "29",
+      "name": "进对包",
+      "gender": "女",
+      "occupation": "velit",
+      "attendance_rate": 89,
+      "award_times": 1132758112786,
+      "avatar": "http://dummyimage.com/100x100"
     }
   ];
 
@@ -118,146 +269,200 @@ function PrizeManagementTab() {
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Box pb={2}>
-          <Typography variant="h3">Social Accounts</Typography>
+          <Typography variant="h3">奖励管理</Typography>
           <Typography variant="subtitle2">
-            Manage connected social accounts options
+            餐厅员工奖励级别如下所示
           </Typography>
         </Box>
-        <Card>
-          <List>
-            <ListItem sx={{ p: 3 }}>
-              <ListItemAvatar sx={{ pr: 2 }}>
-                <AvatarWrapper src="/static/images/logo/google.svg" />
-              </ListItemAvatar>
-              <ListItemText
-                primaryTypographyProps={{ variant: 'h5', gutterBottom: true }}
-                secondaryTypographyProps={{
-                  variant: 'subtitle2',
-                  lineHeight: 1
-                }}
-                primary="Google"
-                secondary="A Google account hasn’t been yet added to your account"
-              />
-              <Button color="secondary" size="large" variant="contained">
-                Connect
-              </Button>
-            </ListItem>
-          </List>
-        </Card>
-      </Grid>
-      <Grid item xs={12}>
-        <Card>
-          <List>
-            <ListItem sx={{ p: 3 }}>
-              <ListItemAvatar sx={{ pr: 2 }}>
-                <AvatarSuccess>
-                  <DoneTwoToneIcon />
-                </AvatarSuccess>
-              </ListItemAvatar>
-              <ListItemText
-                primaryTypographyProps={{ variant: 'h5', gutterBottom: true }}
-                secondaryTypographyProps={{
-                  variant: 'subtitle2',
-                  lineHeight: 1
-                }}
-                primary="Facebook"
-                secondary="Your Facebook account has been successfully connected"
-              />
-              <ButtonError size="large" variant="contained">
-                Revoke access
-              </ButtonError>
-            </ListItem>
-            <Divider component="li" />
-            <ListItem sx={{ p: 3 }}>
-              <ListItemAvatar sx={{ pr: 2 }}>
-                <AvatarSuccess>
-                  <DoneTwoToneIcon />
-                </AvatarSuccess>
-              </ListItemAvatar>
-              <ListItemText
-                primaryTypographyProps={{ variant: 'h5', gutterBottom: true }}
-                secondaryTypographyProps={{
-                  variant: 'subtitle2',
-                  lineHeight: 1
-                }}
-                primary="Twitter"
-                secondary="Your Twitter account was last syncronized 6 days ago"
-              />
-              <ButtonError size="large" variant="contained">
-                Revoke access
-              </ButtonError>
-            </ListItem>
-          </List>
-        </Card>
-      </Grid>
-      <Grid item xs={12}>
-        <Box pb={2}>
-          <Typography variant="h3">Security</Typography>
-          <Typography variant="subtitle2">
-            Change your security preferences below
-          </Typography>
-        </Box>
-        <Card>
-          <List>
-            <ListItem sx={{ p: 3 }}>
-              <ListItemText
-                primaryTypographyProps={{ variant: 'h5', gutterBottom: true }}
-                secondaryTypographyProps={{
-                  variant: 'subtitle2',
-                  lineHeight: 1
-                }}
-                primary="Change Password"
-                secondary="You can change your password here"
-              />
-              <Button size="large" variant="outlined">
-                Change password
-              </Button>
-            </ListItem>
-            <Divider component="li" />
-            <ListItem sx={{ p: 3 }}>
-              <ListItemText
-                primaryTypographyProps={{ variant: 'h5', gutterBottom: true }}
-                secondaryTypographyProps={{
-                  variant: 'subtitle2',
-                  lineHeight: 1
-                }}
-                primary="Two-Factor Authentication"
-                secondary="Enable PIN verification for all sign in attempts"
-              />
-              <Switch color="primary" />
-            </ListItem>
-          </List>
-        </Card>
-      </Grid>
-      <Grid item xs={12}>
+
         <Card>
           <CardHeader
             subheaderTypographyProps={{}}
             titleTypographyProps={{}}
-            title="Access Logs"
-            subheader="Recent sign in activity logs"
+            title="员工奖励表"
+            subheader="奖励等级如下所示"
           />
           <Divider />
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Browser</TableCell>
-                  <TableCell>IP Address</TableCell>
-                  <TableCell>Location</TableCell>
-                  <TableCell>Date/Time</TableCell>
-                  <TableCell align="right">Actions</TableCell>
+                  <TableCell>职位</TableCell>
+                  <TableCell>薪资</TableCell>
+                  <TableCell>人数</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {logs.map((log) => (
-                  <TableRow key={log.id} hover>
-                    <TableCell>{log.browser}</TableCell>
-                    <TableCell>{log.ipaddress}</TableCell>
-                    <TableCell>{log.location}</TableCell>
+                {levels.map((level: Level) => (
+                  <TableRow key={level.occupation} hover>
+                    <TableCell>{level.occupation}</TableCell>
+                    <TableCell>{level.count}</TableCell>
+                    <TableCell>{level.amount}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Card>
+
+      </Grid>
+
+
+      <Grid item xs={12}>
+        <Box pb={2}>
+          <Typography variant="h3">添加新奖励级别</Typography>
+          <Typography variant="subtitle2">
+            添加奖励级别
+          </Typography>
+        </Box>
+        <Card>
+          <List>
+
+            <ListItem sx={{ p: 3 }}>
+              <Box
+                component="form"
+                sx={{
+                  '& .MuiTextField-root': { m: 1, width: '25ch' }
+                }}
+                noValidate
+                autoComplete="off"
+              >
+                <div>
+                  <TextField
+                    key="name"
+                    required
+                    id="outlined-required"
+                    label="姓名"
+                  />
+                  <TextField
+                    key="gender"
+                    required
+                    id="outlined-disabled"
+                    label="性别"
+                  />
+                  <TextField
+                    key="occupation"
+                    required
+                    id="outlined-disabled"
+                    label="职位"
+                  />
+                  <TextField
+                    required
+                    id="outlined-password-input"
+                    label="密码"
+                    type="password"
+                    autoComplete="current-password"
+                  />
+                </div>
+                
+              </Box>
+            </ListItem>
+            <Divider component="li" />
+            <ListItem sx={{ p: 3 }}>
+
+              <Box
+                component="form"
+                noValidate
+                autoComplete="off"
+              >
+                <Grid container direction="row">
+
+
+                  <Grid item xs={6}>
+                    <Typography variant='h3'> 封面：</Typography>
+                    <CardCover>
+
+                      <CardMedia image="" />
+                      <CardCoverAction>
+                        <Input accept="image/*" id="change-cover" multiple type="file" />
+                        <label htmlFor="change-cover">
+                          <Button
+                            startIcon={<UploadTwoToneIcon />}
+                            variant="contained"
+                            component="span"
+                          >
+                            更改封面
+                          </Button>
+                        </label>
+                      </CardCoverAction>
+                    </CardCover>
+
+                  </Grid>
+
+                  <Grid item xs={1}>
+
+                  </Grid>
+
+                  <Grid item xs={5}>
+
+                    <Typography variant='h3'> 头像：</Typography>
+                    <AvatarWrapper>
+
+                      <Avatar variant="rounded" alt="" src="" />
+                      <ButtonUploadWrapper>
+                        <Input
+                          accept="image/*"
+                          id="icon-button-file"
+                          name="icon-button-file"
+                          type="file"
+                        />
+                        <label htmlFor="icon-button-file">
+                          <IconButton component="span" color="primary">
+                            <UploadTwoToneIcon />
+                          </IconButton>
+                        </label>
+                      </ButtonUploadWrapper>
+                    </AvatarWrapper>
+
+                  </Grid>
+                </Grid>
+              </Box>
+            </ListItem>
+          </List>
+        </Card>
+      </Grid>
+      <Grid item xs={12}>
+        <Box pb={2}>
+          <Typography variant="h3">全体员工</Typography>
+          <Typography variant="subtitle2">
+            管理员工信息
+          </Typography>
+        </Box>
+
+        <Card>
+          <CardHeader
+            subheaderTypographyProps={{}}
+            titleTypographyProps={{}}
+            title="员工信息"
+            subheader="点击查看员工详细信息"
+          />
+          <Divider />
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>员工号</TableCell>
+                  <TableCell>员工头像</TableCell>
+                  <TableCell>员工名</TableCell>
+                  <TableCell>员工性别</TableCell>
+                  <TableCell>员工职位</TableCell>
+                  <TableCell>出勤率</TableCell>
+                  <TableCell>获奖次数</TableCell>
+                  <TableCell align="right">删除操作</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {employees.map((employee) => (
+                  <TableRow key={employee.id} hover>
+                    <TableCell>{employee.id}</TableCell>
                     <TableCell>
-                      {format(log.date, 'dd MMMM, yyyy - h:mm:ss a')}
+                      <Avatar src={employee.avatar} />
                     </TableCell>
+                    <TableCell>{employee.name}</TableCell>
+                    <TableCell>{employee.gender}</TableCell>
+                    <TableCell>{employee.occupation}</TableCell>
+                    <TableCell>{employee.attendance_rate}</TableCell>
+                    <TableCell>{employee.award_times}</TableCell>
                     <TableCell align="right">
                       <Tooltip placement="top" title="Delete" arrow>
                         <IconButton

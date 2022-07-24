@@ -1,12 +1,16 @@
 import Head from 'next/head';
 import SidebarLayout from '@/layouts/SidebarLayout';
 
-import { Grid, Container} from '@mui/material';
+import { Grid, Container, IconButton, Typography } from '@mui/material';
 
 
 import { useState } from 'react';
 
 
+import Scrollbar from '@/components/Scrollbar';
+
+
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 
 import {
   Box,
@@ -22,19 +26,35 @@ import AvailableEmployee from '@/content/HumanResource/Schedule/AvailableEmploye
 
 const RootWrapper = styled(Box)(
   ({ theme }) => `
-       height: calc(100vh - ${theme.header.height});
+      //  height: calc(100vh - ${theme.header.height});
        display: flex;
 `
 );
 
 const Sidebar = styled(Box)(
   ({ theme }) => `
-        width: 300px;
+        width: 400px;
         background: ${theme.colors.alpha.white[100]};
         border-right: ${theme.colors.alpha.black[10]} solid 1px;
 `
 );
 
+const TopBar = styled(Box)(
+  ({ theme }) => `
+        background: ${theme.colors.alpha.white[100]};
+        border-bottom: ${theme.colors.alpha.black[10]} solid 1px;
+        padding: ${theme.spacing(2)};
+        align-items: center;
+`
+);
+
+const IconButtonToggle = styled(IconButton)(
+  ({ theme }) => `
+  width: ${theme.spacing(4)};
+  height: ${theme.spacing(4)};
+  background: ${theme.colors.alpha.white[100]};
+`
+);
 
 const DrawerWrapperMobile = styled(Drawer)(
   () => `
@@ -77,6 +97,8 @@ function ManagementUserProfile() {
         </Grid>
       </Container>
       <RootWrapper className="Mui-FixedWrapper">
+
+
         <DrawerWrapperMobile
           sx={{
             display: { lg: 'none', xs: 'inline-block' }
@@ -86,17 +108,20 @@ function ManagementUserProfile() {
           open={mobileOpen}
           onClose={handleDrawerToggle}
         >
-
-            <ScheduleOperation/>
-            
+          <Scrollbar>
+            <ScheduleOperation />
+          </Scrollbar>
         </DrawerWrapperMobile>
+
 
         <Sidebar
           sx={{
             display: { xs: 'none', lg: 'inline-block' }
           }}
         >
-          <ScheduleOperation/>
+
+          <ScheduleOperation />
+
         </Sidebar>
 
         <Grid
@@ -104,14 +129,35 @@ function ManagementUserProfile() {
           justifyContent="center"
           spacing={3}>
 
-          <PositionSchedule/>
-          <Divider/>
-          <AvailableEmployee/>
+
+          <TopBar
+            sx={{
+              display: { xs: 'flex', lg: 'none' }
+            }}
+          >
+            <Typography variant='h4'>排班选项</Typography>
+            <IconButtonToggle
+              sx={{
+                display: { lg: 'none', xs: 'flex' },
+                mr: 2
+              }}
+              color="primary"
+              onClick={handleDrawerToggle}
+              size="small"
+            >
+
+              <MenuTwoToneIcon />
+            </IconButtonToggle>
+          </TopBar>
+
+          <PositionSchedule />
+          <Divider />
+          <AvailableEmployee />
 
         </Grid>
 
       </RootWrapper>
-    
+
     </>
   );
 }

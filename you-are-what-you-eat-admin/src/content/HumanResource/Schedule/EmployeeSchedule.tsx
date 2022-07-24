@@ -6,9 +6,9 @@ function EmployeeSchedule() {
 
   return (
     <Card>
-        <CardHeader title="Position Schedule" />
+      <CardHeader title="Position Schedule" />
       <Divider />
-      <Schedule/>
+      <Schedule />
     </Card>
   );
 }

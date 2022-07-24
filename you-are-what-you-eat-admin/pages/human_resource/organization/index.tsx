@@ -54,16 +54,16 @@ function Organization() {
           spacing={3}
         >
           <Grid item xs={12} md={8}>
-            <ProfileCover/>
+            <ProfileCover />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Summary/>
+            <Summary />
           </Grid>
           <Grid item xs={12} md={8}>
-            <Stuff/>
+            <Stuff />
           </Grid>
           <Grid item xs={12} md={4}>
-            <QuickLink/>
+            <QuickLink />
           </Grid>
         </Grid>
 

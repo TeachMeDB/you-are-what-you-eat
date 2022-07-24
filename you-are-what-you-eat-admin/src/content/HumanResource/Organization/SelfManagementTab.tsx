@@ -17,8 +17,11 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
 
+
+import WarningIcon from '@mui/icons-material/Warning';
+
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 
 
@@ -49,7 +52,7 @@ function SelfManagementTab() {
         <ListItem sx={{ p: 3 }}>
           <ListItemAvatar sx={{ pr: 2 }}>
             <AvatarSuccess>
-              <DoneTwoToneIcon />
+              <WarningAmberIcon />
             </AvatarSuccess>
           </ListItemAvatar>
           <ListItemText
@@ -69,7 +72,7 @@ function SelfManagementTab() {
         <ListItem sx={{ p: 3 }}>
           <ListItemAvatar sx={{ pr: 2 }}>
             <AvatarSuccess>
-              <DoneTwoToneIcon />
+              <WarningIcon />
             </AvatarSuccess>
           </ListItemAvatar>
           <ListItemText
