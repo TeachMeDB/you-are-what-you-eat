@@ -206,6 +206,105 @@ function SidebarMenu() {
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
+              订单管理
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+            <ListItem component="div">
+                <NextLink href="/orders/overview" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/orders/overview' ? 'active' : ''
+                    }
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    startIcon={<BrightnessLowTwoToneIcon />}
+                  >
+                    订单概览
+                  </Button>
+                </NextLink>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              促销活动管理
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+            <ListItem component="div">
+                <NextLink href="/promotions/overview" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/promotions/overview' ? 'active' : ''
+                    }
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    startIcon={<BrightnessLowTwoToneIcon />}
+                  >
+                    促销活动概览
+                  </Button>
+                </NextLink>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              能源管理
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+            <ListItem component="div">
+                <NextLink href="/energy/overview" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/energy/overview' ? 'active' : ''
+                    }
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    startIcon={<BrightnessLowTwoToneIcon />}
+                  >
+                    能源使用概览
+                  </Button>
+                </NextLink>
+              </ListItem>
+              <ListItem component="div">
+                <NextLink href="/energy/details" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/energy/details' ? 'active' : ''
+                    }
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    startIcon={<BrightnessLowTwoToneIcon />}
+                  >
+                    能源数据详情
+                  </Button>
+                </NextLink>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
               Dashboards
             </ListSubheader>
           }
@@ -309,6 +408,53 @@ function SidebarMenu() {
             </List>
           </SubMenuWrapper>
         </List>
+        
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              人事管理
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <NextLink href="/human_resource/organization" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/human_resource/organization' ? 'active' : ''
+                    }
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    startIcon={<AccountCircleTwoToneIcon />}
+                  >
+                    员工详情与管理
+                  </Button>
+                </NextLink>
+              </ListItem>
+              <ListItem component="div">
+                <NextLink href="/human_resource/schedule" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/management/schedule'
+                        ? 'active'
+                        : ''
+                    }
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    startIcon={<DisplaySettingsTwoToneIcon />}
+                  >
+                    排班管理
+                  </Button>
+                </NextLink>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+
         <List
           component="div"
           subheader={
