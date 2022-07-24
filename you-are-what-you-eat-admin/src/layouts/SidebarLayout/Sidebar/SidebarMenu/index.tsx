@@ -289,6 +289,23 @@ function SidebarMenu() {
                   </Button>
                 </NextLink>
               </ListItem>
+              <ListItem component="div">
+                <NextLink href="/management/Table" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/management/Table'
+                        ? 'active'
+                        : ''
+                    }
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    startIcon={<TableChartTwoToneIcon />}
+                  >
+                    场地管理
+                  </Button>
+                </NextLink>
+              </ListItem>
             </List>
           </SubMenuWrapper>
         </List>
