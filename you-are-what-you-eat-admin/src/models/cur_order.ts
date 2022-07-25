@@ -3,7 +3,7 @@ interface dish {
     Dishstate: string
 }
 
-export interface Order {
+export interface CurOrder {
     OrderId: string,
     OrderStatus: string,
     Dish: dish[]

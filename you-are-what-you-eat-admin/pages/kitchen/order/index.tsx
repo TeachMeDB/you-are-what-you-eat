@@ -6,9 +6,9 @@ import Footer from '@/components/Footer';
 
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 
-import PageHeader from '@/content/Management/Order/PageHeader';
-import CheckList from '@/content/Management/Order/CheckList';
-import CurOrder from '@/content/Management/Order/CurOrder';
+import PageHeader from '@/content/Kitchen/Order/PageHeader';
+import CheckList from '@/content/Kitchen/Order/CheckList';
+import CurOrder from '@/content/Kitchen/Order/CurOrder';
 
 
 function mealInfo() {
