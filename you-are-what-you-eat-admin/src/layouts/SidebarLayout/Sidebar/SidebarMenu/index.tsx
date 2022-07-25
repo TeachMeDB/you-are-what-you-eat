@@ -33,6 +33,10 @@ import WorkspacePremiumTwoToneIcon from '@mui/icons-material/WorkspacePremiumTwo
 import CameraFrontTwoToneIcon from '@mui/icons-material/CameraFrontTwoTone';
 import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
 
+import LunchDiningIcon from '@mui/icons-material/LunchDining';
+import SoupKitchenIcon from '@mui/icons-material/SoupKitchen';
+import Battery60Icon from '@mui/icons-material/Battery60';
+
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
   .MuiList-root {
@@ -212,7 +216,7 @@ function SidebarMenu() {
         >
           <SubMenuWrapper>
             <List component="div">
-            <ListItem component="div">
+              <ListItem component="div">
                 <NextLink href="/orders/overview" passHref>
                   <Button
                     className={
@@ -240,7 +244,7 @@ function SidebarMenu() {
         >
           <SubMenuWrapper>
             <List component="div">
-            <ListItem component="div">
+              <ListItem component="div">
                 <NextLink href="/promotions/overview" passHref>
                   <Button
                     className={
@@ -268,7 +272,7 @@ function SidebarMenu() {
         >
           <SubMenuWrapper>
             <List component="div">
-            <ListItem component="div">
+              <ListItem component="div">
                 <NextLink href="/energy/overview" passHref>
                   <Button
                     className={
@@ -408,7 +412,7 @@ function SidebarMenu() {
             </List>
           </SubMenuWrapper>
         </List>
-        
+
         <List
           component="div"
           subheader={
@@ -476,7 +480,7 @@ function SidebarMenu() {
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
-                    startIcon={<TableChartTwoToneIcon />}
+                    startIcon={<LunchDiningIcon />}
                   >
                     菜品信息管理
                   </Button>
@@ -497,7 +501,7 @@ function SidebarMenu() {
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
-                    startIcon={<TableChartTwoToneIcon />}
+                    startIcon={<SoupKitchenIcon />}
                   >
                     实时订单管理
                   </Button>
@@ -518,7 +522,7 @@ function SidebarMenu() {
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
-                    startIcon={<TableChartTwoToneIcon />}
+                    startIcon={<Battery60Icon />}
                   >
                     库存管理
                   </Button>
