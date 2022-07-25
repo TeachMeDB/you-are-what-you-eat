@@ -83,7 +83,15 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
   );
 };
 
-export default function IndividualTable() {
+export interface IndiTableProps
+{
+  table_id:number;
+  customer_number:number;
+  table_capacity:number;
+  occupied:string;
+}
+
+export default function IndividualTable(props:IndiTableProps) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -99,14 +107,25 @@ export default function IndividualTable() {
                 <Card sx={{ maxWidth: 345 }}>
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                      大厅
+                      {props.table_id.toString()}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      2人，空闲
+                      {props.table_capacity.toString()+"  "+props.occupied}
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small">安排</Button>
+                      {props.occupied=="空闲" ?
+                        <Button 
+                    size="small"                    
+                    >安排</Button>
+                    :
+                    <Button 
+                    size="small"
+                    color='error'
+                    disabled                    
+                    >{"已有"+props.customer_number+"人使用"}</Button>
+                      }
+                    
                   </CardActions>
                 </Card>
 
