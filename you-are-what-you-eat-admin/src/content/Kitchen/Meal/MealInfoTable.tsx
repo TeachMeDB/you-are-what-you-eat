@@ -68,11 +68,12 @@ const ButtonSearch = styled(Button)(
 
 
 const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
-    const [page, setPage] = useState<number>(0);
+    const [page, setPage] = useState<number>(1);
     const [limit, setLimit] = useState<number>(5);
 
     const handlePageChange = (_event: any, newPage: number): void => {
         setPage(newPage);
+        console.log(page);
     };
 
     const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -81,6 +82,7 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
     const [open, setOpen] = React.useState(false);
     const handleClickOpen = () => {
         setOpen(true);
+
     };
 
     const handleClose = () => {
@@ -130,141 +132,141 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {mealInfoes.map((mealInfo) => {
-
-                            return (
-                                <TableRow
-                                    hover
-                                    key={mealInfo.id}
-                                >
-                                    <TableCell>
-                                        <Typography
-                                            variant="body1"
-                                            fontWeight="bold"
-                                            color="text.primary"
-                                            gutterBottom
-                                            noWrap
-                                        >
-                                            {mealInfo.id}
-                                        </Typography>
-
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography
-                                            variant="body1"
-                                            fontWeight="bold"
-                                            color="text.primary"
-                                            gutterBottom
-                                            noWrap
-                                        >
-                                            {mealInfo.DishName}
-                                        </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography
-                                            variant="body1"
-                                            fontWeight="bold"
-                                            color="text.primary"
-                                            gutterBottom
-                                            noWrap
-                                        >
-                                            {mealInfo.Price}
-                                        </Typography>
-
-                                    </TableCell>
-                                    <TableCell >
-                                        <Typography
-                                            variant="body1"
-                                            fontWeight="bold"
-                                            color="text.primary"
-                                            gutterBottom
-                                            noWrap
-                                        >
-                                            {mealInfo.Description}
-
-                                        </Typography>
-
-                                    </TableCell>
-
-                                    <TableCell >
-                                        <Tooltip title="编辑" arrow onClick={handleClickOpen}>
-                                            <IconButton
-                                                sx={{
-                                                    '&:hover': {
-                                                        background: theme.colors.primary.lighter
-                                                    },
-                                                    color: theme.palette.primary.main
-                                                }}
-                                                color="inherit"
-                                                size="small"
+                        {mealInfoes.map((mealInfo, index) => {
+                            {
+                                return (
+                                    <TableRow
+                                        hover
+                                        key={mealInfo.id}
+                                    >
+                                        <TableCell>
+                                            <Typography
+                                                variant="body1"
+                                                fontWeight="bold"
+                                                color="text.primary"
+                                                gutterBottom
+                                                noWrap
                                             >
-                                                <EditTwoToneIcon fontSize="small" />
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Dialog open={open} onClose={handleClose}>
-                                            <DialogTitle>菜品信息</DialogTitle>
-                                            <DialogContent>
+                                                {mealInfo.id}
+                                            </Typography>
 
-                                                <TextField
-                                                    autoFocus
-                                                    margin="dense"
-                                                    id="id"
-                                                    label="新的菜品编号"
-                                                    fullWidth
-                                                    variant="standard"
-                                                />
-                                                <TextField
-                                                    autoFocus
-                                                    margin="dense"
-                                                    id="name"
-                                                    label="新的菜品名称"
-                                                    fullWidth
-                                                    variant="standard"
-                                                />
-                                                <TextField
-                                                    autoFocus
-                                                    margin="dense"
-                                                    id="name"
-                                                    label="新的菜品价格"
-                                                    fullWidth
-                                                    variant="standard"
-                                                />
-                                                <TextField
-                                                    autoFocus
-                                                    margin="dense"
-                                                    id="name"
-                                                    label="新的菜品描述"
-                                                    fullWidth
-                                                    variant="standard"
-                                                />
-                                            </DialogContent>
-                                            <DialogActions>
-                                                <Button onClick={handleClose}>Cancel</Button>
-                                                <Button onClick={handleClose}>Subscribe</Button>
-                                            </DialogActions>
-                                        </Dialog>
-                                        <Tooltip title="删除" arrow>
-                                            <IconButton
-                                                sx={{
-                                                    '&:hover': { background: theme.colors.error.lighter },
-                                                    color: theme.palette.error.main
-                                                }}
-                                                color="inherit"
-                                                size="small"
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography
+                                                variant="body1"
+                                                fontWeight="bold"
+                                                color="text.primary"
+                                                gutterBottom
+                                                noWrap
                                             >
-                                                <DeleteTwoToneIcon fontSize="small" />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </TableCell>
-                                </TableRow>
-                            );
+                                                {mealInfo.DishName}
+                                            </Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography
+                                                variant="body1"
+                                                fontWeight="bold"
+                                                color="text.primary"
+                                                gutterBottom
+                                                noWrap
+                                            >
+                                                {mealInfo.Price}
+                                            </Typography>
+
+                                        </TableCell>
+                                        <TableCell >
+                                            <Typography
+                                                variant="body1"
+                                                fontWeight="bold"
+                                                color="text.primary"
+                                                gutterBottom
+                                                noWrap
+                                            >
+                                                {mealInfo.Description}
+
+                                            </Typography>
+
+                                        </TableCell>
+
+                                        <TableCell >
+                                            <Tooltip title="编辑" arrow onClick={handleClickOpen}>
+                                                <IconButton
+                                                    sx={{
+                                                        '&:hover': {
+                                                            background: theme.colors.primary.lighter
+                                                        },
+                                                        color: theme.palette.primary.main
+                                                    }}
+                                                    color="inherit"
+                                                    size="small"
+                                                >
+                                                    <EditTwoToneIcon fontSize="small" />
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Dialog open={open} onClose={handleClose}>
+                                                <DialogTitle>菜品信息</DialogTitle>
+                                                <DialogContent>
+
+                                                    <TextField
+                                                        autoFocus
+                                                        margin="dense"
+                                                        id="id"
+                                                        label="新的菜品编号"
+                                                        fullWidth
+                                                        variant="standard"
+                                                    />
+                                                    <TextField
+                                                        autoFocus
+                                                        margin="dense"
+                                                        id="name"
+                                                        label="新的菜品名称"
+                                                        fullWidth
+                                                        variant="standard"
+                                                    />
+                                                    <TextField
+                                                        autoFocus
+                                                        margin="dense"
+                                                        id="name"
+                                                        label="新的菜品价格"
+                                                        fullWidth
+                                                        variant="standard"
+                                                    />
+                                                    <TextField
+                                                        autoFocus
+                                                        margin="dense"
+                                                        id="name"
+                                                        label="新的菜品描述"
+                                                        fullWidth
+                                                        variant="standard"
+                                                    />
+                                                </DialogContent>
+                                                <DialogActions>
+                                                    <Button onClick={handleClose}>Cancel</Button>
+                                                    <Button onClick={handleClose}>Subscribe</Button>
+                                                </DialogActions>
+                                            </Dialog>
+                                            <Tooltip title="删除" arrow>
+                                                <IconButton
+                                                    sx={{
+                                                        '&:hover': { background: theme.colors.error.lighter },
+                                                        color: theme.palette.error.main
+                                                    }}
+                                                    color="inherit"
+                                                    size="small"
+                                                >
+                                                    <DeleteTwoToneIcon fontSize="small" />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </TableCell>
+                                    </TableRow>
+                                );
+                            }
                         })}
                     </TableBody>
                 </Table>
             </TableContainer>
             <Box p={2}>
                 <TablePagination
-
                     component="div"
                     count={mealInfoes.length}
                     onPageChange={handlePageChange}

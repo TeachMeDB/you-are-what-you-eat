@@ -1,5 +1,6 @@
 import CurOrderTable from "./CurOrderTable";
-
+import CurOrderSummary from "./CurOrderSummary";
+import { Grid } from '@mui/material';
 const curOrders = [
     {
         OrderId: "001",
@@ -76,6 +77,24 @@ const curOrders = [
 
 export default function CurOrder() {
     return (
-        <div><CurOrderTable CurOrders={curOrders} /></div>
+
+        <>
+            <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="stretch"
+                spacing={4}
+            >
+                <Grid item xs={12}>
+                    <CurOrderSummary />
+                </Grid>
+                <Grid item xs={12}>
+                    <CurOrderTable CurOrders={curOrders} />
+                </Grid>
+            </Grid>
+        </>
+
+
     )
 }
