@@ -111,7 +111,7 @@ function PageHeader() {
 
   const [items] = useState<Item[]>(itemsList);
 
-  const handleCreateInvoiceOpen = () => {
+  const handleCreatePromotionOpen = () => {
     setOpen(true);
   };
 
@@ -148,7 +148,7 @@ function PageHeader() {
             sx={{
               mt: { xs: 2, sm: 0 }
             }}
-            onClick={handleCreateInvoiceOpen}
+            onClick={handleCreatePromotionOpen}
             variant="contained"
             startIcon={<AddTwoToneIcon fontSize="small" />}
           >
@@ -156,6 +156,8 @@ function PageHeader() {
           </Button>
         </Grid>
       </Grid>
+
+      {/*创建促销弹窗 */}
       <Dialog
         fullWidth
         maxWidth="md"
@@ -221,7 +223,7 @@ function PageHeader() {
                 <Grid container spacing={3}>
                   <Grid item xs={12} md={6}>
                     <Box pb={1}>
-                      <b>{t('Invoice Number')}:</b>
+                      <b>{t('活动名')}:</b>
                     </Box>
                     <TextField
                       error={Boolean(touched.number && errors.number)}
@@ -237,7 +239,7 @@ function PageHeader() {
                   </Grid>
                   <Grid item xs={12}>
                     <Box pb={1}>
-                      <b>{t('Recipient')}:</b>
+                      <b>{t('活动描述')}:</b>
                     </Box>
                     <Autocomplete
                       multiple
@@ -284,7 +286,7 @@ function PageHeader() {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box pb={1}>
-                      <b>{t('Invoice Date')}:</b>
+                      <b>{t('开始时间')}:</b>
                     </Box>
                     <DatePicker
                       value={value}
@@ -302,7 +304,7 @@ function PageHeader() {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box pb={1}>
-                      <b>{t('Due Date')}:</b>
+                      <b>{t('结束时间')}:</b>
                     </Box>
                     <DatePicker
                       value={value1}
@@ -324,11 +326,11 @@ function PageHeader() {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>{t('Item')}</TableCell>
-                      <TableCell>{t('Qty')}</TableCell>
-                      <TableCell>{t('Price')}</TableCell>
-                      <TableCell>{t('Total')}</TableCell>
-                      <TableCell align="right">{t('Actions')}</TableCell>
+                      <TableCell>{t('菜品')}</TableCell>
+                      <TableCell>{t('折扣')}</TableCell>
+                      <TableCell>{t('原价')}</TableCell>
+                      <TableCell>{t('折后价')}</TableCell>
+                      <TableCell align="right">{t('操作')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>

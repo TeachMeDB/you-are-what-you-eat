@@ -6,7 +6,7 @@ import {
 } from 'src/models/energy'
 
 class EnergyApi {
-    public getCurrentAvailable: () => Promise<EnergyPanelData[]> = () => {
+    public getCurrentAvailable: () => Promise<EnergyPanelData[]> = async () => {
         const aval = [
             {
                 type: '电',
@@ -28,7 +28,7 @@ class EnergyApi {
         return Promise.resolve(aval); 
     }
 
-    public getOverallUsage: () => Promise<OverallUsageType> = () => {
+    public getOverallUsage: () => Promise<OverallUsageType> = async () => {
         const usage: OverallUsageType = {
             view_by_type: [
                 {
@@ -59,7 +59,7 @@ class EnergyApi {
         return Promise.resolve(usage);
     }
 
-    public getYearlyData: () => Promise<YearlyEnergyDataSortedByType[]> = () => {
+    public getYearlyData: () => Promise<YearlyEnergyDataSortedByType[]> = async () => {
         const data: YearlyEnergyDataSortedByType[] = [
             {
                 type: '水',
@@ -81,7 +81,7 @@ class EnergyApi {
         return Promise.resolve(data);
     }
 
-    public getOriginalSensorData: () => Promise<OriginalSensorData[]> = () => {
+    public getOriginalSensorData: () => Promise<OriginalSensorData[]> = async () => {
         const data = [
             {
                 sensor_id: 'adaczxc',

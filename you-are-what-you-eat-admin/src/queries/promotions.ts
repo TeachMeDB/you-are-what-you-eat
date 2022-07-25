@@ -4,7 +4,7 @@ import {
 } from '@/models/promotion'
 
 class PromotionsApi {
-    public getAllPromotion: () => Promise<Promotion[]> = () => {
+    public getAllPromotion: () => Promise<Promotion[]> = async () => {
         const promotions = [
             {
                 id: "1",
@@ -147,7 +147,7 @@ class PromotionsApi {
         return Promise.resolve(promotions);
     }
 
-    public getPromotionById: (id: string) => Promise<Promotion> = (id) => {
+    public getPromotionById: (id: string) => Promise<Promotion> = async (id) => {
         const promotions = [
             {
                 id: "1",

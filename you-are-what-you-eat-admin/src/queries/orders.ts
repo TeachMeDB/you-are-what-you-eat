@@ -8,7 +8,7 @@ import {
 } from "@/models/order";
 
 class OrdersApi {
-    public getOrdersInTimePeriod: (start: Date, end: Date) => Promise<Order[]> = (start, end) => {
+    public getOrdersInTimePeriod: (start: Date, end: Date) => Promise<Order[]> = async (start, end) => {
         const orders: Order[] = [
             {
                 id: 'ADF7284',
@@ -79,7 +79,7 @@ class OrdersApi {
         return Promise.resolve(orders);
     }
 
-    public getDishSaleVolumeInTimePeriod: (start: Date, end: Date) => Promise<DishOrderStat[]> = (start, end) => {
+    public getDishSaleVolumeInTimePeriod: (start: Date, end: Date) => Promise<DishOrderStat[]> = async (start, end) => {
         const dishOrders: DishOrderStat[] = [
             {
                 name: '香辣鸡翅',
@@ -113,7 +113,7 @@ class OrdersApi {
         return Promise.resolve(dishOrders);
     }
 
-    public getDailyOrderStatics: (start: Date, end: Date) => Promise<DailyOrderStatic> = (start, end) => {
+    public getDailyOrderStatics: (start: Date, end: Date) => Promise<DailyOrderStatic> = async (start, end) => {
         const stat: DailyOrderStatic = {
             order_num: 500,
             order_num_change: -0.03,
@@ -126,7 +126,7 @@ class OrdersApi {
         return Promise.resolve(stat);
     }
 
-    public getDailyOrderReport: () => Promise<OrderReport> = () => {
+    public getDailyOrderReport: () => Promise<OrderReport> = async () => {
         const report: OrderReport = {
             breakfast_order_num: 33,
             breakfast_turnover: 659,
@@ -139,7 +139,7 @@ class OrdersApi {
         return Promise.resolve(report);
     }
 
-    public getWeekBestSellerData: () => Promise<WeekBestSellerData> = () => {
+    public getWeekBestSellerData: () => Promise<WeekBestSellerData> = async () => {
         const data = {
             best_seller: '青椒炒肉',
             total: 10948,
@@ -172,7 +172,7 @@ class OrdersApi {
         return Promise.resolve(data);
     }
 
-    public getActiveVIPs: () => Promise<ActiveVIP[]> = () => {
+    public getActiveVIPs: () => Promise<ActiveVIP[]> = async () => {
         const data = [
             {
                 username: 'li-letian',
