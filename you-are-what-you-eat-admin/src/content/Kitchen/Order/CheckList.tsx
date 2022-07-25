@@ -53,7 +53,7 @@ export default function CheckList(curOrder: CurOrder) {
                 >
                     {
                         curOrder.Dish.map((item) =>
-                            <ListItem>
+                            <ListItem divider>
                                 <ListItemText id={item.DishName} primary={item.DishName} />
                                 <Switch
                                     edge="end"

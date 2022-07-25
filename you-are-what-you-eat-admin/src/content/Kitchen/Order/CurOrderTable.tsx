@@ -1,5 +1,5 @@
 import React from 'react'
-import { FC, useState } from 'react'
+import { FC, ChangeEvent, useState } from 'react'
 import {
     Grid,
     Divider,
@@ -11,11 +11,9 @@ import {
     CardHeader,
     OutlinedInput,
     Table,
-    TableBody,
-    TableCell,
-    TableHead,
+
     TablePagination,
-    TableRow,
+
     TableContainer,
     Box
 } from '@mui/material'
@@ -60,7 +58,7 @@ const CurOrderTable: FC<CurOrderTableProps> = ({ CurOrders }) => {
 
     const handlePageChange = (_event: any, newPage: number): void => {
         setPage(newPage);
-        console.log(page);
+
     };
 
     const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
