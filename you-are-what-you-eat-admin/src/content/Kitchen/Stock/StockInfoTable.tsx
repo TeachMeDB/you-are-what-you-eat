@@ -39,6 +39,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
 
+const applyPagination = (
+    stockInfoes: StockInfo[],
+    page: number,
+    limit: number
+): StockInfo[] => {
+    return stockInfoes.slice(page * limit, page * limit + limit);
+};
 
 
 
@@ -72,7 +79,9 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
     const [limit, setLimit] = useState<number>(5);
     const handlePageChange = (_event: any, newPage: number): void => {
         setPage(newPage);
+
     };
+
     const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
         setLimit(parseInt(event.target.value));
     };
@@ -89,7 +98,7 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
     };
 
     const theme = useTheme();
-
+    const paginatedPromotions = applyPagination(stockInfoes, page, limit);
 
     return (
         <Card>
@@ -135,12 +144,10 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {stockInfoes.map((stockInfo) => {
+                        {paginatedPromotions.map((stockInfo) => {
                             return (
                                 <TableRow
                                     hover
-                                    key={stockInfo.id}
-
                                 >
                                     <TableCell>
                                         <Typography
