@@ -73,7 +73,7 @@ function CurOrderSummary() {
         }
       }
     },
-    colors: ['#DD0000', '#FFA500', '#008000', '#6169E1'],
+    colors: ['#DD0000', '#FFA500', '#008000'],
     dataLabels: {
       enabled: true,
       formatter: function (val) {
@@ -218,7 +218,7 @@ function CurOrderSummary() {
                     <ListItemText
                       primary="待处理"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="￥1145"
+                      secondary="20"
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -237,7 +237,7 @@ function CurOrderSummary() {
                     <ListItemText
                       primary="制作中"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="￥1145"
+                      secondary="10"
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -256,7 +256,7 @@ function CurOrderSummary() {
                     <ListItemText
                       primary="已完成"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="￥1145"
+                      secondary="70"
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -264,7 +264,7 @@ function CurOrderSummary() {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        40%
+                        70%
                       </Typography>
                     </Box>
                   </ListItem>

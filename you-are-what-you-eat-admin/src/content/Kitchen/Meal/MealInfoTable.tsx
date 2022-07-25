@@ -38,7 +38,13 @@ import DialogContent from '@mui/material/DialogContent';
 
 import DialogTitle from '@mui/material/DialogTitle';
 
-
+const applyPagination = (
+    mealInfoes: MealInfo[],
+    page: number,
+    limit: number
+): MealInfo[] => {
+    return mealInfoes.slice(page * limit, page * limit + limit);
+};
 
 
 
@@ -68,12 +74,12 @@ const ButtonSearch = styled(Button)(
 
 
 const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
-    const [page, setPage] = useState<number>(1);
+    const [page, setPage] = useState<number>(0);
     const [limit, setLimit] = useState<number>(5);
 
     const handlePageChange = (_event: any, newPage: number): void => {
         setPage(newPage);
-        console.log(page);
+
     };
 
     const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -88,6 +94,8 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const paginatedPromotions = applyPagination(mealInfoes, page, limit);
 
     const theme = useTheme();
     return (
@@ -132,12 +140,12 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {mealInfoes.map((mealInfo, index) => {
+                        {paginatedPromotions.map((mealInfo) => {
                             {
                                 return (
                                     <TableRow
                                         hover
-                                        key={mealInfo.id}
+
                                     >
                                         <TableCell>
                                             <Typography

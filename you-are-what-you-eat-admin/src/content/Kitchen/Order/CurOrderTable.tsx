@@ -1,5 +1,5 @@
 import React from 'react'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import {
     Grid,
     Divider,
@@ -10,6 +10,14 @@ import {
     InputAdornment,
     CardHeader,
     OutlinedInput,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TablePagination,
+    TableRow,
+    TableContainer,
+    Box
 } from '@mui/material'
 import CheckList from './CheckList'
 import { CurOrder } from '@/models/cur_order'
@@ -27,6 +35,15 @@ const OutlinedInputWrapper = styled(OutlinedInput)(
   `
 );
 
+const applyPagination = (
+    curOrders: CurOrder[],
+    page: number,
+    limit: number
+): CurOrder[] => {
+    return curOrders.slice(page * limit, page * limit + limit);
+};
+
+
 interface CurOrderTableProps {
     lassName?: string;
     CurOrders: CurOrder[];
@@ -34,6 +51,21 @@ interface CurOrderTableProps {
 
 
 const CurOrderTable: FC<CurOrderTableProps> = ({ CurOrders }) => {
+    const [page, setPage] = useState<number>(0);
+    const [limit, setLimit] = useState<number>(6);
+
+
+    const paginatedPromotions = applyPagination(CurOrders, page, limit);
+
+
+    const handlePageChange = (_event: any, newPage: number): void => {
+        setPage(newPage);
+        console.log(page);
+    };
+
+    const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
+        setLimit(parseInt(event.target.value));
+    };
     return (
 
         <Card>
@@ -62,23 +94,39 @@ const CurOrderTable: FC<CurOrderTableProps> = ({ CurOrders }) => {
                 title="实时订单列表"
             />
             <Divider />
+            <TableContainer>
+                <Table>
+                    <Grid container spacing={10}>
+                        {paginatedPromotions.map((i) => {
+                            return (
 
-            <Grid container spacing={10}>
-                {
-                    CurOrders.map((i) =>
+                                <Grid item xs={4}>
+                                    <CheckList
+                                        OrderId={i.OrderId}
+                                        OrderStatus={i.OrderStatus}
+                                        Dish={i.Dish}
+                                    />
+                                </Grid>
+                            )
+                        }
+                        )
+                        }
+                    </Grid>
+                </Table>
+            </TableContainer>
+            <Box p={2}>
+                <TablePagination
+                    component="div"
+                    count={CurOrders.length}
+                    onPageChange={handlePageChange}
+                    onRowsPerPageChange={handleLimitChange}
+                    page={page}
+                    rowsPerPage={limit}
+                    rowsPerPageOptions={[6, 12, 18, 24]}
+                />
+            </Box>
 
-                        <Grid item xs={4}>
-                            <CheckList
-                                OrderId={i.OrderId}
-                                OrderStatus={i.OrderStatus}
-                                Dish={i.Dish}
-                            />
-                        </Grid>
-
-                    )
-                }
-            </Grid>
-        </Card>
+        </Card >
 
 
 
