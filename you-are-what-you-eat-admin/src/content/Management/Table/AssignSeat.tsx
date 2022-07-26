@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FC, ChangeEvent, useState } from 'react';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -66,12 +67,22 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
 
 export default function AssignSeat() {
   const [open, setOpen] = React.useState(false);
+  const [inputNum, setInputNum] = useState<number>(1);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+  };
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    let value = null;
+
+    if (e.target.value !== null) {
+      value = e.target.value;
+    }
+
+    setInputNum(parseInt(value));
   };
 
   const theme = useTheme();
@@ -102,19 +113,47 @@ export default function AssignSeat() {
             noValidate
             autoComplete="off"
            >
-           <TextField
+            {
+              inputNum>0?
+            <TextField
              required
              fullWidth
               id="outlined-required"
               label="人数"
-             defaultValue=''             
-             />            
-          </Box>  
+              type="number"
+             defaultValue='1'  
+             onChange={handleInputChange}         
+             /> 
+             :
+             <TextField
+             required
+             fullWidth
+              id="outlined-required"
+              label="人数"
+              type="number"
+             defaultValue='1'  
+             onChange={handleInputChange}
+             error
+             helperText="非法人数"         
+             /> 
+            }
+                                   
+          </Box>
+          {inputNum>0?  
           <Button
-          startIcon={<AddTwoToneIcon fontSize="small" />}
+          startIcon={<AddTwoToneIcon fontSize="small" />}          
           >
           确认安排
-        </Button>     
+        </Button>
+        :
+        <Button
+        startIcon={<AddTwoToneIcon fontSize="small" />}
+        disabled          
+        >
+        确认安排
+      </Button> 
+        
+      }   
       </BootstrapDialog>
     </div>
   );
