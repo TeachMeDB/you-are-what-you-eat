@@ -70,7 +70,7 @@ const PageHeader: FC<PageHeaderProps> = ({ promotion }) => {
             sx={{
               mt: { xs: 2, sm: 0 }
             }}
-            href="/management/invoices"
+            href="/promotions/overview"
             variant="contained"
           >
             {t('View all invoices')}

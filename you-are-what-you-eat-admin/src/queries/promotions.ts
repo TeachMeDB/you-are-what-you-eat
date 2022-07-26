@@ -1,6 +1,7 @@
 import {
     Promotion,
-    PromotionStatus
+    PromotionStatus,
+    SelectableDish
 } from '@/models/promotion'
 
 class PromotionsApi {
@@ -290,6 +291,33 @@ class PromotionsApi {
         var p = promotions.find((promotion) => promotion.id === id);
 
         return Promise.resolve(p);
+    }
+
+    public getSelectableDishes: () => Promise<SelectableDish[]> = async () => {
+        const dishes = [
+            {
+                name: '鱼香肉丝',
+                price: 25,
+                tags: ['川菜', '辣', '肉', '甜']
+            },
+            {
+                name: '可乐鸡翅',
+                price: 29,
+                tags: ['甜', '肉', '鸡']
+            },
+            {
+                name: '水煮肉片',
+                price: 48,
+                tags: ['川菜', '辣', '肉']
+            },
+            {
+                name: '醋溜豆芽',
+                price: 6,
+                tags: ['酸', '辣', '素']
+            },
+        ]
+
+        return Promise.resolve(dishes);
     }
 }
 
