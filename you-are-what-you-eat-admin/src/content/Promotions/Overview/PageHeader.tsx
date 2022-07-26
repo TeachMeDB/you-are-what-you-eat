@@ -56,6 +56,8 @@ function PageHeader() {
   const [selectDishDialogOpen, setSelectDishDialogOpen] = useState(false);
   const [selectableDishes, setSelectableDishes] = useState<SelectableDish[]>([]);
   const [selectedDishes, setSelectedDishes] = useState<SelectedDish[]>([]);
+  const [promotionName, setPromotionName] = useState<string>("");
+  const [promotionDesc, setPromotionDesc] = useState<string>("");
 
   const getSelectableDishes = useCallback(async() => {
     try {
@@ -87,7 +89,14 @@ function PageHeader() {
     setOpen(false);
   };
 
-  const handleCreatePromotionSuccess = () => {
+  const handleCreatePromotionSuccess = (title?: string, desc?: string) => {
+    if (title)
+      console.log(title);
+    if (desc)
+      console.log(desc);
+    else
+      console.log('err');
+    console.log(value, value1);
     // enqueueSnackbar(t('A new invoice has been created successfully'), {
     //   variant: 'success',
     //   anchorOrigin: {
@@ -96,7 +105,9 @@ function PageHeader() {
     //   },
     //   TransitionComponent: Zoom
     // });
-
+    setSelectedDishes([]);
+    setValue(null);
+    setValue1(null);
     setOpen(false);
   };
 
@@ -149,13 +160,14 @@ function PageHeader() {
         </DialogTitle>
         <Formik
           initialValues={{
-            number: '',
+            title: '',
+            desc: '',
             submit: null
           }}
           validationSchema={Yup.object().shape({
-            number: Yup.string()
+            title: Yup.string()
               .max(255)
-              .required(t('此项是必填的'))
+              .required(t('活动名是必填的')),
           })}
           onSubmit={async (
             _values,
@@ -166,7 +178,7 @@ function PageHeader() {
               resetForm();
               setStatus({ success: true });
               setSubmitting(false);
-              handleCreatePromotionSuccess();
+              handleCreatePromotionSuccess(_values.title, _values.desc);
             } catch (err) {
               console.error(err);
               setStatus({ success: false });
@@ -197,14 +209,14 @@ function PageHeader() {
                       <b>{t('活动名')}:</b>
                     </Box>
                     <TextField
-                      error={Boolean(touched.number && errors.number)}
+                      error={Boolean(touched.title && errors.title)}
                       fullWidth
-                      helperText={touched.number && errors.number}
-                      name="number"
+                      helperText={touched.title && errors.title}
+                      name="title"
                       placeholder={t('在此处填写活动名称')}
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.number}
+                      value={values.title}
                       variant="outlined"
                     />
                   </Grid>
@@ -213,13 +225,16 @@ function PageHeader() {
                       <b>{t('活动描述')}:</b>
                     </Box>
                     <TextField
-                          variant="outlined"
-                          fullWidth
-                          InputLabelProps={{
-                            shrink: true
-                          }}
-                          placeholder={t('在此处描述活动信息')}
-                        />
+                      error={Boolean(touched.desc && errors.desc)}
+                      fullWidth
+                      helperText={touched.desc && errors.desc}
+                      name="desc"
+                      placeholder={t('在此处填写活动信息')}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.desc}
+                      variant="outlined"
+                    />
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box pb={1}>
@@ -232,6 +247,7 @@ function PageHeader() {
                       }}
                       renderInput={(params) => (
                         <TextField
+                          value={value}
                           fullWidth
                           placeholder={t('选择日期')}
                           {...params}
@@ -250,8 +266,9 @@ function PageHeader() {
                       }}
                       renderInput={(params) => (
                         <TextField
+                          value={value1}
                           fullWidth
-                          placeholder={t('Select date...')}
+                          placeholder={t('选择日期')}
                           {...params}
                         />
                       )}
@@ -368,7 +385,7 @@ function PageHeader() {
                     variant="outlined"
                     onClick={handleCreatePromotionClose}
                   >
-                    {t('Save as draft')}
+                    {t('保存草稿')}
                   </Button>
                   <Button
                     fullWidth={mobile}
@@ -380,7 +397,7 @@ function PageHeader() {
                     variant="contained"
                     size="large"
                   >
-                    {t('Create invoice')}
+                    {t('创建活动')}
                   </Button>
                 </Box>
               </Box>
