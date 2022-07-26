@@ -1,24 +1,21 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { wait } from 'src/utils/wait';
-import numeral from 'numeral';
+import SelectDishTable from 'src/content/Promotions/Overview/SelectDishTable'
+import { useRefMounted } from 'src/hooks/useRefMounted';
 
 import {
   styled,
   Grid,
   Dialog,
   DialogTitle,
-  Chip,
   DialogContent,
   Box,
-  Zoom,
   Typography,
   TextField,
   CircularProgress,
-  Avatar,
-  Autocomplete,
   Button,
   Table,
   TableHead,
@@ -31,12 +28,14 @@ import {
   lighten,
   useTheme,
   useMediaQuery,
-  TableFooter
+  TableFooter,
+  MenuItem
 } from '@mui/material';
 import DatePicker from '@mui/lab/DatePicker';
-import { useSnackbar } from 'notistack';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import { SelectableDish, SelectedDish } from '@/models/promotion';
+import { promotionsApi } from '@/queries/promotions';
 
 const IconButtonError = styled(IconButton)(
   ({ theme }) => `
@@ -50,76 +49,54 @@ const IconButtonError = styled(IconButton)(
 `
 );
 
-interface Item {
-  id: number;
-  name: string;
-  quantity: number;
-  price: number;
-  currency: string;
-}
-
 function PageHeader() {
+  const isMountedRef = useRefMounted();
   const { t }: { t: any } = useTranslation();
   const [open, setOpen] = useState(false);
+  const [selectDishDialogOpen, setSelectDishDialogOpen] = useState(false);
+  const [selectableDishes, setSelectableDishes] = useState<SelectableDish[]>([]);
+  const [selectedDishes, setSelectedDishes] = useState<SelectedDish[]>([]);
+  const [promotionName, setPromotionName] = useState<string>("");
+  const [promotionDesc, setPromotionDesc] = useState<string>("");
+
+  const getSelectableDishes = useCallback(async() => {
+    try {
+      const response = await promotionsApi.getSelectableDishes();
+      if (isMountedRef())
+        setSelectableDishes(response)
+    } catch(err) {
+      console.log(err)
+    }
+  }, [isMountedRef])
+
+  useEffect(() => {
+    getSelectableDishes()
+  }, [getSelectableDishes]);
+
   // const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const itemsList: Item[] = [
-    {
-      id: 1,
-      name: 'Design services for March',
-      quantity: 1,
-      price: 8945,
-      currency: '$'
-    },
-    {
-      id: 2,
-      name: 'Website migration services',
-      quantity: 3,
-      price: 2367,
-      currency: '$'
-    }
-  ];
-
-  const members = [
-    {
-      avatar: '/static/images/avatars/1.jpg',
-      name: 'Maren Lipshutz'
-    },
-    {
-      avatar: '/static/images/avatars/2.jpg',
-      name: 'Zain Vetrovs'
-    },
-    {
-      avatar: '/static/images/avatars/3.jpg',
-      name: 'Hanna Siphron'
-    },
-    {
-      avatar: '/static/images/avatars/4.jpg',
-      name: 'Cristofer Aminoff'
-    },
-    {
-      avatar: '/static/images/avatars/5.jpg',
-      name: 'Maria Calzoni'
-    }
-  ];
-
   const [value, setValue] = useState<Date | null>(null);
   const [value1, setValue1] = useState<Date | null>(null);
 
-  const [items] = useState<Item[]>(itemsList);
-
-  const handleCreateInvoiceOpen = () => {
+  const handleCreatePromotionOpen = () => {
     setOpen(true);
   };
 
-  const handleCreateInvoiceClose = () => {
+  const handleCreatePromotionClose = () => {
     setOpen(false);
   };
 
-  const handleCreateInvoiceSuccess = () => {
+  const handleCreatePromotionSuccess = (title?: string, desc?: string) => {
+    if (title)
+      console.log(title);
+    if (desc)
+      console.log(desc);
+    else
+      console.log('err');
+    console.log(value, value1);
     // enqueueSnackbar(t('A new invoice has been created successfully'), {
     //   variant: 'success',
     //   anchorOrigin: {
@@ -128,7 +105,9 @@ function PageHeader() {
     //   },
     //   TransitionComponent: Zoom
     // });
-
+    setSelectedDishes([]);
+    setValue(null);
+    setValue1(null);
     setOpen(false);
   };
 
@@ -148,7 +127,7 @@ function PageHeader() {
             sx={{
               mt: { xs: 2, sm: 0 }
             }}
-            onClick={handleCreateInvoiceOpen}
+            onClick={handleCreatePromotionOpen}
             variant="contained"
             startIcon={<AddTwoToneIcon fontSize="small" />}
           >
@@ -156,11 +135,16 @@ function PageHeader() {
           </Button>
         </Grid>
       </Grid>
+
+
+
+
+      {/*创建促销弹窗 */}
       <Dialog
         fullWidth
         maxWidth="md"
         open={open}
-        onClose={handleCreateInvoiceClose}
+        onClose={handleCreatePromotionClose}
       >
         <DialogTitle
           sx={{
@@ -176,13 +160,14 @@ function PageHeader() {
         </DialogTitle>
         <Formik
           initialValues={{
-            number: '',
+            title: '',
+            desc: '',
             submit: null
           }}
           validationSchema={Yup.object().shape({
-            number: Yup.string()
+            title: Yup.string()
               .max(255)
-              .required(t('活动名是必填的'))
+              .required(t('活动名是必填的')),
           })}
           onSubmit={async (
             _values,
@@ -193,7 +178,7 @@ function PageHeader() {
               resetForm();
               setStatus({ success: true });
               setSubmitting(false);
-              handleCreateInvoiceSuccess();
+              handleCreatePromotionSuccess(_values.title, _values.desc);
             } catch (err) {
               console.error(err);
               setStatus({ success: false });
@@ -221,70 +206,39 @@ function PageHeader() {
                 <Grid container spacing={3}>
                   <Grid item xs={12} md={6}>
                     <Box pb={1}>
-                      <b>{t('Invoice Number')}:</b>
+                      <b>{t('活动名')}:</b>
                     </Box>
                     <TextField
-                      error={Boolean(touched.number && errors.number)}
+                      error={Boolean(touched.title && errors.title)}
                       fullWidth
-                      helperText={touched.number && errors.number}
-                      name="number"
-                      placeholder={t('Invoice number here...')}
+                      helperText={touched.title && errors.title}
+                      name="title"
+                      placeholder={t('在此处填写活动名称')}
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.number}
+                      value={values.title}
                       variant="outlined"
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <Box pb={1}>
-                      <b>{t('Recipient')}:</b>
+                      <b>{t('活动描述')}:</b>
                     </Box>
-                    <Autocomplete
-                      multiple
-                      sx={{
-                        m: 0
-                      }}
-                      limitTags={2}
-                      // @ts-ignore
-                      getOptionLabel={(option) => option.title}
-                      options={members}
-                      renderOption={(props, option) => (
-                        <li {...props}>
-                          <Avatar
-                            sx={{
-                              mr: 1
-                            }}
-                            src={option.avatar}
-                          />
-                          {option.name}
-                        </li>
-                      )}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          fullWidth
-                          InputLabelProps={{
-                            shrink: true
-                          }}
-                          placeholder={t('Select invoice recipient...')}
-                        />
-                      )}
-                      renderTags={(members, getTagProps) =>
-                        members.map((ev, index: number) => (
-                          <Chip
-                            key={ev.name}
-                            label={ev.name}
-                            {...getTagProps({ index })}
-                            avatar={<Avatar src={ev.avatar} />}
-                          />
-                        ))
-                      }
+                    <TextField
+                      error={Boolean(touched.desc && errors.desc)}
+                      fullWidth
+                      helperText={touched.desc && errors.desc}
+                      name="desc"
+                      placeholder={t('在此处填写活动信息')}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.desc}
+                      variant="outlined"
                     />
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box pb={1}>
-                      <b>{t('Invoice Date')}:</b>
+                      <b>{t('开始时间')}:</b>
                     </Box>
                     <DatePicker
                       value={value}
@@ -293,8 +247,9 @@ function PageHeader() {
                       }}
                       renderInput={(params) => (
                         <TextField
+                          value={value}
                           fullWidth
-                          placeholder={t('Select date...')}
+                          placeholder={t('选择日期')}
                           {...params}
                         />
                       )}
@@ -302,7 +257,7 @@ function PageHeader() {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box pb={1}>
-                      <b>{t('Due Date')}:</b>
+                      <b>{t('结束时间')}:</b>
                     </Box>
                     <DatePicker
                       value={value1}
@@ -311,8 +266,9 @@ function PageHeader() {
                       }}
                       renderInput={(params) => (
                         <TextField
+                          value={value1}
                           fullWidth
-                          placeholder={t('Select date...')}
+                          placeholder={t('选择日期')}
                           {...params}
                         />
                       )}
@@ -324,29 +280,55 @@ function PageHeader() {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>{t('Item')}</TableCell>
-                      <TableCell>{t('Qty')}</TableCell>
-                      <TableCell>{t('Price')}</TableCell>
-                      <TableCell>{t('Total')}</TableCell>
-                      <TableCell align="right">{t('Actions')}</TableCell>
+                      <TableCell>{t('菜品')}</TableCell>
+                      <TableCell>{t('折扣')}</TableCell>
+                      <TableCell>{t('原价')}</TableCell>
+                      <TableCell>{t('折后价')}</TableCell>
+                      <TableCell align="right">{t('操作')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {items.map((item: Item) => (
-                      <TableRow key={item.id}>
+                    {selectedDishes.map((dish) => (
+                      <TableRow key={dish.name}>
                         <TableCell>
-                          <Typography noWrap>{item.name}</Typography>
-                        </TableCell>
-                        <TableCell>{item.quantity}</TableCell>
-                        <TableCell>
-                          {numeral(item.price).format(`${item.currency}0,0.00`)}
+                          <Typography noWrap>{dish.name}</Typography>
                         </TableCell>
                         <TableCell>
-                          {numeral(item.price).format(`${item.currency}0,0.00`)}
+                          <TextField
+                          id="outlined-select-currency"
+                          select
+                          label="折扣"
+                          value={`${dish.discount * 10}`}
+                          onChange={(e) => {
+                            var changeIdx = selectedDishes.findIndex((d) => d.name === dish.name);
+                            var newDishes = [...selectedDishes];
+                            newDishes[changeIdx].discount = Number(e.target.value) / 10;
+                            setSelectedDishes(newDishes);
+                          }}
+                          helperText="在此处选择菜品的折扣幅度"
+                        >
+                          {[9, 8, 7, 6, 5, 4, 3, 2, 1].map((disc) => (
+                            <MenuItem key={disc} value={disc}>
+                              {disc}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                        </TableCell>
+                        <TableCell>
+                          ￥{dish.price}
+                        </TableCell>
+                        <TableCell>
+                          ￥{(dish.price * dish.discount).toFixed(2)}
                         </TableCell>
                         <TableCell align="right">
                           <Tooltip arrow title={t('Delete')}>
-                            <IconButtonError>
+                            <IconButtonError
+                              onClick={() => {
+                                setSelectedDishes(
+                                  selectedDishes.filter((d) => d.name !== dish.name)
+                                )
+                              }}
+                            >
                               <DeleteTwoToneIcon fontSize="small" />
                             </IconButtonError>
                           </Tooltip>
@@ -360,8 +342,9 @@ function PageHeader() {
                         <Button
                           startIcon={<AddTwoToneIcon />}
                           variant="outlined"
+                          onClick={() => setSelectDishDialogOpen(true)}
                         >
-                          {t('Add item')}
+                          {t('添加菜品')}
                         </Button>
                       </TableCell>
                       <TableCell colSpan={4} align="right">
@@ -371,28 +354,16 @@ function PageHeader() {
                           color="text.secondary"
                           fontWeight="bold"
                         >
-                          {t('Total')}:
+                          {t('合计')}:
                         </Typography>
                         <Typography variant="h3" fontWeight="bold">
-                          {numeral(9458).format(`$0,0.00`)}
+                          {selectedDishes.length}种菜品
                         </Typography>
                       </TableCell>
                     </TableRow>
                   </TableFooter>
                 </Table>
               </TableContainer>
-              <Box px={3} pt={3}>
-                <TextField
-                  label={t('Additional informations')}
-                  multiline
-                  placeholder={t(
-                    'Write here any additional informations you might have...'
-                  )}
-                  fullWidth
-                  minRows={3}
-                  maxRows={8}
-                />
-              </Box>
               <Box
                 sx={{
                   display: { xs: 'block', sm: 'flex' },
@@ -402,9 +373,6 @@ function PageHeader() {
                 }}
               >
                 <Box>
-                  <Button fullWidth={mobile} variant="outlined">
-                    {t('Preview invoice')}
-                  </Button>
                 </Box>
                 <Box>
                   <Button
@@ -415,9 +383,9 @@ function PageHeader() {
                     }}
                     color="secondary"
                     variant="outlined"
-                    onClick={handleCreateInvoiceClose}
+                    onClick={handleCreatePromotionClose}
                   >
-                    {t('Save as draft')}
+                    {t('保存草稿')}
                   </Button>
                   <Button
                     fullWidth={mobile}
@@ -429,13 +397,68 @@ function PageHeader() {
                     variant="contained"
                     size="large"
                   >
-                    {t('Create invoice')}
+                    {t('创建活动')}
                   </Button>
                 </Box>
               </Box>
             </form>
           )}
         </Formik>
+      </Dialog>
+
+
+
+      <Dialog
+        fullWidth
+        maxWidth="md"
+        open={selectDishDialogOpen}
+        onClose={() => setSelectDishDialogOpen(false)}
+      >
+        <DialogTitle
+          sx={{
+            p: 3
+          }}
+        >
+          <Typography variant="h4" gutterBottom>
+            {t('选择菜品')}
+          </Typography>
+          <Typography variant="subtitle2">
+            {t('选择参与促销活动的菜品')}
+          </Typography>
+        </DialogTitle>
+          {
+            <>
+              <Box
+                sx={{p:1}}
+              >
+                <SelectDishTable 
+                  selectableDishes={selectableDishes} 
+                  parentSelectedDishes={selectedDishes}
+                  setParentSelectedDishes={setSelectedDishes}
+                  />
+              </Box>
+              <Box
+                sx={{
+                  display: { xs: 'block', sm: 'flex' },
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  p: 3
+                }}
+              >
+                <Box>
+                  <Button
+                    fullWidth={mobile}
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    onClick={() => setSelectDishDialogOpen(false)}
+                  >
+                    {t('确认选择')}
+                  </Button>
+                </Box>
+              </Box>
+              </>
+          }
       </Dialog>
     </>
   );

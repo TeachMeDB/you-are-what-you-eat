@@ -28,7 +28,6 @@ import Label from 'src/components/Label';
 import { Order, OrderStatus } from 'src/models/order';
 import { useTranslation } from 'react-i18next';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 // import BulkActions from 'src/content/Management/Commerce/BulkActions';
 
 interface RecentOrdersTableProps {
@@ -322,18 +321,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                         size="small"
                       >
                         <EditTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title={t('Delete Order')} arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': { background: theme.colors.error.lighter },
-                          color: theme.palette.error.main
-                        }}
-                        color="inherit"
-                        size="small"
-                      >
-                        <DeleteTwoToneIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
                   </TableCell>

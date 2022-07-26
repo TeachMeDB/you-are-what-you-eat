@@ -1,6 +1,7 @@
 import { useState, ReactElement, Ref, forwardRef } from 'react';
 import type { FC, ChangeEvent } from 'react';
 import PropTypes from 'prop-types';
+import { Dispatch, SetStateAction } from 'react';
 
 import {
   Avatar,
@@ -10,8 +11,6 @@ import {
   Grid,
   Slide,
   Divider,
-  Tooltip,
-  IconButton,
   MenuItem,
   Table,
   TableBody,
@@ -30,19 +29,13 @@ import {
   InputAdornment,
   styled
 } from '@mui/material';
-import Link from 'src/components/Link';
 
 import { TransitionProps } from '@mui/material/transitions';
 import CloseIcon from '@mui/icons-material/Close';
-import type { Promotion, PromotionStatus } from 'src/models/promotion'
+import type { SelectableDish, SelectedDish } from '@/models/promotion';
 import { useTranslation } from 'react-i18next';
-import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone';
 import Label from 'src/components/Label';
-import BulkActions from './BulkActions';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-// import { useSnackbar } from 'notistack';
-import { format } from 'date-fns';
 
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -77,11 +70,13 @@ const ButtonError = styled(Button)(
 );
 
 interface ResultsProps {
-  promotions: Promotion[];
+  selectableDishes: SelectableDish[],
+  parentSelectedDishes: SelectedDish[],
+  setParentSelectedDishes: Dispatch<SetStateAction<SelectedDish[]>>
 }
 
 interface Filters {
-  status?: PromotionStatus;
+  tag?: string;
 }
 
 const Transition = forwardRef(function Transition(
@@ -91,37 +86,22 @@ const Transition = forwardRef(function Transition(
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-const getPromotionStatusLabel = (promotionStatus: PromotionStatus): JSX.Element => {
-  const map = {
-    ready: {
-      text: '未开始',
-      color: 'warning'
-    },
-    running: {
-      text: '进行中',
-      color: 'success'
-    },
-    completed: {
-      text: '已结束',
-      color: 'primary'
-    }
-  };
-
-  const { text, color }: any = map[promotionStatus];
-
+const getDishLabel = (tag?: string): JSX.Element => {
   return (
-    <Label color={color}>
-      <b>{text}</b>
+    tag ? (
+    <Label color='primary'>
+      <b>{tag}</b>
     </Label>
+  ) : null 
   );
 };
 
 const applyFilters = (
-  promotions: Promotion[],
+  dishes: SelectableDish[],
   query: string,
   filters: Filters
-): Promotion[] => {
-  return promotions.filter((promotions) => {
+): SelectableDish[] => {
+  return dishes.filter((dish) => {
     let matches = true;
 
     if (query) {
@@ -129,12 +109,12 @@ const applyFilters = (
       let containsQuery = false;
 
       properties.forEach((property) => {
-        if (promotions[property].toLowerCase().includes(query.toLowerCase())) {
+        if (dish[property].toLowerCase().includes(query.toLowerCase())) {
           containsQuery = true;
         }
       });
 
-      if (filters.status && promotions.status !== filters.status) {
+      if (filters.tag && dish.tags.includes(filters.tag)) {
         matches = false;
       }
 
@@ -146,7 +126,7 @@ const applyFilters = (
     Object.keys(filters).forEach((key) => {
       const value = filters[key];
 
-      if (value && promotions[key] !== value) {
+      if (value && dish[key] !== value) {
         matches = false;
       }
     });
@@ -155,16 +135,24 @@ const applyFilters = (
   });
 };
 
+const defaultDiscount = 0.9;
+
 const applyPagination = (
-  promotions: Promotion[],
+  dishes: SelectableDish[],
   page: number,
   limit: number
-): Promotion[] => {
-  return promotions.slice(page * limit, page * limit + limit);
+): SelectableDish[] => {
+  return dishes.slice(page * limit, page * limit + limit);
 };
 
-const Results: FC<ResultsProps> = ({ promotions }) => {
-  const [selectedItems, setSelectedPromotions] = useState<string[]>([]);
+const SelectDishTable: FC<ResultsProps> = ({ 
+    selectableDishes,
+    parentSelectedDishes,
+    setParentSelectedDishes
+ }) => {
+  const [selectedItems, setSelectedItems] = useState<string[]>(
+    parentSelectedDishes.map((dish) => dish.name)
+  );
   const { t }: { t: any } = useTranslation();
   // const { enqueueSnackbar } = useSnackbar();
 
@@ -172,7 +160,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
   const [limit, setLimit] = useState<number>(5);
   const [query, setQuery] = useState<string>('');
   const [filters, setFilters] = useState<Filters>({
-    status: null
+    tag: null
   });
 
   const statusOptions = [
@@ -181,8 +169,8 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
       name: 'Show all'
     },
     {
-      id: 'running',
-      name: t('进行中')
+      id: '甜',
+      name: t('甜')
     },
     {
       id: 'completed',
@@ -212,23 +200,28 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
     }));
   };
 
-  const handleSelectAllPromotions = (
+  const handleSelectAllDishes = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
-    setSelectedPromotions(
-      event.target.checked ? promotions.map((promotion) => promotion.id) : []
+    setSelectedItems(
+      event.target.checked ? selectableDishes.map((dish) => dish.name) : []
     );
   };
 
-  const handleSelectOnePromotion = (
+  const handleSelectOneDish = (
     _event: ChangeEvent<HTMLInputElement>,
-    promotionId: string
+    dishName: string
   ): void => {
-    if (!selectedItems.includes(promotionId)) {
-      setSelectedPromotions((prevSelected) => [...prevSelected, promotionId]);
+    if (!selectedItems.includes(dishName)) {
+      setSelectedItems((prevSelected) => [...prevSelected, dishName]);
+      const price = selectableDishes.find((d) => d.name === dishName).price;
+      setParentSelectedDishes((prevSelect) => [...prevSelect, { name:dishName, discount: 0.9, price: price }]);
     } else {
-      setSelectedPromotions((prevSelected) =>
-        prevSelected.filter((id) => id !== promotionId)
+      setSelectedItems((prevSelected) =>
+        prevSelected.filter((name) => name !== dishName)
+      );
+      setParentSelectedDishes((prevSelected) =>
+        prevSelected.filter((dish) => dish.name !== dishName)
       );
     }
   };
@@ -241,18 +234,13 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
     setLimit(parseInt(event.target.value));
   };
 
-  const filteredPromotions = applyFilters(promotions, query, filters);
-  const paginatedPromotions = applyPagination(filteredPromotions, page, limit);
-  const selectedBulkActions = selectedItems.length > 0;
-  const selectedSomePromotions =
-    selectedItems.length > 0 && selectedItems.length < promotions.length;
-  const selectedAllPromotions = selectedItems.length === promotions.length;
+  const filteredDishes = applyFilters(selectableDishes, query, filters);
+  const paginatedDishes = applyPagination(filteredDishes, page, limit);
+  const selectedSomeDishes =
+    selectedItems.length > 0 && selectedItems.length < selectableDishes.length;
+  const selectedAllDishes = selectedItems.length === selectableDishes.length;
 
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
-
-  const handleConfirmDelete = () => {
-    setOpenConfirmDelete(true);
-  };
 
   const closeConfirmDelete = () => {
     setOpenConfirmDelete(false);
@@ -295,7 +283,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                 m: 0
               }}
               onChange={handleQueryChange}
-              placeholder={t('输入活动名查找活动')}
+              placeholder={t('输入菜品名查找')}
               value={query}
               fullWidth
               variant="outlined"
@@ -305,7 +293,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
             <FormControl fullWidth variant="outlined">
               <InputLabel>{t('Status')}</InputLabel>
               <Select
-                value={filters.status || 'all'}
+                value={filters.tag || 'all'}
                 onChange={handleStatusChange}
                 label={t('Status')}
               >
@@ -322,16 +310,11 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
       <Card>
         <Box pl={2} display="flex" alignItems="center">
           <Checkbox
-            checked={selectedAllPromotions}
-            indeterminate={selectedSomePromotions}
-            onChange={handleSelectAllPromotions}
+            checked={selectedAllDishes}
+            indeterminate={selectedSomeDishes}
+            onChange={handleSelectAllDishes}
           />
-          {selectedBulkActions && (
-            <Box flex={1} p={2}>
-              <BulkActions />
-            </Box>
-          )}
-          {!selectedBulkActions && (
+          {(
             <Box
               flex={1}
               p={2}
@@ -343,11 +326,11 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                 <Typography component="span" variant="subtitle1">
                   {t('已显示')}:
                 </Typography>{' '}
-                <b>{paginatedPromotions.length}</b> <b>{t('个促销活动')}</b>
+                <b>{paginatedDishes.length}</b> <b>{t('个促销活动')}</b>
               </Box>
               <TablePagination
                 component="div"
-                count={filteredPromotions.length}
+                count={filteredDishes.length}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleLimitChange}
                 page={page}
@@ -359,7 +342,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
         </Box>
         <Divider />
 
-        {paginatedPromotions.length === 0 ? (
+        {paginatedDishes.length === 0 ? (
           <Typography
             sx={{
               py: 10
@@ -377,82 +360,46 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>{t('#')}</TableCell>
-                    <TableCell>{t('日期')}</TableCell>
-                    <TableCell>{t('描述')}</TableCell>
-                    <TableCell>{t('状态')}</TableCell>
-                    <TableCell align="center">{t('操作')}</TableCell>
+                    <TableCell>{t('菜品')}</TableCell>
+                    <TableCell>{t('原价')}</TableCell>
+                    <TableCell>{t('类型')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {paginatedPromotions.map((promotion) => {
-                    const isPromotionSelected = selectedItems.includes(
-                      promotion.id
+                  {paginatedDishes.map((dish) => {
+                    const isDishSelected = selectedItems.includes(
+                      dish.name
                     );
                     return (
                       <TableRow
                         hover
-                        key={promotion.id}
-                        selected={isPromotionSelected}
+                        key={dish.name}
+                        selected={isDishSelected}
                       >
                         <TableCell>
                           <Box display="flex" alignItems="center">
                             <Checkbox
-                              checked={isPromotionSelected}
+                              checked={isDishSelected}
                               onChange={(event) =>
-                                handleSelectOnePromotion(event, promotion.id)
+                                handleSelectOneDish(event, dish.name)
                               }
-                              value={isPromotionSelected}
+                              value={isDishSelected}
                             />
                             <Box pl={1}>
                               <Typography noWrap variant="subtitle2">
-                                {promotion.name}
+                                {dish.name}
                               </Typography>
                             </Box>
                           </Box>
                         </TableCell>
                         <TableCell>
                           <Typography noWrap>
-                            {format(promotion.start, 'MMMM dd yyyy')}
-                          </Typography>
-                          <Typography noWrap variant="subtitle1">
-                            {t('截止至')}{' '}
-                            <b>
-                              {format(promotion.end, 'MMMM dd yyyy')}
-                            </b>
+                            {dish.price}
                           </Typography>
                         </TableCell>
                         <TableCell>
-                          <Box display="flex" alignItems="center">
-                            <Typography variant="h5">
-                              {promotion.description}
-                            </Typography>
-                          </Box>
-                        </TableCell>
-                        <TableCell>
                           <Typography noWrap>
-                            {getPromotionStatusLabel(promotion.status)}
-                          </Typography>
-                        </TableCell>
-                        <TableCell align="center">
-                          <Typography noWrap>
-                            <Tooltip title={t('View')} arrow>
-                              <IconButton
-                                component={Link}
-                                href={`/promotions/overview/single/${promotion.id}`}
-                                color="primary"
-                              >
-                                <LaunchTwoToneIcon fontSize="small" />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title={t('Delete')} arrow>
-                              <IconButton
-                                onClick={handleConfirmDelete}
-                                color="primary"
-                              >
-                                <DeleteTwoToneIcon fontSize="small" />
-                              </IconButton>
-                            </Tooltip>
+                            {dish.tags.length > 0 ? getDishLabel(dish.tags[0]) : ''}
                           </Typography>
                         </TableCell>
                       </TableRow>
@@ -464,7 +411,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
             <Box p={2}>
               <TablePagination
                 component="div"
-                count={filteredPromotions.length}
+                count={filteredDishes.length}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleLimitChange}
                 page={page}
@@ -549,12 +496,12 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
   );
 };
 
-Results.propTypes = {
-  promotions: PropTypes.array.isRequired
+SelectDishTable.propTypes = {
+  selectableDishes: PropTypes.array.isRequired
 };
 
-Results.defaultProps = {
-  promotions: []
+SelectDishTable.defaultProps = {
+    selectableDishes: []
 };
 
-export default Results;
+export default SelectDishTable;
