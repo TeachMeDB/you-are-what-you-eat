@@ -66,31 +66,6 @@ class PromotionsApi {
                 status: "ready" as PromotionStatus
             },
             {
-                id: "3",
-                name: "疯狂星期四",
-                start: new Date(),
-                end: new Date(),
-                description: "疯狂星期四嗯嗯啊啊",
-                dishes: [
-                    {
-                        name: '香辣鸡腿堡',
-                        discount: 0.3,
-                        price: 9
-                    },
-                    {
-                        name: '香辣鸡翅',
-                        discount: 0.2,
-                        price: 9
-                    },
-                    {
-                        name: '新奥尔良烤翅',
-                        discount: 0.1,
-                        price: 9
-                    },
-                ],
-                status: "completed" as PromotionStatus
-            },
-            {
                 id: "4",
                 name: "疯狂星期四",
                 start: new Date(),
@@ -121,7 +96,23 @@ class PromotionsApi {
                 start: new Date(),
                 end: new Date(),
                 description: "疯狂星期四嗯嗯啊啊",
-                dishes: [],
+                dishes: [
+                    {
+                        name: '香辣鸡腿堡',
+                        discount: 0.3,
+                        price: 9
+                    },
+                    {
+                        name: '香辣鸡翅',
+                        discount: 0.2,
+                        price: 9
+                    },
+                    {
+                        name: '新奥尔良烤翅',
+                        discount: 0.1,
+                        price: 9
+                    },
+                ],
                 status: "completed" as PromotionStatus
             },
             {
@@ -135,6 +126,15 @@ class PromotionsApi {
             },
             {
                 id: "7",
+                name: "疯狂星期四",
+                start: new Date(),
+                end: new Date(),
+                description: "疯狂星期四嗯嗯啊啊",
+                dishes: [],
+                status: "completed" as PromotionStatus
+            },
+            {
+                id: "8",
                 name: "疯狂星期四",
                 start: new Date(),
                 end: new Date(),

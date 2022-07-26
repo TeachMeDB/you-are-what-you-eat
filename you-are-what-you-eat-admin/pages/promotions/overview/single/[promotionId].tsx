@@ -17,7 +17,7 @@ import InvoiceBody from 'src/content/Promotions/Overview/single/InvoiceBody';
 import PageHeader from 'src/content/Promotions/Overview/single/PageHeader';
 import { promotionsApi } from '@/queries/promotions';
 
-function ManagementInvoicesView() {
+function SinglePromotionView() {
   const isMountedRef = useRefMounted();
 
   const router = useRouter();
@@ -25,7 +25,7 @@ function ManagementInvoicesView() {
   const { promotionId } = router.query;
   // console.log(promotionId);
 
-  const [prmotion, setPrmotion] = useState<Promotion | null>({
+  const [promotion, setPrmotion] = useState<Promotion | null>({
     id: '1',
     name: '',
     start: new Date(),
@@ -51,7 +51,7 @@ function ManagementInvoicesView() {
     getPromotion();
   }, [getPromotion]);
 
-  if (!prmotion) {
+  if (!promotion) {
     return null;
   }
 
@@ -61,7 +61,7 @@ function ManagementInvoicesView() {
         <title>促销活动详情</title>
       </Head>
       <PageTitleWrapper>
-        <PageHeader promotion={prmotion} />
+        <PageHeader promotion={promotion} />
       </PageTitleWrapper>
 
       <Grid
@@ -73,7 +73,7 @@ function ManagementInvoicesView() {
         spacing={3}
       >
         <Grid item xs={12}>
-          <InvoiceBody promotion={prmotion} />
+          <InvoiceBody promotion={promotion} />
         </Grid>
       </Grid>
       <Footer />
@@ -81,8 +81,8 @@ function ManagementInvoicesView() {
   );
 }
 
-ManagementInvoicesView.getLayout = (page) => (
+SinglePromotionView.getLayout = (page) => (
     <SidebarLayout>{page}</SidebarLayout>
 );
 
-export default ManagementInvoicesView;
+export default SinglePromotionView;

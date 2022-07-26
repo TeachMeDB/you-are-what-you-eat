@@ -119,7 +119,7 @@ function PageHeader() {
     setOpen(false);
   };
 
-  const handleCreateInvoiceSuccess = () => {
+  const handleCreatePromotionSuccess = () => {
     // enqueueSnackbar(t('A new invoice has been created successfully'), {
     //   variant: 'success',
     //   anchorOrigin: {
@@ -156,6 +156,9 @@ function PageHeader() {
           </Button>
         </Grid>
       </Grid>
+
+
+
 
       {/*创建促销弹窗 */}
       <Dialog
@@ -195,7 +198,7 @@ function PageHeader() {
               resetForm();
               setStatus({ success: true });
               setSubmitting(false);
-              handleCreateInvoiceSuccess();
+              handleCreatePromotionSuccess();
             } catch (err) {
               console.error(err);
               setStatus({ success: false });
@@ -230,7 +233,7 @@ function PageHeader() {
                       fullWidth
                       helperText={touched.number && errors.number}
                       name="number"
-                      placeholder={t('Invoice number here...')}
+                      placeholder={t('在此处填写活动名称')}
                       onBlur={handleBlur}
                       onChange={handleChange}
                       value={values.number}
@@ -269,7 +272,7 @@ function PageHeader() {
                           InputLabelProps={{
                             shrink: true
                           }}
-                          placeholder={t('Select invoice recipient...')}
+                          placeholder={t('在此处描述活动信息')}
                         />
                       )}
                       renderTags={(members, getTagProps) =>

@@ -418,13 +418,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                           <Typography noWrap variant="subtitle1">
                             {t('截止至')}{' '}
                             <b>
-                              {formatDistance(
-                                promotion.end,
-                                promotion.start,
-                                {
-                                  addSuffix: true
-                                }
-                              )}
+                              {format(promotion.end, 'MMMM dd yyyy')}
                             </b>
                           </Typography>
                         </TableCell>
