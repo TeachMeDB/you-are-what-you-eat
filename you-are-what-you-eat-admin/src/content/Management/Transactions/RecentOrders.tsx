@@ -2,8 +2,31 @@ import { CryptoOrder } from '@/models/crypto_order';
 import RecentOrdersTable from './RecentOrdersTable';
 import OrderSummary from '@/content/Dashboards/Crypto/OrderSummary';
 import { Grid } from '@mui/material';
+import { useState, useEffect, useCallback } from 'react';
+import { useRefMounted } from 'src/hooks/useRefMounted';
+import {queryOrderApi} from 'src/queries/query_order'
 
 function RecentOrders() {
+  const isMountedRef = useRefMounted();
+  const [orderData, setOrderData] = useState<CryptoOrder[]>([]);
+
+  const getOrderData = useCallback(async () => {
+    try {
+      const response = await queryOrderApi.getOrder();
+
+      if (isMountedRef()) {
+        setOrderData(response);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
+
+  useEffect(() => {
+    getOrderData();
+  }, [getOrderData]);
+
+  /*
   const cryptoOrders: CryptoOrder[] = [
     {
       order_id : 'sidfh3f7sdh',
@@ -76,6 +99,7 @@ function RecentOrders() {
       total_price: 9
     }
   ];
+  */
 
   return (  
     <>   
@@ -104,7 +128,7 @@ function RecentOrders() {
             />
           </Grid>
           <Grid item xs={12}>
-            <RecentOrdersTable cryptoOrders={cryptoOrders} />
+            <RecentOrdersTable cryptoOrders={orderData} />
           </Grid>
         </Grid> 
     </>
