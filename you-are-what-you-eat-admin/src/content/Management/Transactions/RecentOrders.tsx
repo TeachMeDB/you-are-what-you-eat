@@ -9,7 +9,7 @@ import { Console } from 'console';
 
 function RecentOrders() {
   const isMountedRef = useRefMounted();
-  const [orderData, setOrderData] = useState<CryptoFullOrder>();
+  const [orderData, setOrderData] = useState<CryptoFullOrder>(null);
 
   const getOrderData = useCallback(async () => {
     try {
@@ -32,6 +32,8 @@ function RecentOrders() {
 
   console.log("--orderData--");
   console.log(orderData);
+  if (!orderData)
+    return null;
 
   return (  
     <>   
