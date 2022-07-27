@@ -9,7 +9,7 @@ import { useState, ChangeEvent, ReactChild, ReactFragment, ReactPortal } from 'r
 
 import ProfileCover from '@/content/HumanResource/Organization/Profile/ProfileCover';
 import QuickLink from '@/content/HumanResource/Organization/Profile/QuickLink';
-import Stuff from '@/content/HumanResource/Organization/Profile/stuff';
+import Stuff from '@/content/HumanResource/Organization/Profile/Stuff';
 import Summary from '@/content/HumanResource/Organization/Profile/Summary';
 
 import SelfManagementTab from '@/content/HumanResource/Organization/SelfManagementTab';

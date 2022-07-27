@@ -39,6 +39,7 @@ import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 
 
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import DetailEmployeePopup from './EmployeeManagement/DetailEmployeePopup';
 
 export interface StuffMember {
   /**
@@ -422,112 +423,6 @@ function EmployeeManagementTab() {
 
                 </Grid>
 
-
-
-
-                {/* <div>
-                    <TextField
-                      id="outlined-select-currency"
-                      select
-                      label="Select"
-                      value={currency}
-                      onChange={handleChange}
-                      helperText="Please select your currency"
-                    >
-                      {currencies.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                    <TextField
-                      id="outlined-select-currency-native"
-                      select
-                      label="Native select"
-                      value={currency}
-                      onChange={handleChange}
-                      SelectProps={{
-                        native: true
-                      }}
-                      helperText="Please select your currency"
-                    >
-                      {currencies.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </div>
-                  <div>
-                    <TextField
-                      id="filled-select-currency"
-                      select
-                      label="Select"
-                      value={currency}
-                      onChange={handleChange}
-                      helperText="Please select your currency"
-                      variant="filled"
-                    >
-                      {currencies.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                    <TextField
-                      id="filled-select-currency-native"
-                      select
-                      label="Native select"
-                      value={currency}
-                      onChange={handleChange}
-                      SelectProps={{
-                        native: true
-                      }}
-                      helperText="Please select your currency"
-                      variant="filled"
-                    >
-                      {currencies.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </div>
-                  <div>
-                    <TextField
-                      id="standard-select-currency"
-                      select
-                      label="Select"
-                      value={currency}
-                      onChange={handleChange}
-                      helperText="Please select your currency"
-                      variant="standard"
-                    >
-                      {currencies.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                    <TextField
-                      id="standard-select-currency-native"
-                      select
-                      label="Native select"
-                      value={currency}
-                      onChange={handleChange}
-                      SelectProps={{
-                        native: true
-                      }}
-                      helperText="Please select your currency"
-                      variant="standard"
-                    >
-                      {currencies.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </div> */}
               </Box>
             </ListItem>
           </List>
@@ -561,6 +456,7 @@ function EmployeeManagementTab() {
                   <TableCell>出勤率</TableCell>
                   <TableCell>获奖次数</TableCell>
                   <TableCell align="right">删除操作</TableCell>
+                  <TableCell align="right">点击查看</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -591,6 +487,10 @@ function EmployeeManagementTab() {
                         </IconButton>
                       </Tooltip>
                     </TableCell>
+                    <TableCell align="right">
+                      <DetailEmployeePopup/>
+                    </TableCell>
+
                   </TableRow>
                 ))}
               </TableBody>
