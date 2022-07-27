@@ -1,10 +1,11 @@
-import { CryptoOrder,CryptoFullOrder } from '@/models/crypto_order';
+import { CryptoOrder,CryptoFullOrder,CryptoSummary } from '@/models/crypto_order';
 import RecentOrdersTable from './RecentOrdersTable';
 import OrderSummary from '@/content/Dashboards/Crypto/OrderSummary';
 import { Grid } from '@mui/material';
 import { useState, useEffect, useCallback } from 'react';
 import { useRefMounted } from 'src/hooks/useRefMounted';
-import {queryOrderApi} from 'src/queries/query_order'
+import { queryOrderApi } from 'src/queries/query_order'
+import { Console } from 'console';
 
 function RecentOrders() {
   const isMountedRef = useRefMounted();
@@ -13,6 +14,9 @@ function RecentOrders() {
   const getOrderData = useCallback(async () => {
     try {
       const response = await queryOrderApi.getOrder();
+
+      console.log("--response--");
+      console.log(response);
 
       if (isMountedRef()) {
         setOrderData(response);
@@ -26,6 +30,8 @@ function RecentOrders() {
     getOrderData();
   }, [getOrderData]);
 
+  console.log("--orderData--");
+  console.log(orderData);
 
   return (  
     <>   
@@ -37,22 +43,10 @@ function RecentOrders() {
           spacing={4}
         >
           <Grid item xs={12}>
-            <OrderSummary 
-            order_count={orderData.order_count}
-            awaiting_count={orderData.awaiting_count}
-            awaiting_credit={orderData.awaiting_credit}
-            processing_count={orderData.processing_count}
-            processing_credit={orderData.processing_credit}
-            completed_count={orderData.completed_count}
-            completed_credit={orderData.completed_credit}
-            payed_count={orderData.payed_count}
-            payed_credit={orderData.payed_credit}
-            total_credit={orderData.total_credit}
-            today_credit={orderData.today_credit}
-            />
+            <OrderSummary cryptoSummary={orderData.summary}/>
           </Grid>
           <Grid item xs={12}>
-            <RecentOrdersTable cryptoOrders={orderData.orders} />
+            <RecentOrdersTable cryptoOrders={orderData.orders}/>
           </Grid>
         </Grid> 
     </>

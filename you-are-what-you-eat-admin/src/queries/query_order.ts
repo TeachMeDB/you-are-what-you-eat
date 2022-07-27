@@ -1,8 +1,25 @@
-import { CryptoOrder } from "@/models/crypto_order";
+import { CryptoFullOrder } from "@/models/crypto_order";
 
 class QueryOrderApi {
-    public getOrder: () => Promise<CryptoOrder[]> = async () => {
-        const data:CryptoOrder[] = [
+    public getOrder: () => Promise<CryptoFullOrder> = async () => {
+        const data:CryptoFullOrder = 
+        {
+          summary:
+          {
+            order_count: 100,
+            awaiting_count: 10,
+            awaiting_credit: 100,
+           processing_count: 25,
+           processing_credit: 100,
+            completed_count: 30,
+            completed_credit: 100,
+            payed_count: 35,
+           payed_credit: 100,
+           total_credit: 100,
+           today_credit: 100
+          },
+          
+          orders:[
             {
                 order_id : 'sidfh3f7sdh',
                 creation_time : '2022-04-27 00:00:00',
@@ -73,7 +90,8 @@ class QueryOrderApi {
                 status: '已支付',
                 total_price: 9
               },
-        ];
+        ]
+      };
 
         return Promise.resolve(data); 
     }

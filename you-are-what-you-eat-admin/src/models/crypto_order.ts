@@ -8,17 +8,22 @@ export interface CryptoOrder {
   total_price: number;
 }
 
+export interface CryptoSummary
+{
+  order_count: number;
+  awaiting_count: number;
+  awaiting_credit: number;
+  processing_count: number;
+  processing_credit: number;
+  completed_count: number;
+  completed_credit: number;
+  payed_count: number;
+  payed_credit: number;
+  total_credit: number;
+  today_credit: number;
+}
+
 export interface CryptoFullOrder{
-  order_count: number,
-  awaiting_count: number,
-  awaiting_credit: number,
-  processing_count: number,
-  processing_credit: number,
-  completed_count: number,
-  completed_credit: number,
-  payed_count: number,
-  payed_credit: number,
-  total_credit: number,
-  today_credit: number,
-  orders:CryptoOrder[]
+  summary:CryptoSummary;
+  orders:CryptoOrder[];
 }
