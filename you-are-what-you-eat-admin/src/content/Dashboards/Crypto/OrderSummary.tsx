@@ -20,6 +20,10 @@ import { Chart } from 'src/components/Chart';
 import type { ApexOptions } from 'apexcharts';
 import Brightness1Icon from '@mui/icons-material/Brightness1';
 
+import { useState, useEffect, useCallback } from 'react';
+import { useRefMounted } from 'src/hooks/useRefMounted';
+import { queryOrderSummaryApi } from '@/queries/query_orderSummary';
+
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.success.main};
@@ -59,8 +63,8 @@ const ListItemAvatarWrapper = styled(ListItemAvatar)(
 export interface SummaryProps
 {
   order_count: number,
-  awating_count: number,
-  awating_credit: number,
+  awaiting_count: number,
+  awaiting_credit: number,
   processing_count: number,
   processing_credit: number,
   completed_count: number,
@@ -73,7 +77,7 @@ export interface SummaryProps
 
 function OrderSummary(props: SummaryProps) {
   const theme = useTheme();
-
+  
   const chartOptions: ApexOptions = {
     chart: {
       background: 'transparent',
@@ -142,7 +146,7 @@ function OrderSummary(props: SummaryProps) {
   };
 
   const chartSeries = [
-    (props.awating_count/props.order_count), 
+    (props.awaiting_count/props.order_count), 
   (props.processing_count/props.order_count), 
   (props.completed_count/props.order_count), 
   (props.payed_count/props.order_count)
@@ -239,7 +243,7 @@ function OrderSummary(props: SummaryProps) {
                     <ListItemText
                       primary="待处理"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary={"￥"+Number(props.awating_credit).toFixed(2).toString()}
+                      secondary={"￥"+Number(props.awaiting_credit).toFixed(2).toString()}
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -247,7 +251,7 @@ function OrderSummary(props: SummaryProps) {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                       {Number(props.awating_count/props.order_count*100).toFixed(1).toString()}%
+                       {Number(props.awaiting_count/props.order_count*100).toFixed(1).toString()}%
                       </Typography>
                     </Box>
                   </ListItem>

@@ -1,4 +1,4 @@
-import { CryptoOrder } from '@/models/crypto_order';
+import { CryptoOrder,CryptoFullOrder } from '@/models/crypto_order';
 import RecentOrdersTable from './RecentOrdersTable';
 import OrderSummary from '@/content/Dashboards/Crypto/OrderSummary';
 import { Grid } from '@mui/material';
@@ -8,7 +8,7 @@ import {queryOrderApi} from 'src/queries/query_order'
 
 function RecentOrders() {
   const isMountedRef = useRefMounted();
-  const [orderData, setOrderData] = useState<CryptoOrder[]>([]);
+  const [orderData, setOrderData] = useState<CryptoFullOrder>();
 
   const getOrderData = useCallback(async () => {
     try {
@@ -25,6 +25,42 @@ function RecentOrders() {
   useEffect(() => {
     getOrderData();
   }, [getOrderData]);
+
+
+  return (  
+    <>   
+    <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={4}
+        >
+          <Grid item xs={12}>
+            <OrderSummary 
+            order_count={orderData.order_count}
+            awaiting_count={orderData.awaiting_count}
+            awaiting_credit={orderData.awaiting_credit}
+            processing_count={orderData.processing_count}
+            processing_credit={orderData.processing_credit}
+            completed_count={orderData.completed_count}
+            completed_credit={orderData.completed_credit}
+            payed_count={orderData.payed_count}
+            payed_credit={orderData.payed_credit}
+            total_credit={orderData.total_credit}
+            today_credit={orderData.today_credit}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <RecentOrdersTable cryptoOrders={orderData.orders} />
+          </Grid>
+        </Grid> 
+    </>
+  );
+}
+
+export default RecentOrders;
+
 
   /*
   const cryptoOrders: CryptoOrder[] = [
@@ -100,39 +136,3 @@ function RecentOrders() {
     }
   ];
   */
-
-  return (  
-    <>   
-    <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          spacing={4}
-        >
-          <Grid item xs={12}>
-            <OrderSummary 
-            
-              order_count= {100}
-              awating_count= {10}
-              awating_credit= {100}
-              processing_count= {25}
-              processing_credit= {100}
-              completed_count= {30}
-              completed_credit= {100}
-              payed_count= {35}
-              payed_credit= {100}
-              total_credit= {100}
-              today_credit= {100}
-            
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <RecentOrdersTable cryptoOrders={orderData} />
-          </Grid>
-        </Grid> 
-    </>
-  );
-}
-
-export default RecentOrders;
