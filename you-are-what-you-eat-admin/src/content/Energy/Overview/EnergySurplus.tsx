@@ -133,7 +133,7 @@ function EnergySurplus() {
             {t('Export')}
           </Button>
         }
-        title={t('能源余量变化情况')}
+        title={t('年度能源用量总览')}
       />
       <Divider />
       <CardContent sx={{ p: 4 }}>
@@ -145,36 +145,10 @@ function EnergySurplus() {
               variant="h4"
               gutterBottom
             >
-              {t('YoY Income')}
+              {t('总用量')}
             </Typography>
             <Typography component="div" variant="h3">
               <small>$</small> 165,594.00
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography
-              component="div"
-              color="text.secondary"
-              variant="h4"
-              gutterBottom
-            >
-              {t('Best Seller')}
-            </Typography>
-            <Typography component="div" noWrap variant="h3">
-              Macbook PRO 14" 2021
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography
-              component="div"
-              color="text.secondary"
-              variant="h4"
-              gutterBottom
-            >
-              {t('Orders Volume')}
-            </Typography>
-            <Typography component="div" variant="h3">
-              45,954
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -186,7 +160,7 @@ function EnergySurplus() {
                 pb: 1
               }}
             >
-              {t('Sales Target')}
+              {t('本月占比')}
             </Typography>
             <Box
               sx={{

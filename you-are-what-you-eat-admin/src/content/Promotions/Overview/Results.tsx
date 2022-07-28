@@ -38,7 +38,7 @@ import type { Promotion, PromotionStatus } from 'src/models/promotion'
 import { useTranslation } from 'react-i18next';
 import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone';
 import Label from 'src/components/Label';
-import BulkActions from './BulkActions';
+// import BulkActions from './BulkActions';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 // import { useSnackbar } from 'notistack';
@@ -243,7 +243,6 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
 
   const filteredPromotions = applyFilters(promotions, query, filters);
   const paginatedPromotions = applyPagination(filteredPromotions, page, limit);
-  const selectedBulkActions = selectedItems.length > 0;
   const selectedSomePromotions =
     selectedItems.length > 0 && selectedItems.length < promotions.length;
   const selectedAllPromotions = selectedItems.length === promotions.length;
@@ -326,12 +325,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
             indeterminate={selectedSomePromotions}
             onChange={handleSelectAllPromotions}
           />
-          {selectedBulkActions && (
-            <Box flex={1} p={2}>
-              <BulkActions />
-            </Box>
-          )}
-          {!selectedBulkActions && (
+          {(
             <Box
               flex={1}
               p={2}
@@ -369,7 +363,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
             color="text.secondary"
             align="center"
           >
-            {t("We couldn't find any invoices matching your search criteria")}
+            {t("当前找不到任何促销活动")}
           </Typography>
         ) : (
           <>
@@ -517,7 +511,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
             color="text.secondary"
             variant="h4"
           >
-            {t("You won't be able to revert after deletion")}
+            {t("这是不可逆的")}
           </Typography>
 
           <Box>

@@ -269,8 +269,12 @@ import { getDayTime } from '@/utils/date';
         </Box>
         <Divider />
         <Box textAlign="center" p={3}>
-          <Button variant="contained" endIcon={<ArrowForwardTwoToneIcon />}>
-            {t('查看完整报告')}
+          <Button 
+            variant="contained" 
+            endIcon={<ArrowForwardTwoToneIcon />}
+            href={"details"}
+            >
+            {t('查看详细报告')}
           </Button>
         </Box>
       </Card>

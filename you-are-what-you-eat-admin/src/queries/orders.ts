@@ -4,7 +4,9 @@ import {
     DishOrderStat,
     OrderReport,
     WeekBestSellerData,
-    ActiveVIP
+    ActiveVIP,
+    OrderDetail,
+    OrderStatus
 } from "@/models/order";
 
 class OrdersApi {
@@ -199,6 +201,33 @@ class OrdersApi {
                 order_credit: 1628
             }
         ]
+
+        return Promise.resolve(data);
+    }
+
+    public getOrderDetail: (order_id: string) => Promise<OrderDetail> = async () => {
+        const data = {
+            order_id: 'ADF7284',
+            table_id: 'A32',
+            creation_time: '2022-7-20 20:00:00',
+            ori_price: 100,
+            final_payment: 95,
+            order_status: 'running' as OrderStatus,
+            dishes: [
+                {
+                    dish_name: '鱼香肉丝',
+                    ori_price: 25,
+                    final_payment: 20,
+                    dish_status: '已完成'
+                },
+                {
+                    dish_name: '清炒包菜',
+                    ori_price: 12,
+                    final_payment: 12,
+                    dish_status: '已完成'
+                }
+            ]
+        }
 
         return Promise.resolve(data);
     }

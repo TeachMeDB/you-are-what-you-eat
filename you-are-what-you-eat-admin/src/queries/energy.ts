@@ -82,106 +82,14 @@ class EnergyApi {
     }
 
     public getOriginalSensorData: () => Promise<OriginalSensorData[]> = async () => {
-        const data = [
-            {
-                sensor_id: 'adaczxc',
-                sensor_type: '电表',
-                sensor_model: 'adfac',
-                sensor_location: 'gdbv',
-                logs: [
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                ]
-            },
-            {
-                sensor_id: 'adfa',
-                sensor_type: '水表',
-                sensor_model: 'adfac',
-                sensor_location: 'gdbv',
-                logs: [
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                ]
-            },
-            {
-                sensor_id: 'fgjkgnh',
-                sensor_type: '燃气',
-                sensor_model: 'adfac',
-                sensor_location: 'gdbv',
-                logs: [
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                    {
-                        time: '2022-7-5 11:35:12',
-                        value: 50
-                    },
-                ]
-            }
-        ]
-
-        return Promise.resolve(data);
+        try {
+            const r = await (await fetch('http://127.0.0.1:4523/m1/1300227-0-default/api/Sensors/rawdata?start=0&end=465401035168')).text();
+            return JSON.parse(r)['data'];
+        } 
+        catch(err) {
+            console.log(err);
+            return null;
+        }
     }
 }
 

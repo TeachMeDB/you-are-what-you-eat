@@ -12,7 +12,7 @@ import { Grid } from '@mui/material';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import type { OriginalSensorData } from 'src/models/energy'
 import { energyApi } from 'src/queries/energy'
-import Results from 'src/content/Energy/Details/AudienceOverview';
+import Results from '@/content/Energy/Details/DetailsTable';
 import { count } from 'src/utils/array'
 
 function SensorDataCards() {
