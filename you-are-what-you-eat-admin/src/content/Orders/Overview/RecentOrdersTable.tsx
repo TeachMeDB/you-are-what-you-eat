@@ -309,7 +309,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                     {getStatusLabel(order.status)}
                   </TableCell>
                   <TableCell align="right">
-                    <Tooltip title={t('Edit Order')} arrow>
+                    <Tooltip title={t('查看订单详情')} arrow>
                       <IconButton
                         sx={{
                           '&:hover': {
@@ -319,6 +319,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                         }}
                         color="inherit"
                         size="small"
+                        href='details/1'
                       >
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>

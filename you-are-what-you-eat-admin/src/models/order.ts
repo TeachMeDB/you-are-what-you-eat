@@ -59,3 +59,18 @@ export interface ActiveVIP {
     order_num: number,
     order_credit: number
 };
+
+export interface OrderDetail {
+    order_id: string,
+    table_id: string,
+    creation_time: string,
+    ori_price: number,
+    final_payment: number,
+    order_status: OrderStatus,
+    dishes: {
+        dish_name: string,
+        ori_price: number,
+        final_payment: number,
+        dish_status: string
+    }[]
+}
