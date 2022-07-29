@@ -69,7 +69,7 @@ function ActiveVIPData(data: ActiveVIP[]) {
       <Divider />
       <Box
         sx={{
-          height: 210
+          height: 300
         }}
       >
         <Scrollbar>

@@ -10,6 +10,7 @@ import OrderReport from '@/content/Orders/Overview/OrderReport';
 import ActiveVIP from '@/content/Orders/Overview/ActiveVIP';
 import RecentOrders from '@/content/Orders/Overview/RecentOrders';
 import StatisticCard from '@/content/Orders/Overview/StatisticCard';
+import Carousel from 'react-material-ui-carousel';
 
 function OrderOverviewContent() {
   return (
@@ -35,16 +36,15 @@ function OrderOverviewContent() {
           <StatisticCard />
         </Grid>
         <Grid item xs={12}>
-          <DishSaleVolume />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <BestSeller />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <OrderReport />
-        </Grid>
-        <Grid item xs={12}>
+        <Carousel
+          autoPlay={false}
+          animation={'slide'}
+          >
           <ActiveVIP />
+          <OrderReport />
+        <BestSeller />
+        <DishSaleVolume />
+        </Carousel>
         </Grid>
       </Grid>
       <Footer />
