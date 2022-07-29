@@ -1,240 +1,42 @@
-import {
-  Typography,
-  Box,
-  Avatar,
-  Card,
-  Grid,
-  useTheme,
-  styled
-} from '@mui/material';
+import { useState, useEffect, useCallback } from 'react';
 
-import { useTranslation } from 'react-i18next';
-import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone';
-import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone';
-import ReceiptTwoToneIcon from '@mui/icons-material/ReceiptTwoTone';
-import SupportTwoToneIcon from '@mui/icons-material/SupportTwoTone';
-import YardTwoToneIcon from '@mui/icons-material/YardTwoTone';
+import { useRefMounted } from 'src/hooks/useRefMounted';
+import type { DailyOrderStatic } from '@/models/order';
+import StatisticCardData from './StatisticCardData';
+import { ordersApi } from '@/queries/orders'
 
-const AvatarWrapper = styled(Avatar)(
-  ({ theme }) => `
-      color:  ${theme.colors.alpha.trueWhite[100]};
-      width: ${theme.spacing(5.5)};
-      height: ${theme.spacing(5.5)};
-`
-);
+function RecentOrdersList() {
+  const isMountedRef = useRefMounted();
+  const [statisticData, setStatisticData] = useState<DailyOrderStatic>({
+    order_num: 0,
+    order_num_change: 0,
+    dish_order_num: 0,
+    dish_order_num_change: 0,
+    turnover: 0,
+    turnover_change: 0
+  });
 
-function StatisticCard() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const getOrdersInTimePeriod = useCallback(async () => {
+    try {
+      const response = await ordersApi.getDailyOrderStatics(new Date(), new Date());
+
+      if (isMountedRef()) {
+        setStatisticData(response);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
+
+  useEffect(() => {
+    getOrdersInTimePeriod();
+  }, [getOrdersInTimePeriod]);
 
   return (
-    <Grid container spacing={4}>
-      <Grid item xs={12} sm={6} md={4}>
-        <Card
-          sx={{
-            px: 3,
-            pb: 6,
-            pt: 3,
-            background: `${theme.colors.gradients.blue4}`
-          }}
-        >
-          <Box display="flex" alignItems="center">
-            <AvatarWrapper
-              sx={{
-                background: `${theme.colors.gradients.blue2}`
-              }}
-            >
-              <ReceiptTwoToneIcon fontSize="small" />
-            </AvatarWrapper>
-            <Typography
-              sx={{
-                ml: 1.5,
-                fontSize: `${theme.typography.pxToRem(15)}`,
-                color: `${theme.colors.alpha.trueWhite[70]}`,
-                fontWeight: 'bold'
-              }}
-              variant="subtitle2"
-              component="div"
-            >
-              {t('今日订单量')}
-            </Typography>
-          </Box>
-          <Box
-            display="flex"
-            alignItems="center"
-            sx={{
-              ml: -2,
-              pt: 2,
-              pb: 1.5,
-              justifyContent: 'center'
-            }}
-          >
-            <ArrowDownwardTwoToneIcon
-              sx={{
-                color: `${theme.colors.error.main}`
-              }}
-            />
-            <Typography
-              sx={{
-                pl: 1,
-                fontSize: `${theme.typography.pxToRem(35)}`,
-                color: `${theme.colors.alpha.trueWhite[100]}`
-              }}
-              variant="h1"
-            >
-              $3,594
-            </Typography>
-          </Box>
-          <Typography
-            align="center"
-            variant="body2"
-            sx={{
-              color: `${theme.colors.alpha.trueWhite[50]}`
-            }}
-            component="div"
-          >
-            <b>+36%</b> from yesterday
-          </Typography>
-        </Card>
-      </Grid>
-      <Grid item xs={12} sm={6} md={4}>
-        <Card
-          sx={{
-            px: 3,
-            pb: 6,
-            pt: 3,
-            background: `${theme.colors.gradients.blue3}`
-          }}
-        >
-          <Box display="flex" alignItems="center">
-            <AvatarWrapper
-              sx={{
-                background: `${theme.colors.gradients.orange1}`
-              }}
-            >
-              <SupportTwoToneIcon fontSize="small" />
-            </AvatarWrapper>
-            <Typography
-              sx={{
-                ml: 1.5,
-                fontSize: `${theme.typography.pxToRem(15)}`,
-                color: `${theme.colors.alpha.trueWhite[70]}`,
-                fontWeight: 'bold'
-              }}
-              variant="subtitle2"
-              component="div"
-            >
-              {t('今日单品销量')}
-            </Typography>
-          </Box>
-          <Box
-            display="flex"
-            alignItems="center"
-            sx={{
-              ml: -2,
-              pt: 2,
-              pb: 1.5,
-              justifyContent: 'center'
-            }}
-          >
-            <ArrowUpwardTwoToneIcon
-              sx={{
-                color: `${theme.colors.success.main}`
-              }}
-            />
-            <Typography
-              sx={{
-                pl: 1,
-                fontSize: `${theme.typography.pxToRem(35)}`,
-                color: `${theme.colors.alpha.trueWhite[100]}`
-              }}
-              variant="h1"
-            >
-              987
-            </Typography>
-          </Box>
-          <Typography
-            align="center"
-            variant="body2"
-            sx={{
-              color: `${theme.colors.alpha.trueWhite[50]}`
-            }}
-            component="div"
-          >
-            <b>+65%</b> from yesterday
-          </Typography>
-        </Card>
-      </Grid>
-      <Grid item xs={12} sm={6} md={4}>
-        <Card
-          sx={{
-            px: 3,
-            pb: 6,
-            pt: 3,
-            background: `${theme.colors.gradients.purple3}`
-          }}
-        >
-          <Box display="flex" alignItems="center">
-            <AvatarWrapper
-              sx={{
-                background: `${theme.colors.gradients.green1}`
-              }}
-            >
-              <YardTwoToneIcon fontSize="small" />
-            </AvatarWrapper>
-            <Typography
-              sx={{
-                ml: 1.5,
-                fontSize: `${theme.typography.pxToRem(15)}`,
-                color: `${theme.colors.alpha.trueWhite[70]}`,
-                fontWeight: 'bold'
-              }}
-              variant="subtitle2"
-              component="div"
-            >
-              {t('今日营业额')}
-            </Typography>
-          </Box>
-          <Box
-            display="flex"
-            alignItems="center"
-            sx={{
-              ml: -2,
-              pt: 2,
-              pb: 1.5,
-              justifyContent: 'center'
-            }}
-          >
-            <ArrowUpwardTwoToneIcon
-              sx={{
-                color: `${theme.colors.success.main}`
-              }}
-            />
-            <Typography
-              sx={{
-                pl: 1,
-                fontSize: `${theme.typography.pxToRem(35)}`,
-                color: `${theme.colors.alpha.trueWhite[100]}`
-              }}
-              variant="h1"
-            >
-              17,865
-            </Typography>
-          </Box>
-          <Typography
-            align="center"
-            variant="body2"
-            sx={{
-              color: `${theme.colors.alpha.trueWhite[50]}`
-            }}
-            component="div"
-          >
-            <b>+22%</b> from yesterday
-          </Typography>
-        </Card>
-      </Grid>
-    </Grid>
+    <>
+      {StatisticCardData(statisticData)}
+    </>
   );
 }
 
-export default StatisticCard;
+export default RecentOrdersList;

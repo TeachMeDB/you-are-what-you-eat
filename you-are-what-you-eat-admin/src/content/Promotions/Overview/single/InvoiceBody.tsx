@@ -21,8 +21,6 @@ import {
 } from '@mui/material';
 import { format } from 'date-fns';
 import numeral from 'numeral';
-// import { useAuth } from 'src/hooks/useAuth';
-import Logo from 'src/components/LogoSign';
 import { useTranslation } from 'react-i18next';
 import DownloadTwoToneIcon from '@mui/icons-material/DownloadTwoTone';
 import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfTwoTone';
@@ -42,12 +40,6 @@ const TableWrapper = styled(Box)(
 `
 );
 
-const LogoWrapper = styled(Box)(
-  () => `
-    width: '52px'
-`
-);
-
 interface PromotionBodyProps {
   promotion: Promotion;
 }
@@ -62,7 +54,6 @@ interface Item {
 
 const InvoiceBody: FC<PromotionBodyProps> = ({ promotion }) => {
   const { t }: { t: any } = useTranslation();
-  // const { user } = useAuth();
 
   const itemsList: Item[] = [
     {
@@ -104,28 +95,6 @@ const InvoiceBody: FC<PromotionBodyProps> = ({ promotion }) => {
               #{promotion.name}
             </Typography>
           </Box>
-          <Box display="flex" flexDirection="column">
-            <LogoWrapper>
-              <Logo />
-            </LogoWrapper>
-            {/* <Typography
-              sx={{
-                py: 2
-              }}
-              variant="h4"
-            >
-              {user.name}
-            </Typography> */}
-            <Typography variant="h5" fontWeight="normal">
-              83 Laurel Lane
-            </Typography>
-            <Typography variant="h5" gutterBottom fontWeight="normal">
-              Fort Walton Beach, FL 32547
-            </Typography>
-            <Typography variant="h5" fontWeight="normal">
-              New York, USA
-            </Typography>
-          </Box>
         </Box>
         <Divider
           sx={{
@@ -134,36 +103,14 @@ const InvoiceBody: FC<PromotionBodyProps> = ({ promotion }) => {
         />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
-            <Typography variant="subtitle2" gutterBottom>
-              {t('Invoice for')}:
-            </Typography>
-            <Typography
-              sx={{
-                pb: 2
-              }}
-              variant="h5"
-            >
-              {promotion.name}
-            </Typography>
-            <Typography variant="h5" fontWeight="normal">
-              519 Bay Meadows Ave.
-            </Typography>
-            <Typography variant="h5" gutterBottom fontWeight="normal">
-              Scotch Plains, NJ 07076
-            </Typography>
-            <Typography variant="h5" fontWeight="normal">
-              New York, USA
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
             <Grid
               container
               spacing={4}
-              justifyContent={{ xs: 'flex-start', sm: 'flex-end' }}
+              // justifyContent={{ xs: 'flex-start', sm: 'flex-end' }}
             >
               <Grid item>
                 <Typography variant="subtitle2" gutterBottom>
-                  {t('Issued on')}:
+                  {t('开始时间')}:
                 </Typography>
                 <Typography
                   sx={{
@@ -176,7 +123,7 @@ const InvoiceBody: FC<PromotionBodyProps> = ({ promotion }) => {
               </Grid>
               <Grid item>
                 <Typography variant="subtitle2" gutterBottom>
-                  {t('Due on')}:
+                  {t('截止时间')}:
                 </Typography>
                 <Typography
                   sx={{
@@ -188,14 +135,17 @@ const InvoiceBody: FC<PromotionBodyProps> = ({ promotion }) => {
                 </Typography>
               </Grid>
             </Grid>
-            <BoxWrapper textAlign="right" mt={1} p={3}>
+            <BoxWrapper textAlign="left" mt={1} p={1}>
               <Typography component="span" variant="h4" fontWeight="normal">
-                {t('Balance due')}:{' '}
-              </Typography>
-              <Typography component="span" variant="h4">
-                {1111}
+                {t('活动详情')}:{' '}
               </Typography>
             </BoxWrapper>
+            <BoxWrapper textAlign="left" mt={1} p={1}>
+              <Typography component="span" variant="h4">
+                {promotion.description}
+              </Typography>
+            </BoxWrapper>
+            
           </Grid>
         </Grid>
 
@@ -204,56 +154,40 @@ const InvoiceBody: FC<PromotionBodyProps> = ({ promotion }) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>{t('Item')}</TableCell>
-                  <TableCell>{t('Qty')}</TableCell>
-                  <TableCell>{t('Price')}</TableCell>
-                  <TableCell>{t('Total')}</TableCell>
+                  <TableCell>{t('菜品')}</TableCell>
+                  <TableCell>{t('折扣')}</TableCell>
+                  <TableCell>{t('原价')}</TableCell>
+                  <TableCell>{t('折后价')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {items.map((item: Item) => (
-                  <TableRow key={item.id}>
+                {promotion.dishes.map((dish) => (
+                  <TableRow key={dish.name}>
                     <TableCell>
-                      <Typography noWrap>{item.name}</Typography>
+                      <Typography noWrap>{dish.name}</Typography>
                     </TableCell>
-                    <TableCell>{item.quantity}</TableCell>
+                    <TableCell>{`${dish.discount * 100}%`}</TableCell>
                     <TableCell>
-                      {numeral(item.price).format(`${item.currency}0,0.00`)}
+                      {dish.price}
                     </TableCell>
                     <TableCell>
-                      {numeral(item.price).format(`${item.currency}0,0.00`)}
+                      {dish.price * (1 - dish.discount)}
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
               <TableFooter>
-                <TableRow>
-                  <TableCell colSpan={0} />
-                  <TableCell colSpan={4} align="right">
-                    <Typography
-                      gutterBottom
-                      variant="caption"
-                      color="text.secondary"
-                      fontWeight="bold"
-                    >
-                      {t('Total')}:
-                    </Typography>
-                    <Typography variant="h3" fontWeight="bold">
-                      {numeral(9458).format(`$0,0.00`)}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
               </TableFooter>
             </Table>
           </TableContainer>
         </TableWrapper>
         <Typography variant="subtitle2" gutterBottom>
-          {t('Additional informations')}
+          {t('当前状态')}
         </Typography>
         <Typography variant="body2">
-          These projects were completed between January and February of 2021.
+          {promotion.status === 'completed' ? '已结束' : promotion.status === 'running' ? '进行中' : '未开始'}
         </Typography>
-        <Tooltip
+        {/* <Tooltip
           placement="top"
           arrow
           title="This functionality will be added in a future release!"
@@ -285,7 +219,7 @@ const InvoiceBody: FC<PromotionBodyProps> = ({ promotion }) => {
               {t('Preview PDF')}
             </Button>
           </Box>
-        </Tooltip>
+        </Tooltip> */}
       </Card>
     </Container>
   );

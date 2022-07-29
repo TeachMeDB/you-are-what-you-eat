@@ -1,146 +1,113 @@
-import { Card } from '@mui/material';
 import { CryptoOrder } from '@/models/crypto_order';
 import RecentOrdersTable from './RecentOrdersTable';
-import { subDays } from 'date-fns';
+import OrderSummary from '@/content/Dashboards/Crypto/OrderSummary';
+import { Grid } from '@mui/material';
 
 function RecentOrders() {
   const cryptoOrders: CryptoOrder[] = [
     {
-      id: '1',
-      orderDetails: 'Fiat Deposit',
-      orderDate: new Date().getTime(),
-      status: 'completed',
-      orderID: 'VUVX709ET7BY',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 34.4565,
-      amount: 56787,
-      cryptoCurrency: 'ETH',
-      currency: '$'
+      order_id : 'sidfh3f7sdh',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'A32',
+      status: '已支付',
+      total_price: 145.14
     },
     {
-      id: '2',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 1).getTime(),
-      status: 'completed',
-      orderID: '23M3UOG65G8K',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 6.58454334,
-      amount: 8734587,
-      cryptoCurrency: 'BTC',
-      currency: '$'
+      order_id : 'hsudfg82dsf',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'B10',
+      status: '已完成',
+      total_price: 98.10
     },
     {
-      id: '3',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 5).getTime(),
-      status: 'failed',
-      orderID: 'F6JHK65MS818',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 6.58454334,
-      amount: 8734587,
-      cryptoCurrency: 'BTC',
-      currency: '$'
+      order_id : '87fehrug2ug',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'C96',
+      status: '已支付',
+      total_price: 39.99
     },
     {
-      id: '4',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 55).getTime(),
-      status: 'completed',
-      orderID: 'QJFAI7N84LGM',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 6.58454334,
-      amount: 8734587,
-      cryptoCurrency: 'BTC',
-      currency: '$'
+      order_id : '7neygfwurtw',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'A02',
+      status: '待处理',
+      total_price: 105.00
     },
     {
-      id: '5',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 56).getTime(),
-      status: 'pending',
-      orderID: 'BO5KFSYGC0YW',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 6.58454334,
-      amount: 8734587,
-      cryptoCurrency: 'BTC',
-      currency: '$'
+      order_id : '7nysdg8sn3a',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'D27',
+      status: '制作中',
+      total_price: 90.50
     },
     {
-      id: '6',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 33).getTime(),
-      status: 'completed',
-      orderID: '6RS606CBMKVQ',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 6.58454334,
-      amount: 8734587,
-      cryptoCurrency: 'BTC',
-      currency: '$'
+      order_id : '283nx8ewyfs',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'A32',
+      status: '已支付',
+      total_price: 9
     },
     {
-      id: '7',
-      orderDetails: 'Fiat Deposit',
-      orderDate: new Date().getTime(),
-      status: 'pending',
-      orderID: '479KUYHOBMJS',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1212',
-      amountCrypto: 2.346546,
-      amount: 234234,
-      cryptoCurrency: 'BTC',
-      currency: '$'
+      order_id : '4783cnyergx',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'A32',
+      status: '制作中',
+      total_price: 9
     },
     {
-      id: '8',
-      orderDetails: 'Paypal Withdraw',
-      orderDate: subDays(new Date(), 22).getTime(),
-      status: 'completed',
-      orderID: 'W67CFZNT71KR',
-      sourceName: 'Paypal Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 3.345456,
-      amount: 34544,
-      cryptoCurrency: 'BTC',
-      currency: '$'
+      order_id : '4nefugng68l',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'A32',
+      status: '已支付',
+      total_price: 9
     },
     {
-      id: '9',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 11).getTime(),
-      status: 'completed',
-      orderID: '63GJ5DJFKS4H',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 2222',
-      amountCrypto: 1.4389567945,
-      amount: 123843,
-      cryptoCurrency: 'BTC',
-      currency: '$'
+      order_id : '9snfsd9dfsf',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'A32',
+      status: '已完成',
+      total_price: 9
     },
     {
-      id: '10',
-      orderDetails: 'Wallet Transfer',
-      orderDate: subDays(new Date(), 123).getTime(),
-      status: 'failed',
-      orderID: '17KRZHY8T05M',
-      sourceName: 'Wallet Transfer',
-      sourceDesc: "John's Cardano Wallet",
-      amountCrypto: 765.5695,
-      amount: 7567,
-      cryptoCurrency: 'ADA',
-      currency: '$'
+      order_id : '12hejhfbdys',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'A32',
+      status: '已支付',
+      total_price: 9
     }
   ];
 
-  return (
-    <Card>
-      <RecentOrdersTable cryptoOrders={cryptoOrders} />
-    </Card>
+  return (  
+    <>   
+    <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={4}
+        >
+          <Grid item xs={12}>
+            <OrderSummary 
+            
+              order_count= {100}
+              awating_count= {10}
+              awating_credit= {100}
+              processing_count= {25}
+              processing_credit= {100}
+              completed_count= {30}
+              completed_credit= {100}
+              payed_count= {35}
+              payed_credit= {100}
+              total_credit= {100}
+              today_credit= {100}
+            
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <RecentOrdersTable cryptoOrders={cryptoOrders} />
+          </Grid>
+        </Grid> 
+    </>
   );
 }
 

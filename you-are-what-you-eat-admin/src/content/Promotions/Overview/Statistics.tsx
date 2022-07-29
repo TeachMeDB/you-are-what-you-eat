@@ -1,9 +1,18 @@
 import { Box, Card, Grid, Typography, styled } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import numeral from 'numeral';
-import Text from 'src/components/Text';
 
-const DotInfo = styled('span')(
+const DotRunning = styled('span')(
+  ({ theme }) => `
+    border-radius: 22px;
+    background: ${theme.colors.success.main};
+    width: ${theme.spacing(1.5)};
+    height: ${theme.spacing(1.5)};
+    display: inline-block;
+    margin-right: ${theme.spacing(0.5)};
+`
+);
+
+const DotCompleted = styled('span')(
   ({ theme }) => `
     border-radius: 22px;
     background: ${theme.colors.info.main};
@@ -14,7 +23,7 @@ const DotInfo = styled('span')(
 `
 );
 
-const DotPending = styled('span')(
+const DotReady = styled('span')(
   ({ theme }) => `
     border-radius: 22px;
     background: ${theme.colors.warning.main};
@@ -25,54 +34,43 @@ const DotPending = styled('span')(
 `
 );
 
-function Statistics() {
+function Statistics( running: number, completed: number, ready: number ) {
   const { t }: { t: any } = useTranslation();
-
-  const data = {
-    currency: '$',
-    totalReceived: '78593',
-    drafts: '16859',
-    pending: '5748'
-  };
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12} md={6}>
-        <Card
+      <Grid item xs={12} md={4}>
+      <Card
           sx={{
+            height: '100%',
             px: 3,
-            py: 4,
+            py: 3,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between'
+            justifyContent: 'center'
           }}
         >
-          <Box
-            display="flex"
-            flex={1}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Typography variant="h2">
-              {numeral(data.totalReceived).format(`${data.currency}0,0.00`)}
-            </Typography>
-          </Box>
-          <Box px={3}>
+          <Box>
             <Typography
-              variant="caption"
-              fontWeight="bold"
-              color="text.primary"
+              variant="body2"
+              color="text.secondary"
               gutterBottom
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                mr: 2
+              }}
             >
-              {t('Total Received')}
+              <DotRunning />
+              {t('进行中')}
             </Typography>
-            <Typography variant="subtitle2">
-              <Text color="success">+50%</Text> {t('increase since last month')}
+            <Typography variant="h3">
+              {running}
             </Typography>
           </Box>
         </Card>
       </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      <Grid item xs={12} sm={6} md={4}>
         <Card
           sx={{
             height: '100%',
@@ -94,16 +92,16 @@ function Statistics() {
                 mr: 2
               }}
             >
-              <DotInfo />
-              {t('In drafts')}
+              <DotReady />
+              {t('未开始')}
             </Typography>
             <Typography variant="h3">
-              {numeral(data.drafts).format(`${data.currency}0,0.00`)}
+              {ready}
             </Typography>
           </Box>
         </Card>
       </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      <Grid item xs={12} sm={6} md={4}>
         <Card
           sx={{
             height: '100%',
@@ -125,11 +123,11 @@ function Statistics() {
                 mr: 2
               }}
             >
-              <DotPending />
-              {t('Pending')}
+              <DotCompleted />
+              {t('已结束')}
             </Typography>
             <Typography variant="h3">
-              {numeral(data.pending).format(`${data.currency}0,0.00`)}
+              {completed}
             </Typography>
           </Box>
         </Card>

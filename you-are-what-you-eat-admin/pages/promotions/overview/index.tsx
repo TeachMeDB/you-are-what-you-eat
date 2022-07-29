@@ -9,64 +9,48 @@ import Statistics from 'src/content/Promotions/Overview/Statistics';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 
 import { Grid } from '@mui/material';
-// import { useRefMounted } from 'src/hooks/useRefMounted';
-// import type { Invoice } from 'src/models/invoice';
-// import { invoicesApi } from 'src/mocks/invoices';
+import { useRefMounted } from 'src/hooks/useRefMounted';
+import type { Promotion } from 'src/models/promotion'
+import { promotionsApi } from 'src/queries/promotions'
 import Results from 'src/content/Promotions/Overview/Results';
-import { PromotionStatus } from '@/models/promotion';
 
-function ManagementInvoices() {
-//   const isMountedRef = useRefMounted();
-  const [invoices, setInvoices] = useState/*<Invoice[]>*/([
-    {
-      id: "1",
-      name: "疯狂星期四",
-      start: new Date(),
-      end: new Date(),
-      description: "疯狂星期四",
-      dishes: [],
-      status: "completed" as PromotionStatus
-  },
-  {
-    id: "2",
-    name: "疯狂星期四",
-    start: new Date(),
-    end: new Date(),
-    description: "疯狂星期四",
-    dishes: [],
-    status: "running" as PromotionStatus
-},
-{
-  id: "3",
-  name: "疯狂星期四",
-  start: new Date(),
-  end: new Date(),
-  description: "疯狂星期四",
-  dishes: [],
-  status: "ready" as PromotionStatus
-}
-  ]);
+function PromotionCard() {
+  const isMountedRef = useRefMounted();
+  const [promotions, setPromotions] = useState<Promotion[]>([]);
 
-//   const getInvoices = useCallback(async () => {
-//     try {
-//       const response = await invoicesApi.getInvoices();
+  const getPromotions = useCallback(async () => {
+    try {
+      const response = await promotionsApi.getAllPromotion();
 
-//       if (isMountedRef()) {
-//         setInvoices(response);
-//       }
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   }, [isMountedRef]);
+      if (isMountedRef()) {
+        setPromotions(response);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
 
-//   useEffect(() => {
-//     getInvoices();
-//   }, [getInvoices]);
+  useEffect(() => {
+    getPromotions();
+  }, [getPromotions]);
+
+  var runningNumber = 0;
+  var completedNumber = 0;
+  var readyNumber = 0;
+
+  promotions.forEach((promotion) => {
+    if (promotion.status === 'completed')
+      completedNumber += 1;
+    else if (promotion.status === 'ready')
+      readyNumber += 1;
+    else
+      runningNumber += 1;
+  });
 
   return (
     <>
       <Head>
-        <title>Invoices - Management</title>
+        <title>促销活动管理</title>
       </Head>
       <PageTitleWrapper>
         <PageHeader />
@@ -81,10 +65,10 @@ function ManagementInvoices() {
         spacing={3}
       >
         <Grid item xs={12}>
-          <Statistics />
+          {Statistics(runningNumber, completedNumber, readyNumber)}
         </Grid>
         <Grid item xs={12}>
-          <Results promotions={invoices} />
+          <Results promotions={promotions} />
         </Grid>
       </Grid>
       <Footer />
@@ -92,8 +76,8 @@ function ManagementInvoices() {
   );
 }
 
-ManagementInvoices.getLayout = (page) => (
+PromotionCard.getLayout = (page) => (
     <SidebarLayout>{page}</SidebarLayout>
 );
 
-export default ManagementInvoices;
+export default PromotionCard;
