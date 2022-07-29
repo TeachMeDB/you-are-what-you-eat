@@ -10,18 +10,18 @@ class EnergyApi {
         const aval = [
             {
                 type: '电',
-                total: 199,
-                available: 199
+                weekly: 199,
+                daily: 15
             },
             {
                 type: '水',
-                total: 158,
-                available: 158
+                weekly: 158,
+                daily: 16
             },
             {
                 type: '燃气',
-                total: 95,
-                available: 95
+                weekly: 95,
+                daily: 8
             },
         ];
 

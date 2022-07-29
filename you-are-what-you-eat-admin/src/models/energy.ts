@@ -1,7 +1,7 @@
 export interface EnergyPanelData {
     type:      string,
-    available: number,
-    total:     number
+    daily: number,
+    weekly:     number
 };
 
 export interface TypeWeekUsage {
