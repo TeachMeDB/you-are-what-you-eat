@@ -7,7 +7,7 @@ import type { ActiveVIP } from '@/models/order';
 import ActiveVIPData from './ActiveVIPData';
 import { ordersApi } from '@/queries/orders'
 
-function ActiveVIP() {
+function ActiveVIPComponent() {
   const isMountedRef = useRefMounted();
   const [activeVIPs, setActiveVIPs] = useState<ActiveVIP[]>([]);
 
@@ -34,4 +34,4 @@ function ActiveVIP() {
   );
 }
 
-export default ActiveVIP;
+export default ActiveVIPComponent;

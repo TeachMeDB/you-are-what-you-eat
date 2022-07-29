@@ -99,7 +99,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
   const statusOptions = [
     {
       id: 'all',
-      name: 'All'
+      name: '全部'
     },
     {
       id: 'completed',
@@ -187,11 +187,11 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
           action={
             <Box width={150}>
               <FormControl fullWidth variant="outlined">
-                <InputLabel>{t('Status')}</InputLabel>
+                <InputLabel>{t('状态')}</InputLabel>
                 <Select
                   value={filters.status || 'all'}
                   onChange={handleStatusChange}
-                  label={t('Status')}
+                  label={t('状态')}
                   autoWidth
                 >
                   {statusOptions.map((statusOption) => (

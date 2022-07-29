@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Card } from '@mui/material';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import type { EnergyPanelData } from '@/models/energy';
 import EnergyPanelUI from './EnergyPanelUI';
@@ -26,9 +25,9 @@ function EnergyPanel() {
   }, [getEnergyPanelData]);
 
   return (
-    <Card>
+    <>
       {EnergyPanelUI(energyPanelData)}
-    </Card>
+    </>
   );
 }
 
