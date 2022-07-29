@@ -2,7 +2,60 @@ import { CryptoVip } from '@/models/crypto_vip';
 import VIPListTable from './VIPListTable';
 import { Grid } from '@mui/material';
 
+import { useState, useEffect, useCallback } from 'react';
+import { useRefMounted } from 'src/hooks/useRefMounted';
+import { queryVipApi } from '@/queries/query_vip';
+
 function VIPPage() {
+  const isMountedRef = useRefMounted();
+  const [vipData, setVipData] = useState<CryptoVip[]>(null);
+
+  const getVipData = useCallback(async () => {
+    try {
+      const response = await queryVipApi.getVip();
+
+      //console.log("--response--");
+      //console.log(response);
+
+      if (isMountedRef()) {
+        setVipData(response);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
+
+  useEffect(() => {
+    getVipData();
+  }, [getVipData]);
+
+  //console.log("--orderData--");
+  //console.log(orderData);
+  if (!vipData)
+    return null;
+
+
+  return (  
+    <>   
+    <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={4}
+        >
+          <Grid item xs={12}>
+            <VIPListTable cryptoVip={vipData} />
+          </Grid>
+        </Grid> 
+    </>
+  );
+}
+
+export default VIPPage;
+
+
+/*
   const CryptoVip: CryptoVip[] = [
     {
       user_name : '田所浩二',
@@ -45,22 +98,4 @@ function VIPPage() {
       credit: 127.5
     }
   ];
-
-  return (  
-    <>   
-    <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          spacing={4}
-        >
-          <Grid item xs={12}>
-            <VIPListTable cryptoVip={CryptoVip} />
-          </Grid>
-        </Grid> 
-    </>
-  );
-}
-
-export default VIPPage;
+*/

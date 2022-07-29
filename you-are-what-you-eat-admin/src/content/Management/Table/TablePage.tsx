@@ -2,8 +2,62 @@ import { CryptoTable } from '@/models/crypto_table';
 import TableListTable from './TableListTable';
 import { Grid } from '@mui/material';
 
+import { useState, useEffect, useCallback } from 'react';
+import { useRefMounted } from 'src/hooks/useRefMounted';
+import { queryTableApi } from '@/queries/query_table';
+
 function TablePage() {
-  const CryptoTable: CryptoTable[] = [
+  
+
+  const isMountedRef = useRefMounted();
+  const [tableData, setTableData] = useState<CryptoTable[]>(null);
+
+  const getVipData = useCallback(async () => {
+    try {
+      const response = await queryTableApi.getTable();
+
+      //console.log("--response--");
+      //console.log(response);
+
+      if (isMountedRef()) {
+        setTableData(response);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
+
+  useEffect(() => {
+    getVipData();
+  }, [getVipData]);
+
+  //console.log("--orderData--");
+  //console.log(orderData);
+  if (!tableData)
+    return null;
+
+
+  return (  
+    <>   
+    <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={4}
+        >
+          <Grid item xs={12}>
+            <TableListTable cryptoTable={tableData} />
+          </Grid>
+        </Grid> 
+    </>
+  );
+}
+
+export default TablePage;
+
+/*
+const CryptoTable: CryptoTable[] = [
     {
       table_id: 1,
       customer_number: 0,
@@ -101,22 +155,4 @@ function TablePage() {
       occupied: '空闲'
     }
   ];
-
-  return (  
-    <>   
-    <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          spacing={4}
-        >
-          <Grid item xs={12}>
-            <TableListTable cryptoTable={CryptoTable} />
-          </Grid>
-        </Grid> 
-    </>
-  );
-}
-
-export default TablePage;
+*/
