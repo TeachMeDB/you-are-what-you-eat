@@ -35,9 +35,9 @@ function RecentOrdersList() {
   }, [getOrdersInTimePeriod]);
 
   return (
-    <Card>
+    <>
       {StatisticCardData(statisticData)}
-    </Card>
+    </>
   );
 }
 

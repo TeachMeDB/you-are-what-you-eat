@@ -26,9 +26,9 @@ function EnergyPanel() {
   }, [getEnergyPanelData]);
 
   return (
-    <Card>
+    <>
       {EnergyPanelUI(energyPanelData)}
-    </Card>
+    </>
   );
 }
 
