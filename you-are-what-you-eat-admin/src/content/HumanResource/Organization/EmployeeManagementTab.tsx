@@ -30,6 +30,8 @@ import {
   CardMedia
 } from '@mui/material';
 
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+
 
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 
@@ -98,11 +100,11 @@ const Input = styled('input')({
 const AvatarWrapper = styled(Card)(
   ({ theme }) => `
 
-    position: relative;
+    position: absolute;
     overflow: visible;
     display: inline-block;
-    margin-top: ${theme.spacing(9)};
-    margin-left: ${theme.spacing(2)};
+    margin-top: ${theme.spacing(5)};
+    //margin-left: ${theme.spacing(2)};
 
     .MuiAvatar-root {
       width: ${theme.spacing(16)};
@@ -183,6 +185,15 @@ function EmployeeManagementTab() {
 
   const [page, setPage] = useState(2);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+
+  const [value, setValue] = useState<Date | null>(
+    new Date('2014-08-18T21:11:54'),
+  );
+
+  const handleChange = (newValue: Date | null) => {
+    setValue(newValue);
+  };
 
   const handleChangePage = (
     _event: MouseEvent<HTMLButtonElement> | null,
@@ -373,7 +384,7 @@ function EmployeeManagementTab() {
                 autoComplete="off"
               >
                 <Grid container direction="row">
-                  <Grid item xs={9}>
+                  <Grid item xs={4}>
                     <Typography variant='h3'> 封面：</Typography>
                     <CardCover>
 
@@ -398,7 +409,7 @@ function EmployeeManagementTab() {
 
                   </Grid>
 
-                  <Grid item xs={2}>
+                  <Grid item xs={4}>
 
                     <Typography variant='h3'> 头像：</Typography>
                     <AvatarWrapper>
@@ -418,6 +429,28 @@ function EmployeeManagementTab() {
                         </label>
                       </ButtonUploadWrapper>
                     </AvatarWrapper>
+
+                    
+
+                  </Grid>
+
+                  <Grid item xs={3}>
+
+                  <Typography variant='h3'> 生日 ：</Typography>
+
+                  <AvatarWrapper>
+
+                  <DesktopDatePicker
+                      label="生日"
+                      inputFormat="MM-dd-yyyy"
+                      value={value}
+                      onChange={handleChange}
+                      renderInput={(params) => <TextField {...params} />}
+                      
+                    />
+
+                  </AvatarWrapper>
+
 
                   </Grid>
 
