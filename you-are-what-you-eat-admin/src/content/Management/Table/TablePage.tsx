@@ -76,9 +76,9 @@ function TablePage() {
            <AccordionDetails>
            <TableSummary2 cryptoSummary2={tableData.summary2}/>
            </AccordionDetails>
-           </Accordion>
-            
+           </Accordion>            
           </Grid>
+
           <Grid item xs={12}>
             <TableListTable cryptoTable={tableData.tables} />
           </Grid>

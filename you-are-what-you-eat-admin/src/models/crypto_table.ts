@@ -27,7 +27,7 @@ export interface CryptoSummary2
   series: Serie[],
   options: 
   {
-    chart: {
+    chart?: {
       type: 'bar',
       height: 350,
       stacked: true,
@@ -38,7 +38,7 @@ export interface CryptoSummary2
         enabled: true
       }
     },
-    responsive: 
+    responsive?: 
     [{
       breakpoint: 480,
       options: {
@@ -49,7 +49,7 @@ export interface CryptoSummary2
         }
       }
     }],
-    plotOptions: 
+    plotOptions?: 
     {
       bar: {
         horizontal: false,
@@ -58,15 +58,15 @@ export interface CryptoSummary2
     },
     xaxis: 
     {
-      type: 'text',
+      type?: 'text',
       categories: string[],
     },
-    legend: 
+    legend?: 
     {
       position: 'right',
       offsetY: 40
     },
-    fill: 
+    fill?: 
     {
       opacity: 1
     }
