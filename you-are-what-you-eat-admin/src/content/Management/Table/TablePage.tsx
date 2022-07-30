@@ -1,15 +1,28 @@
 import { CryptoTable,CryptoSummary,CryptoAllTable } from '@/models/crypto_table';
 import TableListTable from './TableListTable';
-import { Grid } from '@mui/material';
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import { queryTableApi } from '@/queries/query_table';
 
 import TableSummary from './TableSummary';
+import TableSummary2 from './TableSummary2';
+import { 
+  Grid,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  Divider
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function TablePage() {
   
+  const [expanded, setExpanded] = useState<string | false>(false);
+  const handleChange = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
+  }
 
   const isMountedRef = useRefMounted();
   const [tableData, setTableData] = useState<CryptoAllTable>(null);
@@ -50,6 +63,21 @@ function TablePage() {
         >
           <Grid item xs={12}>
             <TableSummary cryptoSummary={tableData.summary}/>
+          </Grid>
+          <Grid item xs={12}>
+          <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')} >
+          <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+          >
+          <Typography><b>查看人数统计</b></Typography>
+           </AccordionSummary>
+           <AccordionDetails>
+           <TableSummary2 cryptoSummary2={tableData.summary2}/>
+           </AccordionDetails>
+           </Accordion>
+            
           </Grid>
           <Grid item xs={12}>
             <TableListTable cryptoTable={tableData.tables} />
