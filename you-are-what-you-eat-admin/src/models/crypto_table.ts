@@ -58,7 +58,7 @@ export interface CryptoSummary2
     },
     xaxis: 
     {
-      type: 'datetime',
+      type: 'text',
       categories: string[],
     },
     legend: 

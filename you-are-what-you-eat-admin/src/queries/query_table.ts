@@ -1,15 +1,4 @@
-import { CryptoSummary,CryptoTable,CryptoAllTable,Serie } from "@/models/crypto_table";
-
-interface ApiQueryProps  //访问Api用的props，主要是summary中options中大部分内容在前端自动填充
-{
-  summary:CryptoSummary;
-  summary2:
-  {
-    series:Serie[];
-    seatInfo:string[];
-  }
-  tables:CryptoTable[];
-}
+import { CryptoAllTable} from "@/models/crypto_table";
 
 class QueryTableApi {
     public getTable: () => Promise<CryptoAllTable> = async () => {
@@ -24,64 +13,64 @@ class QueryTableApi {
             total_customer:514
           },
           summary2:
-  {          
-    series: [
-      {
-      name: '空闲',
-      data: [44, 55, 41, 67]
-    }, 
-    {
-      name: '占用',
-      data: [13, 23, 20, 8]
-    }
-    ],
-    options: 
-    {
-      chart: {
-        type: 'bar',
-        height: 350,
-        stacked: true,
-        toolbar: {
-          show: true
-        },
-        zoom: {
-          enabled: true
-        }
-      },
-      responsive: 
-      [{
-        breakpoint: 480,
-        options: {
-          legend: {
-            position: 'bottom',
-            offsetX: -10,
-            offsetY: 0
-          }
-        }
-      }],
-      plotOptions: 
-      {
-        bar: {
-          horizontal: false,
-          borderRadius: 10
-        },
-      },
-      xaxis: 
-      {
-        type: 'text',
-        categories: ['2人座', '4人座', '6人座', '8人座'],
-      },
-      legend: 
-      {
-        position: 'right',
-        offsetY: 40
-      },
-      fill: 
-      {
-        opacity: 1
-      }
-    },    
-  },
+          {          
+            series: [
+              {
+              name: '空闲',
+              data: [44, 55, 41, 67, 12, 5]
+            }, 
+            {
+              name: '占用',
+              data: [13, 23, 20, 8, 8, 0]
+            }
+            ],
+            options: 
+            {
+              chart: {
+                type: 'bar',
+                height: 350,
+                stacked: true,
+                toolbar: {
+                  show: true
+                },
+                zoom: {
+                  enabled: true
+                }
+              },
+              responsive: 
+              [{
+                breakpoint: 480,
+                options: {
+                  legend: {
+                    position: 'bottom',
+                    offsetX: -10,
+                    offsetY: 0
+                  }
+                }
+              }],
+              plotOptions: 
+              {
+                bar: {
+                  horizontal: false,
+                  borderRadius: 10
+                },
+              },
+              xaxis: 
+              {
+                type: 'text',
+                categories: ["2人座","4人座","6人座","8人座","12人座","16人座"],
+              },
+              legend: 
+              {
+                position: 'right',
+                offsetY: 40
+              },
+              fill: 
+              {
+                opacity: 1
+              }
+            },   
+          },
           tables:
           [
             {
