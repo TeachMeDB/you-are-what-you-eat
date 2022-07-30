@@ -1,4 +1,15 @@
-import { CryptoAllTable } from "@/models/crypto_table";
+import { CryptoSummary,CryptoTable,CryptoAllTable,Serie } from "@/models/crypto_table";
+
+interface ApiQueryProps  //访问Api用的props，主要是summary中options中大部分内容在前端自动填充
+{
+  summary:CryptoSummary;
+  summary2:
+  {
+    series:Serie[];
+    seatInfo:string[];
+  }
+  tables:CryptoTable[];
+}
 
 class QueryTableApi {
     public getTable: () => Promise<CryptoAllTable> = async () => {
@@ -16,20 +27,12 @@ class QueryTableApi {
   {          
     series: [
       {
-      name: '1人客',
-      data: [44, 55, 41, 67, 22, 43]
+      name: '空闲',
+      data: [44, 55, 41, 67]
     }, 
     {
-      name: '2人客',
-      data: [13, 23, 20, 8, 13, 27]
-    }, 
-    {
-      name: '4人客',
-      data: [11, 17, 15, 15, 21, 14]
-    }, 
-    {
-      name: '6人客',
-      data: [21, 7, 25, 13, 22, 8]
+      name: '占用',
+      data: [13, 23, 20, 8]
     }
     ],
     options: 
@@ -65,10 +68,8 @@ class QueryTableApi {
       },
       xaxis: 
       {
-        type: 'datetime',
-        categories: ['01/01/2011 GMT', '01/02/2011 GMT', '01/03/2011 GMT', '01/04/2011 GMT',
-          '01/05/2011 GMT', '01/06/2011 GMT'
-        ],
+        type: 'text',
+        categories: ['2人座', '4人座', '6人座', '8人座'],
       },
       legend: 
       {

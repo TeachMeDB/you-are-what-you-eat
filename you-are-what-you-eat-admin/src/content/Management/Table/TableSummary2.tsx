@@ -35,8 +35,6 @@ const TableSummary2: FC<TableSummaryProps> = ({ cryptoSummary2 }) =>
 {
   const theme = useTheme();
 
-
-
   return (
     <Card>
       <ReactApexChart  options={cryptoSummary2.options} series={cryptoSummary2.series} type="bar" height={350} />

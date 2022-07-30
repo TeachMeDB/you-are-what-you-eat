@@ -71,7 +71,7 @@ function TablePage() {
           aria-controls="panel1a-content"
           id="panel1a-header"
           >
-          <Typography><b>查看人数统计</b></Typography>
+          <Typography><b>按餐桌人数查看</b></Typography>
            </AccordionSummary>
            <AccordionDetails>
            <TableSummary2 cryptoSummary2={tableData.summary2}/>
