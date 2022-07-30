@@ -11,11 +11,14 @@ import Typography from '@mui/material/Typography';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import {useTheme} from '@mui/material';
+import { useState } from 'react';
 
 import { CryptoVip,CryptoVipStatus } from '@/models/crypto_vip';
 import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import DatePicker from '@mui/lab/DatePicker';
+import { useTranslation } from 'react-i18next';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -75,6 +78,11 @@ export default function SignUpVip() {
   };
 
   const theme = useTheme();
+  const { t }: { t: any } = useTranslation();
+
+  const [value_user_name, setValue_user_name] = useState<string | null>(null);
+  const [value_birthday, setValue_birthday] = useState<Date | null>(null);
+  const [value_gender, setValue_gender] = useState<number | null>(null);
 
   return (
     <div>
@@ -107,21 +115,44 @@ export default function SignUpVip() {
              fullWidth
               id="outlined-required"
               label="姓名"
-             defaultValue=''             
+             defaultValue=''
+             value={value_user_name}
+             onChange={(newValue) => {
+              setValue_user_name(newValue);
+            }}             
              />            
-           <TextField
+           {/*<TextField
              required
              fullWidth
               id="outlined-required"
               label="出生日期"
              defaultValue=''
-             />
+              />*/}
+             <DatePicker
+                      value={value_birthday}
+                      onChange={(newValue) => {
+                        setValue_birthday(newValue);
+                      }}
+                      label="出生日期"
+                      renderInput={(params) => (
+                        <TextField
+                          //value={value}
+                          fullWidth
+                          placeholder={t('出生日期')}
+                          {...params}
+                        />
+                      )}
+                    />
            <TextField
              required
              fullWidth
               id="outlined-required"
               label="性别"
              defaultValue=''
+             value={value_gender}
+             onChange={(newValue) => {
+              setValue_gender(newValue);
+            }} 
              />
           </Box>  
           <Button

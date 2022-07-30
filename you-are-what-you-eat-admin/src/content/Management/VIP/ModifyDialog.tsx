@@ -17,6 +17,25 @@ import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import {Select,MenuItem,InputLabel} from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import { wait } from 'src/utils/wait';
+import DatePicker from '@mui/lab/DatePicker';
+import {
+  CircularProgress,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  TableContainer,
+  Tooltip,
+  lighten,
+  useMediaQuery,
+  TableFooter,
+} from '@mui/material';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -92,6 +111,12 @@ export default function ModifyDialog(props: VipProps) {
 
   const theme = useTheme();
 
+  const { t }: { t: any } = useTranslation();
+
+  const [value_user_name, setValue_user_name] = useState<string | null>(null);
+  const [value_birthday, setValue_birthday] = useState<Date | null>(null);
+  const [value_gender, setValue_gender] = useState<number | null>(null);
+
   return (
     <div>
         <IconButton
@@ -107,6 +132,8 @@ export default function ModifyDialog(props: VipProps) {
                 >
             <EditTwoToneIcon fontSize="small" />
         </IconButton>
+
+       
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -159,6 +186,8 @@ export default function ModifyDialog(props: VipProps) {
           </Box>
         </Grid>         
       </BootstrapDialog>
+
+            
     </div>
   );
 }
