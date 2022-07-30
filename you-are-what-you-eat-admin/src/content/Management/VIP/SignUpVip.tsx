@@ -5,20 +5,41 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import {useTheme} from '@mui/material';
-import { useState } from 'react';
 
 import { CryptoVip,CryptoVipStatus } from '@/models/crypto_vip';
 import { Grid } from '@mui/material';
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import DatePicker from '@mui/lab/DatePicker';
 import { useTranslation } from 'react-i18next';
+import { FC, ChangeEvent, useState } from 'react';
+import { format } from 'date-fns';
+import numeral from 'numeral';
+import PropTypes from 'prop-types';
+import {
+  Tooltip,
+  Divider,
+  Box,
+  FormControl,
+  InputLabel,
+  Card,
+  Checkbox,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TableContainer,
+  Select,
+  MenuItem,
+  Typography,
+  useTheme,
+  CardHeader
+} from '@mui/material';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -41,6 +62,23 @@ export interface DialogIDProps{
 
 export interface VipProps{
   info:CryptoVip
+}
+
+type GenderType = '男' | '女';
+
+const statusOptions = [
+  {
+    id: '男',
+    name: '男'
+  },
+  {
+    id: '女',
+    name: '女'
+  }
+];
+
+interface GenderFilter{
+  gender:GenderType;
 }
 
 const BootstrapDialogTitle = (props: DialogTitleProps) => {
@@ -82,7 +120,30 @@ export default function SignUpVip() {
 
   const [value_user_name, setValue_user_name] = useState<string | null>(null);
   const [value_birthday, setValue_birthday] = useState<Date | null>(null);
-  const [value_gender, setValue_gender] = useState<number | null>(null);
+  const [value_gender, setValue_gender] = useState<GenderType>(null);
+  const handleSetUserName = (e: ChangeEvent<HTMLInputElement>): void => {
+    let value = null;
+
+    if (e.target.value !== null) {
+      value = e.target.value;
+    }
+
+    setValue_user_name(value);
+  };
+  const handleSetGender = (e: ChangeEvent<HTMLInputElement>): void => {
+    let value = null;
+
+    if (e.target.value !== null) {
+      value = e.target.value;
+    }
+
+    setValue_gender(value);
+  };
+  const handleSubmitSignUp=()=>{
+    console.log(value_user_name);
+    console.log(value_birthday);
+    console.log(value_gender);
+  }
 
   return (
     <div>
@@ -117,18 +178,28 @@ export default function SignUpVip() {
               label="姓名"
              defaultValue=''
              value={value_user_name}
-             onChange={(newValue) => {
-              setValue_user_name(newValue);
-            }}             
-             />            
-           {/*<TextField
-             required
-             fullWidth
+             onChange={handleSetUserName}             
+             />
+            <FormControl sx={{ m: 2, width: '30ch' }}>
+            <InputLabel>性别</InputLabel>
+            <Select
+              value={value_gender}
+              onChange={handleSetGender}
               id="outlined-required"
-              label="出生日期"
-             defaultValue=''
-              />*/}
-             <DatePicker
+              label="性别"
+              fullWidth
+              required
+
+            >
+              {statusOptions.map((statusOption) => (
+                <MenuItem key={statusOption.id} value={statusOption.id}>
+                  {statusOption.name}
+                </MenuItem>
+              ))}
+            </Select> 
+            </FormControl>
+
+                   <DatePicker
                       value={value_birthday}
                       onChange={(newValue) => {
                         setValue_birthday(newValue);
@@ -143,20 +214,10 @@ export default function SignUpVip() {
                         />
                       )}
                     />
-           <TextField
-             required
-             fullWidth
-              id="outlined-required"
-              label="性别"
-             defaultValue=''
-             value={value_gender}
-             onChange={(newValue) => {
-              setValue_gender(newValue);
-            }} 
-             />
           </Box>  
           <Button
           startIcon={<AddTwoToneIcon fontSize="small" />}
+          onClick={handleSubmitSignUp}
           >
           确认注册
         </Button>     
