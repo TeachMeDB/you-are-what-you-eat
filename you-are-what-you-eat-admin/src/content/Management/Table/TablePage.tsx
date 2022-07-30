@@ -1,4 +1,4 @@
-import { CryptoTable } from '@/models/crypto_table';
+import { CryptoTable,CryptoSummary,CryptoAllTable } from '@/models/crypto_table';
 import TableListTable from './TableListTable';
 import { Grid } from '@mui/material';
 
@@ -6,11 +6,13 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import { queryTableApi } from '@/queries/query_table';
 
+import TableSummary from './TableSummary';
+
 function TablePage() {
   
 
   const isMountedRef = useRefMounted();
-  const [tableData, setTableData] = useState<CryptoTable[]>(null);
+  const [tableData, setTableData] = useState<CryptoAllTable>(null);
 
   const getVipData = useCallback(async () => {
     try {
@@ -47,7 +49,10 @@ function TablePage() {
           spacing={4}
         >
           <Grid item xs={12}>
-            <TableListTable cryptoTable={tableData} />
+            <TableSummary cryptoSummary={tableData.summary}/>
+          </Grid>
+          <Grid item xs={12}>
+            <TableListTable cryptoTable={tableData.tables} />
           </Grid>
         </Grid> 
     </>
