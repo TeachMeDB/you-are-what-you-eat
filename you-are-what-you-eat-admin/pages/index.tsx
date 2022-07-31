@@ -15,6 +15,12 @@ import Head from 'next/head';
 import Logo from 'src/components/LogoSign';
 import Hero from 'src/content/Overview/Hero';
 
+import useRouter from 'next/router';
+
+
+import authorization from '@/utils/authorization';
+
+
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
   width: 100%;
@@ -33,6 +39,38 @@ const OverviewWrapper = styled(Box)(
     overflow-x: hidden;
 `
 );
+
+
+
+
+
+function Casdoor(){
+
+  return (
+        <div>
+
+          <Button
+            component={Link}
+            href={authorization.getSigninUrl()}
+            variant="contained"
+            sx={{ ml: 2 }}
+          >
+            点击跳转Casdoor登陆
+            </Button>
+            <Button
+            component={Link}
+            href={authorization.getSignupUrl()}
+            variant="contained"
+            sx={{ ml: 2 }}
+          >
+            点击跳转Casdoor注册
+            </Button>
+
+        </div>
+    
+  )
+
+}
 
 function Overview() {
   return (
@@ -65,6 +103,10 @@ function Overview() {
           </Box>
         </Container>
       </HeaderWrapper>
+
+
+        <Casdoor/>
+
       <Hero />
       <Container maxWidth="lg" sx={{ mt: 8 }}>
         <Typography textAlign="center" variant="subtitle1">

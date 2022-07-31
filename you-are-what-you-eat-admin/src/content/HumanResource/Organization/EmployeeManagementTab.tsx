@@ -6,12 +6,9 @@ import {
   Grid,
   ListItem,
   List,
-  ListItemText,
   Divider,
   Button,
-  ListItemAvatar,
   Avatar,
-  Switch,
   CardHeader,
   Tooltip,
   IconButton,
@@ -25,69 +22,15 @@ import {
   useTheme,
   styled,
   TextField,
-  CardContent,
-  MenuItem,
   CardMedia
 } from '@mui/material';
 
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-
-
-import BadgeIcon from '@mui/icons-material/Badge';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
-
-
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-
-export interface StuffMember {
-  /**
-   * 本月出勤率
-   */
-  attendance_rate: number;
-  /**
-   * 头像url
-   */
-  avatar: string;
-  /**
-   * 获奖次数
-   */
-  award_times: number;
-  gender: string;
-  id: string;
-  name: string;
-  occupation: string;
-}
-
-
-export interface Level {
-  amount: number;
-  /**
-   * 当前职位人数
-   */
-  count: number;
-  occupation: string;
-}
-
-
-export interface Employee {
-  /**
-   * base64的图片
-   */
-  avater: string;
-  /**
-   * base64的图片
-   */
-  cover: string;
-  gender: string;
-  name: string;
-  occupation: string;
-  /**
-   * 员工密码
-   */
-  password: string;
-}
-
+import DetailEmployeePopup from './EmployeeManagement/DetailEmployeePopup';
 
 
 const Input = styled('input')({
@@ -97,11 +40,11 @@ const Input = styled('input')({
 const AvatarWrapper = styled(Card)(
   ({ theme }) => `
 
-    position: relative;
+    position: absolute;
     overflow: visible;
     display: inline-block;
-    margin-top: ${theme.spacing(9)};
-    margin-left: ${theme.spacing(2)};
+    margin-top: ${theme.spacing(5)};
+    //margin-left: ${theme.spacing(2)};
 
     .MuiAvatar-root {
       width: ${theme.spacing(16)};
@@ -156,32 +99,20 @@ const CardCoverAction = styled(Box)(
 
 
 
-
-// const currencies = [
-//   {
-//     value: 'USD',
-//     label: '$'
-//   },
-//   {
-//     value: 'EUR',
-//     label: '€'
-//   },
-//   {
-//     value: 'BTC',
-//     label: '฿'
-//   },
-//   {
-//     value: 'JPY',
-//     label: '¥'
-//   }
-// ];
-
-
-function EmployeeManagementTab() {
+function EmployeeManagementTab({user}) {
   const theme = useTheme();
 
   const [page, setPage] = useState(2);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+
+  const [value, setValue] = useState<Date | null>(
+    new Date('2014-08-18T21:11:54'),
+  );
+
+  const handleChange = (newValue: Date | null) => {
+    setValue(newValue);
+  };
 
   const handleChangePage = (
     _event: MouseEvent<HTMLButtonElement> | null,
@@ -196,75 +127,6 @@ function EmployeeManagementTab() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-
-  const levels: Level[] = [
-    {
-      "occupation": "consectetur quis labore ut",
-      "amount": 37,
-      "count": 19
-    },
-    {
-      "occupation": "officia esse nulla enim Ut",
-      "amount": 49,
-      "count": 55
-    },
-    {
-      "occupation": "adipisicing",
-      "amount": 8,
-      "count": 23
-    },
-    {
-      "occupation": "ut consectetur irure laborum",
-      "amount": 17,
-      "count": 97
-    },
-    {
-      "occupation": "ea ex",
-      "amount": 94,
-      "count": 9
-    }
-  ];
-
-
-  const employees: StuffMember[] = [
-    {
-      "id": "43",
-      "name": "机每面以利",
-      "gender": "男",
-      "occupation": "ex amet culpa",
-      "attendance_rate": 66,
-      "award_times": 1267057860920,
-      "avatar": "http://dummyimage.com/100x100"
-    },
-    {
-      "id": "42",
-      "name": "引更龙接成真",
-      "gender": "男",
-      "occupation": "voluptate esse",
-      "attendance_rate": 90,
-      "award_times": 1107224790631,
-      "avatar": "http://dummyimage.com/100x100"
-    },
-    {
-      "id": "35",
-      "name": "于政有",
-      "gender": "女",
-      "occupation": "do ut",
-      "attendance_rate": 61,
-      "award_times": 1213420216522,
-      "avatar": "http://dummyimage.com/100x100"
-    },
-    {
-      "id": "29",
-      "name": "进对包",
-      "gender": "女",
-      "occupation": "velit",
-      "attendance_rate": 89,
-      "award_times": 1132758112786,
-      "avatar": "http://dummyimage.com/100x100"
-    }
-  ];
 
   return (
     <Grid container spacing={3}>
@@ -372,7 +234,7 @@ function EmployeeManagementTab() {
                 autoComplete="off"
               >
                 <Grid container direction="row">
-                  <Grid item xs={9}>
+                  <Grid item xs={4}>
                     <Typography variant='h3'> 封面：</Typography>
                     <CardCover>
 
@@ -397,7 +259,7 @@ function EmployeeManagementTab() {
 
                   </Grid>
 
-                  <Grid item xs={2}>
+                  <Grid item xs={4}>
 
                     <Typography variant='h3'> 头像：</Typography>
                     <AvatarWrapper>
@@ -418,116 +280,32 @@ function EmployeeManagementTab() {
                       </ButtonUploadWrapper>
                     </AvatarWrapper>
 
+                    
+
+                  </Grid>
+
+                  <Grid item xs={3}>
+
+                  <Typography variant='h3'> 生日 ：</Typography>
+
+                  <AvatarWrapper>
+
+                  <DesktopDatePicker
+                      label="生日"
+                      inputFormat="MM-dd-yyyy"
+                      value={value}
+                      onChange={handleChange}
+                      renderInput={(params) => <TextField {...params} />}
+                      
+                    />
+
+                  </AvatarWrapper>
+
+
                   </Grid>
 
                 </Grid>
 
-
-
-
-                {/* <div>
-                    <TextField
-                      id="outlined-select-currency"
-                      select
-                      label="Select"
-                      value={currency}
-                      onChange={handleChange}
-                      helperText="Please select your currency"
-                    >
-                      {currencies.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                    <TextField
-                      id="outlined-select-currency-native"
-                      select
-                      label="Native select"
-                      value={currency}
-                      onChange={handleChange}
-                      SelectProps={{
-                        native: true
-                      }}
-                      helperText="Please select your currency"
-                    >
-                      {currencies.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </div>
-                  <div>
-                    <TextField
-                      id="filled-select-currency"
-                      select
-                      label="Select"
-                      value={currency}
-                      onChange={handleChange}
-                      helperText="Please select your currency"
-                      variant="filled"
-                    >
-                      {currencies.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                    <TextField
-                      id="filled-select-currency-native"
-                      select
-                      label="Native select"
-                      value={currency}
-                      onChange={handleChange}
-                      SelectProps={{
-                        native: true
-                      }}
-                      helperText="Please select your currency"
-                      variant="filled"
-                    >
-                      {currencies.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </div>
-                  <div>
-                    <TextField
-                      id="standard-select-currency"
-                      select
-                      label="Select"
-                      value={currency}
-                      onChange={handleChange}
-                      helperText="Please select your currency"
-                      variant="standard"
-                    >
-                      {currencies.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                    <TextField
-                      id="standard-select-currency-native"
-                      select
-                      label="Native select"
-                      value={currency}
-                      onChange={handleChange}
-                      SelectProps={{
-                        native: true
-                      }}
-                      helperText="Please select your currency"
-                      variant="standard"
-                    >
-                      {currencies.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
-                  </div> */}
               </Box>
             </ListItem>
           </List>
@@ -561,6 +339,7 @@ function EmployeeManagementTab() {
                   <TableCell>出勤率</TableCell>
                   <TableCell>获奖次数</TableCell>
                   <TableCell align="right">删除操作</TableCell>
+                  <TableCell align="right">点击查看</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -591,6 +370,10 @@ function EmployeeManagementTab() {
                         </IconButton>
                       </Tooltip>
                     </TableCell>
+                    <TableCell align="right">
+                      <DetailEmployeePopup/>
+                    </TableCell>
+
                   </TableRow>
                 ))}
               </TableBody>
