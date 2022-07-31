@@ -27,8 +27,7 @@ import {
 import Label from 'src/components/Label';
 import { Order, OrderStatus } from 'src/models/order';
 import { useTranslation } from 'react-i18next';
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-// import BulkActions from 'src/content/Management/Commerce/BulkActions';
+import LaunchIcon from '@mui/icons-material/Launch';
 
 interface RecentOrdersTableProps {
   className?: string;
@@ -89,7 +88,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
   const [selectedOrders, setselectedOrders] = useState<string[]>(
     []
   );
-  const selectedBulkActions = selectedOrders.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [filters, setFilters] = useState<Filters>({
@@ -177,12 +175,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
 
   return (
     <Card>
-      {selectedBulkActions && (
-        <Box flex={1} p={2}>
-          {/* <BulkActions /> */}
-        </Box>
-      )}
-      {!selectedBulkActions && (
+      {(
         <CardHeader
           action={
             <Box width={150}>
@@ -299,10 +292,10 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {order.price}
+                      ￥{order.price.toFixed(2)}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" noWrap>
-                      {`优惠 ￥${order.discount_price}`}
+                      {`优惠 ￥${order.discount_price.toFixed(2)}`}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
@@ -319,9 +312,9 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                         }}
                         color="inherit"
                         size="small"
-                        href='details/1'
+                        href={`details/${order.id}`}
                       >
-                        <EditTwoToneIcon fontSize="small" />
+                        <LaunchIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
                   </TableCell>

@@ -4,7 +4,6 @@ import {
     CardHeader,
     Typography,
     CircularProgress,
-    Button,
     ListItemAvatar,
     ListItemText,
     alpha,
@@ -160,11 +159,6 @@ import {
             component: 'h4',
             variant: 'h3'
           }}
-          action={
-            <Button size="small" variant="text">
-              {'View all'}
-            </Button>
-          }
           title={t('销量最佳')}
         />
         <Divider />
@@ -245,7 +239,7 @@ import {
           component="h6"
           variant="caption"
         >
-          {t('Top Sellers')}
+          {t('销量最佳')}
         </Typography>
         <Box
           sx={{
@@ -352,7 +346,7 @@ import {
                           <Label color="secondary">
                             <b>{item.order_num}</b>
                           </Label>{' '}
-                          {t('confirmed sales')}
+                          {t('份售出')}
                         </Box>
                       </>
                     }
@@ -362,7 +356,7 @@ import {
                     }}
                   />
                   <Typography variant="subtitle2" fontWeight="bold">
-                    ${item.total_cred}
+                    ￥{item.total_cred}
                   </Typography>
                 </ListItem>
               ))}
