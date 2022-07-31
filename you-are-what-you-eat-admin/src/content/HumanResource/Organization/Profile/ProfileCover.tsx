@@ -85,7 +85,7 @@ const CardCoverAction = styled(Box)(
 
 
 
-const ProfileCover = ({user}) => {
+const ProfileCover = ({user}:{user:EmployeeDetail}) => {
 
   return (
     <>

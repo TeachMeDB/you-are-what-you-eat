@@ -1,3 +1,4 @@
+import { EmployeeDetail } from '@/models/employee';
 import {
     Typography,
     Card,
@@ -22,7 +23,7 @@ const ListWrapper = styled(List)(
   `
 );
 
-function QuickLink({user}) {
+function QuickLink({user}:{user:EmployeeDetail}) {
     const theme = useTheme();
 
     return (

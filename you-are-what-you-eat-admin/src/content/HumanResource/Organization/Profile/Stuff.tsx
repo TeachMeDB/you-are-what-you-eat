@@ -43,8 +43,7 @@ const initial_employees:EmployeeEntity[] = [
 
 
 
-function Stuff({user}) {
-
+function Stuff({user}:{user:EmployeeDetail}) {
 
   const isMountedRef = useRefMounted();
   const [employees, setEmployees] = useState<EmployeeEntity[]>(initial_employees);
@@ -89,7 +88,7 @@ function Stuff({user}) {
             <Divider />
             <Box p={2}>
                 <Grid container spacing={0}>
-                    {employees.map((stuff:StuffMember) => (
+                    {employees.map((stuff:EmployeeEntity) => (
                         <Grid key={stuff.id} item xs={12} sm={6} lg={4}>
                             <Box p={3} display="flex" alignItems="flex-start">
                                 <Avatar src={stuff.avatar} />

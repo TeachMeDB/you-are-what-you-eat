@@ -12,6 +12,7 @@ import {
 import WorkIcon from '@mui/icons-material/Work';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import { EmployeeDetail, Prize } from '@/models/employee';
 
 const AvatarPrimary = styled(Avatar)(
     ({ theme }) => `
@@ -23,49 +24,9 @@ const AvatarPrimary = styled(Avatar)(
 );
 
 
+function Summary({user}:{user:EmployeeDetail}) {
 
 
-export abstract class Employee {
-    attends: Attend[];
-    /**
-     * 头像url
-     */
-    avatar: string;
-    cover: string;
-    gender: string;
-    id: string;
-    name: string;
-    occupation: string;
-    payrolls: Payroll[];
-    prizes: Prize[];
-}
-
-export interface Attend {
-    /**
-     * 是否出勤
-     */
-    attendance: boolean;
-    place: string;
-    plan_id: string;
-    time_end: string;
-    time_start: string;
-}
-
-export interface Payroll {
-    amount: number;
-    pay_datetime: string;
-}
-
-export interface Prize {
-    amount: number;
-    level: string;
-    prize_datetime: string;
-}
-
-
-
-
-function Summary({user}) {
     const theme = useTheme();
 
     return (
