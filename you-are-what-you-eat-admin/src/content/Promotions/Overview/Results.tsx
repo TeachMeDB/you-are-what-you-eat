@@ -178,7 +178,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
   const statusOptions = [
     {
       id: 'all',
-      name: 'Show all'
+      name: '全部'
     },
     {
       id: 'running',
@@ -302,7 +302,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
           </Grid>
           <Grid item xs={12} lg={5} md={6}>
             <FormControl fullWidth variant="outlined">
-              <InputLabel>{t('Status')}</InputLabel>
+              <InputLabel>{t('活动状态')}</InputLabel>
               <Select
                 value={filters.status || 'all'}
                 onChange={handleStatusChange}
@@ -430,7 +430,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                         </TableCell>
                         <TableCell align="center">
                           <Typography noWrap>
-                            <Tooltip title={t('View')} arrow>
+                            <Tooltip title={t('查看详情')} arrow>
                               <IconButton
                                 component={Link}
                                 href={`/promotions/overview/single/${promotion.id}`}
@@ -439,8 +439,9 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                                 <LaunchTwoToneIcon fontSize="small" />
                               </IconButton>
                             </Tooltip>
-                            <Tooltip title={t('Delete')} arrow>
+                            <Tooltip title={t('删除活动')} arrow>
                               <IconButton
+                                disabled={promotion.status === 'running'}
                                 onClick={handleConfirmDelete}
                                 color="primary"
                               >
@@ -497,7 +498,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
             }}
             variant="h3"
           >
-            {t('你确定要删除该促销活动吗？')}?
+            {t('你确定要删除该促销活动吗？')}
           </Typography>
 
           <Typography
@@ -511,7 +512,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
             color="text.secondary"
             variant="h4"
           >
-            {t("这是不可逆的")}
+            {t("此操作是不可逆的")}
           </Typography>
 
           <Box>
@@ -523,7 +524,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
               }}
               onClick={closeConfirmDelete}
             >
-              {t('Cancel')}
+              {t('再想想')}
             </Button>
             <ButtonError
               onClick={handleDeleteCompleted}
@@ -534,7 +535,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
               }}
               variant="contained"
             >
-              {t('Delete')}
+              {t('确认删除')}
             </ButtonError>
           </Box>
         </Box>

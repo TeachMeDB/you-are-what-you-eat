@@ -52,7 +52,7 @@ const PageHeader: FC<PageHeaderProps> = ({ promotion }) => {
                 <Link color="inherit" href="#">
                   {t('Home')}
                 </Link>
-                <Link color="inherit" href="#">
+                <Link color="inherit" href="/promotions/overview">
                   {t('促销活动管理')}
                 </Link>
                 <Link color="inherit" href="#">
@@ -73,7 +73,7 @@ const PageHeader: FC<PageHeaderProps> = ({ promotion }) => {
             href="/promotions/overview"
             variant="contained"
           >
-            {t('View all invoices')}
+            {t('查看全部促销活动')}
           </Button>
         </Grid>
       </Grid>

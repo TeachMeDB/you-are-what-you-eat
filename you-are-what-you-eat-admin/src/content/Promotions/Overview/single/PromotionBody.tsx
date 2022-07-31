@@ -168,10 +168,10 @@ const InvoiceBody: FC<PromotionBodyProps> = ({ promotion }) => {
                     </TableCell>
                     <TableCell>{`${dish.discount * 100}%`}</TableCell>
                     <TableCell>
-                      {dish.price}
+                      ￥{dish.price.toFixed(2)}
                     </TableCell>
                     <TableCell>
-                      {dish.price * (1 - dish.discount)}
+                      ￥{(dish.price * (1 - dish.discount)).toFixed(2)}
                     </TableCell>
                   </TableRow>
                 ))}

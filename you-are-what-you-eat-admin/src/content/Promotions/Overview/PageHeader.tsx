@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { wait } from 'src/utils/wait';
 import SelectDishTable from 'src/content/Promotions/Overview/SelectDishTable'
 import { useRefMounted } from 'src/hooks/useRefMounted';
+import { getDayTime } from '@/utils/date';
 
 import {
   styled,
@@ -56,8 +57,6 @@ function PageHeader() {
   const [selectDishDialogOpen, setSelectDishDialogOpen] = useState(false);
   const [selectableDishes, setSelectableDishes] = useState<SelectableDish[]>([]);
   const [selectedDishes, setSelectedDishes] = useState<SelectedDish[]>([]);
-  const [promotionName, setPromotionName] = useState<string>("");
-  const [promotionDesc, setPromotionDesc] = useState<string>("");
 
   const getSelectableDishes = useCallback(async() => {
     try {
@@ -78,8 +77,8 @@ function PageHeader() {
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const [value, setValue] = useState<Date | null>(null);
-  const [value1, setValue1] = useState<Date | null>(null);
+  const [value, setValue] = useState<Date | null>(new Date());
+  const [value1, setValue1] = useState<Date | null>(new Date(getDayTime(new Date(), 1, '')));
 
   const handleCreatePromotionOpen = () => {
     setOpen(true);
