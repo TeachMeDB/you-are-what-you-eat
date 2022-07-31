@@ -13,7 +13,7 @@ import { Grid } from '@mui/material';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import type { Promotion } from 'src/models/promotion';
 
-import InvoiceBody from 'src/content/Promotions/Overview/single/InvoiceBody';
+import InvoiceBody from '@/content/Promotions/Overview/single/PromotionBody';
 import PageHeader from 'src/content/Promotions/Overview/single/PageHeader';
 import { promotionsApi } from '@/queries/promotions';
 

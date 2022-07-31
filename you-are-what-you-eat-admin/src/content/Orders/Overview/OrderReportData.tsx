@@ -33,11 +33,6 @@ import {
             component: 'h4',
             variant: 'h3'
           }}
-          action={
-            <Button size="small" variant="text">
-              {'View all'}
-            </Button>
-          }
           title={t('订单报告')}
         />
         <Divider />
@@ -62,7 +57,7 @@ import {
                 {t('早餐订单数')}
               </Typography>
               <Typography variant="subtitle2">
-                {t('Monthly sales reports')}
+                {t('Breakfast order number')}
               </Typography>
             </Box>
             <Text color="warning">
@@ -83,7 +78,7 @@ import {
                 {t('早餐营业额')}
               </Typography>
               <Typography variant="subtitle2">
-                {t('Last month targets')}
+                {t('Breakfast turnovers')}
               </Typography>
             </Box>
             <Text color="warning">
@@ -113,7 +108,7 @@ import {
                 {t('午餐订单数')}
               </Typography>
               <Typography variant="subtitle2">
-                {t('Visitors last week')}
+                {t('Lunch order number')}
               </Typography>
             </Box>
             <Text color="success">
@@ -133,7 +128,7 @@ import {
               <Typography gutterBottom variant="h4">
                 {t('午餐营业额')}
               </Typography>
-              <Typography variant="subtitle2">{t("Week's expenses")}</Typography>
+              <Typography variant="subtitle2">{t("Lunch turnovers")}</Typography>
             </Box>
             <Text color="success">
               <Typography variant="h4">{`￥${data.lunch_turnover}`}</Typography>
@@ -162,7 +157,7 @@ import {
                 {t('晚餐订单数')}
               </Typography>
               <Typography variant="subtitle2">
-                {t('Total average weekly report')}
+                {t('Dinner order number')}
               </Typography>
             </Box>
             <Text color="primary">
@@ -183,7 +178,7 @@ import {
                 {t('晚餐营业额')}
               </Typography>
               <Typography variant="subtitle2">
-                {t('Total products ordered')}
+                {t('Dinner turnovers')}
               </Typography>
             </Box>
             <Text color="primary">
@@ -206,8 +201,9 @@ import {
             color="primary"
             variant="contained"
             endIcon={<ArrowForwardTwoToneIcon />}
+            href={'#'}
           >
-            {t('View details')}
+            {t('查看详情')}
           </Button>
         </CardWrapper>
       </Card>

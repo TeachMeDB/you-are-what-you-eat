@@ -19,7 +19,6 @@ import Scrollbar from 'src/components/Scrollbar';
 
 import { useTranslation } from 'react-i18next';
 import Text from 'src/components/Text';
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
 import type { ActiveVIP } from '@/models/order';
 
 const DotLegend = styled('span')(
@@ -196,22 +195,6 @@ function ActiveVIPData(data: ActiveVIP[]) {
         </Scrollbar>
       </Box>
       <Divider />
-      <Box
-        sx={{
-          background: `${theme.colors.alpha.black[5]}`,
-          textAlign: 'center'
-        }}
-        p={2}
-      >
-        <Button
-          size="small"
-          color="primary"
-          variant="contained"
-          endIcon={<ArrowForwardTwoToneIcon />}
-        >
-          {t('View all participants')}
-        </Button>
-      </Box>
     </Card>
   );
 }
