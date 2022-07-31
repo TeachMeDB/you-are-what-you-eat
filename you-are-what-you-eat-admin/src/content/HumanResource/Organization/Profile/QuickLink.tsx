@@ -22,7 +22,7 @@ const ListWrapper = styled(List)(
   `
 );
 
-function QuickLink() {
+function QuickLink({user}) {
     const theme = useTheme();
 
     return (

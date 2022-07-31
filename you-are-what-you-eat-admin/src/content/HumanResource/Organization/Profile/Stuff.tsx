@@ -1,3 +1,6 @@
+import { useRefMounted } from '@/hooks/useRefMounted';
+import { EmployeeDetail, EmployeeEntity } from '@/models/employee';
+import { humanResourceApi } from '@/queries/employee';
 import {
     Box,
     Typography,
@@ -10,31 +13,57 @@ import {
 } from '@mui/material';
 
 
-import { useState, MouseEvent, ChangeEvent } from 'react';
-
-export interface StuffMember {
-    /**
-     * 本月出勤率
-     */
-    attendance_rate: number;
-    /**
-     * 头像url
-     */
-    avatar: string;
-    /**
-     * 获奖次数
-     */
-    award_times: number;
-    gender: string;
-    id: string;
-    name: string;
-    occupation: string;
-}
+import { useState, MouseEvent, ChangeEvent, useCallback, useEffect } from 'react';
 
 
 
 
-function Stuff() {
+const initial_employees:EmployeeEntity[] = [
+    {
+      "id": "82",
+      "name": "学给机问达",
+      "gender": "男",
+      "occupation": "enim proident sint dolore ut",
+      "birthday": "2000-01-01",
+      "attendance_rate": 13,
+      "award_times": 328770130185,
+      "avatar": "http://dummyimage.com/100x100"
+    },
+    {
+      "id": "95",
+      "name": "果务系共产报交",
+      "gender": "男",
+      "occupation": "esse",
+      "birthday": "2002-04-01",
+      "attendance_rate": 52,
+      "award_times": 1458028243810,
+      "avatar": "http://dummyimage.com/100x100"
+    }
+];
+
+
+
+function Stuff({user}) {
+
+
+  const isMountedRef = useRefMounted();
+  const [employees, setEmployees] = useState<EmployeeEntity[]>(initial_employees);
+
+  const getEmployees = useCallback(async () => {
+    try {
+      const response = await humanResourceApi.getEmployees();
+
+      if (isMountedRef()) {
+        setEmployees(response);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
+
+  useEffect(() => {
+    getEmployees();
+  }, [getEmployees]);
 
 
   const [page, setPage] = useState(2);
@@ -53,47 +82,6 @@ function Stuff() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-
-
-    const employees:StuffMember[] = [
-        {
-            "id": "43",
-            "name": "机每面以利",
-            "gender": "男",
-            "occupation": "ex amet culpa",
-            "attendance_rate": 66,
-            "award_times": 1267057860920,
-            "avatar": "http://dummyimage.com/100x100"
-        },
-        {
-            "id": "42",
-            "name": "引更龙接成真",
-            "gender": "男",
-            "occupation": "voluptate esse",
-            "attendance_rate": 90,
-            "award_times": 1107224790631,
-            "avatar": "http://dummyimage.com/100x100"
-        },
-        {
-            "id": "35",
-            "name": "于政有",
-            "gender": "女",
-            "occupation": "do ut",
-            "attendance_rate": 61,
-            "award_times": 1213420216522,
-            "avatar": "http://dummyimage.com/100x100"
-        },
-        {
-            "id": "29",
-            "name": "进对包",
-            "gender": "女",
-            "occupation": "velit",
-            "attendance_rate": 89,
-            "award_times": 1132758112786,
-            "avatar": "http://dummyimage.com/100x100"
-        }
-    ]
 
     return (
         <Card>

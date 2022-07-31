@@ -1,4 +1,5 @@
-
+import {frontendURL} from "./config"
+import {authorizationURL} from "./config"
 
 export interface CasdoorSdkConfig {
     serverUrl: string, // your Casdoor server URL, e.g., "https://door.casbin.com" for the official demo site
@@ -26,7 +27,9 @@ export interface Account {
 }
 
 
-const frontend:string="http://localhost:3000";
+
+
+const frontend:string=frontendURL;
 
 
 
@@ -84,7 +87,7 @@ class CasdoorSdk {
 
 
 const sdkConfig: CasdoorSdkConfig =({
-    serverUrl: "http://120.55.47.55:8001 ",
+    serverUrl: authorizationURL,
     clientId: "82737aac8ec89315c220",
     appName: "application_dbks",
     organizationName: "organization_dbks",

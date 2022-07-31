@@ -188,7 +188,7 @@ const CardCoverAction = styled(Box)(
 // ];
 
 
-function PrizeManagementTab() {
+function PrizeManagementTab({user}) {
 
   const [page, setPage] = useState(2);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -199,6 +199,8 @@ function PrizeManagementTab() {
   ) => {
     setPage(newPage);
   };
+
+  
 
 
   const handleChangeRowsPerPage = (
