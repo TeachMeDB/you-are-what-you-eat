@@ -71,7 +71,7 @@ import {
                 justifyContent: 'center'
               }}
             >
-              {dailyOrderStatic.order_num_change < 0 ? (<ArrowDownwardTwoToneIcon
+              {dailyOrderStatic.order_num_change > dailyOrderStatic.order_num ? (<ArrowDownwardTwoToneIcon
                 sx={{
                   color: `${theme.colors.error.main}`
                 }}
@@ -99,7 +99,7 @@ import {
               }}
               component="div"
             >
-              相比昨日变化 <b>{`${ dailyOrderStatic.order_num_change * 100 }%`}</b>
+              昨日： <b>{`${ dailyOrderStatic.order_num_change }`}</b>
             </Typography>
           </Card>
         </Grid>
@@ -143,7 +143,7 @@ import {
                 justifyContent: 'center'
               }}
             >
-              {dailyOrderStatic.dish_order_num_change < 0 ? (<ArrowDownwardTwoToneIcon
+              {dailyOrderStatic.dish_order_num_change > dailyOrderStatic.dish_order_num ? (<ArrowDownwardTwoToneIcon
                 sx={{
                   color: `${theme.colors.error.main}`
                 }}
@@ -171,7 +171,7 @@ import {
               }}
               component="div"
             >
-              相比昨日变化 <b>{`${ dailyOrderStatic.dish_order_num_change * 100 }%`}</b>
+              昨日： <b>{`${ dailyOrderStatic.dish_order_num_change}`}</b>
             </Typography>
           </Card>
         </Grid>
@@ -215,7 +215,7 @@ import {
                 justifyContent: 'center'
               }}
             >
-              {dailyOrderStatic.turnover_change < 0 ? (<ArrowDownwardTwoToneIcon
+              {dailyOrderStatic.turnover_change > dailyOrderStatic.turnover ? (<ArrowDownwardTwoToneIcon
                 sx={{
                   color: `${theme.colors.error.main}`
                 }}
@@ -232,7 +232,7 @@ import {
                 }}
                 variant="h1"
               >
-                {dailyOrderStatic.turnover}
+                ￥{dailyOrderStatic.turnover}
               </Typography>
             </Box>
             <Typography
@@ -243,7 +243,7 @@ import {
               }}
               component="div"
             >
-              相比昨日变化 <b>{`${ dailyOrderStatic.turnover_change * 100 }%`}</b>
+              昨日： ￥<b>{`${ dailyOrderStatic.turnover_change}`}</b>
             </Typography>
           </Card>
         </Grid>

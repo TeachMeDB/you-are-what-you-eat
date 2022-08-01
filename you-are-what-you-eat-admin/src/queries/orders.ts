@@ -8,134 +8,136 @@ import {
     OrderDetail,
     OrderStatus
 } from "@/models/order";
+import { GetApi } from 'src/utils/requests';
+import { getDayTime, toTimeStamp } from 'src/utils/date';
+// import { count } from 'src/utils/array';
 
 class OrdersApi {
-    public getOrdersInTimePeriod: (start: Date, end: Date) => Promise<Order[]> = async (start, end) => {
-        const orders: Order[] = [
-            {
-                id: 'ADF7284',
-                creation_time: new Date('2022-7-23 09:08:32'),
-                table_id: 'A42',
-                status: 'running',
-                price: 236.7,
-                discount_price: 0
-            },
-            {
-                id: 'ASK3049',
-                creation_time: new Date('2022-7-23 09:14:32'),
-                table_id: 'A07',
-                status: 'failed',
-                price: 112.8,
-                discount_price: 12
-            },
-            {
-                id: 'BOL7894',
-                creation_time: new Date('2022-7-23 10:06:55'),
-                table_id: 'B28',
-                status: 'completed',
-                price: 46,
-                discount_price: 5
-            },
-            {
-                id: 'ERX5512',
-                creation_time: new Date('2022-7-23 10:45:03'),
-                table_id: 'E06',
-                status: 'running',
-                price: 60,
-                discount_price: 10
-            },
-            {
-                id: 'DDW0094',
-                creation_time: new Date('2022-7-23 10:53:10'),
-                table_id: 'D12',
-                status: 'running',
-                price: 80,
-                discount_price: 0
-            },
-            {
-                id: 'CAE0578',
-                creation_time: new Date('2022-7-23 11:08:21'),
-                table_id: 'C24',
-                status: 'running',
-                price: 205,
-                discount_price: 0
-            },
-            {
-                id: 'CAE0581',
-                creation_time: new Date('2022-7-23 11:11:11'),
-                table_id: 'C92',
-                status: 'failed',
-                price: 23,
-                discount_price: 0
-            },
-            {
-                id: 'BPH1245',
-                creation_time: new Date('2022-7-23 11:35:45'),
-                table_id: 'B14',
-                status: 'running',
-                price: 236.7,
-                discount_price: 0
-            },
-        ];
+    
+    // OK
+    public getOrdersInTimePeriod: (start: number, end: number) => Promise<Order[]> = async (start, end) => {
+        const r = (await GetApi("Orderlists/GetOrdersByTime", {
+            begin: start,
+            end  : end
+        })).data.orders;
+        const orders = r.map((item) => {
+            return {
+                id: item.order_id,
+                creation_time: new Date(item.creation_time),
+                table_id: item.table_id,
+                status: (item.order_status === '已支付' ? 'failed' : item.order_status === '制作中' ? 'running' : 'completed'),
+                price: item.final_payment,
+                discount_price: item.discount_price
+            }
+        })
 
         return Promise.resolve(orders);
     }
 
-    public getDishSaleVolumeInTimePeriod: (start: Date, end: Date) => Promise<DishOrderStat[]> = async (start, end) => {
-        const dishOrders: DishOrderStat[] = [
-            {
-                name: '香辣鸡翅',
-                id: 'dsaczx',
-                tags: ['洋快餐', '辣'],
-                price: 25,
-                order_times: 100,
-                total_credit: 2500,
-                trend: [45, 56, 24, 38]
-            },
-            {
-                name: '鱼香肉丝',
-                id: 'xczasd',
-                tags: ['中餐', '川菜','辣', '甜'],
-                price: 25,
-                order_times: 100,
-                total_credit: 2500,
-                trend: [45, 56, 24, 56, 54, 38, 47]
-            },
-            {
-                name: '草莓圣代',
-                id: 'gfdnb',
-                tags: ['甜点', '冷饮','冰淇淋'],
-                price: 25,
-                order_times: 100,
-                total_credit: 2500,
-                trend: [45, 56, 24, 56, 54, 38, 47, 38, 56, 24, 38, 55, 39]
-            },
-          ];
+    // OK
+    public getDishSaleVolumeInTimePeriod: (start: number, end: number) => Promise<DishOrderStat[]> = async (start, end) => {
+        const r = (await GetApi("Orderlists/GetDishOrderNum", {
+            begin: start,
+            end  : end
+        })).data.data;
+        const dishOrders = r.map((item) => {
+            return {
+                name:  item.name,
+                id:    `id: ${item.dish_id}`,
+                tags:  item.tags,
+                price: item.price,
+                order_times:  item.order_times,
+                total_credit: item.total_credit,
+                trend: []
+            }
+        })
 
         return Promise.resolve(dishOrders);
     }
 
-    public getDailyOrderStatics: (start: Date, end: Date) => Promise<DailyOrderStatic> = async (start, end) => {
+    // OK
+    public getDailyOrderStatics: () => Promise<DailyOrderStatic> = async () => {
+        const todayStart = getDayTime(new Date(), 0, 'begin');
+        const todayEnd = getDayTime(new Date(), 0, 'end');
+        const yesterdatStart = getDayTime(new Date(), -1, 'begin');
+        const yesterdayEnd = getDayTime(new Date(), -1, 'end');
+
+        const todayOrders = (await GetApi("Orderlists/GetOrdersByTime", {
+            begin: toTimeStamp(todayStart),
+            end  : toTimeStamp(todayEnd)
+        })).data.summary;
+        const yesterdayOrders = (await GetApi("Orderlists/GetOrdersByTime", {
+            begin: toTimeStamp(yesterdatStart),
+            end  : toTimeStamp(yesterdayEnd)
+        })).data.summary;
+        const todayDishOrders = (await GetApi("Orderlists/GetDishordersByTime", {
+            begin: toTimeStamp(todayStart),
+            end  : toTimeStamp(todayEnd)
+        })).data.data.length;
+        const yesterdayDishOrders = (await GetApi("Orderlists/GetDishordersByTime", {
+            begin: toTimeStamp(yesterdatStart),
+            end  : toTimeStamp(yesterdayEnd)
+        })).data.data.length;
+
         const stat: DailyOrderStatic = {
-            order_num: 500,
-            order_num_change: -0.03,
-            dish_order_num: 788,
-            dish_order_num_change: 0.09,
-            turnover: 15680,
-            turnover_change: 0.02
+            order_num: todayOrders.order_count,
+            order_num_change: yesterdayOrders.order_count,
+            dish_order_num: todayDishOrders,
+            dish_order_num_change: yesterdayDishOrders,
+            turnover: todayOrders.total_credit,
+            turnover_change: yesterdayOrders.total_credit
         };
 
         return Promise.resolve(stat);
     }
 
+    // OK
     public getDailyOrderReport: () => Promise<OrderReport> = async () => {
+        const todayStart = getDayTime(new Date(), 0, 'begin');
+        const todayEnd = getDayTime(new Date(), 0, 'end');
+        const todayOrders = (await GetApi("Orderlists/GetOrdersByTime", {
+            begin: toTimeStamp(todayStart),
+            end  : toTimeStamp(todayEnd)
+        })).data.data;
+        const breakfastOrders = todayOrders.filter(
+            (order) => {
+                var h = new Date(order.creation_time).getHours();
+                return h < 10;
+            }
+        )
+        var breakTnv: number = 0;
+        breakfastOrders.forEach((b) => {
+            breakTnv += b.final_payment;
+        });
+        const lunchOrders = todayOrders.filter(
+            (order) => {
+                var h = new Date(order.creation_time).getHours();
+                return h >= 10 && h < 16;
+            }
+        )
+        var lunchTnv: number = 0;
+        lunchOrders.forEach((l) => {
+            lunchTnv += l.final_payment;
+        });
+        const dinnerOrders = todayOrders.filter(
+            (order) => {
+                var h = new Date(order.creation_time).getHours();
+                return h >= 16;
+            }
+        )
+        var dinnerTnv: number = 0;
+        dinnerOrders.forEach((d) => {
+            dinnerTnv += d.final_payment;
+        });
+        
+        
         const report: OrderReport = {
-            breakfast_order_num: 33,
-            breakfast_turnover: 659,
-            lunch_order_num: 121,
-            lunch_turnover: 4008,
-            dinner_order_num: 166,
-            dinner_turnover: 6790
+            breakfast_order_num: breakfastOrders.length,
+            breakfast_turnover: breakTnv,
+            lunch_order_num: lunchOrders.length,
+            lunch_turnover: lunchTnv,
+            dinner_order_num: dinnerOrders.length,
+            dinner_turnover: dinnerTnv
         };
 
         return Promise.resolve(report);

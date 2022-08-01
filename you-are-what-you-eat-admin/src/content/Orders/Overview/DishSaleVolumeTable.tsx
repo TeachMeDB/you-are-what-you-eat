@@ -17,13 +17,6 @@ import {
 } from '@mui/material';
 import Link from 'src/components/Link';
 
-import {
-  Sparklines,
-  SparklinesLine,
-  SparklinesReferenceLine,
-  SparklinesSpots
-} from 'react-sparklines';
-
 import { useTranslation } from 'react-i18next';
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
 import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone';
@@ -162,7 +155,6 @@ function DishSaleVolume( dishes: DishOrderStat[] ) {
                 <TableCell align="left">{t('总售价')}</TableCell>
                 <TableCell align="left">{t('单价')}</TableCell>
                 <TableCell align="center">{t('类型')}</TableCell>
-                <TableCell align="center">{t('趋势')}</TableCell>
                 <TableCell align="right">{t('售出份数')}</TableCell>
               </TableRow>
             </TableHeadWrapper>
@@ -203,36 +195,6 @@ function DishSaleVolume( dishes: DishOrderStat[] ) {
                       </Tooltip>
                     </div>
                   </TableCell>
-                  <TableCell align="center">
-                    <div>
-                      <Sparklines
-                        margin={6}
-                        data={dish.trend}
-                      >
-                        <SparklinesLine
-                          style={{
-                            stroke: theme.colors.primary.main,
-                            strokeWidth: 3,
-                            fill: 'none'
-                          }}
-                        />
-                        <SparklinesSpots
-                          size={4}
-                          style={{
-                            fill: theme.colors.alpha.white[100],
-                            stroke: theme.colors.primary.main,
-                            strokeWidth: 3
-                          }}
-                        />
-                        <SparklinesReferenceLine
-                          style={{
-                            stroke: theme.colors.error.main
-                          }}
-                          type="mean"
-                        />
-                      </Sparklines>
-                    </div>
-                  </TableCell>
                   <TableCell align="right">
                     <div>
                       <Typography
@@ -251,7 +213,7 @@ function DishSaleVolume( dishes: DishOrderStat[] ) {
                           variant="h4"
                           color="text.primary"
                         >
-                          {dish.order_times}
+                          {`${dish.order_times} 份`}
                         </Typography>
                         <ArrowUpwardTwoToneIcon
                           sx={{

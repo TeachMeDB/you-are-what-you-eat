@@ -8,3 +8,8 @@ export function getDayTime(begin_date: Date, offset: number, point: 'begin' | 'e
     arr[2] = Number('0') + Number(arr[2]) < 10 ? '0'+ arr[2] : arr[2];
     return arr.join('-') + (point === 'begin' ? ' 00:00:00' : point === 'end' ? ' 23:59:59' : '');
 }
+
+export function toTimeStamp(dateStr: string): number {
+    var miliStamp = new Date(dateStr).getTime();
+    return Number((miliStamp / 1000).toFixed(0));
+}
