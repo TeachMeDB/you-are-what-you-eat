@@ -173,7 +173,18 @@ class QueryTableApi {
         }
         
 
-        return Promise.resolve(data); 
+        try {
+          const r = await (await fetch('http://106.14.212.200:8000/app/api/Table/GetAllTable')).text();
+          console.log(JSON.parse(r));
+          console.log(data);
+          return JSON.parse(r) as CryptoAllTable;
+      } 
+      catch(err) {
+          console.log(err);
+          return null;
+      }
+
+      //  return Promise.resolve(data); 
     }
 
 }

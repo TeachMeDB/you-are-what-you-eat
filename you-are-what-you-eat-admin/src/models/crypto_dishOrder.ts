@@ -8,3 +8,13 @@ export interface CryptoDishOrder {
   original_price?: number;
   dish_status: CryptoDishOrderStatus;
 }
+
+export interface summary{
+total_price:number;
+}
+
+export interface CryptoAllDishOrder
+{
+  data:CryptoDishOrder[];
+  summary:summary;
+}

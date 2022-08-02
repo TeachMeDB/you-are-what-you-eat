@@ -92,6 +92,18 @@ class QueryOrderApi {
               },
         ]
       };
+      
+      /*
+      try {
+        const r = await (await fetch('http://106.14.212.200:8000/app/api/Order/GetAllOrder')).text();
+        console.log(JSON.parse(r));
+        console.log(data);
+        return JSON.parse(r) as CryptoFullOrder;
+    } 
+    catch(err) {
+        console.log(err);
+        return null;
+    }*/
 
         return Promise.resolve(data); 
     }

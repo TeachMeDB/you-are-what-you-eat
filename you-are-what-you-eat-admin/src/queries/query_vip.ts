@@ -119,7 +119,7 @@ class QueryVipApi {
             {
               user_name : '田所浩二',
               birthday : '1922-04-27',
-              gender : 1,
+              gender : "男",
               status: '正常',
               balance: 145.14,
               credit: 145.14
@@ -127,7 +127,7 @@ class QueryVipApi {
             {
               user_name : '淳平',
               birthday : '1919-08-10',
-              gender : 1,
+              gender : "男",
               status: '冻结',
               balance: 145.14,
               credit: 1919.81
@@ -135,7 +135,7 @@ class QueryVipApi {
             {
               user_name : '鲁铎象征',
               birthday : '1981-03-13',
-              gender : 0,
+              gender : "女",
               status: '正常',
               balance: 3333.33,
               credit: 1920.00
@@ -143,7 +143,7 @@ class QueryVipApi {
             {
               user_name : '小栗帽',
               birthday : '1985-03-27',
-              gender : 0,
+              gender : "女",
               status: '注销',
               balance: 0.00,
               credit: 25367.23
@@ -151,13 +151,25 @@ class QueryVipApi {
             {
               user_name : '玉藻十字',
               birthday : '1984-05-23',
-              gender : 0,
+              gender : "女",
               status: '冻结',
               balance: 145.14,
               credit: 127.5
             }
           ]
         };
+
+        /*
+        try {
+          const r = await (await fetch('http://106.14.212.200:8000/app/api/VIP/GetAllVIPInfo')).text();
+          console.log(JSON.parse(r));
+          console.log(data);
+          return JSON.parse(r) as CryptoAllVip;
+      } 
+      catch(err) {
+          console.log(err);
+          return null;
+      }*/
 
         return Promise.resolve(data); 
     }

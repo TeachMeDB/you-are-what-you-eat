@@ -15,8 +15,8 @@ function RecentOrders() {
     try {
       const response = await queryOrderApi.getOrder();
 
-      //console.log("--response--");
-      //console.log(response);
+      console.log("--response--");
+      console.log(response);
 
       if (isMountedRef()) {
         setOrderData(response);
