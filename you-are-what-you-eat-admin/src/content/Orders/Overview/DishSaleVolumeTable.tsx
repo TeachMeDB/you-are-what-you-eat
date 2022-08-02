@@ -12,9 +12,9 @@ import {
   TableContainer,
   IconButton,
   styled,
-  useTheme
+  useTheme,
+  Tooltip
 } from '@mui/material';
-// import Text from 'src/components/Text';
 import Link from 'src/components/Link';
 
 import {
@@ -27,9 +27,9 @@ import {
 import { useTranslation } from 'react-i18next';
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
 import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone';
-// import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone';
 
 import { DishOrderStat } from '@/models/order';
+import { join } from '@/utils/array'
 
 const TableWrapper = styled(Table)(
   ({ theme }) => `
@@ -183,20 +183,24 @@ function DishSaleVolume( dishes: DishOrderStat[] ) {
                   <TableCell>
                     <div>
                       <Typography variant="h4" noWrap>
-                        {dish.total_credit}
+                        ￥{dish.total_credit}
                       </Typography>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div>
                       <Typography variant="h4" noWrap>
-                        {dish.price}
+                        ￥{dish.price}
                       </Typography>
                     </div>
                   </TableCell>
                   <TableCell align="center">
                     <div>
-                      <LabelWarning>{dish.tags.length !== 0 ? dish.tags[0] : ''}</LabelWarning>
+                      <Tooltip title={join(dish.tags, '; ')}>
+                        <LabelWarning>
+                          {dish.tags.length !== 0 ? dish.tags[0] : ''}
+                        </LabelWarning>
+                      </Tooltip>
                     </div>
                   </TableCell>
                   <TableCell align="center">

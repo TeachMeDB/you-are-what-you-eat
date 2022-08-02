@@ -60,7 +60,7 @@ function SensorDataCards() {
           {Statistics(water, power, gas)}
         </Grid>
         {originalData.map((data) => (
-          <Grid item xs={12}>
+          <Grid key={data.sensor_id} item xs={12}>
           <Results 
             logs={data.logs} 
             type={data.sensor_type} 

@@ -1,4 +1,4 @@
-import { useState, MouseEvent, ChangeEvent } from 'react';
+import { useState, MouseEvent, ChangeEvent, useCallback, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -6,15 +6,9 @@ import {
   Grid,
   ListItem,
   List,
-  ListItemText,
   Divider,
   Button,
-  ListItemAvatar,
-  Avatar,
-  Switch,
   CardHeader,
-  Tooltip,
-  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -22,89 +16,49 @@ import {
   TablePagination,
   TableRow,
   TableContainer,
-  useTheme,
-  styled,
   TextField,
-  CardContent,
-  MenuItem,
-  CardMedia
 } from '@mui/material';
 
 
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import BadgeIcon from '@mui/icons-material/Badge';
-import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { useRefMounted } from '@/hooks/useRefMounted';
+import { PayrollEntity, Salary } from '@/models/employee';
+import { salaryApi } from '@/queries/salary';
 
-
-export interface Level {
-  amount: number;
-  /**
-   * 当前职位人数
-   */
-  count: number;
-  occupation: string;
-}
-
-
-
-
-export interface StuffMember {
-  /**
-   * 本月出勤率
-   */
-  attendance_rate: number;
-  /**
-   * 头像url
-   */
-  avatar: string;
-  /**
-   * 获奖次数
-   */
-  award_times: number;
-  gender: string;
-  id: string;
-  name: string;
-  occupation: string;
-}
-
-
-export interface Employee {
-  /**
-   * base64的图片
-   */
-  avater: string;
-  /**
-   * base64的图片
-   */
-  cover: string;
-  gender: string;
-  name: string;
-  occupation: string;
-  /**
-   * 员工密码
-   */
-  password: string;
-}
-
-
-
-
-export interface Payroll {
-  amount:     number;
-  id:         string;
-  name:       string;
-  occupation: string;
-  time:       string;
-}
 
 
 
 function SalaryManagementTab() {
-  const theme = useTheme();
+
+
+  const isMountedRef = useRefMounted();
+  const [payrolls, setPayrolls] = useState<PayrollEntity[]>([]);
+  const [levels,setLevels]=useState<Salary[]>([]);
+
+  const getAllData = useCallback(async () => {
+    try {
+      let payrolls = await salaryApi.getPayroll();
+
+      let levels=await salaryApi.getSalary();
+
+
+      if (isMountedRef()) {
+        setPayrolls(payrolls);
+        setLevels(levels);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
+
+
+
+  useEffect(() => {
+    getAllData();
+  }, [getAllData]);
 
   const [page, setPage] = useState(2);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -117,118 +71,12 @@ function SalaryManagementTab() {
   };
 
 
-  const [currency, setCurrency] = useState('EUR');
-
-  const handleChange = (event) => {
-    setCurrency(event.target.value);
-  };
-
   const handleChangeRowsPerPage = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-
-  const levels: Level[] = [
-    {
-      "occupation": "consectetur quis labore ut",
-      "amount": 37,
-      "count": 19
-    },
-    {
-      "occupation": "officia esse nulla enim Ut",
-      "amount": 49,
-      "count": 55
-    },
-    {
-      "occupation": "adipisicing",
-      "amount": 8,
-      "count": 23
-    },
-    {
-      "occupation": "ut consectetur irure laborum",
-      "amount": 17,
-      "count": 97
-    },
-    {
-      "occupation": "ea ex",
-      "amount": 94,
-      "count": 9
-    }
-  ];
-
-
-  const employees: StuffMember[] = [
-    {
-      "id": "43",
-      "name": "机每面以利",
-      "gender": "男",
-      "occupation": "ex amet culpa",
-      "attendance_rate": 66,
-      "award_times": 1267057860920,
-      "avatar": "http://dummyimage.com/100x100"
-    },
-    {
-      "id": "42",
-      "name": "引更龙接成真",
-      "gender": "男",
-      "occupation": "voluptate esse",
-      "attendance_rate": 90,
-      "award_times": 1107224790631,
-      "avatar": "http://dummyimage.com/100x100"
-    },
-    {
-      "id": "35",
-      "name": "于政有",
-      "gender": "女",
-      "occupation": "do ut",
-      "attendance_rate": 61,
-      "award_times": 1213420216522,
-      "avatar": "http://dummyimage.com/100x100"
-    },
-    {
-      "id": "29",
-      "name": "进对包",
-      "gender": "女",
-      "occupation": "velit",
-      "attendance_rate": 89,
-      "award_times": 1132758112786,
-      "avatar": "http://dummyimage.com/100x100"
-    }
-  ];
-
-  const payrolls:Payroll[]=[
-    {
-      "id": "64",
-      "name": "少代划离深军",
-      "occupation": "dolor consequat ex",
-      "time": "2012-06-12 03:02:43",
-      "amount": 45
-    },
-    {
-      "id": "35",
-      "name": "那起问群外",
-      "occupation": "dolore sint do cillum",
-      "time": "1982-10-29 11:17:29",
-      "amount": 2
-    },
-    {
-      "id": "36",
-      "name": "战儿层议",
-      "occupation": "sint in cillum ex sit",
-      "time": "1999-10-18 21:41:13",
-      "amount": 25
-    },
-    {
-      "id": "76",
-      "name": "层利难长",
-      "occupation": "nulla Duis",
-      "time": "2010-04-28 01:37:36",
-      "amount": 78
-    }
-  ];
 
 
   return (

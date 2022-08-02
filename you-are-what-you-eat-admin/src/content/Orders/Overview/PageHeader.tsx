@@ -1,15 +1,12 @@
 import {
   Typography,
   Box,
-  IconButton,
-  Tooltip,
   styled,
   Avatar,
   alpha,
   lighten
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
 import AccountBalanceTwoToneIcon from '@mui/icons-material/AccountBalanceTwoTone';
 
 const AvatarPageTitle = styled(Avatar)(
@@ -51,16 +48,9 @@ function PageHeader() {
               {t('订单管理')}
             </Typography>
             <Typography variant="subtitle2">
-              {t('Dashboard to show the company expenses statistics')}
+              {t('查看餐厅订单数据分析')}
             </Typography>
           </Box>
-        </Box>
-        <Box>
-          <Tooltip arrow title={t('View all expenses')}>
-            <IconButton size="large" color="primary">
-              <ArrowForwardTwoToneIcon />
-            </IconButton>
-          </Tooltip>
         </Box>
       </Box>
     </>

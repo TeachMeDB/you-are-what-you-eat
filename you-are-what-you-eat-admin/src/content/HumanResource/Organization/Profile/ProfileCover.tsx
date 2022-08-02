@@ -13,6 +13,13 @@ import { styled } from '@mui/material/styles';
 
 import BadgeIcon from '@mui/icons-material/Badge';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
+import { useRefMounted } from '@/hooks/useRefMounted';
+import { useCallback, useEffect, useState } from 'react';
+import { humanResourceApi } from '@/queries/employee';
+import { EmployeeDetail } from '@/models/employee';
+
+
+import { differenceInYears, format, formatDistance, formatRelative, subDays } from 'date-fns'
 
 const Input = styled('input')({
   display: 'none'
@@ -77,109 +84,8 @@ const CardCoverAction = styled(Box)(
 );
 
 
-export abstract class Employee {
-  attends: Attend[];
-  /**
-   * 头像url
-   */
-  avatar: string;
-  cover: string;
-  gender: string;
-  id: string;
-  name: string;
-  occupation: string;
-  payrolls: Payroll[];
-  prizes: Prize[];
-}
 
-export interface Attend {
-  /**
-   * 是否出勤
-   */
-  attendance: boolean;
-  place: string;
-  plan_id: string;
-  time_end: string;
-  time_start: string;
-}
-
-export interface Payroll {
-  amount: number;
-  pay_datetime: string;
-}
-
-export interface Prize {
-  amount: number;
-  level: string;
-  prize_datetime: string;
-}
-
-const ProfileCover = () => {
-
-
-  const user: Employee = {
-    "id": "28",
-    "name": "子节说两需提图",
-    "gender": "女",
-    "occupation": "ipsum amet",
-    "attends": [
-      {
-        "time_start": "2002-09-16 19:27:12",
-        "time_end": "1975-10-11 04:06:43",
-        "place": "proident cupidatat",
-        "plan_id": "71",
-        "attendance": false
-      },
-      {
-        "time_start": "2017-08-18 01:36:38",
-        "time_end": "2020-10-02 11:22:59",
-        "place": "dolor in anim magna",
-        "plan_id": "82",
-        "attendance": false
-      },
-      {
-        "time_start": "1970-10-12 06:42:31",
-        "time_end": "1980-10-01 12:00:09",
-        "place": "aliquip eiusmod ipsum",
-        "plan_id": "49",
-        "attendance": false
-      }
-    ],
-    "payrolls": [
-      {
-        "pay_datetime": "2012-04-22 04:23:42",
-        "amount": 11
-      },
-      {
-        "pay_datetime": "1974-10-21 21:58:50",
-        "amount": 96
-      },
-      {
-        "pay_datetime": "1974-12-14 04:40:27",
-        "amount": 42
-      }
-    ],
-    "prizes": [
-      {
-        "prize_datetime": "1971-04-08 13:20:53",
-        "level": "consectetur officia",
-        "amount": 73
-      },
-      {
-        "prize_datetime": "2020-04-06 11:07:37",
-        "level": "ut exercitation sunt est",
-        "amount": 12
-      },
-      {
-        "prize_datetime": "2018-03-25 15:27:09",
-        "level": "anim eiusmod esse",
-        "amount": 38
-      }
-    ],
-    "avatar": "http://dummyimage.com/100x100",
-    "cover": "ea"
-  };
-
+const ProfileCover = ({user}:{user:EmployeeDetail}) => {
 
   return (
     <>
@@ -240,7 +146,7 @@ const ProfileCover = () => {
             等完了我找个每日一句贴上去
         </Typography>
         <Typography sx={{ py: 2 }} variant="subtitle2" color="text.primary">
-          来点啥 | 来点啥 | 来点啥
+          员工出生日期 ： {user.birthday} | 年龄 ： {differenceInYears(Date.now(),Date.parse(user.birthday))}岁
         </Typography>
 
         <Grid spacing={3} direction="column">
@@ -251,12 +157,14 @@ const ProfileCover = () => {
             justifyContent="space-between"
           >
             <Box>
-              <Button size="small" variant="contained">
-                {user.occupation}
+            <Button size="small" variant="contained">
+                职位：{user.occupation}
               </Button>
+              
               <Button size="small" sx={{ mx: 1 }} variant="outlined">
-              {user.gender}
+              性别：{user.gender}
               </Button>
+              
             </Box>
           </Box>
 
