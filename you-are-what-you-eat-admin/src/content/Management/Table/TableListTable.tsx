@@ -35,7 +35,7 @@ import BulkActions from './BulkActions';
 import TextField from '@mui/material/TextField';
 
 import ModifyDialog from './ModifyDialog'
-import SignUpVip from './SignUpVip'
+import SignUpVip from './AssignSeat'
 import IndividualTable from './IndividualTable'
 
 interface VIPListTableProps {
@@ -140,7 +140,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoTable }) => {
   ): void => {
     setSelectedCryptoTable(
       event.target.checked
-        ? cryptoTable.map((cryptoOrder) => cryptoOrder.table_id)
+        ? cryptoTable.map((cryptoOrder) => cryptoOrder.table_id.toString())
         : []
     );
   };
@@ -227,11 +227,16 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoTable }) => {
       <Grid container spacing={1}>
       {paginatedCryptoTable.map((cryptoOrder) => {
               const isCryptoTableelected = selectedCryptoTable.includes(
-                cryptoOrder.table_id
+                cryptoOrder.table_id.toString()
               );
               return (
                 <Grid item xs={2}>
-                  <IndividualTable/>
+                  <IndividualTable 
+                  table_id={cryptoOrder.table_id}
+                  customer_number={cryptoOrder.customer_number}
+                  table_capacity={cryptoOrder.table_capacity}
+                  occupied={cryptoOrder.occupied}
+                  />
                 </Grid>
               );
             })}

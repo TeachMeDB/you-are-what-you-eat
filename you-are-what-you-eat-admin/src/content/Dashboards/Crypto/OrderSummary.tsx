@@ -56,7 +56,22 @@ const ListItemAvatarWrapper = styled(ListItemAvatar)(
 `
 );
 
-function OrderSummary() {
+export interface SummaryProps
+{
+  order_count: number,
+  awating_count: number,
+  awating_credit: number,
+  processing_count: number,
+  processing_credit: number,
+  completed_count: number,
+  completed_credit: number,
+  payed_count: number,
+  payed_credit: number,
+  total_credit: number,
+  today_credit: number
+}
+
+function OrderSummary(props: SummaryProps) {
   const theme = useTheme();
 
   const chartOptions: ApexOptions = {
@@ -78,7 +93,7 @@ function OrderSummary() {
     dataLabels: {
       enabled: true,
       formatter: function (val) {
-        return val + '%';
+        return Number(val).toFixed(1) + '%';
       },
       style: {
         colors: [theme.colors.alpha.trueWhite[100]]
@@ -126,7 +141,12 @@ function OrderSummary() {
     }
   };
 
-  const chartSeries = [10, 20, 25, 45];
+  const chartSeries = [
+    (props.awating_count/props.order_count), 
+  (props.processing_count/props.order_count), 
+  (props.completed_count/props.order_count), 
+  (props.payed_count/props.order_count)
+];
 
   return (
     <Card>
@@ -143,7 +163,7 @@ function OrderSummary() {
             </Typography>
             <Box>
               <Typography variant="h1" gutterBottom>
-                ￥114514.00
+                ￥{Number(props.total_credit).toFixed(2)}
               </Typography>
               <Box
                 display="flex"
@@ -161,7 +181,7 @@ function OrderSummary() {
                   <TrendingUp fontSize="large" />
                 </AvatarSuccess>
                 <Box>
-                  <Typography variant="h4">+ ￥19198.10</Typography>
+                  <Typography variant="h4">+ ￥{Number(props.today_credit).toFixed(2)}</Typography>
                   <Typography variant="subtitle2" noWrap>
                     今天
                   </Typography>
@@ -219,7 +239,7 @@ function OrderSummary() {
                     <ListItemText
                       primary="待处理"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="￥1145"
+                      secondary={"￥"+Number(props.awating_credit).toFixed(2).toString()}
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -227,7 +247,7 @@ function OrderSummary() {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        20%
+                       {Number(props.awating_count/props.order_count*100).toFixed(1).toString()}%
                       </Typography>
                     </Box>
                   </ListItem>
@@ -238,7 +258,7 @@ function OrderSummary() {
                     <ListItemText
                       primary="制作中"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="￥1145"
+                      secondary={"￥"+Number(props.processing_credit).toFixed(2).toString()}
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -246,7 +266,7 @@ function OrderSummary() {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        10%
+                      {Number(props.processing_count/props.order_count*100).toFixed(1).toString()}%
                       </Typography>
                     </Box>
                   </ListItem>
@@ -257,7 +277,7 @@ function OrderSummary() {
                     <ListItemText
                       primary="已完成"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="￥1145"
+                      secondary={"￥"+Number(props.completed_credit).toFixed(2).toString()}
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -265,7 +285,7 @@ function OrderSummary() {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        40%
+                      {Number(props.completed_count/props.order_count*100).toFixed(1).toString()}%
                       </Typography>
                     </Box>
                   </ListItem>
@@ -276,7 +296,7 @@ function OrderSummary() {
                     <ListItemText
                       primary="已支付"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="￥1145"
+                      secondary={"￥"+Number(props.payed_credit).toFixed(2).toString()}
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -284,7 +304,7 @@ function OrderSummary() {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        30%
+                      {Number(props.payed_count/props.order_count*100).toFixed(1).toString()}%
                       </Typography>
                     </Box>
                   </ListItem>
