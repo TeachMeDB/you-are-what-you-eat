@@ -5,5 +5,6 @@ export interface CryptoDishOrder {
   order_id: string;
   dish_id: string;
   final_payment: number;
+  original_price?: number;
   dish_status: CryptoDishOrderStatus;
 }

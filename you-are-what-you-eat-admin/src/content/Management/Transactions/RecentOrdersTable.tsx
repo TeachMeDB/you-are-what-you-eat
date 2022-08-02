@@ -375,7 +375,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       <FullOrderView id={cryptoOrder.order_id}/>                                                       
                     </Tooltip>
 
-                    <Tooltip title="编辑" arrow>
+                    {/*<Tooltip title="编辑" arrow>
                       <IconButton
                         sx={{
                           '&:hover': {
@@ -388,7 +388,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       >
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>
-                    </Tooltip>
+                      </Tooltip>*/}
                     
                   </TableCell>
 

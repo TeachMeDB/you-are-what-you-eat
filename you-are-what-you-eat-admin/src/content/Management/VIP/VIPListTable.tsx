@@ -323,7 +323,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.gender==1?'男':'女'}
+                      {cryptoOrder.gender}
                     </Typography>
                   </TableCell>
                   
