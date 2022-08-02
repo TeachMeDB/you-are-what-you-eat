@@ -30,14 +30,17 @@ const LinearProgressWrapper = styled(LinearProgress)(
 export default function CheckList(curOrder: CurOrder) {
     const [checked, setChecked] = React.useState(['']);
 
+
     const handleToggle = (value: string) => () => {
         const currentIndex = checked.indexOf(value);
         const newChecked = [...checked];
 
         if (currentIndex === -1) {
             newChecked.push(value);
+
         } else {
             newChecked.splice(currentIndex, 1);
+
         }
 
         setChecked(newChecked);
@@ -62,14 +65,16 @@ export default function CheckList(curOrder: CurOrder) {
                                     inputProps={{
                                         'aria-labelledby': item.DishName,
                                     }}
+
                                 />
+
                             </ListItem>
                         )
                     }
                 </List>
             </CardContent>
             <LinearProgressWrapper
-                value={25}
+                value={20}
                 color="primary"
                 variant="determinate"
             />

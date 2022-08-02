@@ -98,6 +98,15 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
     const paginatedPromotions = applyPagination(mealInfoes, page, limit);
 
     const theme = useTheme();
+
+    const [count, setCount] = useState(mealInfoes);
+
+    mealInfoes.push({
+        id: "006",
+        DishName: "水煮西葫芦",
+        Price: 10,
+        Description: "原汁原味西葫芦水煮而成"
+    })
     return (
         <Card>
             {(
@@ -107,9 +116,11 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
                             <OutlinedInputWrapper
                                 type="text"
                                 placeholder="输入菜品名称"
+
                                 endAdornment={
                                     <InputAdornment position="end">
                                         <ButtonSearch variant="contained" size="small" >
+
                                             搜索
                                         </ButtonSearch>
 
@@ -143,10 +154,7 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
                         {paginatedPromotions.map((mealInfo) => {
                             {
                                 return (
-                                    <TableRow
-                                        hover
-
-                                    >
+                                    <TableRow hover>
                                         <TableCell>
                                             <Typography
                                                 variant="body1"
@@ -284,7 +292,7 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
                     rowsPerPageOptions={[5, 10, 25, 30]}
                 />
             </Box>
-        </Card>
+        </Card >
     );
 };
 

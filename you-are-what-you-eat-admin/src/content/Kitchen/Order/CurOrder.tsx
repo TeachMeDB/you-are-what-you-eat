@@ -111,6 +111,10 @@ const curOrders = [
             {
                 DishName: "猪肉刺身",
                 Dishstate: "未完成"
+            },
+            {
+                DishName: "鱼肉刺身",
+                Dishstate: "未完成"
             }
         ]
     },
