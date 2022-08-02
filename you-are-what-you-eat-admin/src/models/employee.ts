@@ -75,8 +75,81 @@ export interface Payroll {
     pay_datetime: string;
 }
 
+
+
 export interface Prize {
     amount:         number;
     level:          string;
     prize_datetime: string;
 }
+
+
+
+
+
+
+
+export interface Salary {
+    amount: number;
+    /**
+     * 当前职位人数
+     */
+    count:      number;
+    occupation: string;
+}
+
+export interface PayrollEntity {
+    amount:     number;
+    id:         string;
+    name:       string;
+    occupation: string;
+    time:       string;
+}
+
+
+export interface PayrollUpload {
+    id:   string;
+    time: string;
+}
+
+
+
+
+
+export interface Award {
+    /**
+     * 金额
+     */
+    amount: number;
+    /**
+     * 奖项名字
+     */
+    level: string;
+    /**
+     * 获奖人数统计
+     */
+    summary: number;
+}
+
+
+export interface AwardUpload {
+    amount: number;
+    level:  string;
+}
+
+
+export interface PrizeEntity {
+    amount: number;
+    id:     string;
+    level:  string;
+    name:   string;
+    time:   string;
+}
+
+
+export interface PrizeUpload {
+    id:    string;
+    level: string;
+    time:  string;
+}
+
