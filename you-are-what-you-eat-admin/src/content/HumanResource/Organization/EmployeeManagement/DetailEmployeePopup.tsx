@@ -11,6 +11,7 @@ import { TransitionProps } from '@mui/material/transitions';
 import { Container, Grid } from '@mui/material';
 import ProfileCover from '../Profile/ProfileCover';
 import Summary from '../Profile/Summary';
+import { EmployeeDetail } from '@/models/employee';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -21,7 +22,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function DetailEmployeePopup() {
+export default function DetailEmployeePopup({user}:{user:EmployeeDetail}) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -70,10 +71,10 @@ export default function DetailEmployeePopup() {
           spacing={3}
         >
           <Grid item xs={12} md={8}>
-            <ProfileCover />
+            <ProfileCover user={user}/>
           </Grid>
           <Grid item xs={12} md={4}>
-            <Summary />
+            <Summary user={user} />
           </Grid>
         </Grid>
 

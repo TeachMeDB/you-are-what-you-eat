@@ -1,4 +1,4 @@
-import { useState, MouseEvent, ChangeEvent } from 'react';
+import { useState, MouseEvent, ChangeEvent, useCallback, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -31,6 +31,10 @@ import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import DetailEmployeePopup from './EmployeeManagement/DetailEmployeePopup';
+import { EmployeeDetail, EmployeeEntity, Salary } from '@/models/employee';
+import { humanResourceApi } from '@/queries/employee';
+import { salaryApi } from '@/queries/salary';
+import { useRefMounted } from '@/hooks/useRefMounted';
 
 
 const Input = styled('input')({
@@ -99,7 +103,38 @@ const CardCoverAction = styled(Box)(
 
 
 
-function EmployeeManagementTab({user}) {
+function EmployeeManagementTab() {
+
+
+
+  const isMountedRef = useRefMounted();
+  const [employees, setEmployees] = useState<EmployeeEntity[]>([]);
+  const [levels,setLevels]=useState<Salary[]>([]);
+
+  const getAllData = useCallback(async () => {
+    try {
+      let employees = await humanResourceApi.getEmployees();
+
+      let levels=await salaryApi.getSalary();
+
+
+      if (isMountedRef()) {
+        setEmployees(employees);
+        setLevels(levels);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
+
+
+
+  useEffect(() => {
+    getAllData();
+  }, [getAllData]);
+
+
+
   const theme = useTheme();
 
   const [page, setPage] = useState(2);
@@ -156,7 +191,7 @@ function EmployeeManagementTab({user}) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {levels.map((level: Level) => (
+                {levels.map((level: Salary) => (
                   <TableRow key={level.occupation} hover>
                     <TableCell>{level.occupation}</TableCell>
                     <TableCell>{level.count}</TableCell>
@@ -396,3 +431,15 @@ function EmployeeManagementTab({user}) {
 }
 
 export default EmployeeManagementTab;
+
+
+
+
+export async function getServerSideProps() {
+
+  const employees = await humanResourceApi.getEmployees();
+
+  const levels=await salaryApi.getSalary();
+
+  return { props: { employees:employees,levels:levels } }
+}
