@@ -4,6 +4,7 @@ import {
     YearlyEnergyDataSortedByType,
     OriginalSensorData
 } from 'src/models/energy'
+import { GetApi } from 'src/utils/requests';
 
 class EnergyApi {
     public getCurrentAvailable: () => Promise<EnergyPanelData[]> = async () => {
@@ -81,16 +82,25 @@ class EnergyApi {
         return Promise.resolve(data);
     }
 
-    public getOriginalSensorData: () => Promise<OriginalSensorData[]> = async () => {
-        try {
-            const r = await (await fetch('http://127.0.0.1:4523/m1/1300227-0-default/api/Sensors/rawdata?start=0&end=465401035168')).text();
-            return JSON.parse(r)['data'];
-        } 
-        catch(err) {
-            console.log(err);
-            return null;
-        }
+    // ok
+    public getOriginalSensorData: (start: number, end: number) => Promise<OriginalSensorData[]> = async (start, end) => {
+        const r = (await GetApi("Sensors/rawdata", {
+            begin: start,
+            end  : end
+        })).data.data;
+        const datas = r.map((data) => {
+            return {
+                sensor_id: data.sensor_id,
+                sensor_type: data.sensor_type,
+                sensor_model: data.sensor_model,
+                sensor_location: data.sensor_location,
+                logs: data.log
+            }
+        })
+
+        return Promise.resolve(datas);
     }
+
 }
 
 export const energyApi = new EnergyApi();

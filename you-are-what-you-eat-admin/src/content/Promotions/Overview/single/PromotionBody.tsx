@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import PropTypes from 'prop-types';
 import type { Promotion } from 'src/models/promotion';
 import {
@@ -8,8 +8,6 @@ import {
   Grid,
   Divider,
   Container,
-  Tooltip,
-  Button,
   Table,
   TableHead,
   TableRow,
@@ -20,10 +18,7 @@ import {
   styled
 } from '@mui/material';
 import { format } from 'date-fns';
-import numeral from 'numeral';
 import { useTranslation } from 'react-i18next';
-import DownloadTwoToneIcon from '@mui/icons-material/DownloadTwoTone';
-import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfTwoTone';
 
 const BoxWrapper = styled(Box)(
   ({ theme }) => `
@@ -44,35 +39,8 @@ interface PromotionBodyProps {
   promotion: Promotion;
 }
 
-interface Item {
-  id: number;
-  name: string;
-  quantity: number;
-  price: number;
-  currency: string;
-}
-
-const InvoiceBody: FC<PromotionBodyProps> = ({ promotion }) => {
+const PromotionBody: FC<PromotionBodyProps> = ({ promotion }) => {
   const { t }: { t: any } = useTranslation();
-
-  const itemsList: Item[] = [
-    {
-      id: 1,
-      name: 'Design services for March',
-      quantity: 1,
-      price: 8945,
-      currency: '$'
-    },
-    {
-      id: 2,
-      name: 'Website migration services',
-      quantity: 3,
-      price: 2367,
-      currency: '$'
-    }
-  ];
-
-  const [items] = useState<Item[]>(itemsList);
 
   return (
     <Container maxWidth="lg">
@@ -225,9 +193,9 @@ const InvoiceBody: FC<PromotionBodyProps> = ({ promotion }) => {
   );
 };
 
-InvoiceBody.propTypes = {
+PromotionBody.propTypes = {
   // @ts-ignore
-  invoice: PropTypes.object.isRequired
+  promotion: PropTypes.object.isRequired
 };
 
-export default InvoiceBody;
+export default PromotionBody;

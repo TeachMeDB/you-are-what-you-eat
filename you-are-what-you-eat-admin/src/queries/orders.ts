@@ -176,33 +176,21 @@ class OrdersApi {
         return Promise.resolve(data);
     }
 
-    public getActiveVIPs: () => Promise<ActiveVIP[]> = async () => {
-        const data = [
-            {
-                username: 'li-letian',
-                avatar: '/static/images/avatars/1.jpg',
-                order_num: 69,
-                order_credit: 3452
-            },
-            {
-                username: 'KEN',
-                avatar: '/static/images/avatars/2.jpg',
-                order_num: 54,
-                order_credit: 3672
-            },
-            {
-                username: 'renjiedai',
-                avatar: '/static/images/avatars/3.jpg',
-                order_num: 50,
-                order_credit: 2500
-            },
-            {
-                username: 'vegetable-yx',
-                avatar: '/static/images/avatars/4.jpg',
-                order_num: 44,
-                order_credit: 1628
-            }
-        ]
+    // OK
+    public getActiveVIPs: (start: number, end: number) => Promise<ActiveVIP[]> = async (start, end) => {
+        const r = (await GetApi("Orderlists/GetVipOrdersByTime", {
+            begin: start,
+            end  : end
+        })).data.data;
+
+        const data = r.map((item) => {
+            return {
+                username:     item.user_name,
+                avatar:       item.avatar,
+                order_num:    item.order_number,
+                order_credit: item.total_credit
+            };
+        });
 
         return Promise.resolve(data);
     }

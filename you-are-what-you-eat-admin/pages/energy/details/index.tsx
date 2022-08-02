@@ -21,7 +21,10 @@ function SensorDataCards() {
 
   const getOriginalData = useCallback(async () => {
     try {
-      const response = await energyApi.getOriginalSensorData();
+      const response = await energyApi.getOriginalSensorData(
+        0,
+        Number((new Date().getTime() / 1000).toFixed(0))
+      );
 
       if (isMountedRef()) {
         setOriginalData(response);
@@ -35,9 +38,9 @@ function SensorDataCards() {
     getOriginalData();
   }, [getOriginalData]);
 
-  var water = count(originalData, (e) => e.sensor_type === '水表');
-  var power = count(originalData, (e) => e.sensor_type === '电表');;
-  var gas = count(originalData, (e) => e.sensor_type === '燃气');;
+  var water = count(originalData, (e) => e.sensor_type === '水表:Ton');
+  var power = count(originalData, (e) => e.sensor_type === '电表:KwH');;
+  var gas = count(originalData, (e) => e.sensor_type === '气表:m^3');;
 
   return (
     <>
