@@ -47,7 +47,7 @@ class QueryDishOrderApi {
               }
         }
 
-        /*
+        
         try {
             const r = await (await 
                 fetch('http://106.14.212.200:8000/app/api/Order/GetOrderDish?order_id='+id)                
@@ -59,9 +59,9 @@ class QueryDishOrderApi {
         catch(err) {
             console.log(err);
             return null;
-        }*/
+        }
 
-        return Promise.resolve(data);
+        //return Promise.resolve(data);
     }
 
 }
