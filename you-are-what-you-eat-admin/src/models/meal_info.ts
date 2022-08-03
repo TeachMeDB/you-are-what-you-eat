@@ -1,6 +1,6 @@
-export interface MealInfo {
-    id: string,
-    DishName: string,
-    Price: number,
-    Description: string
+export interface ApifoxModal {
+    description: string;
+    dis_name: string;
+    id: string;
+    price: number;
 }

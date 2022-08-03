@@ -100,9 +100,9 @@ const CurOrderTable: FC<CurOrderTableProps> = ({ CurOrders }) => {
 
                                 <Grid item xs={4}>
                                     <CheckList
-                                        OrderId={i.OrderId}
-                                        OrderStatus={i.OrderStatus}
-                                        Dish={i.Dish}
+                                        order_id={i.order_id}
+                                        order_status={i.order_status}
+                                        dish={i.dish}
                                     />
                                 </Grid>
                             )

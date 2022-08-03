@@ -5,65 +5,16 @@ import { StockInfo } from '@/models/stock_info';
 
 import StockInfoTable from './StockInfoTable'
 
-function AllStockInfoes() {
-    const stockInfoes: StockInfo[] = [
-        {
-            id: "001",
-            IngName: "包菜",
-            Date: "20220723",
-            amount: 100,
-            surplus: 100
-        },
-        {
-            id: "002",
-            IngName: "西葫芦",
-            Date: "20220723",
-            amount: 100,
-            surplus: 0
-        },
-        {
-            id: "002",
-            IngName: "西葫芦",
-            Date: "20220723",
-            amount: 100,
-            surplus: 0
-        },
-        {
-            id: "002",
-            IngName: "西葫芦",
-            Date: "20220723",
-            amount: 100,
-            surplus: 0
-        },
-        {
-            id: "002",
-            IngName: "西葫芦",
-            Date: "20220723",
-            amount: 100,
-            surplus: 0
-        },
-        {
-            id: "002",
-            IngName: "西葫芦",
-            Date: "20220723",
-            amount: 100,
-            surplus: 0
-        },
-        {
-            id: "007",
-            IngName: "西葫芦",
-            Date: "20220723",
-            amount: 100,
-            surplus: 0
-        },
+function AllStockInfoes(stockinfo: StockInfo[]) {
 
-    ];
-
+    let arr = Object.values(stockinfo);
+    console.log(arr[0].stockinfo);
     return (
         <Card>
-            <StockInfoTable stockInfoes={stockInfoes} />
+            <StockInfoTable stockInfoes={arr[0].stockinfo} />
         </Card>
     );
 }
 
 export default AllStockInfoes;
+

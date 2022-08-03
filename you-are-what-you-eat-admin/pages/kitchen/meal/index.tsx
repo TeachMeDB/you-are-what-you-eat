@@ -6,7 +6,10 @@ import Footer from '@/components/Footer';
 
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import AllMealInfoes from '@/content/Kitchen/Meal/MealInfo';
-function mealInfo() {
+
+import { mealInfoApi } from '@/queries/meal';
+
+function mealInfo(mealinfo) {
     return (
         <>
             <Head>
@@ -24,7 +27,7 @@ function mealInfo() {
                     spacing={3}
                 >
                     <Grid item xs={12}>
-                        <AllMealInfoes />
+                        <AllMealInfoes mealInfoes={mealinfo} />
                     </Grid>
                 </Grid>
             </Container>
@@ -38,4 +41,12 @@ mealInfo.getLayout = (page) => (
 );
 
 
+
+
 export default mealInfo;
+
+export async function getServerSideProps() {
+
+    const mealinfo = await mealInfoApi.getMealInfo();
+    return { props: { mealinfo } }
+}

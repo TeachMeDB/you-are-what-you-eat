@@ -11,11 +11,14 @@ import CheckList from '@/content/Kitchen/Order/CheckList';
 import CurOrder from '@/content/Kitchen/Order/CurOrder';
 
 
-function mealInfo() {
+import { curOrderApi } from '@/queries/cur_order';
+
+function curOrder(curorder) {
+
     return (
         <>
             <Head>
-                <title>菜品信息</title>
+                <title>当前订单</title>
             </Head>
             <PageTitleWrapper>
                 <PageHeader />
@@ -23,7 +26,7 @@ function mealInfo() {
 
             <Container maxWidth="lg">
 
-                <CurOrder />
+                <CurOrder curorders={curorder} />
 
             </Container>
 
@@ -33,9 +36,15 @@ function mealInfo() {
     )
 }
 
-mealInfo.getLayout = (page) => (
+curOrder.getLayout = (page) => (
     <SidebarLayout>{page}</SidebarLayout>
 );
 
 
-export default mealInfo;
+export default curOrder;
+
+export async function getServerSideProps() {
+
+    const curorder = await curOrderApi.getCurOrder();
+    return { props: { curorder } }
+}

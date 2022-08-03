@@ -7,8 +7,12 @@ import Footer from '@/components/Footer';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import PageHeader from '@/content/Kitchen/Stock/PageHeader';
 import AllStockInfoes from '@/content/Kitchen/Stock/StockInfo';
+import { stockInfoApi } from '@/queries/stock';
+import { StockInfo } from '@/models/stock_info';
 
-function stockInfo() {
+function stockInfo(stockinfo: StockInfo[]) {
+
+
     return (
         <>
 
@@ -27,7 +31,7 @@ function stockInfo() {
                     spacing={3}
                 >
                     <Grid item xs={12}>
-                        <AllStockInfoes />
+                        <AllStockInfoes stockinfo={stockinfo} />
                     </Grid>
                 </Grid>
             </Container>
@@ -42,3 +46,10 @@ stockInfo.getLayout = (page) => (
 
 
 export default stockInfo;
+
+
+export async function getServerSideProps() {
+
+    const stockinfo = await stockInfoApi.getStockInfo();
+    return { props: { stockinfo } }
+}

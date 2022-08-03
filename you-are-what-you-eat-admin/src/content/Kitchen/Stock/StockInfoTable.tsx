@@ -157,7 +157,7 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
                                             gutterBottom
                                             noWrap
                                         >
-                                            {stockInfo.id}
+                                            {stockInfo.record_id}
                                         </Typography>
                                     </TableCell>
                                     <TableCell>
@@ -168,7 +168,7 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
                                             gutterBottom
                                             noWrap
                                         >
-                                            {stockInfo.IngName}
+                                            {stockInfo.ing_name}
                                         </Typography>
                                     </TableCell>
                                     <TableCell>
@@ -179,7 +179,7 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
                                             gutterBottom
                                             noWrap
                                         >
-                                            {stockInfo.Date}
+                                            {stockInfo.date}
                                         </Typography>
 
                                     </TableCell>

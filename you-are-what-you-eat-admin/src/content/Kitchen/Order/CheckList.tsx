@@ -48,22 +48,22 @@ export default function CheckList(curOrder: CurOrder) {
 
     return (
         <Card>
-            <CardHeader title={curOrder.OrderId} />
+            <CardHeader title={curOrder.order_id} />
             <Divider />
             <CardContent>
                 <List
                     sx={{ width: '100%', maxWidth: 350, bgcolor: 'background.paper' }}
                 >
                     {
-                        curOrder.Dish.map((item) =>
+                        curOrder.dish.map((item) =>
                             <ListItem divider>
-                                <ListItemText id={item.DishName} primary={item.DishName} />
+                                <ListItemText id={item.dish_name} primary={item.dish_name} />
                                 <Switch
                                     edge="end"
-                                    onChange={handleToggle(item.DishName)}
-                                    checked={checked.indexOf(item.DishName) !== -1}
+                                    onChange={handleToggle(item.dish_name)}
+                                    checked={checked.indexOf(item.dish_name) !== -1}
                                     inputProps={{
-                                        'aria-labelledby': item.DishName,
+                                        'aria-labelledby': item.dish_name,
                                     }}
 
                                 />

@@ -101,12 +101,7 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
 
     const [count, setCount] = useState(mealInfoes);
 
-    mealInfoes.push({
-        id: "006",
-        DishName: "水煮西葫芦",
-        Price: 10,
-        Description: "原汁原味西葫芦水煮而成"
-    })
+
     return (
         <Card>
             {(
@@ -175,7 +170,7 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
                                                 gutterBottom
                                                 noWrap
                                             >
-                                                {mealInfo.DishName}
+                                                {mealInfo.dis_name}
                                             </Typography>
                                         </TableCell>
                                         <TableCell>
@@ -186,7 +181,7 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
                                                 gutterBottom
                                                 noWrap
                                             >
-                                                {mealInfo.Price}
+                                                {mealInfo.price}
                                             </Typography>
 
                                         </TableCell>
@@ -198,7 +193,7 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
                                                 gutterBottom
                                                 noWrap
                                             >
-                                                {mealInfo.Description}
+                                                {mealInfo.description}
 
                                             </Typography>
 
