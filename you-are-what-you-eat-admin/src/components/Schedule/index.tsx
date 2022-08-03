@@ -2,6 +2,7 @@ import { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { Box, styled } from '@mui/material';
 import { Container } from '@mui/system';
+import { FilteringStyledOptions } from '@mui/styled-engine';
 
 
 interface ScheduleProps {
@@ -214,35 +215,57 @@ const ScheduleForm = styled(Box)(
 );
 
 const Schedule: FC<ScheduleProps> = ({ children }) => {
+
+
+
+
+
+    const SegmentToTime=(segment:number)=>{
+
+        
+
+
+    }
+
+
+    const TimeToSegment=(time:string)=>{
+
+
+    }
+
+
+
+
+
     return (
         <ScheduleForm>
             <div className="schedule">
                 <div className="schedule_header">
-                    <span className="dl">Time</span>
-                    <span className="ds">Ti</span></div>
+                    <span className="dl">时间</span>
+                    <span className="ds">班</span></div>
                 {/* <!-- week--> */}
                 <div className="schedule_header schedule-sunday">
-                    <span className="dl">Sunday</span>
-                    <span className="ds">Su</span>
+                    <span className="dl">星期日</span>
+                    <span className="ds">日</span>
                 </div>
                 <div className="schedule_header schedule-monday">
-                    <span className="dl">Monday</span>
-                    <span className="ds">M</span></div>
+                    <span className="dl">星期一</span>
+                    <span className="ds">一</span></div>
                 <div className="schedule_header schedule-tuesday">
-                    <span className="dl">Tuesday</span>
-                    <span className="ds">T</span></div>
+                    <span className="dl">星期二</span>
+                    <span className="ds">二</span></div>
                 <div className="schedule_header schedule-wednesday">
-                    <span className="dl">Wednesday</span>
-                    <span className="ds">W</span></div>
+                    <span className="dl">星期三</span>
+                    <span className="ds">三</span></div>
                 <div className="schedule_header schedule-thursday">
-                    <span className="dl">Thursday</span>
-                    <span className="ds">Th</span></div>
+                    <span className="dl">星期四</span>
+                    <span className="ds">四</span></div>
                 <div className="schedule_header schedule-friday">
-                    <span className="dl">Friday</span>
-                    <span className="ds">F</span></div>
+                    <span className="dl">星期五</span>
+                    <span className="ds">五</span></div>
                 <div className="schedule_header schedule-saturday">
-                    <span className="dl">Saturday</span>
-                    <span className="ds">Sa</span></div>
+                    <span className="dl">星期六</span>
+                    <span className="ds">六</span></div>
 
                 {/* <!-- Time--> */}
                 <div className="schedule_time time-from-s">06:00-07:30</div>
