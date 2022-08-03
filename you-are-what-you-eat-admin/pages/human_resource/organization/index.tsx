@@ -5,17 +5,19 @@ import { Container, Tabs, Tab, Grid } from '@mui/material';
 import Footer from '@/components/Footer';
 import { styled } from '@mui/material/styles';
 
-import { useState, ChangeEvent, ReactChild, ReactFragment, ReactPortal } from 'react';
+import { useState, ChangeEvent, ReactChild, ReactFragment, ReactPortal, useCallback, useEffect } from 'react';
 
 import ProfileCover from '@/content/HumanResource/Organization/Profile/ProfileCover';
 import QuickLink from '@/content/HumanResource/Organization/Profile/QuickLink';
-import Stuff from '@/content/HumanResource/Organization/Profile/stuff';
+import Stuff from '@/content/HumanResource/Organization/Profile/Stuff';
 import Summary from '@/content/HumanResource/Organization/Profile/Summary';
 
 import SelfManagementTab from '@/content/HumanResource/Organization/SelfManagementTab';
 import SalaryManagementTab from '@/content/HumanResource/Organization/SalaryManagementTab';
 import PrizeManagementTab from '@/content/HumanResource/Organization/PrizeManagementTab';
 import EmployeeManagementTab from '@/content/HumanResource/Organization/EmployeeManagementTab';
+import { EmployeeDetail, EmployeeEntity } from '@/models/employee';
+import { humanResourceApi } from '@/queries/employee';
 
 const TabsWrapper = styled(Tabs)(
   () => `
@@ -25,16 +27,18 @@ const TabsWrapper = styled(Tabs)(
 `
 );
 
-function Organization() {
+const init_id:string="1001";
+
+
+function Organization( {user,employees} :{ user:EmployeeDetail,employees:EmployeeEntity[] }) {
 
   const [currentTab, setCurrentTab] = useState<string>('SelfManagementTab');
 
   const tabs = [
-    { value: 'SelfManagementTab', label: '个人档案管理' },
-    { value: 'EmployeeManagementTab', label: '员工信息管理' },
+    { value: 'SelfManagementTab', label: '个人档案管理' }].concat(user.occupation==='经理'? 
+    [{ value: 'EmployeeManagementTab', label: '员工信息管理' },
     { value: 'SalaryManagementTab', label: '员工薪资管理' },
-    { value: 'PrizeManagementTab', label: '员工奖金管理' }
-  ];
+    { value: 'PrizeManagementTab', label: '员工奖金管理' }]:[]);
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
@@ -54,16 +58,18 @@ function Organization() {
           spacing={3}
         >
           <Grid item xs={12} md={8}>
-            <ProfileCover />
+            <ProfileCover user={user}/>
           </Grid>
           <Grid item xs={12} md={4}>
-            <Summary />
+            <Summary  user={user}/>
           </Grid>
           <Grid item xs={12} md={8}>
-            <Stuff />
+            <Stuff  user={user} employees={employees.filter((employee:EmployeeEntity)=>{
+            return employee.occupation===user.occupation;
+          })}/>
           </Grid>
           <Grid item xs={12} md={4}>
-            <QuickLink />
+            <QuickLink  user={user}/>
           </Grid>
         </Grid>
 
@@ -93,10 +99,10 @@ function Organization() {
             </TabsWrapper>
           </Grid>
           <Grid item xs={12}>
-            {currentTab === 'SelfManagementTab' && <SelfManagementTab />}
-            {currentTab === 'SalaryManagementTab' && <SalaryManagementTab />}
-            {currentTab === 'PrizeManagementTab' && <PrizeManagementTab />}
-            {currentTab === 'EmployeeManagementTab' && <EmployeeManagementTab />}
+            {currentTab === 'SelfManagementTab' && <SelfManagementTab  user={user} employees={employees}/>}
+            {user.occupation==='经理'&&currentTab === 'SalaryManagementTab' && <SalaryManagementTab/>}
+            {user.occupation==='经理'&&currentTab === 'PrizeManagementTab' && <PrizeManagementTab/>}
+            {user.occupation==='经理'&&currentTab === 'EmployeeManagementTab' && <EmployeeManagementTab/>}
           </Grid>
         </Grid>
       </Container>
@@ -110,3 +116,14 @@ Organization.getLayout = (page: boolean | ReactChild | ReactFragment | ReactPort
 );
 
 export default Organization;
+
+
+
+export async function getServerSideProps() {
+
+  const user = await humanResourceApi.getEmployeeDetail(init_id);
+
+  const employees = await humanResourceApi.getEmployees();
+
+  return { props: { user,employees } }
+}

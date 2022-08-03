@@ -1,7 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 
-import { Card } from '@mui/material';
-
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import type { DailyOrderStatic } from '@/models/order';
 import StatisticCardData from './StatisticCardData';
@@ -35,9 +33,9 @@ function RecentOrdersList() {
   }, [getOrdersInTimePeriod]);
 
   return (
-    <Card>
+    <>
       {StatisticCardData(statisticData)}
-    </Card>
+    </>
   );
 }
 

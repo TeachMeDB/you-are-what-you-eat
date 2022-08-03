@@ -15,3 +15,15 @@ export interface Promotion {
     dishes:      PromotionDish[],
     status:      PromotionStatus
 };
+
+export interface SelectableDish {
+    name: string,
+    price: number,
+    tags: string[]
+};
+
+export interface SelectedDish {
+    name: string,
+    price: number,  // 原价
+    discount: number
+};

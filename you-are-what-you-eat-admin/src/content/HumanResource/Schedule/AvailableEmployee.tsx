@@ -16,10 +16,11 @@ import {
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 
-import PageviewIcon from '@mui/icons-material/Pageview';
+
 import { useState, MouseEvent, ChangeEvent } from 'react';
 
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import EmployeeSchedule from './EmployeeSchedulePopup';
 
 const RootWrapper = styled(Box)(
   ({ theme }) => `
@@ -152,13 +153,7 @@ function AvailableEmployee() {
                     </Grid>
                     <Grid item xs={1}></Grid>
                     <Grid item xs={5}>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        startIcon={<PageviewIcon />}
-                      >
-                        查看日程
-                      </Button>
+                      <EmployeeSchedule/>
                     </Grid>
                   </Grid>
 

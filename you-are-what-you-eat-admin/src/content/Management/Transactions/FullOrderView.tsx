@@ -14,6 +14,9 @@ import {useTheme} from '@mui/material';
 import { CryptoDishOrder,CryptoDishOrderStatus } from '@/models/crypto_dishOrder';
 import { Grid } from '@mui/material';
 import DishOrderTable from './DishOrderTable';
+import { useState, useEffect, useCallback } from 'react';
+import { useRefMounted } from 'src/hooks/useRefMounted';
+import { queryDishOrderApi } from '@/queries/query_dishOrder';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -70,6 +73,26 @@ export default function FullOrderView(props: DialogIDProps) {
 
   const theme = useTheme();
 
+  const isMountedRef = useRefMounted();
+  const [dishOrderData, setDishOrderData] = useState<CryptoDishOrder[]>([]);
+
+  const getDishOrderData = useCallback(async () => {
+    try {
+      const response = await queryDishOrderApi.getDishOrder(props.id)
+
+      if (isMountedRef()) {
+        setDishOrderData(response);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
+
+  useEffect(() => {
+    getDishOrderData();
+  }, [getDishOrderData]);
+
+  /*
   const cryptoDishOrders: CryptoDishOrder[] = [
     {
         dish_order_id : "283nx8ewyfs",
@@ -107,6 +130,7 @@ export default function FullOrderView(props: DialogIDProps) {
         dish_status: '已完成'
     }
   ];
+  */
 
   return (
     <div>
@@ -139,7 +163,7 @@ export default function FullOrderView(props: DialogIDProps) {
           spacing={4}
         >
           <Grid item xs={12}>
-            <DishOrderTable cryptoDishOrder={cryptoDishOrders}/>
+            <DishOrderTable cryptoDishOrder={dishOrderData}/>
           </Grid>
         </Grid> 
       </BootstrapDialog>

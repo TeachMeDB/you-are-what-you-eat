@@ -8,7 +8,7 @@ function DashboardExpenses() {
   return (
     <>
       <Head>
-        <title>Expenses Dashboard</title>
+        <title>订单管理</title>
       </Head>
       <OrderOverview />
     </>

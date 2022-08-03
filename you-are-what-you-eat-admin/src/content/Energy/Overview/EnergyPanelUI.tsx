@@ -6,7 +6,8 @@ import {
     IconButton,
     Button,
     styled,
-    useTheme
+    useTheme,
+    Tooltip
   } from '@mui/material';
   
   import { useTranslation } from 'react-i18next';
@@ -76,7 +77,7 @@ import {
                   strokeLinecap: 'round'
                 })}
                 strokeWidth={9}
-                value={data.available / data.total * 100}
+                value={data.daily / data.weekly * 100}
               >
                 <Typography
                   color="primary"
@@ -85,7 +86,7 @@ import {
                   }}
                   variant="h1"
                 >
-                  {`${data.available / data.total * 100}%`}
+                  {`${(data.daily / data.weekly * 100).toFixed(2)}%`}
                 </Typography>
               </CircularProgressbarWithChildren>
             </Box>
@@ -114,7 +115,7 @@ import {
                   variant="subtitle2"
                   color="text.primary"
                 >
-                  {t(`可用: ${data.available}`)}
+                  {t(`今日`)}
                 </Typography>
               </Box>
               <Box
@@ -136,14 +137,16 @@ import {
                   variant="subtitle2"
                   color="text.primary"
                 >
-                  {t(`总量: ${data.total}`)}
+                  {t(`本周`)}
                 </Typography>
               </Box>
             </Box>
             <Box mx={3} pt={1} mb={3}>
+              <Tooltip
+                title={`今日用量：${data.daily}` + `，本周用量：${data.weekly}`}
+              >
               <Button
                 fullWidth
-                disabled
                 variant="text"
                 color="secondary"
                 sx={{
@@ -159,8 +162,9 @@ import {
                   }
                 }}
               >
-                {t('current storage')}
+                {t('当前用量')}
               </Button>
+              </Tooltip>
             </Box>
           </Card>
         </Grid>)))}

@@ -4,11 +4,13 @@ import {
     DishOrderStat,
     OrderReport,
     WeekBestSellerData,
-    ActiveVIP
+    ActiveVIP,
+    OrderDetail,
+    OrderStatus
 } from "@/models/order";
 
 class OrdersApi {
-    public getOrdersInTimePeriod: (start: Date, end: Date) => Promise<Order[]> = (start, end) => {
+    public getOrdersInTimePeriod: (start: Date, end: Date) => Promise<Order[]> = async (start, end) => {
         const orders: Order[] = [
             {
                 id: 'ADF7284',
@@ -79,7 +81,7 @@ class OrdersApi {
         return Promise.resolve(orders);
     }
 
-    public getDishSaleVolumeInTimePeriod: (start: Date, end: Date) => Promise<DishOrderStat[]> = (start, end) => {
+    public getDishSaleVolumeInTimePeriod: (start: Date, end: Date) => Promise<DishOrderStat[]> = async (start, end) => {
         const dishOrders: DishOrderStat[] = [
             {
                 name: '香辣鸡翅',
@@ -113,7 +115,7 @@ class OrdersApi {
         return Promise.resolve(dishOrders);
     }
 
-    public getDailyOrderStatics: (start: Date, end: Date) => Promise<DailyOrderStatic> = (start, end) => {
+    public getDailyOrderStatics: (start: Date, end: Date) => Promise<DailyOrderStatic> = async (start, end) => {
         const stat: DailyOrderStatic = {
             order_num: 500,
             order_num_change: -0.03,
@@ -126,7 +128,7 @@ class OrdersApi {
         return Promise.resolve(stat);
     }
 
-    public getDailyOrderReport: () => Promise<OrderReport> = () => {
+    public getDailyOrderReport: () => Promise<OrderReport> = async () => {
         const report: OrderReport = {
             breakfast_order_num: 33,
             breakfast_turnover: 659,
@@ -139,7 +141,7 @@ class OrdersApi {
         return Promise.resolve(report);
     }
 
-    public getWeekBestSellerData: () => Promise<WeekBestSellerData> = () => {
+    public getWeekBestSellerData: () => Promise<WeekBestSellerData> = async () => {
         const data = {
             best_seller: '青椒炒肉',
             total: 10948,
@@ -172,7 +174,7 @@ class OrdersApi {
         return Promise.resolve(data);
     }
 
-    public getActiveVIPs: () => Promise<ActiveVIP[]> = () => {
+    public getActiveVIPs: () => Promise<ActiveVIP[]> = async () => {
         const data = [
             {
                 username: 'li-letian',
@@ -199,6 +201,33 @@ class OrdersApi {
                 order_credit: 1628
             }
         ]
+
+        return Promise.resolve(data);
+    }
+
+    public getOrderDetail: (order_id: string) => Promise<OrderDetail> = async () => {
+        const data = {
+            order_id: 'ADF7284',
+            table_id: 'A32',
+            creation_time: '2022-7-20 20:00:00',
+            ori_price: 100,
+            final_payment: 95,
+            order_status: 'running' as OrderStatus,
+            dishes: [
+                {
+                    dish_name: '鱼香肉丝',
+                    ori_price: 25,
+                    final_payment: 20,
+                    dish_status: '已完成'
+                },
+                {
+                    dish_name: '清炒包菜',
+                    ori_price: 12,
+                    final_payment: 12,
+                    dish_status: '已完成'
+                }
+            ]
+        }
 
         return Promise.resolve(data);
     }

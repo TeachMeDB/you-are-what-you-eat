@@ -19,6 +19,8 @@ import Text from 'src/components/Text';
 import { Chart } from 'src/components/Chart';
 import type { ApexOptions } from 'apexcharts';
 import Brightness1Icon from '@mui/icons-material/Brightness1';
+import { CryptoSummary } from '@/models/crypto_order';
+import { FC, ChangeEvent, useState } from 'react';
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -56,24 +58,17 @@ const ListItemAvatarWrapper = styled(ListItemAvatar)(
 `
 );
 
-export interface SummaryProps
-{
-  order_count: number,
-  awating_count: number,
-  awating_credit: number,
-  processing_count: number,
-  processing_credit: number,
-  completed_count: number,
-  completed_credit: number,
-  payed_count: number,
-  payed_credit: number,
-  total_credit: number,
-  today_credit: number
+interface OrderSummaryProps {
+  className?: string;
+  cryptoSummary: CryptoSummary;
 }
 
-function OrderSummary(props: SummaryProps) {
-  const theme = useTheme();
 
+//function OrderSummary(cryptoSummary: CryptoSummary) 
+const OrderSummary: FC<OrderSummaryProps> = ({ cryptoSummary }) =>
+{
+  const theme = useTheme();
+  
   const chartOptions: ApexOptions = {
     chart: {
       background: 'transparent',
@@ -142,10 +137,10 @@ function OrderSummary(props: SummaryProps) {
   };
 
   const chartSeries = [
-    (props.awating_count/props.order_count), 
-  (props.processing_count/props.order_count), 
-  (props.completed_count/props.order_count), 
-  (props.payed_count/props.order_count)
+    (cryptoSummary.awaiting_count/cryptoSummary.order_count), 
+  (cryptoSummary.processing_count/cryptoSummary.order_count), 
+  (cryptoSummary.completed_count/cryptoSummary.order_count), 
+  (cryptoSummary.payed_count/cryptoSummary.order_count)
 ];
 
   return (
@@ -163,7 +158,7 @@ function OrderSummary(props: SummaryProps) {
             </Typography>
             <Box>
               <Typography variant="h1" gutterBottom>
-                ￥{Number(props.total_credit).toFixed(2)}
+                ￥{Number(cryptoSummary.total_credit).toFixed(2)}
               </Typography>
               <Box
                 display="flex"
@@ -181,7 +176,7 @@ function OrderSummary(props: SummaryProps) {
                   <TrendingUp fontSize="large" />
                 </AvatarSuccess>
                 <Box>
-                  <Typography variant="h4">+ ￥{Number(props.today_credit).toFixed(2)}</Typography>
+                  <Typography variant="h4">+ ￥{Number(cryptoSummary.today_credit).toFixed(2)}</Typography>
                   <Typography variant="subtitle2" noWrap>
                     今天
                   </Typography>
@@ -239,7 +234,7 @@ function OrderSummary(props: SummaryProps) {
                     <ListItemText
                       primary="待处理"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary={"￥"+Number(props.awating_credit).toFixed(2).toString()}
+                      secondary={"￥"+Number(cryptoSummary.awaiting_credit).toFixed(2).toString()}
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -247,7 +242,7 @@ function OrderSummary(props: SummaryProps) {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                       {Number(props.awating_count/props.order_count*100).toFixed(1).toString()}%
+                       {Number(cryptoSummary.awaiting_count/cryptoSummary.order_count*100).toFixed(1).toString()}%
                       </Typography>
                     </Box>
                   </ListItem>
@@ -258,7 +253,7 @@ function OrderSummary(props: SummaryProps) {
                     <ListItemText
                       primary="制作中"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary={"￥"+Number(props.processing_credit).toFixed(2).toString()}
+                      secondary={"￥"+Number(cryptoSummary.processing_credit).toFixed(2).toString()}
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -266,7 +261,7 @@ function OrderSummary(props: SummaryProps) {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                      {Number(props.processing_count/props.order_count*100).toFixed(1).toString()}%
+                      {Number(cryptoSummary.processing_count/cryptoSummary.order_count*100).toFixed(1).toString()}%
                       </Typography>
                     </Box>
                   </ListItem>
@@ -277,7 +272,7 @@ function OrderSummary(props: SummaryProps) {
                     <ListItemText
                       primary="已完成"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary={"￥"+Number(props.completed_credit).toFixed(2).toString()}
+                      secondary={"￥"+Number(cryptoSummary.completed_credit).toFixed(2).toString()}
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -285,7 +280,7 @@ function OrderSummary(props: SummaryProps) {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                      {Number(props.completed_count/props.order_count*100).toFixed(1).toString()}%
+                      {Number(cryptoSummary.completed_count/cryptoSummary.order_count*100).toFixed(1).toString()}%
                       </Typography>
                     </Box>
                   </ListItem>
@@ -296,7 +291,7 @@ function OrderSummary(props: SummaryProps) {
                     <ListItemText
                       primary="已支付"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary={"￥"+Number(props.payed_credit).toFixed(2).toString()}
+                      secondary={"￥"+Number(cryptoSummary.payed_credit).toFixed(2).toString()}
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -304,7 +299,7 @@ function OrderSummary(props: SummaryProps) {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                      {Number(props.payed_count/props.order_count*100).toFixed(1).toString()}%
+                      {Number(cryptoSummary.payed_count/cryptoSummary.order_count*100).toFixed(1).toString()}%
                       </Typography>
                     </Box>
                   </ListItem>

@@ -12,7 +12,7 @@ import { Grid } from '@mui/material';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import type { OriginalSensorData } from 'src/models/energy'
 import { energyApi } from 'src/queries/energy'
-import Results from 'src/content/Energy/Details/AudienceOverview';
+import Results from '@/content/Energy/Details/DetailsTable';
 import { count } from 'src/utils/array'
 
 function SensorDataCards() {
@@ -60,7 +60,7 @@ function SensorDataCards() {
           {Statistics(water, power, gas)}
         </Grid>
         {originalData.map((data) => (
-          <Grid item xs={12}>
+          <Grid key={data.sensor_id} item xs={12}>
           <Results 
             logs={data.logs} 
             type={data.sensor_type} 

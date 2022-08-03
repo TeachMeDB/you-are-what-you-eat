@@ -28,7 +28,6 @@ import Label from 'src/components/Label';
 import { Order, OrderStatus } from 'src/models/order';
 import { useTranslation } from 'react-i18next';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 // import BulkActions from 'src/content/Management/Commerce/BulkActions';
 
 interface RecentOrdersTableProps {
@@ -100,7 +99,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
   const statusOptions = [
     {
       id: 'all',
-      name: 'All'
+      name: '全部'
     },
     {
       id: 'completed',
@@ -188,11 +187,11 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
           action={
             <Box width={150}>
               <FormControl fullWidth variant="outlined">
-                <InputLabel>{t('Status')}</InputLabel>
+                <InputLabel>{t('状态')}</InputLabel>
                 <Select
                   value={filters.status || 'all'}
                   onChange={handleStatusChange}
-                  label={t('Status')}
+                  label={t('状态')}
                   autoWidth
                 >
                   {statusOptions.map((statusOption) => (
@@ -310,7 +309,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                     {getStatusLabel(order.status)}
                   </TableCell>
                   <TableCell align="right">
-                    <Tooltip title={t('Edit Order')} arrow>
+                    <Tooltip title={t('查看订单详情')} arrow>
                       <IconButton
                         sx={{
                           '&:hover': {
@@ -320,20 +319,9 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                         }}
                         color="inherit"
                         size="small"
+                        href='details/1'
                       >
                         <EditTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title={t('Delete Order')} arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': { background: theme.colors.error.lighter },
-                          color: theme.palette.error.main
-                        }}
-                        color="inherit"
-                        size="small"
-                      >
-                        <DeleteTwoToneIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
                   </TableCell>

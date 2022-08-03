@@ -11,16 +11,15 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import Link from 'src/components/Link';
-
-import type { Promotion } from 'src/models/promotion';
+import type { OrderDetail } from '@/models/order';
 import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
 import PropTypes from 'prop-types';
 
 interface PageHeaderProps {
-  promotion: Promotion;
+  detail: OrderDetail;
 }
 
-const PageHeader: FC<PageHeaderProps> = ({ promotion }) => {
+const PageHeader: FC<PageHeaderProps> = ({ detail }) => {
   const { t }: { t: any } = useTranslation();
 
   return (
@@ -34,7 +33,7 @@ const PageHeader: FC<PageHeaderProps> = ({ promotion }) => {
           >
             <Tooltip arrow placement="top" title={t('Go back')}>
               <IconButton
-                href="/promotions/overview"
+                href="/orders/overview"
                 color="primary"
                 sx={{
                   p: 2,
@@ -46,20 +45,17 @@ const PageHeader: FC<PageHeaderProps> = ({ promotion }) => {
             </Tooltip>
             <Box>
               <Typography variant="h3" component="h3" gutterBottom>
-                #{promotion.name}
+                #{detail.order_id}
               </Typography>
               <Breadcrumbs maxItems={2} aria-label="breadcrumb">
                 <Link color="inherit" href="#">
                   {t('Home')}
                 </Link>
                 <Link color="inherit" href="#">
-                  {t('促销活动管理')}
-                </Link>
-                <Link color="inherit" href="#">
-                  {t('促销活动详情')}
+                  {t('Orders')}
                 </Link>
                 <Typography color="text.primary">
-                  {t('促销活动')} #{promotion.name}
+                  {t('OrderDetail')} #{detail.order_id}
                 </Typography>
               </Breadcrumbs>
             </Box>
@@ -70,10 +66,10 @@ const PageHeader: FC<PageHeaderProps> = ({ promotion }) => {
             sx={{
               mt: { xs: 2, sm: 0 }
             }}
-            href="/promotions/overview"
+            href="/orders/overview"
             variant="contained"
           >
-            {t('View all invoices')}
+            {t('查看所有订单')}
           </Button>
         </Grid>
       </Grid>
