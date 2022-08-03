@@ -1,6 +1,6 @@
 export interface IngredientInfo {
-    IngrId: string,
-    IngrName: string,
-    IngrType: number,
-    IngrDescription: string
+    ingr_id: string,
+    ingr_name: string,
+    ingr_type: number,
+    ingr_description: string
 }

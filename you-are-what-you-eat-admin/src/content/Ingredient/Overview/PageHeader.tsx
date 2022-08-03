@@ -13,10 +13,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { IngredientInfo } from '@/models/ingredient_info';
 
 let m: IngredientInfo = {
-  IngrId: '123',
-  IngrName: '123',
-  IngrType: 123,
-  IngrDescription: '123',
+  ingr_id: '123',
+  ingr_name: '123',
+  ingr_type: 123,
+  ingr_description: '123',
 };
 
 function PageHeader() {
@@ -34,16 +34,16 @@ function PageHeader() {
   };
   const idInputChange = (e) => {
 
-    m.IngrId = e.target.value;
+    m.ingr_id = e.target.value;
   };
   const nameInputChange = (e) => {
-    m.IngrName = e.target.value;
+    m.ingr_name = e.target.value;
   };
   const typeInputChange = (e) => {
-    m.IngrType = Number(e.target.value);
+    m.ingr_type = Number(e.target.value);
   };
   const descriptionInputChange = (e) => {
-    m.IngrDescription = e.target.value;
+    m.ingr_description = e.target.value;
   };
 
   return (

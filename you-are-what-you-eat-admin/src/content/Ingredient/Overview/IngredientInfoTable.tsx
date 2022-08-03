@@ -122,7 +122,7 @@ const RecentOrdersTable: FC<IngredientInfoTableProps> = ({ ingredientInfoes }) =
               return (
                 <TableRow
                   hover
-                  key={ingredientInfo.IngrId}
+                  key={ingredientInfo.ingr_id}
                 >
                   <TableCell>
                     <Typography
@@ -132,7 +132,7 @@ const RecentOrdersTable: FC<IngredientInfoTableProps> = ({ ingredientInfoes }) =
                       gutterBottom
                       noWrap
                     >
-                      {ingredientInfo.IngrId}
+                      {ingredientInfo.ingr_id}
                     </Typography>
 
                   </TableCell>
@@ -144,7 +144,7 @@ const RecentOrdersTable: FC<IngredientInfoTableProps> = ({ ingredientInfoes }) =
                       gutterBottom
                       noWrap
                     >
-                      {ingredientInfo.IngrName}
+                      {ingredientInfo.ingr_name}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -155,7 +155,7 @@ const RecentOrdersTable: FC<IngredientInfoTableProps> = ({ ingredientInfoes }) =
                       gutterBottom
                       noWrap
                     >
-                      {ingredientInfo.IngrType}
+                      {ingredientInfo.ingr_type}
                     </Typography>
 
                   </TableCell>
@@ -167,7 +167,7 @@ const RecentOrdersTable: FC<IngredientInfoTableProps> = ({ ingredientInfoes }) =
                       gutterBottom
                       noWrap
                     >
-                      {ingredientInfo.IngrDescription}
+                      {ingredientInfo.ingr_description}
 
                     </Typography>
 

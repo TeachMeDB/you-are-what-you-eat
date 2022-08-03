@@ -1,7 +1,8 @@
-import { Typography, Button, Grid } from '@mui/material';
+import { Button, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import * as React from 'react';
+import { useState } from 'react';
 
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -9,44 +10,28 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 
 import DialogTitle from '@mui/material/DialogTitle';
+import { queryAssetApi } from '@/queries/query_asset';
 
-import { AssetInfo } from '@/models/asset_info';
-
-let m: AssetInfo = {
-  AssetsId: '123',
-  AssetsName: '123',
-  AssetsType: '123',
-  AssetsDescription: '123',
-  AssetsStatus: 12,
-  EmployeeId: 12,
-  EmployeeName: 'status',
-};
-
-function PageHeader() {
+function PageHeader({ employees = [] }) {
 
   const [open, setOpen] = React.useState(false);
+  const [formValue, setFormValue] = useState(
+    { asset_id: '', asset_type: '', asset_status: '', employee_id: 0 });
+
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
-  const handleVerified = () => {
-    console.log(m);
+  const handleSubmit = async () => {
+    console.log(formValue, ' <-- formValue');
+    await queryAssetApi.addAsset(formValue);
     setOpen(false);
   };
-  const idInputChange = (e) => {
 
-    m.AssetsId = e.target.value;
-  };
-  const nameInputChange = (e) => {
-    m.AssetsName = e.target.value;
-  };
-  const typeInputChange = (e) => {
-    m.AssetsType = e.target.value;
-  };
-  const descriptionInputChange = (e) => {
-    m.AssetsDescription = e.target.value;
+  const handleFormChange = (field, e) => {
+    setFormValue({ ...formValue, [field]: e.target.value });
   };
 
   return (
@@ -73,48 +58,61 @@ function PageHeader() {
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>资产信息</DialogTitle>
           <DialogContent>
-
             <TextField
               autoFocus
               margin="dense"
-              id="assetsId"
-              label="资产编号"
+              id="asset_id"
+              label="新的资产编号"
               fullWidth
               variant="standard"
-              onChange={idInputChange}
+              value={formValue.asset_id}
+              onChange={(e) => handleFormChange('asset_id', e)}
             />
             <TextField
               autoFocus
               margin="dense"
-              id="assetsName"
-              label="资产名称"
+              id="asset_type"
+              label="新的资产类型"
               fullWidth
               variant="standard"
-              onChange={nameInputChange}
-
+              value={formValue.asset_type}
+              onChange={(e) => handleFormChange('asset_type', e)}
             />
             <TextField
               autoFocus
               margin="dense"
-              id="assetsDescription"
-              label="资产描述"
+              id="asset_status"
+              label="新的资产状态"
               fullWidth
               variant="standard"
-              onChange={descriptionInputChange}
+              value={formValue.asset_status}
+              onChange={(e) => handleFormChange('asset_status', e)}
             />
-            <TextField
+            <InputLabel id="employee_id">新的资产管理员ID</InputLabel>
+            <Select
               autoFocus
+              labelId="employee_id"
               margin="dense"
-              id="assetsType"
-              label="资产类型"
+              id="employee_id"
+              label="新的资产管理员ID"
+              placeholder="新的资产管理员"
               fullWidth
               variant="standard"
-              onChange={typeInputChange}
-            />
+              value={formValue.employee_id}
+              onChange={(e) => handleFormChange('employee_id', e)}
+            >
+              {
+                employees.map((employee) =>
+                  <MenuItem
+                    key={employee.employee_id}
+                    value={employee.employee_id}
+                  >{employee.employee_name}</MenuItem>)
+              }
+            </Select>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>退出</Button>
-            <Button onClick={handleVerified}>确定</Button>
+            <Button onClick={handleSubmit}>确定</Button>
           </DialogActions>
         </Dialog>
       </Grid>
