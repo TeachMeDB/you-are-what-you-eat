@@ -16,3 +16,11 @@ export function join(arr: string[], mark: string): string {
     }
     return res;
 }
+
+export function arrSum(arr: any[], callback: (e) => number): number {
+    var res: number = 0;
+    arr.forEach((e) => {
+        res += callback(e);
+    })
+    return res;
+}

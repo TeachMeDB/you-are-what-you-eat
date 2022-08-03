@@ -13,3 +13,12 @@ export function toTimeStamp(dateStr: string): number {
     var miliStamp = new Date(dateStr).getTime();
     return Number((miliStamp / 1000).toFixed(0));
 }
+
+export function getMonthsDateArray(point: 'begin' | 'end'): string[] {
+    var year = new Date().getFullYear();
+    const leap = () => (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) ? 1 : 0;
+    var lastDay = [31, 28 + leap(), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(
+        (m) => `${year}-${m}-${point === 'begin' ? '1 00:00:00' : `${lastDay[m - 1]} 23:59:59`}`
+    );
+}
