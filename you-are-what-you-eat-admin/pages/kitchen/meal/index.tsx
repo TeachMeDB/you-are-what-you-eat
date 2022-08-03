@@ -9,7 +9,6 @@ import AllMealInfoes from '@/content/Kitchen/Meal/MealInfo';
 function mealInfo() {
     return (
         <>
-
             <Head>
                 <title>菜品信息</title>
             </Head>
