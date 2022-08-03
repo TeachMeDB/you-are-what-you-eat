@@ -20,49 +20,71 @@ import { useState, MouseEvent, ChangeEvent, useCallback, useEffect } from 'react
 
 const initial_employees:EmployeeEntity[] = [
     {
-      "id": "82",
-      "name": "学给机问达",
-      "gender": "男",
-      "occupation": "enim proident sint dolore ut",
-      "birthday": "2000-01-01",
-      "attendance_rate": 13,
-      "award_times": 328770130185,
+      "id": "xxx",
+      "name": "XXXXX",
+      "gender": "X",
+      "occupation": "XXXXX",
+      "birthday": "XXXXX",
+      "attendance_rate": 0,
+      "award_times": 0,
       "avatar": "http://dummyimage.com/100x100"
     },
     {
-      "id": "95",
-      "name": "果务系共产报交",
-      "gender": "男",
-      "occupation": "esse",
-      "birthday": "2002-04-01",
-      "attendance_rate": 52,
-      "award_times": 1458028243810,
+      "id": "xxx",
+      "name": "XXXXX",
+      "gender": "X",
+      "occupation": "XXXXX",
+      "birthday": "XXXXX",
+      "attendance_rate": 0,
+      "award_times": 0,
+      "avatar": "http://dummyimage.com/100x100"
+    },
+    {
+      "id": "xxx",
+      "name": "XXXXX",
+      "gender": "X",
+      "occupation": "XXXXX",
+      "birthday": "XXXXX",
+      "attendance_rate": 0,
+      "award_times": 0,
+      "avatar": "http://dummyimage.com/100x100"
+    },
+    {
+      "id": "xxx",
+      "name": "XXXXX",
+      "gender": "X",
+      "occupation": "XXXXX",
+      "birthday": "XXXXX",
+      "attendance_rate": 0,
+      "award_times": 0,
+      "avatar": "http://dummyimage.com/100x100"
+    },
+    {
+      "id": "xxx",
+      "name": "XXXXX",
+      "gender": "X",
+      "occupation": "XXXXX",
+      "birthday": "XXXXX",
+      "attendance_rate": 0,
+      "award_times": 0,
+      "avatar": "http://dummyimage.com/100x100"
+    },
+    {
+      "id": "xxx",
+      "name": "XXXXX",
+      "gender": "X",
+      "occupation": "XXXXX",
+      "birthday": "XXXXX",
+      "attendance_rate": 0,
+      "award_times": 0,
       "avatar": "http://dummyimage.com/100x100"
     }
 ];
 
 
 
-function Stuff({user}:{user:EmployeeDetail}) {
+function Stuff({employees}:{user:EmployeeDetail,employees:EmployeeEntity[]}) {
 
-  const isMountedRef = useRefMounted();
-  const [employees, setEmployees] = useState<EmployeeEntity[]>(initial_employees);
-
-  const getEmployees = useCallback(async () => {
-    try {
-      const response = await humanResourceApi.getEmployees();
-
-      if (isMountedRef()) {
-        setEmployees(response);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [isMountedRef]);
-
-  useEffect(() => {
-    getEmployees();
-  }, [getEmployees]);
 
 
   const [page, setPage] = useState(2);
@@ -123,3 +145,5 @@ function Stuff({user}:{user:EmployeeDetail}) {
 }
 
 export default Stuff;
+
+

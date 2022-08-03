@@ -23,6 +23,8 @@ import {
 import PositionSchedule from '@/content/HumanResource/Schedule/PositionSchedule';
 import ScheduleOperation from '@/content/HumanResource/Schedule/ScheduleOperation';
 import AvailableEmployee from '@/content/HumanResource/Schedule/AvailableEmployee';
+import { scheduleApi } from '@/queries/schedule';
+import { WorkPlan } from '@/models/work_plan';
 
 const RootWrapper = styled(Box)(
   ({ theme }) => `
@@ -70,7 +72,9 @@ const DrawerWrapperMobile = styled(Drawer)(
 
 
 
-function ManagementUserProfile() {
+function ScheduleManagement({workplan}:{workplan:WorkPlan[]}) {
+
+  console.log(workplan);
 
 
   const theme = useTheme();
@@ -162,8 +166,18 @@ function ManagementUserProfile() {
   );
 }
 
-ManagementUserProfile.getLayout = (page) => (
+ScheduleManagement.getLayout = (page) => (
   <SidebarLayout>{page}</SidebarLayout>
 );
 
-export default ManagementUserProfile;
+export default ScheduleManagement;
+
+
+
+export async function getServerSideProps() {
+
+  const workplan= await scheduleApi.getSchedule();
+
+
+  return { props: { workplan } }
+}
