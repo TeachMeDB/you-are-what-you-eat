@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -67,14 +68,20 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
 
 export default function AssignSeat() {
   const [open, setOpen] = React.useState(false);
+  const [openSuccessDialog, setOpenSuccessDialog] = React.useState(false);
+  const [openErrorDialog, setOpenErrorDialog] = React.useState(false);
   const [inputNum, setInputNum] = useState<number>(1);
+  const [queueNum, setQueueNum] = useState<number>(1);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+    setOpenSuccessDialog(false);
+    setOpenErrorDialog(false);
   };
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
 
@@ -84,6 +91,13 @@ export default function AssignSeat() {
 
     setInputNum(parseInt(value));
   };
+
+  const handleAssignConfirm = () =>
+  {
+
+    //这里还没有改
+
+  }
 
   const theme = useTheme();
 
@@ -141,7 +155,8 @@ export default function AssignSeat() {
           </Box>
           {inputNum>0?  
           <Button
-          startIcon={<AddTwoToneIcon fontSize="small" />}          
+          startIcon={<AddTwoToneIcon fontSize="small" />} 
+          onClick={handleAssignConfirm}         
           >
           确认安排
         </Button>
@@ -155,6 +170,48 @@ export default function AssignSeat() {
         
       }   
       </BootstrapDialog>
+
+                  <Dialog
+                    open={openSuccessDialog}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle id="alert-dialog-title">
+                      {"排队成功"}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        该顾客的排号为: {queueNum}
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClose} autoFocus>
+                        OK
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+
+                  <Dialog
+                    open={openErrorDialog}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle id="alert-dialog-title">
+                      {"排队错误"}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        排队失败
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClose} autoFocus>
+                        OK
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
     </div>
   );
 }

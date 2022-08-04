@@ -68,6 +68,7 @@ class QueryTableApi {
       //  return Promise.resolve(data); 
     }
 
+  
 }
 
 export const queryTableApi = new QueryTableApi();
