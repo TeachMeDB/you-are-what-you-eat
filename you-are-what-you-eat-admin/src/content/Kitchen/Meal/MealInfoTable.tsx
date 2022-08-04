@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-import { FC, ChangeEvent, useState, useEffect, useCallback } from 'react';
+import { ChangeEvent, useState, useEffect, useCallback } from 'react';
 
 import PropTypes from 'prop-types';
 import {
@@ -42,6 +42,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { mealInfoApi } from '@/queries/meal';
 
 import { useRefMounted } from '@/hooks/useRefMounted';
+import stockInfo from 'pages/kitchen/stock';
 
 const applyPagination = (
     mealInfoes: MealInfo[],
@@ -55,10 +56,7 @@ const applyPagination = (
 
 
 
-interface MealInfoTableProps {
-    className?: string;
-    mealInfoes: MealInfo[];
-}
+
 
 const OutlinedInputWrapper = styled(OutlinedInput)(
     ({ theme }) => `
@@ -78,7 +76,7 @@ const ButtonSearch = styled(Button)(
 
 
 
-const RecentOrdersTable: FC<MealInfoTableProps> = () => {
+const MealInfoTable = () => {
 
 
 
@@ -89,6 +87,7 @@ const RecentOrdersTable: FC<MealInfoTableProps> = () => {
     const getAllData = useCallback(async () => {
         try {
             let MealInfoes = await mealInfoApi.getMealInfo();
+            console.log(MealInfoes);
             if (isMountedRef()) {
                 setMealInfoes(MealInfoes);
             }
@@ -101,7 +100,7 @@ const RecentOrdersTable: FC<MealInfoTableProps> = () => {
         getAllData();
     }, [getAllData]);
 
-    console.log(MealInfoes);
+
 
     const [page, setPage] = useState<number>(0);
     const [limit, setLimit] = useState<number>(5);
@@ -127,8 +126,21 @@ const RecentOrdersTable: FC<MealInfoTableProps> = () => {
     const paginatedPromotions = applyPagination(MealInfoes, page, limit);
 
     const theme = useTheme();
+    const newM: MealInfo[] = [];
+
+    var Search: string;
 
 
+    const handleSearchChange = (e) => {
+        Search = e.target.value;
+        MealInfoes.map((item) => {
+            if (item.dis_name.indexOf(Search) != -1)
+                newM.push(item);
+        })
+    }
+    const handleSearchClick = () => {
+        setMealInfoes(newM);
+    }
 
     return (
         <Card>
@@ -137,12 +149,12 @@ const RecentOrdersTable: FC<MealInfoTableProps> = () => {
                     action={
                         <FormControl variant="outlined" fullWidth>
                             <OutlinedInputWrapper
+                                onChange={handleSearchChange}
                                 type="text"
                                 placeholder="输入菜品名称"
-
                                 endAdornment={
-                                    <InputAdornment position="end">
-                                        <ButtonSearch variant="contained" size="small" >
+                                    <InputAdornment position="end" >
+                                        <ButtonSearch variant="contained" size="small" onClick={handleSearchClick} >
                                             搜索
                                         </ButtonSearch>
 
@@ -280,8 +292,8 @@ const RecentOrdersTable: FC<MealInfoTableProps> = () => {
                                                     />
                                                 </DialogContent>
                                                 <DialogActions>
-                                                    <Button onClick={handleClose}>1</Button>
-                                                    <Button onClick={handleClose}>Subscribe</Button>
+                                                    <Button onClick={handleClose}>取消</Button>
+                                                    <Button onClick={handleClose}>确定</Button>
                                                 </DialogActions>
                                             </Dialog>
                                             <Tooltip title="删除" arrow>
@@ -319,12 +331,12 @@ const RecentOrdersTable: FC<MealInfoTableProps> = () => {
     );
 };
 
-RecentOrdersTable.propTypes = {
+MealInfoTable.propTypes = {
     mealInfoes: PropTypes.array.isRequired
 };
 
-RecentOrdersTable.defaultProps = {
+MealInfoTable.defaultProps = {
     mealInfoes: []
 };
 
-export default RecentOrdersTable;
+export default MealInfoTable;

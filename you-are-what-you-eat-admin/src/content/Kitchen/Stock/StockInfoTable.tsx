@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-import { FC, ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, useEffect, useCallback } from 'react';
 
 import PropTypes from 'prop-types';
 import {
@@ -38,6 +38,8 @@ import DialogContent from '@mui/material/DialogContent';
 
 import DialogTitle from '@mui/material/DialogTitle';
 
+import { stockInfoApi } from '@/queries/stock';
+import { useRefMounted } from '@/hooks/useRefMounted';
 
 const applyPagination = (
     stockInfoes: StockInfo[],
@@ -74,7 +76,31 @@ const ButtonSearch = styled(Button)(
 
 
 
-const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
+const StockInfoesTable = () => {
+
+
+    const isMountedRef = useRefMounted();
+    const [StockInfoes, setStockInfoes] = useState<StockInfo[]>([]);
+
+
+    const getAllData = useCallback(async () => {
+        try {
+            let MealInfoes = await stockInfoApi.getStockInfo();
+            if (isMountedRef()) {
+                setStockInfoes(MealInfoes);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }, [isMountedRef]);
+
+    useEffect(() => {
+        getAllData();
+    }, [getAllData]);
+
+
+
+
     const [page, setPage] = useState<number>(0);
     const [limit, setLimit] = useState<number>(5);
     const handlePageChange = (_event: any, newPage: number): void => {
@@ -98,7 +124,7 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
     };
 
     const theme = useTheme();
-    const paginatedPromotions = applyPagination(stockInfoes, page, limit);
+    const paginatedPromotions = applyPagination(StockInfoes, page, limit);
 
     return (
         <Card>
@@ -266,7 +292,7 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
             <Box p={2}>
                 <TablePagination
                     component="div"
-                    count={stockInfoes.length}
+                    count={StockInfoes.length}
                     onPageChange={handlePageChange}
                     onRowsPerPageChange={handleLimitChange}
                     page={page}
