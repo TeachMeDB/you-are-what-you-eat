@@ -1,10 +1,12 @@
 import CurOrderTable from "./CurOrderTable";
 import CurOrderSummary from "./CurOrderSummary";
 import { Grid } from '@mui/material';
+import {
+    CurOrder
+} from '@/models/cur_order'
 
 
-
-export default function CurOrder(curorders) {
+export default function CurOrder(curorders: CurOrder) {
     let arr = Object.values(curorders);
     console.log(arr[0].curorder);
     return (

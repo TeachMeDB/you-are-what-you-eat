@@ -41,7 +41,15 @@ export default function CheckList(curOrder: CurOrder) {
         }
         setChecked(newChecked);
     };
-    var ifChecked = false;
+    const CountFinished = () => {
+        var i = 0;
+        curOrder.dish.map((item) => {
+            if (item.status == "已完成")
+                i++;
+        })
+        return Math.round((i / curOrder.dish.length) * 100);
+    }
+    var finished = CountFinished();
     return (
         <Card>
             <CardHeader title={curOrder.order_id} />
@@ -63,8 +71,6 @@ export default function CheckList(curOrder: CurOrder) {
                                     inputProps={{
                                         'aria-labelledby': item.dish_name,
                                     }}
-
-
                                 />
 
                             </ListItem>
@@ -73,7 +79,7 @@ export default function CheckList(curOrder: CurOrder) {
                 </List>
             </CardContent>
             <LinearProgressWrapper
-                value={20}
+                value={finished}
                 color="primary"
                 variant="determinate"
             />
