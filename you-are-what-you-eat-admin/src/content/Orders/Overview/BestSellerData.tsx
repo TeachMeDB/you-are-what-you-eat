@@ -26,6 +26,7 @@ import {
   import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone';
   import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone';
   import type { WeekBestSellerData } from '@/models/order'
+  import { getDayTime } from '@/utils/date';
   
   function BestSellerData(data: WeekBestSellerData) {
     const { t }: { t: any } = useTranslation();
@@ -110,13 +111,13 @@ import {
         show: false
       },
       labels: [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday',
+        getDayTime(new Date(), -6, ''),
+        getDayTime(new Date(), -5, ''),
+        getDayTime(new Date(), -4, ''),
+        getDayTime(new Date(), -3, ''),
+        getDayTime(new Date(), -2, ''),
+        getDayTime(new Date(), -1, ''),
+        getDayTime(new Date(), 0, '')
       ],
       xaxis: {
         labels: {
@@ -136,16 +137,8 @@ import {
     };
     const Box2Data = [
       {
-        name: '早餐销量',
-        data: [...data.breakfast]
-      },
-      {
-        name: '午餐销量',
-        data: [...data.lunch]
-      },
-      {
-        name: '晚餐销量',
-        data: [...data.dinner]
+        name: '销量',
+        data: data.lunch.map((l) => Number(l.toFixed(0)))
       }
     ];
   

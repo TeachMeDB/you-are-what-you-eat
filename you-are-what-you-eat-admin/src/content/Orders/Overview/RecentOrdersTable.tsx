@@ -312,7 +312,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                         }}
                         color="inherit"
                         size="small"
-                        href={`details/${order.id}`}
+                        href={`/orders/details/${order.id}`}
                       >
                         <LaunchIcon fontSize="small" />
                       </IconButton>
