@@ -1,9 +1,12 @@
 
 
 import {
-    WorkPlan
+    ScheduleEntity,
+    ScheduleUpload,
+    People,
+    Avaliable
     
-} from '@/models/work_plan'
+} from '@/models/schedule'
 
 import {GetApi,PostApi} from "@/utils/requests"
 
@@ -17,7 +20,20 @@ class ScheduleApi {
             id:id,
             place:place,
             occupation:occupation
-        }))).data as WorkPlan[];
+        }))).data as ScheduleEntity[];
+    }
+
+    public async getAvailable(start?:string,end?:string,place?:string,occupation?:string){
+        return (await (GetApi("Schedule/GetFreeEmployee",{
+            start:start,
+            end:end,
+            place:place,
+            occupation:occupation
+        }))).data as Avaliable[];
+    }
+
+    public async postSchedule(schedule:ScheduleUpload){
+        return (await (PostApi("Schedule/PostScheduleInfo",schedule))).statusText as string
     }
 
 
