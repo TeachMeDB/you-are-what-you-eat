@@ -126,6 +126,20 @@ const StockInfoesTable = () => {
     const theme = useTheme();
     const paginatedPromotions = applyPagination(StockInfoes, page, limit);
 
+    var Search: string;
+
+    let newM: StockInfo[] = [];
+    const handleSearchChange = (e) => {
+        Search = e.target.value;
+        StockInfoes.map((item) => {
+            if (item.ing_name.indexOf(Search) != -1)
+                newM.push(item);
+        })
+    }
+    const handleSearchClick = () => {
+        setStockInfoes(newM);
+    }
+
     return (
         <Card>
             {(
@@ -134,11 +148,12 @@ const StockInfoesTable = () => {
                     action={
                         <FormControl variant="outlined" fullWidth>
                             <OutlinedInputWrapper
+                                onChange={handleSearchChange}
                                 type="text"
                                 placeholder="输入原料名称"
                                 endAdornment={
                                     <InputAdornment position="end">
-                                        <ButtonSearch variant="contained" size="small" >
+                                        <ButtonSearch variant="contained" size="small" onClick={handleSearchClick} >
                                             搜索
                                         </ButtonSearch>
 

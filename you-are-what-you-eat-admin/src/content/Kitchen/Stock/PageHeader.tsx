@@ -7,6 +7,19 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 
 import DialogTitle from '@mui/material/DialogTitle';
+
+import { StockInfo } from '@/models/stock_info';
+
+import { stockInfoApi } from '@/queries/stock';
+
+let n: StockInfo = {
+    "amount": 0,
+    "date": "",
+    "ing_name": "",
+    "record_id": "",
+    "surplus": 0
+}
+
 function PageHeader() {
 
     const [open, setOpen] = React.useState(false);
@@ -17,7 +30,23 @@ function PageHeader() {
 
     const handleClose = () => {
         setOpen(false);
+        console.log(n);
     };
+
+    const handleAmountChange = (e) => {
+        n.amount = parseInt(e.target.value);
+        n.surplus = n.amount;
+    }
+    const handleDateChange = (e) => {
+        n.date = e.target.value;
+    }
+    const handleNameChange = (e) => {
+        n.ing_name = e.target.value;
+    }
+    const handleIdChange = (e) => {
+        n.record_id = e.target.value;
+    }
+
 
     return (
         <Grid container justifyContent="space-between" alignItems="center">
@@ -51,6 +80,7 @@ function PageHeader() {
                             label="采购编号"
                             fullWidth
                             variant="standard"
+                            onChange={handleIdChange}
                         />
                         <TextField
                             autoFocus
@@ -59,6 +89,7 @@ function PageHeader() {
                             label="原料名称"
                             fullWidth
                             variant="standard"
+                            onChange={handleNameChange}
                         />
                         <TextField
                             autoFocus
@@ -67,6 +98,7 @@ function PageHeader() {
                             label="日期"
                             fullWidth
                             variant="standard"
+                            onChange={handleDateChange}
                         />
                         <TextField
                             autoFocus
@@ -75,11 +107,38 @@ function PageHeader() {
                             label="原料采购量"
                             fullWidth
                             variant="standard"
+                            onChange={handleAmountChange}
                         />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>退出</Button>
-                        <Button onClick={handleClose}>确定</Button>
+                        <Button onClick={() => {
+                            const conduct = async () => {
+
+                                return stockInfoApi.postStock(
+                                    {
+                                        amount: n.amount,
+                                        date: n.date,
+                                        ing_name: n.ing_name,
+                                        record_id: n.record_id,
+                                        surplus: n.surplus
+                                    } as StockInfo);
+
+                            }
+
+                            conduct().then((value) => {
+
+                                alert("成功：" + value);
+
+                                window.location.reload();
+
+
+                            }).catch((value) => {
+
+                                alert("失败：" + value);
+                            });
+
+                        }} href="javascript:location.reload(true)">确定</Button>
                     </DialogActions>
                 </Dialog>
             </Grid>

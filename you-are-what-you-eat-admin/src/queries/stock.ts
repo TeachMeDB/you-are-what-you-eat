@@ -3,7 +3,7 @@ import {
     StockInfo
 } from '@/models/stock_info'
 
-import { GetApi } from "@/utils/requests"
+import { GetApi, PostApi } from "@/utils/requests"
 
 
 class StockInfoApi {
@@ -16,6 +16,10 @@ class StockInfoApi {
             record_id: record_id,
             surplus: surplus,
         }))).data as StockInfo[];
+    }
+
+    public async postEmployee(stockinfo: StockInfo) {
+        return (await (PostApi("/IngredientRecords/AddIngredientRecord", stockinfo))).statusText as string
     }
 }
 
