@@ -38,14 +38,10 @@ export default function CheckList(curOrder: CurOrder) {
         if (currentIndex === -1) {
             newChecked.push(value);
 
-        } else {
-            newChecked.splice(currentIndex, 1);
-
         }
-
         setChecked(newChecked);
     };
-
+    var ifChecked = false;
     return (
         <Card>
             <CardHeader title={curOrder.order_id} />
@@ -58,13 +54,16 @@ export default function CheckList(curOrder: CurOrder) {
                         curOrder.dish.map((item) =>
                             <ListItem divider>
                                 <ListItemText id={item.dish_name} primary={item.dish_name} />
+
                                 <Switch
+
                                     edge="end"
                                     onChange={handleToggle(item.dish_name)}
                                     checked={checked.indexOf(item.dish_name) !== -1}
                                     inputProps={{
                                         'aria-labelledby': item.dish_name,
                                     }}
+
 
                                 />
 
