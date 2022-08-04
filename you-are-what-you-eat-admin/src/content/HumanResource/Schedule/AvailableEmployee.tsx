@@ -16,11 +16,16 @@ import {
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 
+import RemoveIcon from '@mui/icons-material/Remove';
 
-import { useState, MouseEvent, ChangeEvent } from 'react';
+
+import { useState, MouseEvent, ChangeEvent, useCallback, useEffect } from 'react';
 
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import EmployeeSchedule from './EmployeeSchedulePopup';
+import { useRefMounted } from '@/hooks/useRefMounted';
+import { Avaliable, ScheduleEntity } from '@/models/schedule';
+import { scheduleApi } from '@/queries/schedule';
 
 const RootWrapper = styled(Box)(
   ({ theme }) => `
@@ -30,32 +35,35 @@ const RootWrapper = styled(Box)(
 );
 
 
+function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeople}) {
+
+  const [selected,setSelected]=useState<Avaliable[]>([]);
+
+  const isMountedRef = useRefMounted();
+  const [availables, setAvailables] = useState<Avaliable[]>([]);
+
+  const getAllData = useCallback(async () => {
 
 
-export interface StuffMember {
-  /**
-   * 本月出勤率
-   */
-  attendance_rate: number;
-  /**
-   * 头像url
-   */
-  avatar: string;
-  /**
-   * 获奖次数
-   */
-  award_times: number;
-  gender: string;
-  id: string;
-  name: string;
-  occupation: string;
-}
+    console.log("start of week",startTime);
+    console.log("end of week",endTime);
 
+    try {
 
+      let available = await scheduleApi.getAvailable(startTime,endTime,place,occupation);
 
+      if (isMountedRef()) {
+        setAvailables(available);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
 
+  useEffect(() => {
+    getAllData();
+  }, [startTime,endTime,place,occupation,getAllData]);
 
-function AvailableEmployee() {
 
 
   const [page, setPage] = useState(2);
@@ -76,45 +84,6 @@ function AvailableEmployee() {
   };
 
 
-  const employees: StuffMember[] = [
-    {
-      "id": "43",
-      "name": "机每面以利",
-      "gender": "男",
-      "occupation": "ex amet culpa",
-      "attendance_rate": 66,
-      "award_times": 1267057860920,
-      "avatar": "http://dummyimage.com/100x100"
-    },
-    {
-      "id": "42",
-      "name": "引更龙接成真",
-      "gender": "男",
-      "occupation": "voluptate esse",
-      "attendance_rate": 90,
-      "award_times": 1107224790631,
-      "avatar": "http://dummyimage.com/100x100"
-    },
-    {
-      "id": "35",
-      "name": "于政有",
-      "gender": "女",
-      "occupation": "do ut",
-      "attendance_rate": 61,
-      "award_times": 1213420216522,
-      "avatar": "http://dummyimage.com/100x100"
-    },
-    {
-      "id": "29",
-      "name": "进对包",
-      "gender": "女",
-      "occupation": "velit",
-      "attendance_rate": 89,
-      "award_times": 1132758112786,
-      "avatar": "http://dummyimage.com/100x100"
-    }
-  ]
-
   return (
     <RootWrapper>
       <Card>
@@ -122,7 +91,7 @@ function AvailableEmployee() {
         <Divider />
         <Box p={2}>
           <Grid container spacing={0}>
-            {employees.map((stuff: StuffMember) => (
+            {availables.map((stuff: Avaliable) => (
               <Grid key={stuff.id} item xs={12} sm={6} lg={4}>
                 <Box p={1.5} display="flex" alignItems="flex-start">
                   <Avatar src={stuff.avatar} />
@@ -134,7 +103,7 @@ function AvailableEmployee() {
                       {stuff.name}
                     </Typography>
                     <Typography color="text.primary" sx={{ pb: 2 }}>
-                      {stuff.occupation}
+                      {stuff.gender}
                     </Typography>
                   </Box>
 
@@ -143,17 +112,71 @@ function AvailableEmployee() {
                   <Grid container direction="row" xs={12}>
 
                     <Grid item xs={6}>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        startIcon={<AddTwoToneIcon />}
-                      >
-                        添加到待班表列
-                      </Button>
+                      {
+                        (!selected.find((person)=> person.id===stuff.id)) && (
+                          <Button
+                            onClick={(): void => {
+
+                              if(!selected.find((person)=> person.id===stuff.id))
+                              {
+                                let another=selected.concat([
+                                  {
+                                    id:stuff.id,
+                                    name:stuff.name,
+                                    gender:stuff.gender,
+                                    avatar:stuff.avatar
+                                  }] as Avaliable[]);
+
+                                setSelected(another);
+
+                                console.log(another);
+      
+                                handleSelectPeople(another);
+
+                              }
+                              
+                            }} 
+                            variant="outlined"
+                            size="small"
+                            startIcon={<AddTwoToneIcon />
+                          }
+                          >
+                            添加到待班表列
+                          </Button>
+                        )
+                      }
+
+                      {
+                        (selected.find((person)=> person.id===stuff.id)) && (
+                          <Button
+                            onClick={(): void => {
+
+                              if(selected.find((person)=> person.id===stuff.id))
+                              {
+                                let another=selected.filter((person)=>person.id!=stuff.id);
+
+                                setSelected(another);
+
+                                console.log(another);
+      
+                                handleSelectPeople(another);
+
+                              }
+                              
+                            }} 
+                            variant="contained"
+                            size="small"
+                            startIcon={<RemoveIcon />}
+                          >
+                            从待班表列移除
+                          </Button>
+                        )
+                      }
+                      
                     </Grid>
                     <Grid item xs={1}></Grid>
                     <Grid item xs={5}>
-                      <EmployeeSchedule/>
+                      <EmployeeSchedule person={stuff} week={new Date(startTime)}/>
                     </Grid>
                   </Grid>
 
