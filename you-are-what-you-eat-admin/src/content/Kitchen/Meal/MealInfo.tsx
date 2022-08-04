@@ -5,13 +5,15 @@ import React, { useState } from 'react';
 
 import MealInfoTable from './MealInfoTable'
 
-function AllMealInfoes(mealinfoes) {
 
-    let arr = Object.values(mealinfoes);
-    console.log(arr[0].mealinfo);
+function AllMealInfoes() {
+
+
+
+
     return (
         <Card>
-            <MealInfoTable mealInfoes={arr[0].mealinfo} />
+            <MealInfoTable />
         </Card>
     );
 }

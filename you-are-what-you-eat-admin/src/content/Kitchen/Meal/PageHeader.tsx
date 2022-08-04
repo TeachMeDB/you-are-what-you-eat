@@ -18,11 +18,14 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { MealInfo } from '@/models/meal_info';
 
 
+import { mealInfoApi } from '@/queries/meal';
+
+
 let m: MealInfo = {
     id: '123',
-    DishName: '123',
-    Price: 123,
-    Description: '123',
+    dis_name: '123',
+    price: 123,
+    description: '123',
 }
 
 
@@ -37,7 +40,7 @@ function PageHeader() {
         setOpen(false);
     };
     const handleVerified = () => {
-        console.log(m);
+        mealInfoApi.postMeal(m);
         setOpen(false);
     };
     const idInputChange = (e) => {
@@ -45,13 +48,13 @@ function PageHeader() {
         m.id = e.target.value;
     }
     const nameInputChange = (e) => {
-        m.DishName = e.target.value;
+        m.dis_name = e.target.value;
     }
     const priceInputChange = (e) => {
-        m.Price = Number(e.target.value);
+        m.price = Number(e.target.value);
     }
     const descriptionInputChange = (e) => {
-        m.Description = e.target.value;
+        m.description = e.target.value;
     }
 
     return (

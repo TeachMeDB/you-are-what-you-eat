@@ -6,7 +6,7 @@ import { Grid } from '@mui/material';
 
 export default function CurOrder(curorders) {
     let arr = Object.values(curorders);
-
+    console.log(arr[0].curorder);
     return (
 
         <>

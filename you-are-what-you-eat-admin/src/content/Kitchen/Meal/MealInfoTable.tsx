@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-import { FC, ChangeEvent, useState } from 'react';
+import { FC, ChangeEvent, useState, useEffect, useCallback } from 'react';
 
 import PropTypes from 'prop-types';
 import {
@@ -38,6 +38,11 @@ import DialogContent from '@mui/material/DialogContent';
 
 import DialogTitle from '@mui/material/DialogTitle';
 
+
+import { mealInfoApi } from '@/queries/meal';
+
+import { useRefMounted } from '@/hooks/useRefMounted';
+
 const applyPagination = (
     mealInfoes: MealInfo[],
     page: number,
@@ -73,7 +78,31 @@ const ButtonSearch = styled(Button)(
 
 
 
-const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
+const RecentOrdersTable: FC<MealInfoTableProps> = () => {
+
+
+
+    const isMountedRef = useRefMounted();
+    const [MealInfoes, setMealInfoes] = useState<MealInfo[]>([]);
+
+
+    const getAllData = useCallback(async () => {
+        try {
+            let MealInfoes = await mealInfoApi.getMealInfo();
+            if (isMountedRef()) {
+                setMealInfoes(MealInfoes);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }, [isMountedRef]);
+
+    useEffect(() => {
+        getAllData();
+    }, [getAllData]);
+
+
+
     const [page, setPage] = useState<number>(0);
     const [limit, setLimit] = useState<number>(5);
 
@@ -95,11 +124,10 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
         setOpen(false);
     };
 
-    const paginatedPromotions = applyPagination(mealInfoes, page, limit);
+    const paginatedPromotions = applyPagination(MealInfoes, page, limit);
 
     const theme = useTheme();
 
-    const [count, setCount] = useState(mealInfoes);
 
 
     return (
@@ -115,7 +143,6 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
                                 endAdornment={
                                     <InputAdornment position="end">
                                         <ButtonSearch variant="contained" size="small" >
-
                                             搜索
                                         </ButtonSearch>
 
@@ -225,6 +252,7 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
                                                         label="新的菜品编号"
                                                         fullWidth
                                                         variant="standard"
+
                                                     />
                                                     <TextField
                                                         autoFocus
@@ -237,7 +265,7 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
                                                     <TextField
                                                         autoFocus
                                                         margin="dense"
-                                                        id="name"
+                                                        id="price"
                                                         label="新的菜品价格"
                                                         fullWidth
                                                         variant="standard"
@@ -245,14 +273,14 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
                                                     <TextField
                                                         autoFocus
                                                         margin="dense"
-                                                        id="name"
+                                                        id="description"
                                                         label="新的菜品描述"
                                                         fullWidth
                                                         variant="standard"
                                                     />
                                                 </DialogContent>
                                                 <DialogActions>
-                                                    <Button onClick={handleClose}>Cancel</Button>
+                                                    <Button onClick={handleClose}>1</Button>
                                                     <Button onClick={handleClose}>Subscribe</Button>
                                                 </DialogActions>
                                             </Dialog>
@@ -279,7 +307,7 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
             <Box p={2}>
                 <TablePagination
                     component="div"
-                    count={mealInfoes.length}
+                    count={MealInfoes.length}
                     onPageChange={handlePageChange}
                     onRowsPerPageChange={handleLimitChange}
                     page={page}

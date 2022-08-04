@@ -19,6 +19,12 @@ import { Chart } from 'src/components/Chart';
 import type { ApexOptions } from 'apexcharts';
 import Brightness1Icon from '@mui/icons-material/Brightness1';
 
+import { curOrderApi } from '@/queries/cur_order';
+import { FC, ChangeEvent, useState, useEffect, useCallback } from 'react';
+import { CurOrder } from '@/models/cur_order';
+import { useRefMounted } from '@/hooks/useRefMounted';
+import { number } from 'yup/lib/locale';
+
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.success.main};
@@ -55,6 +61,45 @@ const ListItemAvatarWrapper = styled(ListItemAvatar)(
 );
 
 function CurOrderSummary() {
+
+  const isMountedRef = useRefMounted();
+  const [CurOrders, setCurOrders] = useState<CurOrder[]>([]);
+  const getAllData = useCallback(async () => {
+    try {
+      let CurOrders = await curOrderApi.getCurOrder();
+      if (isMountedRef()) {
+        setCurOrders(CurOrders);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
+
+  useEffect(() => {
+    getAllData();
+  }, [getAllData]);
+  let AllDishes = 0;
+  let AllFinishedDishes = 0;
+  const countAllDishes = () => {
+    let i = 0;
+    CurOrders.map((item) => {
+      i = i + item.dish.length;
+    })
+    return i;
+  }
+  const countAllFinishedDishes = () => {
+    let i = 0;
+    CurOrders.map((item) => {
+      item.dish.map((item) => {
+        if (item.status == "已完成")
+          i++;
+      })
+    })
+    return i;
+  }
+  AllDishes = countAllDishes();
+  AllFinishedDishes = countAllFinishedDishes();
+  console.log(AllFinishedDishes);
   const theme = useTheme();
 
   const chartOptions: ApexOptions = {
@@ -72,7 +117,7 @@ function CurOrderSummary() {
         }
       }
     },
-    colors: ['#DD0000', '#FFA500', '#008000'],
+    colors: ['#FFA500', '#008000'],
     dataLabels: {
       enabled: true,
       formatter: function (val) {
@@ -109,7 +154,7 @@ function CurOrderSummary() {
     fill: {
       opacity: 1
     },
-    labels: ['待处理', '制作中', '已完成'],
+    labels: ['制作中', '已完成'],
     legend: {
       labels: {
         colors: theme.colors.alpha.trueWhite[100]
@@ -123,8 +168,10 @@ function CurOrderSummary() {
       mode: theme.palette.mode
     }
   };
+  let m = Math.round(((AllDishes - AllFinishedDishes) / AllDishes) * 100);
+  let n = Math.round((AllFinishedDishes / AllDishes) * 100);
 
-  const chartSeries = [10, 20, 70];
+  const chartSeries = [m, n];
 
   return (
     <Card>
@@ -141,7 +188,7 @@ function CurOrderSummary() {
             </Typography>
             <Box>
               <Typography variant="h1" gutterBottom>
-                110
+                {AllDishes + ""}
               </Typography>
               <Box
                 display="flex"
@@ -212,31 +259,12 @@ function CurOrderSummary() {
                 >
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                      <Brightness1Icon fontSize="large" color="error" />
-                    </ListItemAvatarWrapper>
-                    <ListItemText
-                      primary="待处理"
-                      primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="20"
-                      secondaryTypographyProps={{
-                        variant: 'subtitle2',
-                        noWrap: true
-                      }}
-                    />
-                    <Box>
-                      <Typography align="right" variant="h4" noWrap>
-                        20%
-                      </Typography>
-                    </Box>
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatarWrapper>
                       <Brightness1Icon fontSize="large" color="warning" />
                     </ListItemAvatarWrapper>
                     <ListItemText
                       primary="制作中"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="10"
+                      secondary={(AllDishes - AllFinishedDishes).toString()}
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -244,7 +272,7 @@ function CurOrderSummary() {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        10%
+                        {m.toString() + "%"}
                       </Typography>
                     </Box>
                   </ListItem>
@@ -255,7 +283,7 @@ function CurOrderSummary() {
                     <ListItemText
                       primary="已完成"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="70"
+                      secondary={AllFinishedDishes.toString()}
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -263,7 +291,7 @@ function CurOrderSummary() {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        70%
+                        {n.toString() + "%"}
                       </Typography>
                     </Box>
                   </ListItem>

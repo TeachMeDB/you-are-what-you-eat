@@ -3,7 +3,7 @@ import {
     MealInfo
 } from '@/models/meal_info'
 
-import { GetApi } from "@/utils/requests"
+import { GetApi, PostApi } from "@/utils/requests"
 
 
 class MealInfoApi {
@@ -15,6 +15,9 @@ class MealInfoApi {
             id: id,
             price: price,
         }))).data as MealInfo[];
+    }
+    public async postMeal(meal: MealInfo) {
+        return (await (PostApi("/Dishes/UpdateDish", meal))).statusText as string
     }
 }
 
