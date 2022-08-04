@@ -101,7 +101,7 @@ const RecentOrdersTable: FC<MealInfoTableProps> = () => {
         getAllData();
     }, [getAllData]);
 
-
+    console.log(MealInfoes);
 
     const [page, setPage] = useState<number>(0);
     const [limit, setLimit] = useState<number>(5);
