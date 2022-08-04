@@ -83,7 +83,7 @@ const PageHeader: FC<PageHeaderProps> = ({ promotion }) => {
 
 PageHeader.propTypes = {
   // @ts-ignore
-  invoice: PropTypes.object.isRequired
+  promotion: PropTypes.object.isRequired
 };
 
 export default PageHeader;

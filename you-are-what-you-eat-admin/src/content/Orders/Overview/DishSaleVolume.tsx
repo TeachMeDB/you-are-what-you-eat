@@ -4,6 +4,7 @@ import { useRefMounted } from 'src/hooks/useRefMounted';
 import type { DishOrderStat } from '@/models/order';
 import DishSaleVolume from './DishSaleVolumeTable';
 import { ordersApi } from '@/queries/orders'
+import { getDayTime } from '@/utils/date'
 
 function DishSaleVolumeList() {
   const isMountedRef = useRefMounted();
@@ -11,7 +12,9 @@ function DishSaleVolumeList() {
 
   const getDishOrdersInTimePeriod = useCallback(async () => {
     try {
-      const response = await ordersApi.getDishSaleVolumeInTimePeriod(new Date(), new Date());
+      const response = await ordersApi.getDishSaleVolumeInTimePeriod(
+        Number((new Date(getDayTime(new Date(), -7, 'begin')).getTime() / 1000).toFixed(0))
+        , Number((new Date().getTime() / 1000).toFixed(0)));
 
       if (isMountedRef()) {
         setDishes(response);

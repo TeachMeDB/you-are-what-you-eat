@@ -41,7 +41,7 @@ interface Filters {
 const getStatusLabel = (orderStatus: OrderStatus): JSX.Element => {
   const map = {
     failed: {
-      text: '已取消',
+      text: '已支付',
       color: 'error'
     },
     completed: {
@@ -49,7 +49,7 @@ const getStatusLabel = (orderStatus: OrderStatus): JSX.Element => {
       color: 'success'
     },
     running: {
-      text: '已支付',
+      text: '制作中',
       color: 'warning'
     }
   };
@@ -105,11 +105,11 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
     },
     {
       id: 'running',
-      name: t('已支付')
+      name: t('制作中')
     },
     {
       id: 'failed',
-      name: t('已取消')
+      name: t('待处理')
     }
   ];
 

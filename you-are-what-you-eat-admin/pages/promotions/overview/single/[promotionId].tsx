@@ -13,7 +13,7 @@ import { Grid } from '@mui/material';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import type { Promotion } from 'src/models/promotion';
 
-import InvoiceBody from '@/content/Promotions/Overview/single/PromotionBody';
+import PromotionBody from '@/content/Promotions/Overview/single/PromotionBody';
 import PageHeader from 'src/content/Promotions/Overview/single/PageHeader';
 import { promotionsApi } from '@/queries/promotions';
 
@@ -73,7 +73,7 @@ function SinglePromotionView() {
         spacing={3}
       >
         <Grid item xs={12}>
-          <InvoiceBody promotion={promotion} />
+          <PromotionBody promotion={promotion} />
         </Grid>
       </Grid>
       <Footer />
