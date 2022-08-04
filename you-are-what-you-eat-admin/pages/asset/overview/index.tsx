@@ -1,22 +1,37 @@
 import Head from 'next/head';
 import SidebarLayout from '@/layouts/SidebarLayout';
 import PageHeader from '@/content/Asset/Overview/PageHeader';
-import { Grid, Container } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import Footer from '@/components/Footer';
 
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import AllAssetInfoes from '@/content/Asset/Overview/AssetInfo';
 import { queryAssetApi } from '@/queries/query_asset';
 import { queryEmployeeApi } from '@/queries/query_employee';
+import { useState } from 'react';
+import AllManageInfo from '@/content/Asset/Manage/ManageInfo';
+import { queryManageApi } from '@/queries/query_manage';
 
-function assetOverview({ list, employees }) {
+function assetOverview({ list = [], manageList = [], employees = [] }) {
+  const [assetInfoes, setAssetInfoes] = useState(list);
+  const [manageInfoes, setManageInfoes] = useState(manageList);
+  console.log(assetInfoes, ' <-- assetInfoes');
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [tab, setTab] = useState(1);
   return (
     <>
       <Head>
         <title>资产信息</title>
       </Head>
       <PageTitleWrapper>
-        <PageHeader employees={employees} />
+        <PageHeader
+          employees={employees}
+          assets={assetInfoes}
+          setAssetInfoes={setAssetInfoes}
+          setManageInfoes={setManageInfoes}
+          currentTab={tab}
+          handleTabsChange={setTab}
+        />
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
@@ -27,7 +42,20 @@ function assetOverview({ list, employees }) {
           spacing={3}
         >
           <Grid item xs={12}>
-            <AllAssetInfoes list={list} employees={employees} />
+            {
+              tab === 1
+                ? <AllAssetInfoes
+                  list={assetInfoes || []}
+                  employees={employees || []}
+                  setAssetInfoes={setAssetInfoes}
+                />
+                : <AllManageInfo
+                  list={manageInfoes || []}
+                  assets={assetInfoes || []}
+                  employees={employees || []}
+                  setManageInfoes={setManageInfoes}
+                />
+            }
           </Grid>
         </Grid>
       </Container>
@@ -40,16 +68,17 @@ assetOverview.getLayout = (page) => (
   <SidebarLayout>{page}</SidebarLayout>
 );
 
-export async function getServerSideProps(context) {
-  console.log(context, ' <-- context');
-  const data = await queryAssetApi.getAssetList('');
+export async function getServerSideProps() {
+  const assetInfoes = await queryAssetApi.getAssetList('');
+  const manageList = await queryManageApi.getManageList();
   const employees = await queryEmployeeApi.getEmployeeList();
   return {
     props: {
-      list: data || [],
-      employees,
+      list: assetInfoes || [],
+      manageList: manageList || [],
+      employees: employees || [],
     }, // will be passed to the page component as props
-  }
+  };
 }
 
 export default assetOverview;

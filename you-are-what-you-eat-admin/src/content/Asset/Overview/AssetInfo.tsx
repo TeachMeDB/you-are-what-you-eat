@@ -7,12 +7,14 @@ import { EmployeeInfo } from '@/models/employee_info';
 interface AssetInfoProps {
   list: AssetInfo[];
   employees: EmployeeInfo[];
+  setAssetInfoes: any;
 }
 
-function AllAssetInfoes({ list = [], employees = [] }: AssetInfoProps) {
+function AllAssetInfoes({ list = [], employees = [], setAssetInfoes }: AssetInfoProps) {
+  console.log(list, ' <-- list');
   return (
     <Card>
-      <AssetInfoTable assetInfoes={list} employees={employees} />
+      <AssetInfoTable assetInfoes={list} setAssetInfoes={setAssetInfoes} employees={employees} />
     </Card>
   );
 }

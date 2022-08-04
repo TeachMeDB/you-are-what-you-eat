@@ -550,7 +550,7 @@ function SidebarMenu() {
                     onClick={closeSidebar}
                     startIcon={<TableChartTwoToneIcon />}
                   >
-                    原料管理
+                    耗材管理
                   </Button>
                 </NextLink>
               </ListItem>

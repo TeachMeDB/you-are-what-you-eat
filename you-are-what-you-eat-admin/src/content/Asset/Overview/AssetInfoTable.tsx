@@ -31,6 +31,7 @@ import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import { AssetInfo } from '@/models/asset_info';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import BuildTwoTone from '@mui/icons-material/BuildTwoTone';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -39,11 +40,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { queryAssetApi } from '@/queries/query_asset';
 import { EmployeeInfo } from '@/models/employee_info';
+import { Map, Marker } from 'react-amap';
 
 interface AssetInfoTableProps {
   className?: string;
   assetInfoes: AssetInfo[];
   employees: EmployeeInfo[];
+  setAssetInfoes: any;
 }
 
 const OutlinedInputWrapper = styled(OutlinedInput)(
@@ -58,18 +61,20 @@ const ButtonSearch = styled(Button)(
   `,
 );
 
-const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees }) => {
+const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, setAssetInfoes }) => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
-  const [list, setList] = useState(assetInfoes);
   const [keyword, setKeyword] = useState('');
   const [formValue, setFormValue] = useState(
-    { asset_id: '', asset_type: '', asset_status: '', employee_id: 0 });
+    { assets_id: '', assets_type: '', assets_status: '', employee_id: 0 });
   const [open, setOpen] = React.useState(false);
+  const [repairOpen, setRepairOpen] = useState(false);
 
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage);
   };
+
+  const assetsStatusItems = ['正常', '已坏'];
 
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const newLimit = parseInt(event.target.value);
@@ -82,19 +87,35 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees }) 
     setOpen(true);
   };
 
+  const handleOpenRepair = (assetInfo) => {
+    console.log(assetInfo, ' <-- assetInfo');
+    setRepairOpen(true);
+  };
+
   const handleClose = () => {
     setOpen(false);
   };
+  const handleRepairClose = () => {
+    setRepairOpen(false);
+  };
   const handleSubmit = async () => {
     console.log(formValue, ' <-- formValue');
-    await queryAssetApi.updateAsset(formValue);
+    const {
+      assets_id: assetsId = '',
+      assets_type: assetsType = '',
+      assets_status: assetsStatus = '',
+      employee_id: employeeId = 0,
+    } = formValue;
+    await queryAssetApi.updateAsset({ assetsId, assetsType, assetsStatus, employeeId });
+    const data = await queryAssetApi.getAssetList(keyword);
+    setAssetInfoes(data);
     setOpen(false);
   };
 
   const handleSearch = async () => {
     const data = await queryAssetApi.getAssetList(keyword);
     setPage(0);
-    setList(data);
+    setAssetInfoes(data);
   };
 
   const handleFormChange = (field, e) => {
@@ -102,8 +123,39 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees }) 
     setFormValue({ ...formValue, [field]: e.target.value });
   };
 
-  console.log(formValue, ' <-- formValue');
-  const data = list.slice(page * limit, page * limit + limit);
+  const handleDelete = async (id: string) => {
+    await queryAssetApi.deleteAsset(id);
+    setAssetInfoes(assetInfoes.filter(val => val.assets_id != id));
+  };
+
+  const repairs = [
+    {
+      name: '上海市嘉定区安亭镇曹安公路4800号',
+      phone: '13907589021',
+      longitude: 121.21792,
+      latitude: 31.28698,
+    },
+    {
+      name: '上海市嘉定区嘉松北路6130弄',
+      phone: '17809563528',
+      longitude: 121.22216,
+      latitude: 31.28826,
+    },
+    {
+      name: '上海市嘉定区雅丹路673号',
+      phone: '189086902367',
+      longitude: 121.19936,
+      latitude: 31.29346,
+    },
+    {
+      name: '上海市嘉定区绿苑路587号',
+      phone: '18200985623',
+      longitude: 121.21105,
+      latitude: 31.28032,
+    },
+  ];
+
+  const data = assetInfoes.slice(page * limit, page * limit + limit);
 
   const theme = useTheme();
   return (
@@ -154,7 +206,6 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees }) 
           </TableHead>
           <TableBody>
             {data.map((assetInfo) => {
-
               return (
                 <TableRow
                   hover
@@ -222,69 +273,186 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees }) 
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
-                    {
-                      open &&
-                      <Dialog open={open} onClose={handleClose}>
-                        <DialogTitle>资产信息</DialogTitle>
-                        <DialogContent>
-                          <TextField
-                            autoFocus
-                            margin="dense"
-                            id="asset_id"
-                            label="新的资产编号"
-                            fullWidth
-                            variant="standard"
-                            value={formValue.asset_id}
-                            onChange={(e) => handleFormChange('asset_id', e)}
-                          />
-                          <TextField
-                            autoFocus
-                            margin="dense"
-                            id="asset_type"
-                            label="新的资产类型"
-                            fullWidth
-                            variant="standard"
-                            value={formValue.asset_type}
-                            onChange={(e) => handleFormChange('asset_type', e)}
-                          />
-                          <TextField
-                            autoFocus
-                            margin="dense"
-                            id="asset_status"
-                            label="新的资产状态"
-                            fullWidth
-                            variant="standard"
-                            value={formValue.asset_status}
-                            onChange={(e) => handleFormChange('asset_status', e)}
-                          />
-                          <InputLabel id="employee_id">新的资产管理员ID</InputLabel>
-                          <Select
-                            autoFocus
-                            labelId="employee_id"
-                            margin="dense"
-                            id="employee_id"
-                            label="新的资产管理员ID"
-                            placeholder="新的资产管理员"
-                            fullWidth
-                            variant="standard"
-                            value={formValue.employee_id}
-                            onChange={(e) => handleFormChange('employee_id', e)}
+                    <Dialog open={open} onClose={handleClose}>
+                      <DialogTitle>资产信息</DialogTitle>
+                      <DialogContent>
+                        <TextField
+                          autoFocus
+                          disabled
+                          margin="dense"
+                          id="assets_id"
+                          label="资产编号"
+                          fullWidth
+                          variant="standard"
+                          value={formValue.assets_id}
+                          style={{ minWidth: '400px' }}
+                        />
+                        <TextField
+                          autoFocus
+                          margin="dense"
+                          id="assets_type"
+                          label="新的资产类型"
+                          fullWidth
+                          variant="standard"
+                          value={formValue.assets_type}
+                          onChange={(e) => handleFormChange('assets_type', e)}
+                        />
+                        {/*<TextField*/}
+                        {/*  autoFocus*/}
+                        {/*  margin="dense"*/}
+                        {/*  id="assets_status"*/}
+                        {/*  label="新的资产状态"*/}
+                        {/*  fullWidth*/}
+                        {/*  variant="standard"*/}
+                        {/*  value={formValue.assets_status}*/}
+                        {/*  onChange={(e) => handleFormChange('assets_status', e)}*/}
+                        {/*/>*/}
+                        <InputLabel id="assets_status">新的资产状态</InputLabel>
+                        <Select
+                          autoFocus
+                          labelId="assets_status"
+                          margin="dense"
+                          id="assets_status"
+                          label="新的资产状态"
+                          placeholder="新的资产状态"
+                          fullWidth
+                          variant="standard"
+                          value={formValue.assets_status}
+                          onChange={(e) => handleFormChange('assets_status', e)}
+                        >
+                          {
+                            assetsStatusItems.map((item) =>
+                              <MenuItem
+                                key={item}
+                                value={item}
+                              >{item}</MenuItem>)
+                          }
+                        </Select>
+                        <InputLabel id="employee_id">新的资产管理员ID</InputLabel>
+                        <Select
+                          autoFocus
+                          labelId="employee_id"
+                          margin="dense"
+                          id="employee_id"
+                          label="新的资产管理员"
+                          placeholder="新的资产管理员"
+                          fullWidth
+                          variant="standard"
+                          value={formValue.employee_id}
+                          onChange={(e) => handleFormChange('employee_id', e)}
+                        >
+                          {
+                            employees.map((employee) =>
+                              <MenuItem
+                                key={employee.employee_id}
+                                value={employee.employee_id}
+                              >{employee.employee_name}</MenuItem>)
+                          }
+                        </Select>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={handleClose}>退出</Button>
+                        <Button onClick={handleSubmit}>确定</Button>
+                      </DialogActions>
+                    </Dialog>
+                    <Tooltip title="报修" arrow onClick={() => handleOpenRepair(assetInfo)}>
+                      <IconButton
+                        sx={{
+                          '&:hover': {
+                            background: theme.colors.primary.lighter,
+                          },
+                          color: theme.palette.primary.main,
+                        }}
+                        color="inherit"
+                        size="small"
+                      >
+                        <BuildTwoTone fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    <Dialog open={repairOpen} onClose={handleRepairClose}>
+                      <DialogTitle>资产报修</DialogTitle>
+                      <DialogContent>
+                        <TableContainer>
+                          <Table>
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>序号</TableCell>
+                                <TableCell>维修点</TableCell>
+                                <TableCell>联系方式</TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              {
+                                repairs.map((val, i) =>
+                                  <TableRow
+                                    hover
+                                    key={val.name}
+                                  >
+                                    <TableCell>
+                                      <Typography
+                                        variant="body2"
+                                        fontWeight="bold"
+                                        color="text.primary"
+                                        gutterBottom
+                                        noWrap
+                                      >
+                                        {i+1}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography
+                                        variant="body2"
+                                        fontWeight="bold"
+                                        color="text.primary"
+                                        gutterBottom
+                                        noWrap
+                                      >
+                                        {val.name}
+                                      </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                      <Typography
+                                        variant="body2"
+                                        fontWeight="bold"
+                                        color="text.primary"
+                                        gutterBottom
+                                        noWrap
+                                      >
+                                        {val.phone}
+                                      </Typography>
+                                    </TableCell>
+                                  </TableRow>,
+                                )
+                              }
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+
+                        <div style={{ width: '500px', height: '400px' }}>
+                          <Map
+                            amapkey={'7f7527142abd6382ecc1950a2d568888'}
+                            version={'1.4.0'}
+                            plugins={['ToolBar']}
+                            center={{ longitude: 121.21000, latitude: 31.28698 }}
+                            zoom={14}
                           >
                             {
-                              employees.map((employee) =>
-                                <MenuItem
-                                  key={employee.employee_id}
-                                  value={`${employee.employee_id}`}
-                                >{employee.employee_name}</MenuItem>)
+                              repairs.map((val, i) =>
+                                <Marker
+                                  key={val.name}
+                                  position={{ longitude: val.longitude, latitude: val.latitude }}
+                                  label={{ content: i + 1, offset: { x: 0, y: -25 } }}
+                                />,
+                              )
                             }
-                          </Select>
-                        </DialogContent>
-                        <DialogActions>
-                          <Button onClick={handleClose}>退出</Button>
-                          <Button onClick={handleSubmit}>确定</Button>
-                        </DialogActions>
-                      </Dialog>
-                    }
+                          </Map>
+                        </div>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={handleRepairClose}>退出</Button>
+                        <Button onClick={handleRepairClose}>确定</Button>
+                      </DialogActions>
+                    </Dialog>
                     <Tooltip title="删除" arrow>
                       <IconButton
                         sx={{
@@ -293,6 +461,7 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees }) 
                         }}
                         color="inherit"
                         size="small"
+                        onClick={() => handleDelete(assetInfo.assets_id)}
                       >
                         <DeleteTwoToneIcon fontSize="small" />
                       </IconButton>
