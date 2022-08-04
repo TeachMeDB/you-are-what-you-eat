@@ -24,7 +24,8 @@ import PositionSchedule from '@/content/HumanResource/Schedule/PositionSchedule'
 import ScheduleOperation from '@/content/HumanResource/Schedule/ScheduleOperation';
 import AvailableEmployee from '@/content/HumanResource/Schedule/AvailableEmployee';
 import { scheduleApi } from '@/queries/schedule';
-import { WorkPlan } from '@/models/work_plan';
+import { Avaliable, ScheduleEntity } from '@/models/schedule';
+import { format } from 'date-fns';
 
 const RootWrapper = styled(Box)(
   ({ theme }) => `
@@ -72,9 +73,19 @@ const DrawerWrapperMobile = styled(Drawer)(
 
 
 
-function ScheduleManagement({workplan}:{workplan:WorkPlan[]}) {
+function ScheduleManagement() {
 
-  console.log(workplan);
+  const [selectedStartTime,setSelectedStartTime]=useState("2001-01-01 00:00:00");
+  const [selectedEndTime,setSelectedEndTime]=useState("2080-01-01 00:00:00");
+
+
+  const [selectedPlace,setSelectedPlace]=useState("xxx");
+
+  const [selectedOccupation,setSelectedOccupation]=useState("经理");
+
+  const [selectedWeek,setSelectedWeek]=useState(new Date(Date.now()))
+
+  const [selectedPeople,setSelectedPeople]=useState<Avaliable[]>([]);
 
 
   const theme = useTheme();
@@ -113,7 +124,14 @@ function ScheduleManagement({workplan}:{workplan:WorkPlan[]}) {
           onClose={handleDrawerToggle}
         >
           <Scrollbar>
-            <ScheduleOperation />
+            <ScheduleOperation
+              handleSelectStartTime={setSelectedStartTime} 
+              handleSelectEndTime={setSelectedEndTime} 
+              handleSelectWeek={setSelectedWeek} 
+              handleSelectOccupation={setSelectedOccupation} 
+              handleSelectPlace={setSelectedPlace} 
+              week={selectedWeek} 
+              people={selectedPeople}/>
           </Scrollbar>
         </DrawerWrapperMobile>
 
@@ -124,7 +142,14 @@ function ScheduleManagement({workplan}:{workplan:WorkPlan[]}) {
           }}
         >
 
-          <ScheduleOperation />
+          <ScheduleOperation
+            handleSelectStartTime={setSelectedStartTime} 
+            handleSelectEndTime={setSelectedEndTime} 
+            handleSelectWeek={setSelectedWeek} 
+            handleSelectOccupation={setSelectedOccupation} 
+            handleSelectPlace={setSelectedPlace} 
+            week={selectedWeek} 
+            people={selectedPeople}/>
 
         </Sidebar>
 
@@ -154,9 +179,11 @@ function ScheduleManagement({workplan}:{workplan:WorkPlan[]}) {
             </IconButtonToggle>
           </TopBar>
 
-          <PositionSchedule />
+          <PositionSchedule place={selectedPlace} occupation={selectedOccupation} week={selectedWeek}/>
           <Divider />
-          <AvailableEmployee />
+
+
+          <AvailableEmployee startTime={selectedStartTime} endTime={selectedEndTime} place={selectedPlace} occupation={selectedOccupation} handleSelectPeople={setSelectedPeople}/>
 
         </Grid>
 
@@ -171,13 +198,3 @@ ScheduleManagement.getLayout = (page) => (
 );
 
 export default ScheduleManagement;
-
-
-
-export async function getServerSideProps() {
-
-  const workplan= await scheduleApi.getSchedule();
-
-
-  return { props: { workplan } }
-}
