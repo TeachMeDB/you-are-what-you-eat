@@ -10,14 +10,14 @@ import AllStockInfoes from '@/content/Kitchen/Stock/StockInfo';
 import { stockInfoApi } from '@/queries/stock';
 import { StockInfo } from '@/models/stock_info';
 
-function stockInfo(stockinfo: StockInfo[]) {
+function stockInfo() {
 
 
     return (
         <>
 
             <Head>
-                <title>菜品信息</title>
+                <title>库存信息</title>
             </Head>
             <PageTitleWrapper>
                 <PageHeader />
@@ -31,7 +31,7 @@ function stockInfo(stockinfo: StockInfo[]) {
                     spacing={3}
                 >
                     <Grid item xs={12}>
-                        <AllStockInfoes stockinfo={stockinfo} />
+                        <AllStockInfoes />
                     </Grid>
                 </Grid>
             </Container>
@@ -48,8 +48,3 @@ stockInfo.getLayout = (page) => (
 export default stockInfo;
 
 
-export async function getServerSideProps() {
-
-    const stockinfo = await stockInfoApi.getStockInfo();
-    return { props: { stockinfo } }
-}
