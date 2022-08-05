@@ -1,9 +1,10 @@
 import {
     Promotion,
     PromotionStatus,
-    SelectableDish
+    SelectableDish,
+    PromotionUpload
 } from '@/models/promotion';
-import { GetApi } from 'src/utils/requests';
+import { GetApi, PostApi } from 'src/utils/requests';
 
 class PromotionsApi {
     // Almost OK
@@ -177,6 +178,12 @@ class PromotionsApi {
         }
 
         // return Promise.resolve(dishes);
+    }
+
+    
+    public postNewPromotion: (promotion: PromotionUpload) => Promise<string> = async (promotion) => {
+        const r = (await (PostApi("Promotions", promotion)));
+        return r.statusText;
     }
 }
 

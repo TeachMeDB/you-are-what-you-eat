@@ -37,6 +37,7 @@ import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import { SelectableDish, SelectedDish } from '@/models/promotion';
 import { promotionsApi } from '@/queries/promotions';
+import type { PromotionUpload } from '@/models/promotion';
 
 const IconButtonError = styled(IconButton)(
   ({ theme }) => `
@@ -96,14 +97,9 @@ function PageHeader() {
     else
       console.log('err');
     console.log(value, value1);
-    // enqueueSnackbar(t('A new invoice has been created successfully'), {
-    //   variant: 'success',
-    //   anchorOrigin: {
-    //     vertical: 'top',
-    //     horizontal: 'right'
-    //   },
-    //   TransitionComponent: Zoom
-    // });
+
+    alert(`新的活动创建成功`)
+
     setSelectedDishes([]);
     setValue(null);
     setValue1(null);
@@ -172,14 +168,28 @@ function PageHeader() {
             _values,
             { resetForm, setErrors, setStatus, setSubmitting }
           ) => {
+            const param = {
+              description: `${_values.title}: ${_values.desc}`,
+              start: getDayTime(value, 0, "begin"),
+              end: getDayTime(value1, 0, "end"),
+              dishes: selectedDishes.map((d) => {
+                return {
+                  discount: d.discount,
+                  name: d.name
+                }
+              })
+            }
             try {
               await wait(1000);
+              await promotionsApi.postNewPromotion(param);
               resetForm();
               setStatus({ success: true });
               setSubmitting(false);
-              handleCreatePromotionSuccess(_values.title, _values.desc);
-            } catch (err) {
+              handleCreatePromotionSuccess();
+            } 
+            catch (err) {
               console.error(err);
+              alert(`创建失败: ${JSON.stringify(param)} \n错误：${err}`);
               setStatus({ success: false });
               setErrors({ submit: err.message });
               setSubmitting(false);

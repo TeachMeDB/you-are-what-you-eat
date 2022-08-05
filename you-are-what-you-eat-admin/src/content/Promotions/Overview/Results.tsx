@@ -52,6 +52,15 @@ const DialogWrapper = styled(Dialog)(
 `
 );
 
+const formatDate = (date: Date) => {
+  try {
+    return format(date, 'MMMM dd yyyy');
+  }
+  catch {
+    return ''
+  }
+}
+
 const AvatarError = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.error.lighter};
@@ -407,12 +416,12 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                         </TableCell>
                         <TableCell>
                           <Typography noWrap>
-                            {format(promotion.start, 'MMMM dd yyyy')}
+                            {formatDate(promotion.start)}
                           </Typography>
                           <Typography noWrap variant="subtitle1">
                             {t('截止至')}{' '}
                             <b>
-                              {format(promotion.end, 'MMMM dd yyyy')}
+                              {formatDate(promotion.end)}
                             </b>
                           </Typography>
                         </TableCell>
