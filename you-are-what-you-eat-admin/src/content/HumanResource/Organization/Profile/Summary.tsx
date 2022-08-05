@@ -113,14 +113,17 @@ function Summary({user}:{user:EmployeeDetail}) {
                             >
                                 奖金累计
                             </Typography>
-                            <Typography variant="h2">{user.prizes.reduce((pre,cur)=>{
+                            <Typography variant="h2">{
+                                user.prizes.length>0?
+                                user.prizes.reduce((pre,cur)=>{
                                     let prize:Prize={
                                         amount: pre.amount+cur.amount,
                                         level:"yaya",
                                         prize_datetime:"2021"
                                     };
                                     return prize;
-                                }).amount}
+                                }).amount :0
+                                }
                             </Typography>
                         </Box>
                         <Box>

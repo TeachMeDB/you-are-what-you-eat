@@ -12,20 +12,20 @@ import {GetApi,PostApi} from "@/utils/requests"
 
 class AwardApi {
 
-    public async getAward(){
+    public getAward=async ()=>{
         return (await (GetApi("Prize/GetPrizeInfo",))).data as Award[];
     }
 
 
-    public async getPrize(){
+    public getPrize= async ()=>{
         return (await (GetApi("Prize/GetPrizeRecord",))).data as PrizeEntity[];
     }
 
-    public async postPrize(prize:PrizeUpload){
+    public postPrize= async (prize:PrizeUpload)=>{
         return (await (PostApi("Prize/PostPrizeRecord",prize))).statusText as string
     }
 
-    public async postAward(award:AwardUpload){
+    public postAward=async (award:AwardUpload)=>{
         return (await (PostApi("Prize/PostAward",award))).statusText as string
     }
 

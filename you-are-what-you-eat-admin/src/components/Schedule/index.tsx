@@ -289,6 +289,27 @@ function Schedule({ className,children,schedules }:{className?: string,children?
 
     }
 
+    const callback=(schedule:ScheduleEntity,index:number)=>{
+
+        let day:number=getDay(new Date(schedule.time_end));
+
+        return (<div key={schedule.plan_id} id={schedule.plan_id}
+            className={
+                "schedule-item schedule-"+days[day]+" "+
+                "time-from-"+FromTimeToSegment(schedule.time_start)+" "+
+                "time-to-"+ToTimeToSegment(schedule.time_end)+" "+ 
+                "bg-"+colors[index%5]}>
+                    {
+                        schedule.peoples.map((people:People,idx:number)=>{
+
+                            return (
+                                people.name+'\n'
+                            )
+                        })
+                    }
+                </div>);
+    };
+
 
     return (
         <ScheduleForm>
@@ -378,26 +399,7 @@ function Schedule({ className,children,schedules }:{className?: string,children?
                 {/* <!-- Schedule Items -->  */}
 
                 {
-                    schedules.map((schedule:ScheduleEntity,index:number)=>{
-
-                        let day:number=getDay(new Date(schedule.time_end));
-
-                        return (<div key={schedule.plan_id}
-                            className={
-                                "schedule-item schedule-"+days[day]+" "+
-                                "time-from-"+FromTimeToSegment(schedule.time_start)+" "+
-                                "time-to-"+ToTimeToSegment(schedule.time_end)+" "+ 
-                                "bg-"+colors[index%5]}>
-                                    {
-                                        schedule.peoples.map((people:People,idx:number)=>{
-
-                                            return (
-                                                people.name+'\n'
-                                            )
-                                        })
-                                    }
-                                </div>)
-                    })
+                    schedules.map(callback)
                 }
 
                 {/* <div className="schedule-item schedule-sunday time-from-sf time-to-sff bg-red">Event for sunday</div>

@@ -4,7 +4,7 @@
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -165,18 +165,25 @@ const RootWrapper = styled(Box)(
 
 function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSelectWeek,handleSelectPlace,handleSelectOccupation,week,people}:
   {
-    handleSelectStartTime,handleSelectEndTime,handleSelectWeek,handleSelectPlace,handleSelectOccupation,week,people:Avaliable[]
+    handleSelectStartTime:(value:string)=>void,
+    handleSelectEndTime:(value:string)=>void,
+    handleSelectWeek:(value:Date)=>void,
+    handleSelectPlace:(value:string)=>void,
+    handleSelectOccupation:(value:string)=>void,
+    week:Date,
+    people:Avaliable[]
   }) {
 
 
   const isMountedRef = useRefMounted();
 
   const [levels,setLevels]=useState<Salary[]>([]);
-  const [schedules, setSchedules] = useState<ScheduleEntity[]>([]);
+
+  const [schedules,setSchedules]=useState<ScheduleEntity[]>([]);
 
   const [day,setDay]=useState(0);
 
-  const handleDayChange = (event) => {
+  const handleDayChange = (event: { target: { value: number; }; }) => {
     // setState({
     //   ...state,
     //   [event.target.name]: event.target.checked
@@ -187,7 +194,7 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
 
   const [start_time,setStartTime]=useState(times[0]);
 
-  const handleStartTimeChange = (event) => {
+  const handleStartTimeChange = (event: { target: { value: string; }; }) => {
     // setState({
     //   ...state,
     //   [event.target.name]: event.target.checked
@@ -203,12 +210,13 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
 
   const [end_time,setEndTime]=useState(times[times.length-1]);
 
-  const handleEndTimeChange = (event) => {
+  const handleEndTimeChange = (event: { target: { value: string; }; }) => {
     // setState({
     //   ...state,
     //   [event.target.name]: event.target.checked
     // });
     setEndTime(event.target.value);
+
 
     const end = format(addDays(startOfWeek(week),day),"yyyy-MM-dd")+" "+event.target.value;
 
@@ -236,27 +244,29 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
 
   useEffect(() => {
     getAllData();
-  }, [week,people,getAllData]);
+  }, [getAllData]);
 
 
   const [place,setPlace]=useState("");
 
 
-  const handlePlaceChange = (event) => {
+  const handlePlaceChange = (event: { target: { value: string; }; }) => {
     // setState({
     //   ...state,
     //   [event.target.name]: event.target.checked
     // });
+    console.log(event.target.value)
     setPlace(event.target.value);
     handleSelectPlace(event.target.value);
   };
 
   const [occupation,setOccupation]=useState("");
-  const handleOccupationChange = (event) => {
+  const handleOccupationChange = (event: { target: { value: string; }; }) => {
     // setState({
     //   ...state,
     //   [event.target.name]: event.target.checked
     // });
+    console.log(event.target.value)
     setOccupation(event.target.value);
     handleSelectOccupation(event.target.value);
   };
@@ -289,17 +299,19 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
           <div>
             <TextField
               id="select-place"
-              select
               label="工作地点"
               value={place}
               onChange={handlePlaceChange}
               helperText="请筛选或填写地点"
             >
+              {/* <MenuItem key="未指定" value="未指定">
+                未指定
+                </MenuItem>
               {schedules.map((schedule) => (schedule.place)).filter((value, index, self) => (self.indexOf(value) === index)).map((place)=>(
                 <MenuItem key={place} value={place}>
                   {place}
                 </MenuItem>
-              ))}
+              ))} */}
             </TextField>
             <TextField
               id="select-occupation"
@@ -309,6 +321,9 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
               onChange={handleOccupationChange}
               helperText="请筛选或填写职位"
             >
+              <MenuItem key="未指定" value="未指定">
+                  未指定
+                </MenuItem>
               {levels.map((level) => (level.occupation)).filter((value, index, self) => (self.indexOf(value) === index)).map((occupation)=>(
                 <MenuItem key={occupation} value={occupation}>
                   {occupation}
@@ -428,26 +443,30 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
             }
           </AvatarGroup>
 
-          <Button variant="contained" size="large"
+          <Button key={occupation+place+start_time+end_time+week.toISOString()+day.toString}
+          variant="contained" size="large"
           onClick={()=>{
+
+            let upload={
+              employee_ids: people.map((person)=>person.id),
+              occupation:   occupation,
+              place:        place,
+              time_end:     format(addDays(startOfWeek(week),day),"yyyy-MM-dd")+" "+end_time,
+              time_start:   format(addDays(startOfWeek(week),day),"yyyy-MM-dd")+" "+start_time
+            } as ScheduleUpload;
 
 
             const conduct=async ()=>{
 
-              return scheduleApi.postSchedule(
-                {
-                  employee_ids: people.map((person)=>person.id),
-                  occupation:   occupation,
-                  place:        place,
-                  time_end:     format(addDays(startOfWeek(week),day),"yyyy-MM-dd")+" "+end_time,
-                  time_start:   format(addDays(startOfWeek(week),day),"yyyy-MM-dd")+" "+start_time
-              } as ScheduleUpload);
+              console.log("arranged time:",start_time,end_time);
+
+              return scheduleApi.postSchedule(upload);
 
             }
 
             conduct().then((value)=>{
 
-              alert("排班结果："+value);
+              alert("排班结果："+value+'\n'+upload);
 
               window.location.reload();
 
