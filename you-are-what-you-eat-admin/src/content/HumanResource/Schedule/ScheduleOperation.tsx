@@ -96,7 +96,7 @@ export function CustomDay({handleSelectWeek}) {
 
   const renderWeekPickerDay = (
     date: Date,
-    selectedDates: Array<Date | null>,
+    _selectedDates: Array<Date | null>,
     pickersDayProps: PickersDayProps<Date>,
   ) => {
     if (!value) {
@@ -179,16 +179,15 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
 
   const [levels,setLevels]=useState<Salary[]>([]);
 
-  const [schedules,setSchedules]=useState<ScheduleEntity[]>([]);
-
   const [day,setDay]=useState(0);
 
-  const handleDayChange = (event: { target: { value: number; }; }) => {
+  const handleDayChange = (event: { target: { value: string; }; }) => {
     // setState({
     //   ...state,
     //   [event.target.name]: event.target.checked
     // });
-    setDay(event.target.value);
+    let d=parseInt(event.target.value);
+    setDay(d);
   };
 
 
@@ -229,11 +228,8 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
 
       let levels=await salaryApi.getSalary();
 
-      let schedules = await scheduleApi.getSchedule();
-
 
       if (isMountedRef()) {
-        setSchedules(schedules);
         setLevels(levels);
       }
     } catch (err) {
@@ -321,7 +317,7 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
               onChange={handleOccupationChange}
               helperText="请筛选或填写职位"
             >
-              <MenuItem key="未指定" value="未指定">
+              <MenuItem key="未指定" value="">
                   未指定
                 </MenuItem>
               {levels.map((level) => (level.occupation)).filter((value, index, self) => (self.indexOf(value) === index)).map((occupation)=>(

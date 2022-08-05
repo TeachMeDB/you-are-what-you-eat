@@ -143,14 +143,6 @@ export default function EmployeeSchedule({person,week}:{person:Avaliable,week:Da
   }, [isMountedRef]);
 
 
-
-  // React.useEffect(() => {
-  //   getAllData();
-  // }, [getAllData]);
-
-
-
-
   return (
     <div>
       <Button

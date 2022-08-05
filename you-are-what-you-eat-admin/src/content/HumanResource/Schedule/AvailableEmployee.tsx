@@ -145,7 +145,7 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
                             startIcon={<AddTwoToneIcon />
                           }
                           >
-                            添加到待班表列
+                            添加待排
                           </Button>
                         )
                       }
@@ -170,7 +170,7 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
                             size="small"
                             startIcon={<RemoveIcon />}
                           >
-                            从待班表列移除
+                            移除待排
                           </Button>
                         )
                       }
