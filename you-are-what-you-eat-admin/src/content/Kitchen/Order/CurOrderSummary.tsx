@@ -24,6 +24,7 @@ import { FC, ChangeEvent, useState, useEffect, useCallback } from 'react';
 import { CurOrder } from '@/models/cur_order';
 import { useRefMounted } from '@/hooks/useRefMounted';
 import { number } from 'yup/lib/locale';
+import curOrder from 'pages/kitchen/order';
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -173,6 +174,7 @@ function CurOrderSummary() {
 
   const chartSeries = [m, n];
 
+  console.log(CurOrders);
   return (
     <Card>
       <Grid spacing={0} container>

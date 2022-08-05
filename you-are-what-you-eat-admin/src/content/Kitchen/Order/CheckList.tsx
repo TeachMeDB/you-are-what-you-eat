@@ -50,6 +50,9 @@ export default function CheckList(curOrder: CurOrder) {
         return Math.round((i / curOrder.dish.length) * 100);
     }
     var finished = CountFinished();
+    const check = (item) => {
+        return item.status == "已完成";
+    }
     return (
         <Card>
             <CardHeader title={curOrder.order_id} />
@@ -67,7 +70,7 @@ export default function CheckList(curOrder: CurOrder) {
 
                                     edge="end"
                                     onChange={handleToggle(item.dish_name)}
-                                    checked={checked.indexOf(item.dish_name) !== -1}
+                                    checked={check(item)}
                                     inputProps={{
                                         'aria-labelledby': item.dish_name,
                                     }}

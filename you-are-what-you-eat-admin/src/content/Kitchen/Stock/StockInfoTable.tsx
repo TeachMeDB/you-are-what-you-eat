@@ -145,8 +145,9 @@ const StockInfoesTable = () => {
     let s = "";
     const surplusChange = (e) => {
         s = e.target.value;
-        console.log(s);
+
     }
+    console.log(StockInfoes);
     return (
         <Card>
             {(
@@ -292,13 +293,9 @@ const StockInfoesTable = () => {
                                                 <Button onClick={handleClose}>退出</Button>
                                                 <Button onClick={() => {
                                                     const conduct = async () => {
-                                                        console.log(stockInfoApi);
-                                                        console.log(s);
-
                                                         return stockInfoApi.updateStock(
                                                             parseInt(stockInfo.record_id),
                                                             parseInt(s));
-
                                                     }
 
                                                     conduct().then((value) => {
