@@ -3,7 +3,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
-import { CurOrder } from '@/models/cur_order';
+import { CurOrder, Dish } from '@/models/cur_order';
 import { Card, CardHeader, Divider, CardContent } from '@mui/material';
 import {
     LinearProgress,
@@ -28,18 +28,14 @@ const LinearProgressWrapper = styled(LinearProgress)(
 );
 
 export default function CheckList(curOrder: CurOrder) {
-    const [checked, setChecked] = React.useState(['']);
 
 
-    const handleToggle = (value: string) => () => {
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
 
-        if (currentIndex === -1) {
-            newChecked.push(value);
+    const handleToggle = (item: Dish) => () => {
+        console.log(item.status);
+        item.status = "已完成";
+        console.log(item.status);
 
-        }
-        setChecked(newChecked);
     };
     const CountFinished = () => {
         var i = 0;
@@ -69,7 +65,7 @@ export default function CheckList(curOrder: CurOrder) {
                                 <Switch
 
                                     edge="end"
-                                    onChange={handleToggle(item.dish_name)}
+                                    onChange={handleToggle(item)}
                                     checked={check(item)}
                                     inputProps={{
                                         'aria-labelledby': item.dish_name,

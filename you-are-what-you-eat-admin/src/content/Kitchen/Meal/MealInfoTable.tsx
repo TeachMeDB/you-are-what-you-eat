@@ -141,7 +141,7 @@ const MealInfoTable = () => {
     const handleSearchClick = () => {
         setMealInfoes(newM);
     }
-
+    console.log(MealInfoes);
     return (
         <Card>
             {(
@@ -181,6 +181,7 @@ const MealInfoTable = () => {
                             <TableCell>菜品名称</TableCell>
                             <TableCell >价格</TableCell>
                             <TableCell>菜品描述</TableCell>
+                            <TableCell>菜品标签</TableCell>
                             <TableCell >操作</TableCell>
                         </TableRow>
                     </TableHead>
@@ -233,6 +234,19 @@ const MealInfoTable = () => {
                                                 noWrap
                                             >
                                                 {mealInfo.description}
+
+                                            </Typography>
+
+                                        </TableCell>
+                                        <TableCell >
+                                            <Typography
+                                                variant="body1"
+                                                fontWeight="bold"
+                                                color="text.primary"
+                                                gutterBottom
+                                                noWrap
+                                            >
+                                                {mealInfo.tags}
 
                                             </Typography>
 

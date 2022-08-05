@@ -26,6 +26,7 @@ let m: MealInfo = {
     dis_name: '123',
     price: 123,
     description: '123',
+    tags: [""]
 }
 
 
@@ -55,6 +56,10 @@ function PageHeader() {
     }
     const descriptionInputChange = (e) => {
         m.description = e.target.value;
+    }
+    const tagsInputChange = (e) => {
+        m.tags = e.target.value.split(" ");
+        console.log(m.tags);
     }
 
     return (
@@ -118,6 +123,15 @@ function PageHeader() {
                             fullWidth
                             variant="standard"
                             onChange={descriptionInputChange}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="标签"
+                            fullWidth
+                            variant="standard"
+                            onChange={tagsInputChange}
                         />
                     </DialogContent>
                     <DialogActions>
