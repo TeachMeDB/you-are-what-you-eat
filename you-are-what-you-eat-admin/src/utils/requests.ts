@@ -17,3 +17,11 @@ export async function PostApi(url:string,body:{}){
         baseURL:backendURL
     });
 }
+
+
+export async function DeleteApi(url:string,params?:{}){
+    return axios.delete(url,{
+        baseURL: backendURL,
+        params: params,
+    })
+}

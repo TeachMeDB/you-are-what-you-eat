@@ -38,11 +38,10 @@ import type { Promotion, PromotionStatus } from 'src/models/promotion'
 import { useTranslation } from 'react-i18next';
 import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone';
 import Label from 'src/components/Label';
-// import BulkActions from './BulkActions';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-// import { useSnackbar } from 'notistack';
 import { format } from 'date-fns';
+import { promotionsApi } from '@/queries/promotions';
 
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -257,26 +256,35 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
   const selectedAllPromotions = selectedItems.length === promotions.length;
 
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+  const [deletePromotionId, setDeletePromotionId] = useState("");
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = (promotion_id? :string) => {
     setOpenConfirmDelete(true);
+    setDeletePromotionId(promotion_id);
   };
 
   const closeConfirmDelete = () => {
     setOpenConfirmDelete(false);
+    setDeletePromotionId("");
   };
 
   const handleDeleteCompleted = () => {
-    setOpenConfirmDelete(false);
+    promotionsApi.deletePromotionById(deletePromotionId)
+      .then((value) => {
+        alert("删除成功" + value);
+      })
+      .catch((value) => {
+        alert("删除失败" + value);
+      })
 
-    // enqueueSnackbar(t('Delete action completed successfully'), {
-    //   variant: 'success',
-    //   anchorOrigin: {
-    //     vertical: 'top',
-    //     horizontal: 'right'
-    //   },
-    //   TransitionComponent: Zoom
-    // });
+    // try {
+      
+    // } 
+    // catch(err) {
+    //   alert("删除失败" + err);
+    // }
+    setOpenConfirmDelete(false);
+    setDeletePromotionId("");
   };
 
   return (
@@ -451,7 +459,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                             <Tooltip title={t('删除活动')} arrow>
                               <IconButton
                                 disabled={promotion.status === 'running'}
-                                onClick={handleConfirmDelete}
+                                onClick={() => handleConfirmDelete(promotion.id)}
                                 color="primary"
                               >
                                 <DeleteTwoToneIcon fontSize="small" />

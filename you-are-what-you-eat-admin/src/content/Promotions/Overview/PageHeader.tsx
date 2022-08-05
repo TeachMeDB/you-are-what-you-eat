@@ -6,6 +6,7 @@ import { wait } from 'src/utils/wait';
 import SelectDishTable from 'src/content/Promotions/Overview/SelectDishTable'
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import { getDayTime } from '@/utils/date';
+import { Dispatch, SetStateAction } from 'react';
 
 import {
   styled,
@@ -37,7 +38,6 @@ import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import { SelectableDish, SelectedDish } from '@/models/promotion';
 import { promotionsApi } from '@/queries/promotions';
-import type { PromotionUpload } from '@/models/promotion';
 
 const IconButtonError = styled(IconButton)(
   ({ theme }) => `
@@ -51,7 +51,7 @@ const IconButtonError = styled(IconButton)(
 `
 );
 
-function PageHeader() {
+function PageHeader(refresh?: boolean, setRefresh?: Dispatch<SetStateAction<boolean>>) {
   const isMountedRef = useRefMounted();
   const { t }: { t: any } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -101,9 +101,13 @@ function PageHeader() {
     alert(`新的活动创建成功`)
 
     setSelectedDishes([]);
-    setValue(null);
-    setValue1(null);
+    setValue(new Date());
+    setValue1(new Date(getDayTime(new Date(), -1, '')));
     setOpen(false);
+    // 刷新父组件，显示新的
+    if (setRefresh && refresh) {
+      setRefresh(!refresh)
+    }
   };
 
   return (
