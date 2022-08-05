@@ -293,15 +293,11 @@ const StockInfoesTable = () => {
                                                 <Button onClick={() => {
                                                     const conduct = async () => {
                                                         console.log(stockInfoApi);
-                                                        console.log(n);
-                                                        return stockInfoApi.postStock(
-                                                            {
-                                                                amount: n.amount,
-                                                                date: n.date,
-                                                                ing_name: n.ing_name,
-                                                                record_id: n.record_id,
-                                                                surplus: n.surplus
-                                                            } as StockInfo);
+                                                        console.log(s);
+
+                                                        return stockInfoApi.updateStock(
+                                                            parseInt(stockInfo.record_id),
+                                                            parseInt(s));
 
                                                     }
 
@@ -320,14 +316,31 @@ const StockInfoesTable = () => {
                                                 }} href="javascript:location.reload(true)">确定</Button>
                                             </DialogActions>
                                         </Dialog>
-                                        <Tooltip title="删除" arrow>
+                                        <Tooltip title="删除" arrow >
                                             <IconButton
+                                                onClick={() => {
+                                                    const conduct = async () => {
+                                                        console.log(stockInfoApi);
+                                                        console.log(stockInfo.record_id);
+
+                                                        return stockInfoApi.delStock(
+                                                            parseInt(stockInfo.record_id))
+                                                    }
+                                                    conduct().then((value) => {
+                                                        alert("成功：" + value);
+                                                        window.location.reload();
+                                                    }).catch((value) => {
+
+                                                        alert("失败：" + value);
+                                                    });
+                                                }}
                                                 sx={{
                                                     '&:hover': { background: theme.colors.error.lighter },
                                                     color: theme.palette.error.main
                                                 }}
                                                 color="inherit"
                                                 size="small"
+                                                href="javascript:location.reload(true)"
                                             >
                                                 <DeleteTwoToneIcon fontSize="small" />
                                             </IconButton>

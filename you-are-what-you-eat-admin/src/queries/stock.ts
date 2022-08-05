@@ -19,7 +19,7 @@ class StockInfoApi {
     }
 
 
-    public postStock = async (stockinfo: StockInfo) => {
+    public addStock = async (stockinfo: StockInfo) => {
         return (await (PostApi("/IngredientRecords/AddIngredientRecord", stockinfo))).statusText as string
     }
 
@@ -29,6 +29,13 @@ class StockInfoApi {
             surplus
         }))).statusText as string
     }
+    public delStock = async (record_id: number) => {
+        return (await (PostApi("/IngredientRecords/Delete", {
+            record_id
+        }))).statusText as string
+    }
+
+
 }
 
 export const stockInfoApi = new StockInfoApi();
