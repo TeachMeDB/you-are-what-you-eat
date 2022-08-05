@@ -19,8 +19,11 @@ class StockInfoApi {
     }
 
 
-    public addStock = async (stockinfo: StockInfo) => {
-        return (await (PostApi("/IngredientRecords/AddIngredientRecord", stockinfo))).statusText as string
+
+
+    public addStock: (stockinfo: StockInfo) => Promise<string> = async (stockinfo) => {
+        const r = (await (PostApi("/IngredientRecords/AddIngredientRecord", stockinfo)));
+        return r.statusText;
     }
 
     public updateStock = async (record_id: number, surplus: number) => {

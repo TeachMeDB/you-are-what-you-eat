@@ -116,7 +116,7 @@ function PageHeader() {
                             const conduct = async () => {
                                 console.log(stockInfoApi);
                                 console.log(n);
-                                return stockInfoApi.addStock(
+                                return await stockInfoApi.addStock(
                                     {
                                         amount: n.amount,
                                         date: n.date,
