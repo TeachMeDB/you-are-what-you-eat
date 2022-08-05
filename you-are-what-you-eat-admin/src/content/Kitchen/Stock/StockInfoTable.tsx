@@ -79,12 +79,15 @@ const ButtonSearch = styled(Button)(
 const StockInfoesTable = () => {
 
 
+
+
     const isMountedRef = useRefMounted();
     const [StockInfoes, setStockInfoes] = useState<StockInfo[]>([]);
 
 
     const getAllData = useCallback(async () => {
         try {
+            console.log(stockInfoApi);
             let MealInfoes = await stockInfoApi.getStockInfo();
             if (isMountedRef()) {
                 setStockInfoes(MealInfoes);
@@ -139,7 +142,11 @@ const StockInfoesTable = () => {
     const handleSearchClick = () => {
         setStockInfoes(newM);
     }
-
+    let s = "";
+    const surplusChange = (e) => {
+        s = e.target.value;
+        console.log(s);
+    }
     return (
         <Card>
             {(
@@ -271,6 +278,7 @@ const StockInfoesTable = () => {
                                             <DialogContent>
 
                                                 <TextField
+                                                    onChange={surplusChange}
                                                     autoFocus
                                                     margin="dense"
                                                     id="id"
@@ -282,7 +290,34 @@ const StockInfoesTable = () => {
                                             </DialogContent>
                                             <DialogActions>
                                                 <Button onClick={handleClose}>退出</Button>
-                                                <Button onClick={handleClose}>确定</Button>
+                                                <Button onClick={() => {
+                                                    const conduct = async () => {
+                                                        console.log(stockInfoApi);
+                                                        console.log(n);
+                                                        return stockInfoApi.postStock(
+                                                            {
+                                                                amount: n.amount,
+                                                                date: n.date,
+                                                                ing_name: n.ing_name,
+                                                                record_id: n.record_id,
+                                                                surplus: n.surplus
+                                                            } as StockInfo);
+
+                                                    }
+
+                                                    conduct().then((value) => {
+
+                                                        alert("成功：" + value);
+
+                                                        window.location.reload();
+
+
+                                                    }).catch((value) => {
+
+                                                        alert("失败：" + value);
+                                                    });
+
+                                                }} href="javascript:location.reload(true)">确定</Button>
                                             </DialogActions>
                                         </Dialog>
                                         <Tooltip title="删除" arrow>

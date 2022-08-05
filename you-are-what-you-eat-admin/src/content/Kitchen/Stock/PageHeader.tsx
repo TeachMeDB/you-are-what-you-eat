@@ -46,7 +46,7 @@ function PageHeader() {
     const handleIdChange = (e) => {
         n.record_id = e.target.value;
     }
-
+    console.log(stockInfoApi);
 
     return (
         <Grid container justifyContent="space-between" alignItems="center">
@@ -114,7 +114,8 @@ function PageHeader() {
                         <Button onClick={handleClose}>退出</Button>
                         <Button onClick={() => {
                             const conduct = async () => {
-
+                                console.log(stockInfoApi);
+                                console.log(n);
                                 return stockInfoApi.postStock(
                                     {
                                         amount: n.amount,

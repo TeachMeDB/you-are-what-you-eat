@@ -18,8 +18,16 @@ class StockInfoApi {
         }))).data as StockInfo[];
     }
 
-    public async postEmployee(stockinfo: StockInfo) {
+
+    public postStock = async (stockinfo: StockInfo) => {
         return (await (PostApi("/IngredientRecords/AddIngredientRecord", stockinfo))).statusText as string
+    }
+
+    public updateStock = async (record_id: number, surplus: number) => {
+        return (await (PostApi("/IngredientRecords/UpdateIngredientRecord", {
+            record_id,
+            surplus
+        }))).statusText as string
     }
 }
 
