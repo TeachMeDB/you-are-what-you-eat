@@ -3,7 +3,7 @@ import axios from 'axios'
 import {backendURL} from "./config"
 
 
-export async function GetApi(url:string,params?:{}){
+export const GetApi=async (url:string,params?:{})=>{
 
     return axios.get(url,{
         baseURL:backendURL,
@@ -12,7 +12,7 @@ export async function GetApi(url:string,params?:{}){
 }
 
 
-export async function PostApi(url:string,body:{}){
+export const PostApi = async (url:string,body:{})=>{
     return axios.post(url,body,{
         baseURL:backendURL
     });

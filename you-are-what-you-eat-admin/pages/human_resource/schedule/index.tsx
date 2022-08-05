@@ -61,11 +61,11 @@ const IconButtonToggle = styled(IconButton)(
 
 const DrawerWrapperMobile = styled(Drawer)(
   () => `
-    width: 340px;
+    width: 400px;
     flex-shrink: 0;
 
   & > .MuiPaper-root {
-        width: 340px;
+        width: 400px;
         z-index: 3;
   }
 `
@@ -79,9 +79,9 @@ function ScheduleManagement() {
   const [selectedEndTime,setSelectedEndTime]=useState("2080-01-01 00:00:00");
 
 
-  const [selectedPlace,setSelectedPlace]=useState("xxx");
+  const [selectedPlace,setSelectedPlace]=useState("");
 
-  const [selectedOccupation,setSelectedOccupation]=useState("经理");
+  const [selectedOccupation,setSelectedOccupation]=useState("");
 
   const [selectedWeek,setSelectedWeek]=useState(new Date(Date.now()))
 
@@ -94,6 +94,17 @@ function ScheduleManagement() {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const schedule=(
+    <ScheduleOperation
+            handleSelectStartTime={(x)=>{setSelectedStartTime(x)} }
+            handleSelectEndTime={(x)=>{setSelectedEndTime(x)} }
+            handleSelectWeek={(x)=>{setSelectedWeek(x)} }
+            handleSelectOccupation={(x)=>{setSelectedOccupation(x);console.log("changing occupaiton:",x)} }
+            handleSelectPlace={(x)=>{setSelectedPlace(x);console.log("changing place:",x)} }
+            week={selectedWeek}
+            people={selectedPeople}/>
+  );
 
 
   return (
@@ -124,14 +135,7 @@ function ScheduleManagement() {
           onClose={handleDrawerToggle}
         >
           <Scrollbar>
-            <ScheduleOperation
-              handleSelectStartTime={setSelectedStartTime} 
-              handleSelectEndTime={setSelectedEndTime} 
-              handleSelectWeek={setSelectedWeek} 
-              handleSelectOccupation={setSelectedOccupation} 
-              handleSelectPlace={setSelectedPlace} 
-              week={selectedWeek} 
-              people={selectedPeople}/>
+            {schedule}
           </Scrollbar>
         </DrawerWrapperMobile>
 
@@ -142,21 +146,17 @@ function ScheduleManagement() {
           }}
         >
 
-          <ScheduleOperation
-            handleSelectStartTime={setSelectedStartTime} 
-            handleSelectEndTime={setSelectedEndTime} 
-            handleSelectWeek={setSelectedWeek} 
-            handleSelectOccupation={setSelectedOccupation} 
-            handleSelectPlace={setSelectedPlace} 
-            week={selectedWeek} 
-            people={selectedPeople}/>
-
+          {schedule}
+            
         </Sidebar>
 
         <Grid
+          container
           direction="column"
-          justifyContent="center"
-          spacing={3}>
+          alignItems="stretch"
+          spacing={1}
+          padding={1.5}
+          >
 
 
           <TopBar
@@ -179,11 +179,25 @@ function ScheduleManagement() {
             </IconButtonToggle>
           </TopBar>
 
-          <PositionSchedule place={selectedPlace} occupation={selectedOccupation} week={selectedWeek}/>
+          <PositionSchedule 
+            key={selectedPlace+selectedOccupation+selectedWeek.toISOString()}
+            place={selectedPlace}
+            occupation={selectedOccupation} 
+            week={selectedWeek}
+            />
+
+
           <Divider />
 
 
-          <AvailableEmployee startTime={selectedStartTime} endTime={selectedEndTime} place={selectedPlace} occupation={selectedOccupation} handleSelectPeople={setSelectedPeople}/>
+          <AvailableEmployee 
+            key={selectedPlace+selectedOccupation+selectedStartTime+selectedEndTime}
+            startTime={selectedStartTime} 
+            endTime={selectedEndTime} 
+            place={selectedPlace} 
+            occupation={selectedOccupation} 
+            handleSelectPeople={(x)=>{setSelectedPeople(x)}}
+            />
 
         </Grid>
 

@@ -24,7 +24,7 @@ import { useState, MouseEvent, ChangeEvent, useCallback, useEffect } from 'react
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import EmployeeSchedule from './EmployeeSchedulePopup';
 import { useRefMounted } from '@/hooks/useRefMounted';
-import { Avaliable, ScheduleEntity } from '@/models/schedule';
+import { Avaliable} from '@/models/schedule';
 import { scheduleApi } from '@/queries/schedule';
 
 const RootWrapper = styled(Box)(
@@ -35,7 +35,13 @@ const RootWrapper = styled(Box)(
 );
 
 
-function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeople}) {
+function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeople}:{
+  startTime:string,
+  endTime:string,
+  place:string,
+  occupation:string,
+  handleSelectPeople:(value:Avaliable[])=>void
+}) {
 
   const [selected,setSelected]=useState<Avaliable[]>([]);
 
@@ -45,8 +51,7 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
   const getAllData = useCallback(async () => {
 
 
-    console.log("start of week",startTime);
-    console.log("end of week",endTime);
+    console.log("avaliable request:",place,occupation,startTime,endTime);
 
     try {
 
@@ -91,7 +96,8 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
         <Divider />
         <Box p={2}>
           <Grid container spacing={0}>
-            {availables.map((stuff: Avaliable) => (
+            {availables.map((stuff: Avaliable) =>{
+              return (
               <Grid key={stuff.id} item xs={12} sm={6} lg={4}>
                 <Box p={1.5} display="flex" alignItems="flex-start">
                   <Avatar src={stuff.avatar} />
@@ -109,7 +115,7 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
 
                 </Box>
                 <Box p={1.5}>
-                  <Grid container direction="row" xs={12}>
+                  <Grid container direction="row">
 
                     <Grid item xs={6}>
                       {
@@ -128,8 +134,6 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
                                   }] as Avaliable[]);
 
                                 setSelected(another);
-
-                                console.log(another);
       
                                 handleSelectPeople(another);
 
@@ -156,8 +160,6 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
                                 let another=selected.filter((person)=>person.id!=stuff.id);
 
                                 setSelected(another);
-
-                                console.log(another);
       
                                 handleSelectPeople(another);
 
@@ -186,12 +188,12 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
                 <Box p={2}></Box>
 
               </Grid>
-            ))}
+            );})}
           </Grid>
 
           <Box p={2}>
             <TablePagination
-              component="p"
+              component="div"
               count={100}
               page={page}
               onPageChange={handleChangePage}

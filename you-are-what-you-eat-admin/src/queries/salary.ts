@@ -11,16 +11,16 @@ import {GetApi,PostApi} from "@/utils/requests"
 
 class SalaryApi {
 
-    public async getSalary(){
+    public getSalary=async ()=>{
         return (await (GetApi("Salary/GetSalaryInfo"))).data as Salary[];
     }
 
 
-    public async getPayroll(){
+    public getPayroll=async ()=>{
         return (await (GetApi("Salary/GetSalaryRecord"))).data as PayrollEntity[];
     }
 
-    public async postPayroll(payroll:PayrollUpload){
+    public postPayroll= async (payroll:PayrollUpload)=>{
         return (await (PostApi("Salary/PostOneSalaryRecord",payroll))).statusText as string
     }
 

@@ -107,6 +107,7 @@ export default function EmployeeSchedule({person,week}:{person:Avaliable,week:Da
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
+    getAllData();
     setOpen(true);
   };
 
@@ -143,9 +144,9 @@ export default function EmployeeSchedule({person,week}:{person:Avaliable,week:Da
 
 
 
-  React.useEffect(() => {
-    getAllData();
-  }, [week,person,getAllData]);
+  // React.useEffect(() => {
+  //   getAllData();
+  // }, [getAllData]);
 
 
 

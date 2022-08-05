@@ -13,26 +13,36 @@ import {GetApi,PostApi} from "@/utils/requests"
 
 class ScheduleApi {
 
-    public async getSchedule(start?:string,end?:string,id?:string,place?:string,occupation?:string){
-        return (await (GetApi("Schedule/GetScheduleInfo",{
+    public getSchedule=async (start?:string,end?:string,id?:string,place?:string,occupation?:string)=>{
+        let response=await (GetApi("Schedule/GetScheduleInfo",{
             start:start,
             end:end,
             id:id,
             place:place,
             occupation:occupation
-        }))).data as ScheduleEntity[];
+        }));
+
+        if(response.status===200){
+            return response.data as ScheduleEntity[];
+        }
+        return [] as ScheduleEntity[];
     }
 
-    public async getAvailable(start?:string,end?:string,place?:string,occupation?:string){
-        return (await (GetApi("Schedule/GetFreeEmployee",{
+    public getAvailable=async (start?:string,end?:string,place?:string,occupation?:string)=>{
+        let response= (await (GetApi("Schedule/GetFreeEmployee",{
             start:start,
             end:end,
             place:place,
             occupation:occupation
-        }))).data as Avaliable[];
+        })));
+
+        if(response.status===200){
+            return response.data as Avaliable[];
+        }
+        return [] as Avaliable[]
     }
 
-    public async postSchedule(schedule:ScheduleUpload){
+    public postSchedule=async (schedule:ScheduleUpload)=>{
         return (await (PostApi("Schedule/PostScheduleInfo",schedule))).statusText as string
     }
 

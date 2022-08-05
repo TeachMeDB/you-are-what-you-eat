@@ -26,11 +26,13 @@ function PositionSchedule({place,occupation,week}:{place:string,occupation:strin
 
   const getAllData = useCallback(async () => {
 
+    
+
     let weekStart=startOfWeek(week);
     let weekEnd=endOfWeek(week);
 
-    console.log("start of week",weekStart);
-    console.log("end of week",weekEnd);
+    console.log("this is asking a whole schedule:")
+    console.log(place,occupation,weekStart,weekEnd)
 
     try {
 
