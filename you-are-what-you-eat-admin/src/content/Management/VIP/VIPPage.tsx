@@ -1,14 +1,32 @@
-import { CryptoVip } from '@/models/crypto_vip';
+import { CryptoAllVip } from '@/models/crypto_vip';
 import VIPListTable from './VIPListTable';
-import { Grid } from '@mui/material';
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import { queryVipApi } from '@/queries/query_vip';
+import VipSummary from './VipSummary';
+import { 
+  Grid,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  Divider
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function VIPPage() {
+  const [expanded, setExpanded] = useState<string | false>(false);
+  const handleChange = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
+  }
+  const [expanded2, setExpanded2] = useState<string | false>(false);
+  const handleChange2 = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded2(isExpanded ? panel : false);
+  }
+
   const isMountedRef = useRefMounted();
-  const [vipData, setVipData] = useState<CryptoVip[]>(null);
+  const [vipData, setVipData] = useState<CryptoAllVip>(null);
 
   const getVipData = useCallback(async () => {
     try {
@@ -45,7 +63,37 @@ function VIPPage() {
           spacing={4}
         >
           <Grid item xs={12}>
-            <VIPListTable cryptoVip={vipData} />
+          <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')} >
+          <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+          >
+          <Typography><b>查看积分统计</b></Typography>
+           </AccordionSummary>
+           <AccordionDetails>
+           <VipSummary cryptoSummary={vipData.summary}/>
+           </AccordionDetails>
+           </Accordion>   
+           
+           <Divider/>
+          
+          <Accordion expanded={expanded2 === 'panel1'} onChange={handleChange2('panel1')} >
+          <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+          >
+          <Typography><b>查看余额统计</b></Typography>
+           </AccordionSummary>
+           <AccordionDetails>
+           <VipSummary cryptoSummary={vipData.summary2}/>
+           </AccordionDetails>
+           </Accordion>            
+          </Grid>
+
+          <Grid item xs={12}>
+            <VIPListTable cryptoVip={vipData.vips} />
           </Grid>
         </Grid> 
     </>

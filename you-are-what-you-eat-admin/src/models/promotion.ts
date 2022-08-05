@@ -27,3 +27,15 @@ export interface SelectedDish {
     price: number,  // 原价
     discount: number
 };
+
+export interface PromotionUpload {
+    description: string;
+    dishes:      Dish[];
+    end:         string;
+    start:       string;
+}
+
+export interface Dish {
+    discount: number;
+    name:     string;
+}

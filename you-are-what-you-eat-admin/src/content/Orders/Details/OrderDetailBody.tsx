@@ -35,7 +35,7 @@ interface OrderDetailBody {
   detail: OrderDetail;
 }
 
-const InvoiceBody: FC<OrderDetailBody> = ({ detail }) => {
+const OrderDetailBody: FC<OrderDetailBody> = ({ detail }) => {
   const { t }: { t: any } = useTranslation();
 
   return (
@@ -56,7 +56,7 @@ const InvoiceBody: FC<OrderDetailBody> = ({ detail }) => {
               {t('订单详情')}
             </Typography>
             <Typography variant="h3" color="text.secondary">
-              #{detail.order_id}
+              订单号：#{detail.order_id}
             </Typography>
           </Box>
           <Box display="flex" flexDirection="column">
@@ -165,10 +165,10 @@ const InvoiceBody: FC<OrderDetailBody> = ({ detail }) => {
                     </TableCell>
                     <TableCell>{dish.dish_status}</TableCell>
                     <TableCell>
-                      {dish.ori_price}
+                      ￥{dish.ori_price}
                     </TableCell>
                     <TableCell>
-                      {dish.final_payment}
+                      ￥{dish.final_payment}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -203,7 +203,7 @@ const InvoiceBody: FC<OrderDetailBody> = ({ detail }) => {
         <Tooltip
           placement="top"
           arrow
-          title="This functionality will be added in a future release!"
+          title="此功能将在后续版本中发布"
         >
           <Box
             display="flex"
@@ -219,7 +219,7 @@ const InvoiceBody: FC<OrderDetailBody> = ({ detail }) => {
               }}
               startIcon={<DownloadTwoToneIcon />}
             >
-              {t('Download PDF')}
+              {t('下载PDF')}
             </Button>
             <Button
               disabled
@@ -229,7 +229,7 @@ const InvoiceBody: FC<OrderDetailBody> = ({ detail }) => {
               }}
               startIcon={<PictureAsPdfTwoToneIcon />}
             >
-              {t('Preview PDF')}
+              {t('预览PDF')}
             </Button>
           </Box>
         </Tooltip>
@@ -238,9 +238,9 @@ const InvoiceBody: FC<OrderDetailBody> = ({ detail }) => {
   );
 };
 
-InvoiceBody.propTypes = {
+OrderDetailBody.propTypes = {
   // @ts-ignore
   invoice: PropTypes.object.isRequired
 };
 
-export default InvoiceBody;
+export default OrderDetailBody;

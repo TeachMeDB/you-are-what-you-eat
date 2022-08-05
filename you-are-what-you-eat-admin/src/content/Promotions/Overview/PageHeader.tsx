@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { wait } from 'src/utils/wait';
 import SelectDishTable from 'src/content/Promotions/Overview/SelectDishTable'
 import { useRefMounted } from 'src/hooks/useRefMounted';
+import { getDayTime } from '@/utils/date';
 
 import {
   styled,
@@ -36,6 +37,7 @@ import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import { SelectableDish, SelectedDish } from '@/models/promotion';
 import { promotionsApi } from '@/queries/promotions';
+import type { PromotionUpload } from '@/models/promotion';
 
 const IconButtonError = styled(IconButton)(
   ({ theme }) => `
@@ -56,8 +58,6 @@ function PageHeader() {
   const [selectDishDialogOpen, setSelectDishDialogOpen] = useState(false);
   const [selectableDishes, setSelectableDishes] = useState<SelectableDish[]>([]);
   const [selectedDishes, setSelectedDishes] = useState<SelectedDish[]>([]);
-  const [promotionName, setPromotionName] = useState<string>("");
-  const [promotionDesc, setPromotionDesc] = useState<string>("");
 
   const getSelectableDishes = useCallback(async() => {
     try {
@@ -78,8 +78,8 @@ function PageHeader() {
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const [value, setValue] = useState<Date | null>(null);
-  const [value1, setValue1] = useState<Date | null>(null);
+  const [value, setValue] = useState<Date | null>(new Date());
+  const [value1, setValue1] = useState<Date | null>(new Date(getDayTime(new Date(), 1, '')));
 
   const handleCreatePromotionOpen = () => {
     setOpen(true);
@@ -97,14 +97,9 @@ function PageHeader() {
     else
       console.log('err');
     console.log(value, value1);
-    // enqueueSnackbar(t('A new invoice has been created successfully'), {
-    //   variant: 'success',
-    //   anchorOrigin: {
-    //     vertical: 'top',
-    //     horizontal: 'right'
-    //   },
-    //   TransitionComponent: Zoom
-    // });
+
+    alert(`新的活动创建成功`)
+
     setSelectedDishes([]);
     setValue(null);
     setValue1(null);
@@ -173,14 +168,28 @@ function PageHeader() {
             _values,
             { resetForm, setErrors, setStatus, setSubmitting }
           ) => {
+            const param = {
+              description: `${_values.title}: ${_values.desc}`,
+              start: getDayTime(value, 0, "begin"),
+              end: getDayTime(value1, 0, "end"),
+              dishes: selectedDishes.map((d) => {
+                return {
+                  discount: d.discount,
+                  name: d.name
+                }
+              })
+            }
             try {
               await wait(1000);
+              await promotionsApi.postNewPromotion(param);
               resetForm();
               setStatus({ success: true });
               setSubmitting(false);
-              handleCreatePromotionSuccess(_values.title, _values.desc);
-            } catch (err) {
+              handleCreatePromotionSuccess();
+            } 
+            catch (err) {
               console.error(err);
+              alert(`创建失败: ${JSON.stringify(param)} \n错误：${err}`);
               setStatus({ success: false });
               setErrors({ submit: err.message });
               setSubmitting(false);

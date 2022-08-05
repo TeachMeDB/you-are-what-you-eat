@@ -51,11 +51,11 @@ const PageHeader: FC<PageHeaderProps> = ({ detail }) => {
                 <Link color="inherit" href="#">
                   {t('Home')}
                 </Link>
-                <Link color="inherit" href="#">
-                  {t('Orders')}
+                <Link color="inherit" href="/orders/overview">
+                  {t('订单概览')}
                 </Link>
                 <Typography color="text.primary">
-                  {t('OrderDetail')} #{detail.order_id}
+                  {t('订单详情')} #{detail.order_id}
                 </Typography>
               </Breadcrumbs>
             </Box>

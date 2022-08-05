@@ -40,10 +40,10 @@ function OrderOverviewContent() {
           autoPlay={false}
           animation={'slide'}
           >
-          <ActiveVIP />
           <OrderReport />
         <BestSeller />
         <DishSaleVolume />
+        <ActiveVIP />
         </Carousel>
         </Grid>
       </Grid>

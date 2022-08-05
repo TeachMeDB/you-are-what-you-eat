@@ -13,7 +13,7 @@ function RecentOrdersList() {
 
   const getOrdersInTimePeriod = useCallback(async () => {
     try {
-      const response = await ordersApi.getOrdersInTimePeriod(new Date(), new Date());
+      const response = await ordersApi.getOrdersInTimePeriod(0, Number((new Date().getTime() / 1000).toFixed(0)));
 
       if (isMountedRef()) {
         setOrders(response);

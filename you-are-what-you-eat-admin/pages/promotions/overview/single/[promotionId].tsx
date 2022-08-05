@@ -13,7 +13,7 @@ import { Grid } from '@mui/material';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import type { Promotion } from 'src/models/promotion';
 
-import InvoiceBody from 'src/content/Promotions/Overview/single/InvoiceBody';
+import PromotionBody from '@/content/Promotions/Overview/single/PromotionBody';
 import PageHeader from 'src/content/Promotions/Overview/single/PageHeader';
 import { promotionsApi } from '@/queries/promotions';
 
@@ -23,17 +23,9 @@ function SinglePromotionView() {
   const router = useRouter();
 
   const { promotionId } = router.query;
-  // console.log(promotionId);
+  console.log('promotionid:' ,promotionId);
 
-  const [promotion, setPrmotion] = useState<Promotion | null>({
-    id: '1',
-    name: '',
-    start: new Date(),
-    end:   new Date(),
-    description: '',
-    dishes:  [],
-    status: 'running'
-});
+  const [promotion, setPrmotion] = useState<Promotion | null>(null);
 
   const getPromotion = useCallback(async () => {
     try {
@@ -73,7 +65,7 @@ function SinglePromotionView() {
         spacing={3}
       >
         <Grid item xs={12}>
-          <InvoiceBody promotion={promotion} />
+          <PromotionBody promotion={promotion} />
         </Grid>
       </Grid>
       <Footer />

@@ -77,7 +77,7 @@ import {
                   strokeLinecap: 'round'
                 })}
                 strokeWidth={9}
-                value={data.daily / data.weekly * 100}
+                value={data.weekly === 0 ? 100 : data.daily / data.weekly * 100}
               >
                 <Typography
                   color="primary"
@@ -86,7 +86,7 @@ import {
                   }}
                   variant="h1"
                 >
-                  {`${(data.daily / data.weekly * 100).toFixed(2)}%`}
+                  {`${data.weekly === 0 ? 100 : (data.daily / data.weekly * 100).toFixed(2)}%`}
                 </Typography>
               </CircularProgressbarWithChildren>
             </Box>

@@ -27,7 +27,8 @@ import {
   Select,
   InputLabel,
   InputAdornment,
-  styled
+  styled,
+  Tooltip
 } from '@mui/material';
 
 import { TransitionProps } from '@mui/material/transitions';
@@ -36,6 +37,7 @@ import type { SelectableDish, SelectedDish } from '@/models/promotion';
 import { useTranslation } from 'react-i18next';
 import Label from 'src/components/Label';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
+import { join } from '@/utils/array'
 
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -115,7 +117,7 @@ const applyFilters = (
       });
 
       if (filters.tag && dish.tags.includes(filters.tag)) {
-        matches = false;
+        matches = true;
       }
 
       if (!containsQuery) {
@@ -126,7 +128,7 @@ const applyFilters = (
     Object.keys(filters).forEach((key) => {
       const value = filters[key];
 
-      if (value && dish[key] !== value) {
+      if (value && !dish['tags'].includes(value)) {
         matches = false;
       }
     });
@@ -134,8 +136,6 @@ const applyFilters = (
     return matches;
   });
 };
-
-const defaultDiscount = 0.9;
 
 const applyPagination = (
   dishes: SelectableDish[],
@@ -163,24 +163,13 @@ const SelectDishTable: FC<ResultsProps> = ({
     tag: null
   });
 
-  const statusOptions = [
-    {
-      id: 'all',
-      name: 'Show all'
-    },
-    {
-      id: '甜',
-      name: t('甜')
-    },
-    {
-      id: 'completed',
-      name: t('已结束')
-    },
-    {
-      id: 'ready',
-      name: t('未开始')
-    }
-  ];
+  const statusOptions: string[] = ['全部'];
+  selectableDishes.forEach((d) => {
+    d.tags.forEach((t) => {
+      if(!statusOptions.includes(t))
+        statusOptions.push(t);
+    })
+  })
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>): void => {
     event.persist();
@@ -190,14 +179,13 @@ const SelectDishTable: FC<ResultsProps> = ({
   const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
 
-    if (e.target.value !== 'all') {
+    if (e.target.value !== '全部') {
       value = e.target.value;
     }
 
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      status: value
-    }));
+    setFilters({
+      tag: value
+    });
   };
 
   const handleSelectAllDishes = (
@@ -291,15 +279,15 @@ const SelectDishTable: FC<ResultsProps> = ({
           </Grid>
           <Grid item xs={12} lg={5} md={6}>
             <FormControl fullWidth variant="outlined">
-              <InputLabel>{t('Status')}</InputLabel>
+              <InputLabel>{t('类别')}</InputLabel>
               <Select
                 value={filters.tag || 'all'}
                 onChange={handleStatusChange}
                 label={t('Status')}
               >
                 {statusOptions.map((statusOption) => (
-                  <MenuItem key={statusOption.id} value={statusOption.id}>
-                    {statusOption.name}
+                  <MenuItem key={statusOption} value={statusOption}>
+                    {statusOption}
                   </MenuItem>
                 ))}
               </Select>
@@ -326,7 +314,7 @@ const SelectDishTable: FC<ResultsProps> = ({
                 <Typography component="span" variant="subtitle1">
                   {t('已显示')}:
                 </Typography>{' '}
-                <b>{paginatedDishes.length}</b> <b>{t('个促销活动')}</b>
+                <b>{paginatedDishes.length}</b>个可选菜品（已经参与其他活动的菜品将被过滤）
               </Box>
               <TablePagination
                 component="div"
@@ -398,9 +386,13 @@ const SelectDishTable: FC<ResultsProps> = ({
                           </Typography>
                         </TableCell>
                         <TableCell>
+                        <Tooltip
+                          title={join(dish.tags, '; ')}
+                        >
                           <Typography noWrap>
                             {dish.tags.length > 0 ? getDishLabel(dish.tags[0]) : ''}
                           </Typography>
+                        </Tooltip>
                         </TableCell>
                       </TableRow>
                     );
