@@ -375,7 +375,7 @@ function SidebarMenu() {
                 <NextLink href="/management/VIP" passHref>
                   <Button
                     className={
-                      currentRoute === '/management/VIP'
+                      currentRoute === '/management/VIP'  
                         ? 'active'
                         : ''
                     }

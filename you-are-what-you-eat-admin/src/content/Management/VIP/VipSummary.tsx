@@ -14,14 +14,10 @@ import {
   List,
   ListItemAvatar
 } from '@mui/material';
-import TrendingUp from '@mui/icons-material/TrendingUp';
-import Text from 'src/components/Text';
-import { Chart } from 'src/components/Chart';
-import type { ApexOptions } from 'apexcharts';
-import Brightness1Icon from '@mui/icons-material/Brightness1';
 import { CryptoSummary } from '@/models/crypto_vip';
 import { FC, ChangeEvent, useState } from 'react';
-import ReactApexChart from 'react-apexcharts';
+//import ReactApexChart from 'react-apexcharts';
+import { Chart } from 'src/components/Chart';
 
 
 interface VipSummaryProps {
@@ -35,9 +31,14 @@ const VipSummary: FC<VipSummaryProps> = ({ cryptoSummary }) =>
 {
   const theme = useTheme();
 
+  if(!cryptoSummary)
+  {
+    return;
+  }
+
   return (
     <Card>
-      <ReactApexChart  options={cryptoSummary.options} series={cryptoSummary.series} type="bar" height={350} />
+      <Chart  notMerge={true} options={cryptoSummary.options} series={cryptoSummary.series} type="bar" height={350} />
     </Card>
   );
 }

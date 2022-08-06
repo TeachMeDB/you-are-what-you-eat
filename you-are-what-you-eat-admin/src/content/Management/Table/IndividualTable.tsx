@@ -184,10 +184,14 @@ export default function IndividualTable(props:IndiTableProps) {
                 <Card sx={{ maxWidth: 345 }}>
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                      {props.table_id.toString()}
+                      {"餐桌"+props.table_id.toString()}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {props.table_capacity.toString()+"  "+props.occupied}
+                      {props.table_capacity.toString()+"人座"}
+                    </Typography>
+                    <Divider/>
+                    <Typography variant="body2" color="text.secondary">
+                      {props.occupied}
                     </Typography>
                   </CardContent>
                   <CardActions>

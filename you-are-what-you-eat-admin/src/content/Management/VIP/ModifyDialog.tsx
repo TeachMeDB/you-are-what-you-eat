@@ -117,7 +117,7 @@ export default function ModifyDialog(props: VipProps) {
     setOpenSuccessDialog(false);
     setOpenErrorDialog(false);
 
-    setValue_optimized_vip(props.info);
+    resetOptimization();
   };
 
   const theme = useTheme();
@@ -125,6 +125,11 @@ export default function ModifyDialog(props: VipProps) {
   const { t }: { t: any } = useTranslation();
 
   const [optimized_vip, setValue_optimized_vip] = useState<CryptoVip>(null);
+  const [birthday,setBirthday]=useState<string>(null);
+  const [gender,setGender]=useState<string>(null);
+  const [balance,setBalance]=useState<number>(null);
+  const [credit,setCredit]=useState<number>(null);
+  
 
   const handleSetGender = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
@@ -133,23 +138,17 @@ export default function ModifyDialog(props: VipProps) {
       value = e.target.value;
     }
 
-    setValue_optimized_vip((pre)=>{
-      pre.gender=value;
-      return pre;
-    })
+    setGender(value);
   };
 
-  const handleSetBirthday=(value:string)=>
-  {
+  const handleSetBirthday = (e: ChangeEvent<HTMLInputElement>): void => {
+    let value = null;
 
-    if (value == null) {
-      return;
+    if (e.target.value !== null) {
+      value = e.target.value;
     }
 
-    setValue_optimized_vip((pre)=>{
-      pre.birthday=value;
-      return pre;
-    })
+    setBirthday(value);
   };
 
   const handleBalanceInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -159,10 +158,7 @@ export default function ModifyDialog(props: VipProps) {
       value = e.target.value;
     }
 
-    setValue_optimized_vip((pre)=>{
-      pre.balance=value;
-      return pre;
-    })
+    setBalance(value);
   };
 
   const handleCreditInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -172,10 +168,7 @@ export default function ModifyDialog(props: VipProps) {
       value = e.target.value;
     }
 
-    setValue_optimized_vip((pre)=>{
-      pre.credit=value;
-      return pre;
-    })
+    setCredit(value);
   };
 
   const handleSubmitEdit = async() =>
@@ -183,10 +176,20 @@ export default function ModifyDialog(props: VipProps) {
       console.log("edit confirm");
         //  检查数据
 
+      let submit:CryptoVip={
+        user_name: props.info.user_name,
+        gender: gender,
+        birthday: birthday,
+        balance: balance,
+        credit: credit,
+        status: props.info.status
+      }
+
       try {
-        let res= await queryVipApi.editVip(optimized_vip)
+        let res= await queryVipApi.editVip(submit)
         console.log(res);
         setOpenSuccessDialog(true);
+        //window.location.reload();
       } 
       catch (err) {
         console.error(err);
@@ -194,9 +197,17 @@ export default function ModifyDialog(props: VipProps) {
       }
   }
 
+  const resetOptimization=()=>{
+    setValue_optimized_vip(props.info);
+    setBirthday(props.info.birthday);
+    setGender(props.info.gender);
+    setBalance(props.info.balance);
+    setCredit(props.info.credit);
+  }
+
   if(!optimized_vip)
   {
-    setValue_optimized_vip(props.info);
+    resetOptimization();
     console.log(optimized_vip);
     return;
   }
@@ -250,7 +261,7 @@ export default function ModifyDialog(props: VipProps) {
             <FormControl sx={{ m: 2, width: '30ch' }}>
             <InputLabel>性别</InputLabel>
             <Select
-              defaultValue={optimized_vip.gender}
+              defaultValue={gender}
               onChange={handleSetGender}
               id="outlined-required"
               label="性别"
@@ -265,6 +276,12 @@ export default function ModifyDialog(props: VipProps) {
               ))}
             </Select> 
             </FormControl>
+
+            <FormControl sx={{ m: 2, width: '30ch' }}>
+                <DialogContentText>
+                  修改该会员性别，当前性别为:{props.info.gender}
+                </DialogContentText>
+            </FormControl>
             
           </Box>  
           <Box
@@ -277,23 +294,27 @@ export default function ModifyDialog(props: VipProps) {
           
 
               <DatePicker
-                value={optimized_vip.birthday}
+                value={birthday}
                 onChange={(newValue) => {
-                  setValue_optimized_vip((pre)=>{
-                    pre.birthday=newValue;
-                    return pre;
-                  });
+                  setBirthday(newValue);
                 }}
                 label="出生日期"
                 renderInput={(params) => (
                   <TextField
-                    value={optimized_vip.birthday}
+                    value={birthday}
                     fullWidth
                     placeholder={t('出生日期')}
                     {...params}
                   />
                 )}
               />
+
+            <FormControl sx={{ m: 2, width: '30ch' }}>
+                <DialogContentText>
+                  修改该会员生日，当前为:{props.info.birthday}
+                </DialogContentText>
+            </FormControl>
+
           </Box>
 
           <Box
@@ -306,14 +327,14 @@ export default function ModifyDialog(props: VipProps) {
           
 
           {
-              optimized_vip.balance>=0?
+              balance>=0?
             <TextField
              required
              fullWidth
               id="outlined-required"
               label="余额"
               type="number"
-             defaultValue={optimized_vip.balance.toString()}
+             defaultValue={balance.toString()}
              onChange={handleBalanceInputChange}         
              /> 
              :
@@ -323,12 +344,23 @@ export default function ModifyDialog(props: VipProps) {
               id="outlined-required"
               label="余额"
               type="number"
-             defaultValue={optimized_vip.balance.toString()}  
+             defaultValue={balance.toString()}  
              onChange={handleBalanceInputChange}
              error
              helperText="非法余额"         
              /> 
             }
+
+            <FormControl sx={{ m: 2, width: '30ch' }}>
+                <DialogContentText>
+                  修改该会员余额，当前余额为:{props.info.balance}                  
+                </DialogContentText>
+                <DialogContentText>
+                  仅接受非负值
+                </DialogContentText>
+                
+            </FormControl>
+
           </Box>
 
           <Box
@@ -341,14 +373,14 @@ export default function ModifyDialog(props: VipProps) {
           
 
           {
-              optimized_vip.credit>=0?
+              credit>=0?
             <TextField
              required
              fullWidth
               id="outlined-required"
               label="积分"
               type="number"
-             defaultValue={optimized_vip.credit.toString()}  
+             defaultValue={credit.toString()}  
              onChange={handleCreditInputChange}         
              /> 
              :
@@ -358,20 +390,42 @@ export default function ModifyDialog(props: VipProps) {
               id="outlined-required"
               label="积分"
               type="number"
-             defaultValue={optimized_vip.credit.toString()}  
+             defaultValue={credit.toString()}  
              onChange={handleCreditInputChange}
              error
              helperText="非法积分"         
              /> 
             }
+
+            <FormControl sx={{ m: 2, width: '30ch' }}>
+                <DialogContentText>
+                  修改该会员积分，当前积分为:{props.info.credit}
+                </DialogContentText>
+                <DialogContentText>
+                  仅接受非负值
+                </DialogContentText>
+            </FormControl>
           </Box>
 
+          {balance>=0 && credit>=0?
           <Button
           startIcon={<AddTwoToneIcon fontSize="small" />}
-          onClick={handleSubmitEdit}
+          onClick={()=>{
+            handleSubmitEdit();
+            window.location.reload();
+          }}
           >
           确认修改
-        </Button>     
+        </Button>
+        :
+        <Button
+          startIcon={<AddTwoToneIcon fontSize="small" />}
+          //onClick={handleSubmitEdit}
+          disabled          
+          >
+          请检查数据
+        </Button>
+        }     
       </BootstrapDialog>  
 
                   <Dialog
