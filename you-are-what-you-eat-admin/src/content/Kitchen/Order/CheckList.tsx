@@ -10,6 +10,8 @@ import {
     styled,
 } from '@mui/material';
 
+import { curOrderApi } from '@/queries/cur_order';
+import DishOrderTable from '@/content/Management/Transactions/DishOrderTable';
 
 const LinearProgressWrapper = styled(LinearProgress)(
     ({ theme }) => `
@@ -31,12 +33,8 @@ export default function CheckList(curOrder: CurOrder) {
 
 
 
-    const handleToggle = (item: Dish) => () => {
-        console.log(item.status);
-        item.status = "已完成";
-        console.log(item.status);
 
-    };
+
     const CountFinished = () => {
         var i = 0;
         curOrder.dish.map((item) => {
@@ -65,7 +63,27 @@ export default function CheckList(curOrder: CurOrder) {
                                 <Switch
 
                                     edge="end"
-                                    onChange={handleToggle(item)}
+                                    onChange={() => {
+                                        const conduct = async () => {
+                                            return curOrderApi.updateDishStatus(
+                                                {
+                                                    dish_id: parseInt(item.dish_order_id),
+                                                    dish_status: "已完成",
+                                                    order_id: curOrder.order_id
+                                                }
+                                            );
+                                        }
+
+                                        conduct().then((value) => {
+
+                                            alert("成功：" + value);
+
+                                        }).catch((value) => {
+
+                                            alert("失败：" + value);
+                                        });
+
+                                    }}
                                     checked={check(item)}
                                     inputProps={{
                                         'aria-labelledby': item.dish_name,

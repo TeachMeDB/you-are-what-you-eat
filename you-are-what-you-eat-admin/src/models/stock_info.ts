@@ -5,3 +5,8 @@ export interface StockInfo {
     record_id: string;
     surplus: number;
 }
+
+export interface SurplusUpload {
+    record_id: string;
+    surplus: number;
+}

@@ -17,7 +17,12 @@ class MealInfoApi {
             tags: tags
         }))).data as MealInfo[];
     }
-    public async postMeal(meal: MealInfo) {
+    public addMeal = async (meal: MealInfo) => {
+        return (await (PostApi("/Dishes/AddDish", meal))).statusText as string
+    }
+
+
+    public updateMeal = async (meal: MealInfo) => {
         return (await (PostApi("/Dishes/UpdateDish", meal))).statusText as string
     }
 }

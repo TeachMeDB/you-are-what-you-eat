@@ -1,10 +1,12 @@
 
 import {
     CurOrder,
-    Dish
+    Dish,
+    DishStatusUpload,
+    OrderStatusUpload
 } from '@/models/cur_order'
 
-import { GetApi } from "@/utils/requests"
+import { GetApi, PostApi } from "@/utils/requests"
 
 
 class CurOrderApi {
@@ -16,6 +18,18 @@ class CurOrderApi {
             order_status: order_status
         }))).data as CurOrder[];
     }
+    public updateDishStatus = async (dishStatusUpload: DishStatusUpload) => {
+        return (await (PostApi("/Dishes/UpdateOrderStatus", {
+            dishStatusUpload
+        }))).statusText as string
+    }
+    public updateOrderStatus = async (orderStatusUpload: OrderStatusUpload) => {
+        return (await (PostApi("/Dishes/UpdateOrderStatus", {
+            orderStatusUpload
+        }))).statusText as string
+    }
+
+
 }
 
 export const curOrderApi = new CurOrderApi();

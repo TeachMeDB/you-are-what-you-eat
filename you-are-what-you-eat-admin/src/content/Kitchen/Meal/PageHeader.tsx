@@ -40,10 +40,7 @@ function PageHeader() {
     const handleClose = () => {
         setOpen(false);
     };
-    const handleVerified = () => {
-        mealInfoApi.postMeal(m);
-        setOpen(false);
-    };
+
     const idInputChange = (e) => {
 
         m.id = e.target.value;
@@ -136,7 +133,21 @@ function PageHeader() {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>退出</Button>
-                        <Button onClick={handleVerified}>确定</Button>
+                        <Button onClick={() => {
+                            const conduct = async () => {
+                                return mealInfoApi.addMeal(m);
+                            }
+
+                            conduct().then((value) => {
+
+                                alert("成功：" + value);
+
+                            }).catch((value) => {
+
+                                alert("失败：" + value);
+                            });
+
+                        }}>确定</Button>
                     </DialogActions>
                 </Dialog>
             </Grid>

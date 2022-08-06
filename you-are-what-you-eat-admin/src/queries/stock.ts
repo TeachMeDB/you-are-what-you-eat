@@ -1,6 +1,7 @@
 
 import {
-    StockInfo
+    StockInfo,
+    SurplusUpload
 } from '@/models/stock_info'
 
 import { GetApi, PostApi } from "@/utils/requests"
@@ -26,10 +27,9 @@ class StockInfoApi {
         return r.statusText;
     }
 
-    public updateStock = async (record_id: number, surplus: number) => {
+    public updateStock = async (surplusUpload: SurplusUpload) => {
         return (await (PostApi("/IngredientRecords/UpdateIngredientRecord", {
-            record_id,
-            surplus
+            surplusUpload
         }))).statusText as string
     }
     public delStock = async (record_id: number) => {

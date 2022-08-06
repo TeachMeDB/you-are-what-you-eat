@@ -283,7 +283,7 @@ const StockInfoesTable = () => {
                                                     autoFocus
                                                     margin="dense"
                                                     id="id"
-                                                    label="剩余量"
+                                                    label="剩余"
                                                     fullWidth
                                                     variant="standard"
                                                 />
@@ -294,16 +294,16 @@ const StockInfoesTable = () => {
                                                 <Button onClick={() => {
                                                     const conduct = async () => {
                                                         return stockInfoApi.updateStock(
-                                                            parseInt(stockInfo.record_id),
-                                                            parseInt(s));
+                                                            {
+                                                                record_id: (stockInfo.record_id),
+                                                                surplus: parseInt(s)
+                                                            }
+                                                        );
                                                     }
 
                                                     conduct().then((value) => {
 
                                                         alert("成功：" + value);
-                                                        console.log("1111");
-                                                        window.location.reload();
-
 
                                                     }).catch((value) => {
 
