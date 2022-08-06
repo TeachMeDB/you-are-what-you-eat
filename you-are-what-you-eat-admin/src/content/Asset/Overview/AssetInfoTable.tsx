@@ -372,62 +372,61 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
                     <Dialog open={repairOpen} onClose={handleRepairClose}>
                       <DialogTitle>资产报修</DialogTitle>
                       <DialogContent>
-                        <TableContainer>
-                          <Table>
-                            <TableHead>
-                              <TableRow>
-                                <TableCell>序号</TableCell>
-                                <TableCell>维修点</TableCell>
-                                <TableCell>联系方式</TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              {
-                                repairs.map((val, i) =>
-                                  <TableRow
-                                    hover
-                                    key={val.name}
-                                  >
-                                    <TableCell>
-                                      <Typography
-                                        variant="body2"
-                                        fontWeight="bold"
-                                        color="text.primary"
-                                        gutterBottom
-                                        noWrap
-                                      >
-                                        {i+1}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography
-                                        variant="body2"
-                                        fontWeight="bold"
-                                        color="text.primary"
-                                        gutterBottom
-                                        noWrap
-                                      >
-                                        {val.name}
-                                      </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                      <Typography
-                                        variant="body2"
-                                        fontWeight="bold"
-                                        color="text.primary"
-                                        gutterBottom
-                                        noWrap
-                                      >
-                                        {val.phone}
-                                      </Typography>
-                                    </TableCell>
-                                  </TableRow>,
-                                )
-                              }
-                            </TableBody>
-                          </Table>
-                        </TableContainer>
-
+                        {/*<TableContainer>*/}
+                        {/*  <Table>*/}
+                        {/*    <TableHead>*/}
+                        {/*      <TableRow>*/}
+                        {/*        <TableCell>序号</TableCell>*/}
+                        {/*        <TableCell>维修点</TableCell>*/}
+                        {/*        <TableCell>联系方式</TableCell>*/}
+                        {/*      </TableRow>*/}
+                        {/*    </TableHead>*/}
+                        {/*    <TableBody>*/}
+                        {/*      {*/}
+                        {/*        repairs.map((val, i) =>*/}
+                        {/*          <TableRow*/}
+                        {/*            hover*/}
+                        {/*            key={val.name}*/}
+                        {/*          >*/}
+                        {/*            <TableCell>*/}
+                        {/*              <Typography*/}
+                        {/*                variant="body2"*/}
+                        {/*                fontWeight="bold"*/}
+                        {/*                color="text.primary"*/}
+                        {/*                gutterBottom*/}
+                        {/*                noWrap*/}
+                        {/*              >*/}
+                        {/*                {i + 1}*/}
+                        {/*              </Typography>*/}
+                        {/*            </TableCell>*/}
+                        {/*            <TableCell>*/}
+                        {/*              <Typography*/}
+                        {/*                variant="body2"*/}
+                        {/*                fontWeight="bold"*/}
+                        {/*                color="text.primary"*/}
+                        {/*                gutterBottom*/}
+                        {/*                noWrap*/}
+                        {/*              >*/}
+                        {/*                {val.name}*/}
+                        {/*              </Typography>*/}
+                        {/*            </TableCell>*/}
+                        {/*            <TableCell>*/}
+                        {/*              <Typography*/}
+                        {/*                variant="body2"*/}
+                        {/*                fontWeight="bold"*/}
+                        {/*                color="text.primary"*/}
+                        {/*                gutterBottom*/}
+                        {/*                noWrap*/}
+                        {/*              >*/}
+                        {/*                {val.phone}*/}
+                        {/*              </Typography>*/}
+                        {/*            </TableCell>*/}
+                        {/*          </TableRow>,*/}
+                        {/*        )*/}
+                        {/*      }*/}
+                        {/*    </TableBody>*/}
+                        {/*  </Table>*/}
+                        {/*</TableContainer>*/}
                         <div style={{ width: '500px', height: '400px' }}>
                           <Map
                             amapkey={'7f7527142abd6382ecc1950a2d568888'}
@@ -441,7 +440,8 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
                                 <Marker
                                   key={val.name}
                                   position={{ longitude: val.longitude, latitude: val.latitude }}
-                                  label={{ content: i + 1, offset: { x: 0, y: -25 } }}
+                                  label={{ content: i + 1, offset: { x: 2, y: -25 } }}
+                                  title={`${val.name}\n联系方式： ${val.phone}`}
                                 />,
                               )
                             }

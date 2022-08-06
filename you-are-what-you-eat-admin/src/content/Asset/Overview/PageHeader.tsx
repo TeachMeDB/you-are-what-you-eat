@@ -3,6 +3,7 @@ import { Button, Grid, InputLabel, MenuItem, Select, Tab, Tabs, Typography } fro
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import * as React from 'react';
 import { useState } from 'react';
+import { format } from 'date-fns';
 
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -13,6 +14,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { queryAssetApi } from '@/queries/query_asset';
 import { styled } from '@mui/material/styles';
 import { queryManageApi } from '@/queries/query_manage';
+import { DesktopDatePicker } from '@mui/lab';
+import { Box } from '@mui/system';
 
 const TabsWrapper = styled(Tabs)(
   () => `
@@ -36,13 +39,14 @@ function PageHeader({
   const [formValue, setFormValue] = useState(
     { assets_type: '', assets_status: '', employee_id: 0 });
   const [manageFormValue, setManageFormValue] = useState({
-    employee_id: 0,
-    assets_id: 0,
+    employee_id: '',
+    assets_id: '',
     manage_type: '',
-    manage_date: '',
+    manage_date: new Date(),
     manage_reason: '',
     manage_cost: '',
   });
+  console.log(employees, ' <-- manageFormValue');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -65,19 +69,25 @@ function PageHeader({
   };
   const handleSubmitManageForm = async () => {
     console.log(manageFormValue, ' <-- manageFormValue');
-    await queryManageApi.addManage(manageFormValue);
+    const { manage_date, ...params } = manageFormValue;
+    await queryManageApi.addManage({ ...params, manage_date: format(manage_date, 'yyyy-MM-dd') });
     const data = await queryManageApi.getManageList();
     setManageInfoes(data);
     setOpen(false);
   };
 
   const handleFormChange = (field, e) => {
-    setFormValue({ ...formValue, [field]: e.target.value });
+    console.log(e, ' <-- e');
+    setFormValue({ ...formValue, [field]: e });
   };
 
   const handleManageFormChange = (field, e) => {
     setManageFormValue({ ...manageFormValue, [field]: e.target.value });
   };
+
+  const handleDateChange = (e) => {
+    setManageFormValue({ ...manageFormValue, manage_date: e });
+  }
 
   const tabs = [
     { value: 1, label: '资产', description: '查看并编辑所有资产信息', addText: '新增资产' },
@@ -236,16 +246,17 @@ function PageHeader({
                   value={manageFormValue.manage_type}
                   onChange={(e) => handleManageFormChange('manage_type', e)}
                 />
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="manage_date"
-                  label="资产管理日期"
-                  fullWidth
-                  variant="standard"
-                  value={manageFormValue.manage_date}
-                  onChange={(e) => handleManageFormChange('manage_date', e)}
-                />
+
+                {/*<TextField*/}
+                {/*  autoFocus*/}
+                {/*  margin="dense"*/}
+                {/*  id="manage_date"*/}
+                {/*  label="资产管理日期"*/}
+                {/*  fullWidth*/}
+                {/*  variant="standard"*/}
+                {/*  value={manageFormValue.manage_date}*/}
+                {/*  onChange={(e) => handleManageFormChange('manage_date', e)}*/}
+                {/*/>*/}
                 <TextField
                   autoFocus
                   margin="dense"
@@ -266,6 +277,20 @@ function PageHeader({
                   value={manageFormValue.manage_cost}
                   onChange={(e) => handleManageFormChange('manage_cost', e)}
                 />
+                <Box
+                  sx={{
+                    marginTop: '16px',
+                  }}
+                >
+                  <DesktopDatePicker
+                    autoFocus
+                    label="资产管理日期"
+                    inputFormat="yyyy-MM-dd"
+                    value={manageFormValue.manage_date}
+                    onChange={(e) => handleDateChange( e)}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </Box>
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose}>退出</Button>

@@ -3,14 +3,9 @@ import React, { ChangeEvent, FC, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
-  Button,
   Card,
   CardHeader,
   Divider,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
   Table,
   TableBody,
   TableCell,
@@ -18,19 +13,9 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Tooltip,
   Typography,
-  useTheme,
 } from '@mui/material';
 import { ManageInfo } from '@/models/manage_info';
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-
-import DialogTitle from '@mui/material/DialogTitle';
-import { queryManageApi } from '@/queries/query_manage';
 import { EmployeeInfo } from '@/models/employee_info';
 import { AssetInfo } from '@/models/asset_info';
 
@@ -55,20 +40,20 @@ interface ManageInfoTableProps {
 // );
 
 const RecentManageTable: FC<ManageInfoTableProps> = (props) => {
-  const { manageInfoes = [], assets = [], employees = [], setManageInfoes } = props;
+  const { manageInfoes = [] /*assets = [], employees = [], setManageInfoes*/ } = props;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   // const [list, setList] = useState(manageInfoes);
   // const [keyword, setKeyword] = useState('');
-  const [open, setOpen] = React.useState(false);
-  const [formValue, setFormValue] = useState({
-    employee_id: 0,
-    assets_id: 0,
-    manage_type: '',
-    manage_date: '',
-    manage_reason: '',
-    manage_cost: '',
-  });
+  // const [open, setOpen] = React.useState(false);
+  // const [formValue, setFormValue] = useState({
+  //   employee_id: 0,
+  //   assets_id: 0,
+  //   manage_type: '',
+  //   manage_date: '',
+  //   manage_reason: '',
+  //   manage_cost: '',
+  // });
 
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage);
@@ -79,15 +64,15 @@ const RecentManageTable: FC<ManageInfoTableProps> = (props) => {
     setLimit(newLimit);
   };
 
-  const handleClickOpen = (manageInfo) => {
-    console.log(manageInfo, ' <-- manageInfo');
-    setFormValue(manageInfo);
-    setOpen(true);
-  };
+  // const handleClickOpen = (manageInfo) => {
+  //   console.log(manageInfo, ' <-- manageInfo');
+  //   setFormValue(manageInfo);
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
   // const handleSubmit = async () => {
   //   console.log(formValue, ' <-- formValue');
   //   await queryManageApi.updateManage(formValue);
@@ -105,19 +90,19 @@ const RecentManageTable: FC<ManageInfoTableProps> = (props) => {
   //   setFormValue({ ...formValue, [field]: e.target.value });
   // };
 
-  const handleSubmitForm = async () => {
-    console.log(formValue, ' <-- manageFormValue');
-    // @ts-ignore
-    const { employee_name, assets_type, ...params } = formValue;
-    await queryManageApi.addManage(params);
-    const data = await queryManageApi.getManageList();
-    setManageInfoes(data);
-    setOpen(false);
-  };
+  // const handleSubmitForm = async () => {
+  //   console.log(formValue, ' <-- manageFormValue');
+  //   // @ts-ignore
+  //   const { employee_name, assets_type, ...params } = formValue;
+  //   await queryManageApi.addManage(params);
+  //   const data = await queryManageApi.getManageList();
+  //   setManageInfoes(data);
+  //   setOpen(false);
+  // };
 
-  const handleFormChange = (field, e) => {
-    setFormValue({ ...formValue, [field]: e.target.value });
-  };
+  // const handleFormChange = (field, e) => {
+  //   setFormValue({ ...formValue, [field]: e.target.value });
+  // };
 
   // const handleDelete = async (id: string) => {
   //   await queryManageApi.deleteManage(id);
@@ -125,7 +110,7 @@ const RecentManageTable: FC<ManageInfoTableProps> = (props) => {
 
   const data = manageInfoes.slice(page * limit, page * limit + limit);
 
-  const theme = useTheme();
+  // const theme = useTheme();
   return (
     <Card>
       {(
@@ -171,7 +156,7 @@ const RecentManageTable: FC<ManageInfoTableProps> = (props) => {
               <TableCell>资产管理日期</TableCell>
               <TableCell>资产管理原因</TableCell>
               <TableCell>资产管理耗费金额</TableCell>
-              <TableCell>操作</TableCell>
+              {/*<TableCell>操作</TableCell>*/}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -249,113 +234,103 @@ const RecentManageTable: FC<ManageInfoTableProps> = (props) => {
                     </Typography>
                   </TableCell>
 
-                  <TableCell>
-                    <Tooltip title="编辑" arrow onClick={() => handleClickOpen(manageInfo)}>
-                      <IconButton
-                        sx={{
-                          '&:hover': {
-                            background: theme.colors.primary.lighter,
-                          },
-                          color: theme.palette.primary.main,
-                        }}
-                        color="inherit"
-                        size="small"
-                      >
-                        <EditTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    <Dialog open={open} onClose={handleClose}>
-                      <DialogTitle>资产信息</DialogTitle>
-                      <DialogContent>
-                        <InputLabel id="employee_id">资产管理员</InputLabel>
-                        <Select
-                          autoFocus
-                          labelId="employee_id"
-                          margin="dense"
-                          id="employee_id"
-                          label="资产管理员"
-                          placeholder="资产管理员"
-                          fullWidth
-                          variant="standard"
-                          value={formValue.employee_id}
-                          onChange={(e) => handleFormChange('employee_id', e)}
-                        >
-                          {
-                            employees.map((employee) =>
-                              <MenuItem
-                                key={employee.employee_id}
-                                value={employee.employee_id}
-                              >{employee.employee_name}</MenuItem>)
-                          }
-                        </Select>
-                        <InputLabel id="assets_id">资产类型</InputLabel>
-                        <Select
-                          autoFocus
-                          labelId="assets_id"
-                          margin="dense"
-                          id="assets_id"
-                          label="资产类型"
-                          placeholder="资产类型"
-                          fullWidth
-                          variant="standard"
-                          value={formValue.assets_id}
-                          onChange={(e) => handleFormChange('assets_id', e)}
-                        >
-                          {
-                            assets.map((item) =>
-                              <MenuItem
-                                key={item.assets_id}
-                                value={item.assets_id}
-                              >{item.assets_type}</MenuItem>)
-                          }
-                        </Select>
-                        <TextField
-                          autoFocus
-                          margin="dense"
-                          id="manage_type"
-                          label="资产管理类型"
-                          fullWidth
-                          variant="standard"
-                          value={formValue.manage_type}
-                          onChange={(e) => handleFormChange('manage_type', e)}
-                        />
-                        <TextField
-                          autoFocus
-                          margin="dense"
-                          id="manage_date"
-                          label="资产管理日期"
-                          fullWidth
-                          variant="standard"
-                          value={formValue.manage_date}
-                          onChange={(e) => handleFormChange('manage_date', e)}
-                        />
-                        <TextField
-                          autoFocus
-                          margin="dense"
-                          id="manage_reason"
-                          label="资产管理原因"
-                          fullWidth
-                          variant="standard"
-                          value={formValue.manage_reason}
-                          onChange={(e) => handleFormChange('manage_reason', e)}
-                        />
-                        <TextField
-                          autoFocus
-                          margin="dense"
-                          id="manage_cost"
-                          label="资产管理耗费金额"
-                          fullWidth
-                          variant="standard"
-                          value={formValue.manage_cost}
-                          onChange={(e) => handleFormChange('manage_cost', e)}
-                        />
-                      </DialogContent>
-                      <DialogActions>
-                        <Button onClick={handleClose}>退出</Button>
-                        <Button onClick={handleSubmitForm}>确定</Button>
-                      </DialogActions>
-                    </Dialog>
-                  </TableCell>
+                  {/*<TableCell>*/}
+                  {/*  <Tooltip title="编辑" arrow onClick={() => handleClickOpen(manageInfo)}>*/}
+                  {/*    <IconButton*/}
+                  {/*      sx={{*/}
+                  {/*        '&:hover': {*/}
+                  {/*          background: theme.colors.primary.lighter,*/}
+                  {/*        },*/}
+                  {/*        color: theme.palette.primary.main,*/}
+                  {/*      }}*/}
+                  {/*      color="inherit"*/}
+                  {/*      size="small"*/}
+                  {/*    >*/}
+                  {/*      <EditTwoToneIcon fontSize="small" />*/}
+                  {/*    </IconButton>*/}
+                  {/*  </Tooltip>*/}
+                  {/*  <Dialog open={open} onClose={handleClose}>*/}
+                  {/*    <DialogTitle>资产信息</DialogTitle>*/}
+                  {/*    <DialogContent>*/}
+                  {/*      <InputLabel id="employee_id">资产管理员</InputLabel>*/}
+                  {/*      <Select*/}
+                  {/*        autoFocus*/}
+                  {/*        labelId="employee_id"*/}
+                  {/*        margin="dense"*/}
+                  {/*        id="employee_id"*/}
+                  {/*        label="资产管理员"*/}
+                  {/*        placeholder="资产管理员"*/}
+                  {/*        fullWidth*/}
+                  {/*        variant="standard"*/}
+                  {/*        value={formValue.employee_id}*/}
+                  {/*        onChange={(e) => handleFormChange('employee_id', e)}*/}
+                  {/*      >*/}
+                  {/*        {*/}
+                  {/*          employees.map((employee) =>*/}
+                  {/*            <MenuItem*/}
+                  {/*              key={employee.employee_id}*/}
+                  {/*              value={employee.employee_id}*/}
+                  {/*            >{employee.employee_name}</MenuItem>)*/}
+                  {/*        }*/}
+                  {/*      </Select>*/}
+                  {/*      <InputLabel id="assets_id">资产类型</InputLabel>*/}
+                  {/*      <Select*/}
+                  {/*        autoFocus*/}
+                  {/*        labelId="assets_id"*/}
+                  {/*        margin="dense"*/}
+                  {/*        id="assets_id"*/}
+                  {/*        label="资产类型"*/}
+                  {/*        placeholder="资产类型"*/}
+                  {/*        fullWidth*/}
+                  {/*        variant="standard"*/}
+                  {/*        value={formValue.assets_id}*/}
+                  {/*        onChange={(e) => handleFormChange('assets_id', e)}*/}
+                  {/*      >*/}
+                  {/*        {*/}
+                  {/*          assets.map((item) =>*/}
+                  {/*            <MenuItem*/}
+                  {/*              key={item.assets_id}*/}
+                  {/*              value={item.assets_id}*/}
+                  {/*            >{item.assets_type}</MenuItem>)*/}
+                  {/*        }*/}
+                  {/*      </Select>*/}
+                  {/*      <TextField*/}
+                  {/*        autoFocus*/}
+                  {/*        margin="dense"*/}
+                  {/*        id="manage_type"*/}
+                  {/*        label="资产管理类型"*/}
+                  {/*        fullWidth*/}
+                  {/*        variant="standard"*/}
+                  {/*        value={formValue.manage_type}*/}
+                  {/*        onChange={(e) => handleFormChange('manage_type', e)}*/}
+                  {/*      />*/}
+                  {/*      <TextField*/}
+                  {/*        autoFocus*/}
+                  {/*        margin="dense"*/}
+                  {/*        id="manage_reason"*/}
+                  {/*        label="资产管理原因"*/}
+                  {/*        fullWidth*/}
+                  {/*        variant="standard"*/}
+                  {/*        value={formValue.manage_reason}*/}
+                  {/*        onChange={(e) => handleFormChange('manage_reason', e)}*/}
+                  {/*      />*/}
+                  {/*      <TextField*/}
+                  {/*        autoFocus*/}
+                  {/*        margin="dense"*/}
+                  {/*        id="manage_cost"*/}
+                  {/*        label="资产管理耗费金额"*/}
+                  {/*        fullWidth*/}
+                  {/*        variant="standard"*/}
+                  {/*        value={formValue.manage_cost}*/}
+                  {/*        onChange={(e) => handleFormChange('manage_cost', e)}*/}
+                  {/*      />*/}
+                  {/*    </DialogContent>*/}
+                  {/*    <DialogActions>*/}
+                  {/*      <Button onClick={handleClose}>退出</Button>*/}
+                  {/*      <Button onClick={handleSubmitForm}>确定</Button>*/}
+                  {/*    </DialogActions>*/}
+                  {/*  </Dialog>*/}
+                  {/*</TableCell>*/}
                 </TableRow>
               );
             })}
