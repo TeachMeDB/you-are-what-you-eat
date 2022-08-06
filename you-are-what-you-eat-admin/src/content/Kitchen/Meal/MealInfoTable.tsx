@@ -43,6 +43,13 @@ import { mealInfoApi } from '@/queries/meal';
 
 import { useRefMounted } from '@/hooks/useRefMounted';
 import stockInfo from 'pages/kitchen/stock';
+let m: MealInfo = {
+    id: '123',
+    dis_name: '123',
+    price: 123,
+    description: '123',
+    tags: [""]
+}
 
 const applyPagination = (
     mealInfoes: MealInfo[],
@@ -78,7 +85,23 @@ const ButtonSearch = styled(Button)(
 
 const MealInfoTable = () => {
 
+    const idInputChange = (e) => {
 
+        m.id = e.target.value;
+    }
+    const nameInputChange = (e) => {
+        m.dis_name = e.target.value;
+    }
+    const priceInputChange = (e) => {
+        m.price = Number(e.target.value);
+    }
+    const descriptionInputChange = (e) => {
+        m.description = e.target.value;
+    }
+    const tagsInputChange = (e) => {
+        m.tags = e.target.value.split(" ");
+        console.log(m.tags);
+    }
 
     const isMountedRef = useRefMounted();
     const [MealInfoes, setMealInfoes] = useState<MealInfo[]>([]);
@@ -278,7 +301,7 @@ const MealInfoTable = () => {
                                                         label="新的菜品编号"
                                                         fullWidth
                                                         variant="standard"
-
+                                                        onChange={idInputChange}
                                                     />
                                                     <TextField
                                                         autoFocus
@@ -287,6 +310,7 @@ const MealInfoTable = () => {
                                                         label="新的菜品名称"
                                                         fullWidth
                                                         variant="standard"
+                                                        onChange={nameInputChange}
                                                     />
                                                     <TextField
                                                         autoFocus
@@ -295,6 +319,7 @@ const MealInfoTable = () => {
                                                         label="新的菜品价格"
                                                         fullWidth
                                                         variant="standard"
+                                                        onChange={priceInputChange}
                                                     />
                                                     <TextField
                                                         autoFocus
@@ -303,11 +328,35 @@ const MealInfoTable = () => {
                                                         label="新的菜品描述"
                                                         fullWidth
                                                         variant="standard"
+                                                        onChange={descriptionInputChange}
+                                                    />
+                                                    <TextField
+                                                        autoFocus
+                                                        margin="dense"
+                                                        id="tags"
+                                                        label="新的菜品标签"
+                                                        fullWidth
+                                                        variant="standard"
+                                                        onChange={tagsInputChange}
                                                     />
                                                 </DialogContent>
                                                 <DialogActions>
                                                     <Button onClick={handleClose}>取消</Button>
-                                                    <Button onClick={handleClose}>确定</Button>
+                                                    <Button onClick={() => {
+                                                        const conduct = async () => {
+                                                            return mealInfoApi.updateMeal(m);
+                                                        }
+
+                                                        conduct().then((value) => {
+
+                                                            alert("成功：" + value);
+
+                                                        }).catch((value) => {
+
+                                                            alert("失败：" + value);
+                                                        });
+
+                                                    }}>确定</Button>
                                                 </DialogActions>
                                             </Dialog>
                                             <Tooltip title="删除" arrow>
@@ -318,6 +367,21 @@ const MealInfoTable = () => {
                                                     }}
                                                     color="inherit"
                                                     size="small"
+                                                    onClick={() => {
+                                                        const conduct = async () => {
+                                                            return mealInfoApi.delMeal(mealInfo.id);
+                                                        }
+
+                                                        conduct().then((value) => {
+
+                                                            alert("成功：" + value);
+
+                                                        }).catch((value) => {
+
+                                                            alert("失败：" + value);
+                                                        });
+
+                                                    }}
                                                 >
                                                     <DeleteTwoToneIcon fontSize="small" />
                                                 </IconButton>
