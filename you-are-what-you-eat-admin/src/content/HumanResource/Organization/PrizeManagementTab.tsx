@@ -50,6 +50,8 @@ import { awardApi } from '@/queries/award';
 
 function PrizeManagementTab() {
 
+  const theme=useTheme();
+
 
   const isMountedRef = useRefMounted();
   const [prizes, setPrizes] = useState<PrizeEntity[]>([]);
@@ -124,6 +126,7 @@ function PrizeManagementTab() {
                   <TableCell>等级</TableCell>
                   <TableCell>金额</TableCell>
                   <TableCell>人数</TableCell>
+                  <TableCell align="right">删除操作</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -132,6 +135,42 @@ function PrizeManagementTab() {
                     <TableCell>{award.level}</TableCell>
                     <TableCell>{award.amount}</TableCell>
                     <TableCell>{award.summary}</TableCell>
+                    <TableCell align="right">
+                      <Tooltip placement="top" title="Delete" arrow>
+                        <IconButton
+                          sx={{
+                            '&:hover': {
+                              background: theme.colors.error.lighter
+                            },
+                            color: theme.palette.error.main
+                          }}
+                          color="inherit"
+                          size="small"
+                          onClick={()=>{
+
+
+                              const conduct=async ()=>{
+
+                                return awardApi.deleteAward(award.level);
+
+                              }
+
+                            conduct().then((value)=>{
+
+                                alert("删除结果："+value+'\n');
+                                window.location.reload();
+
+                            }).catch((value)=>{
+
+                            alert("删除失败："+value);
+                            });
+
+                          }}
+                        >
+                          <DeleteTwoToneIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

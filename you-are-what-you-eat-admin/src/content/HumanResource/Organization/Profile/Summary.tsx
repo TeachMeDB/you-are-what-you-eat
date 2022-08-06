@@ -81,7 +81,10 @@ function Summary({user}:{user:EmployeeDetail}) {
                             >
                                 薪资金额
                             </Typography>
-                            <Typography variant="h2">{user.payrolls[0].amount}</Typography>
+                            <Typography variant="h2">
+                                {user.payrolls.length>0&&(user.payrolls[0].amount)}
+                                {user.payrolls.length<=0&&("未知")}
+                            </Typography>
                         </Box>
                         <Box>
                             <Typography
@@ -91,7 +94,10 @@ function Summary({user}:{user:EmployeeDetail}) {
                             >
                                 最近发薪日
                             </Typography>
-                            <Typography variant="h4">{user.payrolls[0].pay_datetime.split(' ')[0]}</Typography>
+                            <Typography variant="h4">
+                                {user.payrolls.length>0&&(user.payrolls[0].pay_datetime.split(' ')[0])}
+                                {user.payrolls.length<=0&&("未知")}
+                            </Typography>
                         </Box>
                     </Box>
                 </Box>

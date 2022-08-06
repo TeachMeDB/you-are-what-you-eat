@@ -1,18 +1,26 @@
 import { ReactNode, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Button, Grid, styled, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Slide, styled, Typography } from '@mui/material';
 import { Container } from '@mui/system';
 
 import {People, ScheduleEntity } from '@/models/schedule'
 import { compareAsc,getDay } from 'date-fns';
 
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { ScheduleTwoTone } from '@mui/icons-material';
+import { TransitionProps } from '@mui/material/transitions';
+import React from 'react';
+import { scheduleApi } from '@/queries/schedule';
+
 
 export const segs=['s','sf','st','sff','e','ef','et','eff','n','nf','nt','nff','l'];
 export const times=['06:00:00','07:30:00','09:00:00','10:30:00','12:00:00','13:30:00','15:00:00','16:30:00','18:00:00','19:30:00','21:00:00','22:30:00','23:59:59']
 export const days=['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
 export const colors=['red','blue','purple','yellow','green'];
 export const date_times=times.map((value:string)=>new Date("2001-01-01 "+value))
+
+
 
 
 const ScheduleForm = styled(Box)(
@@ -224,7 +232,7 @@ const ScheduleForm = styled(Box)(
 );
 
 
-function Schedule({ className,children,schedules }:{className?: string,children?: ReactNode,schedules:ScheduleEntity[]}){
+function ScheduleDelete({ className,children,schedules }:{className?: string,children?: ReactNode,schedules:ScheduleEntity[]}){
 
     const SegmentToTime=(segment:string)=>{
 
@@ -260,6 +268,47 @@ function Schedule({ className,children,schedules }:{className?: string,children?
         }
 
     }
+
+
+
+    const [open, setOpen] = useState(false);
+
+    const [openSchedule,setOpenSchedule]=useState<ScheduleEntity>(null);
+
+    const handleClickOpen = (schedule) => {
+        setOpenSchedule(schedule);
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+        setOpenSchedule(null);
+    };
+
+    const handleDelete = () => {
+        setOpen(false);
+
+
+        const conduct=async ()=>{
+
+            return scheduleApi.deleteSchedule(openSchedule.plan_id);
+
+          }
+
+        conduct().then((value)=>{
+
+
+            alert("删除结果："+value+'\n');
+            window.location.reload();
+
+        }).catch((value)=>{
+
+        alert("删除失败："+value);
+        });
+
+
+        
+    };
 
     const ToTimeToSegment=(time:string)=>{
 
@@ -303,9 +352,25 @@ function Schedule({ className,children,schedules }:{className?: string,children?
                     <Grid container direction="row">   
 
                         <Grid item xs={12}>
-                        <Typography variant='h4'>
-                            <PeopleOutlineIcon/>
-                        </Typography>
+                            <Grid container direction="row">
+                                <Grid item xs={3}>
+                                    <PeopleOutlineIcon/>
+                                </Grid>
+                                <Grid item xs={9}>
+                                    <Button onClick={()=>{
+                                            handleClickOpen(schedule);
+                                        }}>
+                                            <DeleteOutlineIcon/>
+                                            删除
+                                    </Button>
+
+                                    
+                                </Grid>
+                                
+
+                                
+
+                            </Grid>
                         </Grid>                 
                         {
                             schedule.peoples.map((people:People,idx:number)=>{
@@ -320,13 +385,54 @@ function Schedule({ className,children,schedules }:{className?: string,children?
                                 
                             })
                         }
+                        <Grid item xs={12}>
+                        </Grid>
+
+                        <Grid item xs={12} alignContent="end">
+                            
+                        </Grid>
                     </Grid>
                 </div>);
     };
 
 
+
+    const Transition = React.forwardRef(function Transition(
+        props: TransitionProps & {
+          children: React.ReactElement<any, any>;
+        },
+        ref: React.Ref<unknown>,
+      ) {
+        return <Slide direction="up" ref={ref} {...props} />;
+      });
+
+
     return (
         <ScheduleForm>
+            {
+                (openSchedule)&&(
+                    <Dialog
+                open={open}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleClose}
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogTitle>{"删除排班"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                        确认要删除 {openSchedule.occupation} 上从 {openSchedule.time_end} 到 {openSchedule.time_end} 位于 {openSchedule.place} 位置的排班吗？
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleClose}>关闭</Button>
+                <Button onClick={handleDelete}>删除</Button>
+                </DialogActions>
+            </Dialog>
+                )
+
+            }
+
             <div className="schedule">
                 <div className="schedule_header">
                     <span className="dl">时间</span>
@@ -441,8 +547,8 @@ function Schedule({ className,children,schedules }:{className?: string,children?
     );
 };
 
-Schedule.propTypes = {
+ScheduleDelete.propTypes = {
     children: PropTypes.node
 };
 
-export default Schedule;
+export default ScheduleDelete;

@@ -107,7 +107,7 @@ function SalaryManagementTab() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {levels.map((level: Level) => (
+                {levels.map((level: Salary) => (
                   <TableRow key={level.occupation} hover>
                     <TableCell>{level.occupation}</TableCell>
                     <TableCell>{level.count}</TableCell>

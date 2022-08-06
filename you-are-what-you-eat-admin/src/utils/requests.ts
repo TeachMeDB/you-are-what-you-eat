@@ -4,9 +4,6 @@ import {backendURL,access_token} from "./config"
 
 
 
-
-
-
 export const GetApi=async (url:string,params?:{})=>{
 
     return axios.get(url,{
