@@ -14,10 +14,11 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import {useTheme} from '@mui/material';
 
-import { CryptoVip,CryptoVipStatus } from '@/models/crypto_vip';
+import { CryptoAutoAssignTable,CryptoTable } from '@/models/crypto_table';
 import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import { queryTableApi } from '@/queries/query_table';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -36,10 +37,6 @@ export interface DialogTitleProps {
 
 export interface DialogIDProps{
     id: string;
-}
-
-export interface VipProps{
-  info:CryptoVip
 }
 
 const BootstrapDialogTitle = (props: DialogTitleProps) => {
@@ -92,10 +89,22 @@ export default function AssignSeat() {
     setInputNum(parseInt(value));
   };
 
-  const handleAssignConfirm = () =>
+  const handleAssignConfirm = async() =>
   {
 
-    //这里还没有改
+    console.log("assign confirm");
+
+      //数据检验
+      
+      try {
+        let res= await queryTableApi.getQueueTable(inputNum);
+        console.log(res);
+        setOpenSuccessDialog(true);
+      } 
+      catch (err) {
+        console.error(err);
+        setOpenErrorDialog(true);
+      }
 
   }
 

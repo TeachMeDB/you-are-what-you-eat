@@ -40,6 +40,7 @@ import {
 import { FC, ChangeEvent, useState } from 'react';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { queryVipApi } from '@/queries/query_vip';
+import { Refresh } from '@mui/icons-material';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -115,6 +116,8 @@ export default function ModifyDialog(props: VipProps) {
     setOpen(false);
     setOpenSuccessDialog(false);
     setOpenErrorDialog(false);
+
+    setValue_optimized_vip(props.info);
   };
 
   const theme = useTheme();
@@ -247,7 +250,7 @@ export default function ModifyDialog(props: VipProps) {
             <FormControl sx={{ m: 2, width: '30ch' }}>
             <InputLabel>性别</InputLabel>
             <Select
-              value={optimized_vip.gender}
+              defaultValue={optimized_vip.gender}
               onChange={handleSetGender}
               id="outlined-required"
               label="性别"
@@ -303,7 +306,7 @@ export default function ModifyDialog(props: VipProps) {
           
 
           {
-              optimized_vip.balance>0?
+              optimized_vip.balance>=0?
             <TextField
              required
              fullWidth
@@ -338,7 +341,7 @@ export default function ModifyDialog(props: VipProps) {
           
 
           {
-              optimized_vip.credit>0?
+              optimized_vip.credit>=0?
             <TextField
              required
              fullWidth

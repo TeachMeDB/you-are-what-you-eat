@@ -1,4 +1,4 @@
-import { CryptoTable,CryptoAllTable} from "@/models/crypto_table";
+import { CryptoTable,CryptoAllTable,CryptoAutoAssignTable} from "@/models/crypto_table";
 
 import {GetApi,PostApi} from "@/utils/requests"
 
@@ -79,6 +79,12 @@ class QueryTableApi {
     return r.statusText;
 }
 
+  public  getQueueTable=async(customer_number:number)=>{
+    return (await (GetApi("Table/GetSeat",
+    {
+      customer_number:customer_number
+    }))).data as CryptoAutoAssignTable
+  }
   
 }
 
