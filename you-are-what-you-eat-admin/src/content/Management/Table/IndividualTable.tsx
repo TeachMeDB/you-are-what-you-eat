@@ -38,6 +38,7 @@ import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { FC, ChangeEvent, useState } from 'react';
+import { queryTableApi } from '@/queries/query_table';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -125,17 +126,32 @@ export default function IndividualTable(props:IndiTableProps) {
     setInputNum(parseInt(value));
   };
 
-  const handleAssignConfirm = () =>
+  const handleAssignConfirm = async() =>
   {
-    let confirmData:CryptoTable=
-    {
-      table_id:props.table_id,
-      customer_number:inputNum,
-      table_capacity:props.table_capacity,
-      occupied:"是"
-    }
+    console.log("assign confirm");
 
-    fetch('http://106.14.212.200:8000/app/api/Table/PostTableStatus',{
+      let confirmData:CryptoTable=
+      {
+        table_id:props.table_id,
+        customer_number:inputNum,
+        table_capacity:props.table_capacity,
+        occupied:"是"
+      }
+
+      try {
+        let res= await queryTableApi.setTable(confirmData);
+        console.log(res);
+        setOpenSuccessDialog(true);
+      } 
+      catch (err) {
+        console.error(err);
+        setOpenErrorDialog(true);
+      }
+
+      
+    
+
+    /*fetch('http://106.14.212.200:8000/app/api/Table/PostTableStatus',{
       method:'post',
       body:JSON.stringify(confirmData),
       headers:
@@ -155,7 +171,7 @@ export default function IndividualTable(props:IndiTableProps) {
         //not ok
         setOpenErrorDialog(true);
       }
-    })
+    })*/
 
     
     //console.log(confirmData);
@@ -300,7 +316,7 @@ export default function IndividualTable(props:IndiTableProps) {
   );
 }
 
-    {/* 
+    /* 
   <div>
         <Button
           sx={{ mt: { xs: 2, md: 0 } }}
@@ -353,4 +369,4 @@ export default function IndividualTable(props:IndiTableProps) {
           确认注册
         </Button>     
       </BootstrapDialog>
-    </div>*/}
+    </div>*/

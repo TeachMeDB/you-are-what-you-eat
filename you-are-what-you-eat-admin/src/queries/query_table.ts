@@ -1,4 +1,6 @@
-import { CryptoAllTable} from "@/models/crypto_table";
+import { CryptoTable,CryptoAllTable} from "@/models/crypto_table";
+
+import {GetApi,PostApi} from "@/utils/requests"
 
 class QueryTableApi {
     public getTable: () => Promise<CryptoAllTable> = async () => {
@@ -67,6 +69,15 @@ class QueryTableApi {
 
       //  return Promise.resolve(data); 
     }
+
+    /*public setTable= async (table:CryptoTable)=>{
+      return (await (PostApi("Table/PostTableStatus",table))).statusText as string
+  }*/
+
+  public setTable: (table: CryptoTable) => Promise<string> = async (table) => {
+    const r = (await (PostApi("Table/PostTableStatus", table)));
+    return r.statusText;
+}
 
   
 }

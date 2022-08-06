@@ -160,10 +160,21 @@ export default function SignUpVip() {
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          会员注册
-        </BootstrapDialogTitle>
-        <Box
+        <DialogTitle
+          sx={{
+            p: 3
+          }}
+        >
+          <Typography variant="h4" gutterBottom>
+            {t('注册会员')}
+          </Typography>
+          <Typography variant="subtitle2">
+            {t('该自定义注册会员方式已过时，请使用首页Casdoor注册')}
+          </Typography>
+          <Divider/>
+          
+        </DialogTitle>
+        {/*<Box
             component="form"
             sx={{
             '& .MuiTextField-root': { m: 2, width: '30ch' },
@@ -214,12 +225,12 @@ export default function SignUpVip() {
                         />
                       )}
                     />
-          </Box>  
+          </Box>*/}  
           <Button
           startIcon={<AddTwoToneIcon fontSize="small" />}
-          onClick={handleSubmitSignUp}
+          onClick={handleClose}
           >
-          确认注册
+          好的
         </Button>     
       </BootstrapDialog>
     </div>

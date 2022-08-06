@@ -1,4 +1,6 @@
-import { CryptoAllVip } from "@/models/crypto_vip";
+import { CryptoVip,CryptoAllVip } from "@/models/crypto_vip";
+
+import {GetApi,PostApi} from "@/utils/requests"
 
 class QueryVipApi {
     public getVip: () => Promise<CryptoAllVip> = async () => {
@@ -268,6 +270,11 @@ class QueryVipApi {
 
       //  return Promise.resolve(data); 
     }
+
+    public editVip: (vip: CryptoVip) => Promise<string> = async (vip) => {
+      const r = (await (PostApi("VIP/PostUpdateVIP", vip)));
+      return r.statusText;
+  }
 
 }
 
