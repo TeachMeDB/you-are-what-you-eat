@@ -220,3 +220,16 @@ export const defaultUser:EmployeeDetail={
     "avatar": "http://dummyimage.com/100x100",
     "cover": "ullamco Ut"
   } as EmployeeDetail;
+
+
+
+export const defaultUploadEmployee={
+    "id":"1090",
+    "gender": "女",
+    "occupation": "voluptate est veniam dolore",
+    "birthday": "1996-10-18",
+    "avater": "ullamco cillum ad id velit",
+    "cover": "ut",
+    "name": "革支性响军果",
+    "token": "incididunt amet"
+} as EmployeeUpload;

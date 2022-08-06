@@ -59,6 +59,7 @@
     "nprogress": "0.2.0",
     "numeral": "2.0.6",
     "react": "17.0.2",
+    "react-amap": "^1.2.8",
     "react-apexcharts": "1.4.0",
     "react-beautiful-dnd": "13.1.0",
     "react-circular-progressbar": "2.0.4",

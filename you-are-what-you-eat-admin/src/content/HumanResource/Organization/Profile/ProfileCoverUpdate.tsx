@@ -16,10 +16,11 @@ import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import { useRefMounted } from '@/hooks/useRefMounted';
 import { useCallback, useEffect, useState } from 'react';
 import { humanResourceApi } from '@/queries/employee';
-import { EmployeeDetail } from '@/models/employee';
+import { EmployeeDetail, EmployeeUpload } from '@/models/employee';
 
 
 import { differenceInYears, format, formatDistance, formatRelative, subDays } from 'date-fns'
+import { GenerateBase64 } from '@/utils/image';
 
 const Input = styled('input')({
   display: 'none'
@@ -87,6 +88,9 @@ const CardCoverAction = styled(Box)(
 
 const ProfileCoverUpdate = ({user}:{user:EmployeeDetail}) => {
 
+
+  const [upload,setUpload]=useState({...user,avater:user.avatar} as EmployeeUpload)
+
   return (
     <>
       <Box display="flex" mb={3}>
@@ -105,9 +109,31 @@ const ProfileCoverUpdate = ({user}:{user:EmployeeDetail}) => {
         </Box>
       </Box>
       <CardCover>
-        <CardMedia image={user.cover} />
+        <CardMedia image={upload.cover} />
         <CardCoverAction>
-          <Input accept="image/*" id="change-cover" multiple type="file" />
+          <Input accept="image/*" id="change-cover"
+          multiple 
+          type="file" 
+          onChange={(event)=>{
+
+            if(event.target.files.length>0){
+              let file=event.target.files[0];
+
+              GenerateBase64(file,(url:string)=>{
+
+                
+
+                let newUpload=upload;
+                newUpload.cover=url;
+
+                setUpload(newUpload);
+
+
+              });
+
+            }
+
+          }}/>
           <label htmlFor="change-cover">
             <Button
               startIcon={<UploadTwoToneIcon />}
@@ -120,13 +146,33 @@ const ProfileCoverUpdate = ({user}:{user:EmployeeDetail}) => {
         </CardCoverAction>
       </CardCover>
       <AvatarWrapper>
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        <Avatar variant="rounded" alt={upload.name} src={upload.avater} />
         <ButtonUploadWrapper>
           <Input
             accept="image/*"
             id="icon-button-file"
             name="icon-button-file"
             type="file"
+            onChange={(event)=>{
+
+              
+            if(event.target.files.length>0){
+              let file=event.target.files[0];
+
+              GenerateBase64(file,(url:string)=>{
+
+
+                let newUpload=upload;
+                newUpload.avater=url;
+
+                setUpload(newUpload);
+
+              });
+
+            }
+  
+  
+            }}
           />
           <label htmlFor="icon-button-file">
             <IconButton component="span" color="primary">
