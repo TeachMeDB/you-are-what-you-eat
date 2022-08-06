@@ -25,6 +25,10 @@ class MealInfoApi {
     public updateMeal = async (meal: MealInfo) => {
         return (await (PostApi("/Dishes/UpdateDish", meal))).statusText as string
     }
+
+    public delMeal = async (id: string) => {
+        return (await (PostApi("/Dishes", id))).statusText as string
+    }
 }
 
 export const mealInfoApi = new MealInfoApi();

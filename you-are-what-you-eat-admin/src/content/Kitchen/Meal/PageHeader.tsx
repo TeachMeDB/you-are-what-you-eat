@@ -140,11 +140,11 @@ function PageHeader() {
 
                             conduct().then((value) => {
 
-                                alert("成功：" + value);
+                                alert("增加成功：" + value);
 
                             }).catch((value) => {
 
-                                alert("失败：" + value);
+                                alert("增加失败：" + value);
                             });
 
                         }}>确定</Button>
