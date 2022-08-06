@@ -11,7 +11,8 @@ import {
   lighten,
   styled,
   TablePagination,
-  useTheme
+  useTheme,
+  Stack
 } from '@mui/material';
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
@@ -96,7 +97,27 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
         <Divider />
         <Box p={2}>
           <Grid container spacing={0}>
-            {availables.map((stuff: Avaliable) =>{
+
+            {(occupation===""||place===""||startTime===""||endTime===""||availables.length===0)&&
+              (
+              
+                <Grid container direction="row" spacing={0}>
+                  <Grid xs={12} item>
+                    <Typography variant='h2'>请筛选职位和地点</Typography>
+                  </Grid>
+                  
+                   <Grid xs={12} item>
+                   
+                   </Grid>
+                   <Grid xs={12} item>
+                   <img alt="404" height={520} src="/static/images/status/maintenance.svg"/>
+                   </Grid>
+                 
+              
+                </Grid>)
+            }
+          
+            {(occupation!=""&&place!=""&&startTime!=""&&endTime!=""&&availables.length>0)&&(availables.map((stuff: Avaliable) =>{
               return (
               <Grid key={stuff.id} item xs={12} sm={6} lg={4}>
                 <Box p={1.5} display="flex" alignItems="flex-start">
@@ -188,10 +209,10 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
                 <Box p={2}></Box>
 
               </Grid>
-            );})}
+            );}))}
           </Grid>
 
-          <Box p={2}>
+          {(occupation!=""&&place!=""&&availables.length>0)&&(<Box p={2}>
             <TablePagination
               component="div"
               count={100}
@@ -200,7 +221,7 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
               rowsPerPage={rowsPerPage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
-          </Box>
+          </Box>)}
 
 
         </Box>

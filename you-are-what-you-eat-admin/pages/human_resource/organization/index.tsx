@@ -99,7 +99,7 @@ function Organization( {user,employees} :{ user:EmployeeDetail,employees:Employe
             </TabsWrapper>
           </Grid>
           <Grid item xs={12}>
-            {currentTab === 'SelfManagementTab' && <SelfManagementTab  user={user} employees={employees}/>}
+            {currentTab === 'SelfManagementTab' && <SelfManagementTab  user={user}/>}
             {user.occupation==='经理'&&currentTab === 'SalaryManagementTab' && <SalaryManagementTab/>}
             {user.occupation==='经理'&&currentTab === 'PrizeManagementTab' && <PrizeManagementTab/>}
             {user.occupation==='经理'&&currentTab === 'EmployeeManagementTab' && <EmployeeManagementTab/>}

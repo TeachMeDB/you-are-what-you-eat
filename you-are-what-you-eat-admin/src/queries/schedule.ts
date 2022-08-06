@@ -8,7 +8,7 @@ import {
     
 } from '@/models/schedule'
 
-import {GetApi,PostApi} from "@/utils/requests"
+import {DeleteApi, GetApi,PostApi} from "@/utils/requests"
 
 
 class ScheduleApi {
@@ -44,6 +44,14 @@ class ScheduleApi {
 
     public postSchedule=async (schedule:ScheduleUpload)=>{
         return (await (PostApi("Schedule/PostScheduleInfo",schedule))).statusText as string
+    }
+
+
+    public deleteSchedule=async (id:string)=>{
+
+        return (await DeleteApi("Schedule/DeleteScheduleInfo",{
+            id:id
+        })).statusText as string
     }
 
 
