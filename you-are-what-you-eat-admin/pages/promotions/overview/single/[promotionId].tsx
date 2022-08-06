@@ -23,17 +23,9 @@ function SinglePromotionView() {
   const router = useRouter();
 
   const { promotionId } = router.query;
-  // console.log(promotionId);
+  console.log('promotionid:' ,promotionId);
 
-  const [promotion, setPrmotion] = useState<Promotion | null>({
-    id: '1',
-    name: '',
-    start: new Date(),
-    end:   new Date(),
-    description: '',
-    dishes:  [],
-    status: 'running'
-});
+  const [promotion, setPrmotion] = useState<Promotion | null>(null);
 
   const getPromotion = useCallback(async () => {
     try {

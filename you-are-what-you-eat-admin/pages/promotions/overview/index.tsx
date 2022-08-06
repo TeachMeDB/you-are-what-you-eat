@@ -17,6 +17,7 @@ import Results from 'src/content/Promotions/Overview/Results';
 function PromotionCard() {
   const isMountedRef = useRefMounted();
   const [promotions, setPromotions] = useState<Promotion[]>([]);
+  const [refresh, setRefresh] = useState<boolean>(false);
 
   const getPromotions = useCallback(async () => {
     try {
@@ -32,7 +33,7 @@ function PromotionCard() {
 
   useEffect(() => {
     getPromotions();
-  }, [getPromotions]);
+  }, [getPromotions, refresh]);
 
   var runningNumber = 0;
   var completedNumber = 0;
@@ -53,7 +54,7 @@ function PromotionCard() {
         <title>促销活动管理</title>
       </Head>
       <PageTitleWrapper>
-        <PageHeader />
+        {PageHeader(refresh, setRefresh)}
       </PageTitleWrapper>
 
       <Grid

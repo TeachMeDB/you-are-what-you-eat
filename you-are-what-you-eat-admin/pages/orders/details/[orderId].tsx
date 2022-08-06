@@ -11,18 +11,21 @@ import { Grid } from '@mui/material';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import type { OrderDetail } from '@/models/order';
 
-import InvoiceBody from '@/content/Orders/Details/OrderDetailBody';
+import OrderDetailBody from '@/content/Orders/Details/OrderDetailBody';
 import PageHeader from 'src/content/Orders/Details/PageHeader';
 
 import { ordersApi } from 'src/queries/orders';
 
-function ManagementInvoicesView() {
+function OrderDetailView({ orderId }: { orderId }) {
   const isMountedRef = useRefMounted();
+
+  console.log('order id: ', orderId.orderId);
+  
   const [orderDetail, setOrderDetail] = useState<OrderDetail | null>(null);
 
   const getOrderDetail = useCallback(async () => {
     try {
-      const response = await ordersApi.getOrderDetail("");
+      const response = await ordersApi.getOrderDetail(orderId.orderId as string);
 
       if (isMountedRef()) {
         setOrderDetail(response);
@@ -58,7 +61,7 @@ function ManagementInvoicesView() {
         spacing={3}
       >
         <Grid item xs={12}>
-          <InvoiceBody detail={orderDetail} />
+          <OrderDetailBody detail={orderDetail} />
         </Grid>
       </Grid>
       <Footer />
@@ -66,8 +69,14 @@ function ManagementInvoicesView() {
   );
 }
 
-ManagementInvoicesView.getLayout = (page) => (
+OrderDetailView.getLayout = (page) => (
     <SidebarLayout>{page}</SidebarLayout>
 );
 
-export default ManagementInvoicesView;
+export async function getServerSideProps(context) {
+  const orderId = context.query;
+
+  return { props: { orderId } }
+}
+
+export default OrderDetailView;

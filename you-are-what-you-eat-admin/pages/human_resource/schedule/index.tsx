@@ -24,7 +24,8 @@ import PositionSchedule from '@/content/HumanResource/Schedule/PositionSchedule'
 import ScheduleOperation from '@/content/HumanResource/Schedule/ScheduleOperation';
 import AvailableEmployee from '@/content/HumanResource/Schedule/AvailableEmployee';
 import { scheduleApi } from '@/queries/schedule';
-import { WorkPlan } from '@/models/work_plan';
+import { Avaliable, ScheduleEntity } from '@/models/schedule';
+import { format } from 'date-fns';
 
 const RootWrapper = styled(Box)(
   ({ theme }) => `
@@ -60,11 +61,11 @@ const IconButtonToggle = styled(IconButton)(
 
 const DrawerWrapperMobile = styled(Drawer)(
   () => `
-    width: 340px;
+    width: 400px;
     flex-shrink: 0;
 
   & > .MuiPaper-root {
-        width: 340px;
+        width: 400px;
         z-index: 3;
   }
 `
@@ -72,9 +73,19 @@ const DrawerWrapperMobile = styled(Drawer)(
 
 
 
-function ScheduleManagement({workplan}:{workplan:WorkPlan[]}) {
+function ScheduleManagement() {
 
-  console.log(workplan);
+  const [selectedStartTime,setSelectedStartTime]=useState("2001-01-01 00:00:00");
+  const [selectedEndTime,setSelectedEndTime]=useState("2080-01-01 00:00:00");
+
+
+  const [selectedPlace,setSelectedPlace]=useState("");
+
+  const [selectedOccupation,setSelectedOccupation]=useState("");
+
+  const [selectedWeek,setSelectedWeek]=useState(new Date(Date.now()))
+
+  const [selectedPeople,setSelectedPeople]=useState<Avaliable[]>([]);
 
 
   const theme = useTheme();
@@ -83,6 +94,17 @@ function ScheduleManagement({workplan}:{workplan:WorkPlan[]}) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const schedule=(
+    <ScheduleOperation
+            handleSelectStartTime={(x)=>{setSelectedStartTime(x)} }
+            handleSelectEndTime={(x)=>{setSelectedEndTime(x)} }
+            handleSelectWeek={(x)=>{setSelectedWeek(x)} }
+            handleSelectOccupation={(x)=>{setSelectedOccupation(x);console.log("changing occupaiton:",x)} }
+            handleSelectPlace={(x)=>{setSelectedPlace(x);console.log("changing place:",x)} }
+            week={selectedWeek}
+            people={selectedPeople}/>
+  );
 
 
   return (
@@ -113,7 +135,7 @@ function ScheduleManagement({workplan}:{workplan:WorkPlan[]}) {
           onClose={handleDrawerToggle}
         >
           <Scrollbar>
-            <ScheduleOperation />
+            {schedule}
           </Scrollbar>
         </DrawerWrapperMobile>
 
@@ -124,14 +146,17 @@ function ScheduleManagement({workplan}:{workplan:WorkPlan[]}) {
           }}
         >
 
-          <ScheduleOperation />
-
+          {schedule}
+            
         </Sidebar>
 
         <Grid
+          container
           direction="column"
-          justifyContent="center"
-          spacing={3}>
+          alignItems="stretch"
+          spacing={1}
+          padding={1.5}
+          >
 
 
           <TopBar
@@ -154,9 +179,25 @@ function ScheduleManagement({workplan}:{workplan:WorkPlan[]}) {
             </IconButtonToggle>
           </TopBar>
 
-          <PositionSchedule />
+          <PositionSchedule 
+            key={selectedPlace+selectedOccupation+selectedWeek.toISOString()}
+            place={selectedPlace}
+            occupation={selectedOccupation} 
+            week={selectedWeek}
+            />
+
+
           <Divider />
-          <AvailableEmployee />
+
+
+          <AvailableEmployee 
+            key={selectedPlace+selectedOccupation+selectedStartTime+selectedEndTime}
+            startTime={selectedStartTime} 
+            endTime={selectedEndTime} 
+            place={selectedPlace} 
+            occupation={selectedOccupation} 
+            handleSelectPeople={(x)=>{setSelectedPeople(x)}}
+            />
 
         </Grid>
 
@@ -171,13 +212,3 @@ ScheduleManagement.getLayout = (page) => (
 );
 
 export default ScheduleManagement;
-
-
-
-export async function getServerSideProps() {
-
-  const workplan= await scheduleApi.getSchedule();
-
-
-  return { props: { workplan } }
-}

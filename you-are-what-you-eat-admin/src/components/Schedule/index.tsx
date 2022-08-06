@@ -1,14 +1,21 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Box, styled } from '@mui/material';
+import { Box, styled, Typography } from '@mui/material';
 import { Container } from '@mui/system';
+import { FilteringStyledOptions } from '@mui/styled-engine';
+
+import {People, ScheduleEntity } from '@/models/schedule'
+import { compareAsc,getDay } from 'date-fns';
+import { ScheduleSend } from '@mui/icons-material';
 
 
-interface ScheduleProps {
-    className?: string;
-    children?: ReactNode;
-    
-}
+
+
+export const segs=['s','sf','st','sff','e','ef','et','eff','n','nf','nt','nff','l'];
+export const times=['06:00:00','07:30:00','09:00:00','10:30:00','12:00:00','13:30:00','15:00:00','16:30:00','18:00:00','19:30:00','21:00:00','22:30:00','23:59:59']
+export const days=['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+export const colors=['red','blue','purple','yellow','green'];
+export const date_times=times.map((value:string)=>new Date("2001-01-01 "+value))
 
 
 const ScheduleForm = styled(Box)(
@@ -45,7 +52,8 @@ const ScheduleForm = styled(Box)(
         [n] 40px
         [nf] 40px
         [nt] 40px
-        [nff] 40px;    
+        [nff] 40px;
+        [l] 0px;
     }
 
     .schedule_header{
@@ -137,6 +145,8 @@ const ScheduleForm = styled(Box)(
     .time-from-nt { grid-row-start: nt; }
     .time-from-nff { grid-row-start: nff; }
 
+    .time-from-l { grid-row-start: l; }
+
 
     /*  End */
     .time-to-s { grid-row-end: s; }
@@ -153,6 +163,8 @@ const ScheduleForm = styled(Box)(
     .time-to-nf { grid-row-end: nf; }
     .time-to-nt { grid-row-end: nt; }
     .time-to-nff { grid-row-end: nff; }
+
+    .time-to-l { grid-row-end: l; }
 
     .ds{
     display: none;
@@ -182,6 +194,7 @@ const ScheduleForm = styled(Box)(
             [nf] 40px 59px
             [nt] 40px 59px
             [nff] 40px 59px;
+            [l] 0px 59px;
 
         }
     
@@ -213,36 +226,120 @@ const ScheduleForm = styled(Box)(
 `
 );
 
-const Schedule: FC<ScheduleProps> = ({ children }) => {
+
+function Schedule({ className,children,schedules }:{className?: string,children?: ReactNode,schedules:ScheduleEntity[]}){
+
+    const SegmentToTime=(segment:string)=>{
+
+        for(let i=0;i<segs.length;i++){
+            if(segment===segs[i]){
+                return times[i];
+            }
+        }
+    }
+
+
+    const FromTimeToSegment=(time:string)=>{
+
+        let date_input:string[]=time.split(' ');
+        if(date_input.length==2){
+            time=date_input[1];
+        }
+
+        const this_time=new Date("2001-01-01 "+time)
+
+        if(compareAsc(this_time,date_times[0])<0){
+            return segs[0];
+        }
+
+        for(let i=0;i<segs.length-1;i++){
+            if(compareAsc(date_times[i],this_time)<=0 && compareAsc(this_time,date_times[i+1])<0){
+                return segs[i];
+            }
+        }
+
+        if(compareAsc(date_times[segs.length-1],this_time)<=0){
+            return segs[segs.length-1];
+        }
+
+    }
+
+    const ToTimeToSegment=(time:string)=>{
+
+        let date_input:string[]=time.split(' ');
+        if(date_input.length==2){
+            time=date_input[1];
+        }
+
+        const this_time=new Date("2001-01-01 "+time)
+
+        if(compareAsc(this_time,date_times[0])<0){
+            return segs[0];
+        }
+
+        for(let i=0;i<segs.length-2;i++){
+            if(compareAsc(date_times[i],this_time)<0 && compareAsc(this_time,date_times[i+1])<=0){
+                return segs[i+1];
+            }
+        }
+
+        if(compareAsc(date_times[segs.length-1],this_time)<=0){
+            return segs[segs.length-1];
+        }
+
+    }
+
+    const callback=(schedule:ScheduleEntity,index:number)=>{
+
+        let day:number=getDay(new Date(schedule.time_end));
+
+        return (<div key={schedule.plan_id} id={schedule.plan_id}
+            className={
+                "schedule-item schedule-"+days[day]+" "+
+                "time-from-"+FromTimeToSegment(schedule.time_start)+" "+
+                "time-to-"+ToTimeToSegment(schedule.time_end)+" "+ 
+                "bg-"+colors[index%5]}>
+                    {
+                        schedule.peoples.map((people:People,idx:number)=>{
+
+                            return (
+                                people.name+'\n'
+                            )
+                        })
+                    }
+                </div>);
+    };
+
+
     return (
         <ScheduleForm>
             <div className="schedule">
                 <div className="schedule_header">
-                    <span className="dl">Time</span>
-                    <span className="ds">Ti</span></div>
+                    <span className="dl">时间</span>
+                    <span className="ds">班</span></div>
                 {/* <!-- week--> */}
                 <div className="schedule_header schedule-sunday">
-                    <span className="dl">Sunday</span>
-                    <span className="ds">Su</span>
+                    <span className="dl">星期日</span>
+                    <span className="ds">日</span>
                 </div>
                 <div className="schedule_header schedule-monday">
-                    <span className="dl">Monday</span>
-                    <span className="ds">M</span></div>
+                    <span className="dl">星期一</span>
+                    <span className="ds">一</span></div>
                 <div className="schedule_header schedule-tuesday">
-                    <span className="dl">Tuesday</span>
-                    <span className="ds">T</span></div>
+                    <span className="dl">星期二</span>
+                    <span className="ds">二</span></div>
                 <div className="schedule_header schedule-wednesday">
-                    <span className="dl">Wednesday</span>
-                    <span className="ds">W</span></div>
+                    <span className="dl">星期三</span>
+                    <span className="ds">三</span></div>
                 <div className="schedule_header schedule-thursday">
-                    <span className="dl">Thursday</span>
-                    <span className="ds">Th</span></div>
+                    <span className="dl">星期四</span>
+                    <span className="ds">四</span></div>
                 <div className="schedule_header schedule-friday">
-                    <span className="dl">Friday</span>
-                    <span className="ds">F</span></div>
+                    <span className="dl">星期五</span>
+                    <span className="ds">五</span></div>
                 <div className="schedule_header schedule-saturday">
-                    <span className="dl">Saturday</span>
-                    <span className="ds">Sa</span></div>
+                    <span className="dl">星期六</span>
+                    <span className="ds">六</span></div>
 
                 {/* <!-- Time--> */}
                 <div className="schedule_time time-from-s">06:00-07:30</div>
@@ -258,7 +355,8 @@ const Schedule: FC<ScheduleProps> = ({ children }) => {
                 <div className="schedule_time time-from-n">18:00-19:30</div>
                 <div className="schedule_time time-from-nf">19:30-21:00</div>
                 <div className="schedule_time time-from-nt">21:00-22:30</div>
-                <div className="schedule_time time-from-nff">22:30-24:00</div>
+                <div className="schedule_time time-from-nff">22:30-23:59</div>
+
 
                 {/* <!--  Grid Rows--> */}
                 <div className="grid time-from-s time-to-sf schedule-row-from-sunday schedule-row-to-saturday"></div>
@@ -300,7 +398,11 @@ const Schedule: FC<ScheduleProps> = ({ children }) => {
 
                 {/* <!-- Schedule Items -->  */}
 
-                <div className="schedule-item schedule-sunday time-from-sf time-to-sff bg-red">Event for sunday</div>
+                {
+                    schedules.map(callback)
+                }
+
+                {/* <div className="schedule-item schedule-sunday time-from-sf time-to-sff bg-red">Event for sunday</div>
 
                 <div className="schedule-item schedule-sunday time-from-st time-to-eff bg-blue">Event for sunday2</div>
                 <div className="schedule-item schedule-sunday time-from-nt time-to-nff bg-yellow">Event x S</div>
@@ -316,7 +418,7 @@ const Schedule: FC<ScheduleProps> = ({ children }) => {
                 
                 <div className="schedule-item schedule-friday time-from-e time-to-eff bg-purple">Event for friday</div>
                 
-                <div className="schedule-item schedule-saturday time-from-n time-to-nff bg-red">Event for saturday</div>
+                <div className="schedule-item schedule-saturday time-from-n time-to-l bg-red">Event for saturday</div> */}
 
                 <Container maxWidth="lg">{children}</Container>
             </div>

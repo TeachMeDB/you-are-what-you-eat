@@ -132,7 +132,7 @@ function Stuff({employees}:{user:EmployeeDetail,employees:EmployeeEntity[]}) {
             </Box>
             <Box p={2}>
           <TablePagination
-            component="p"
+            component="div"
             count={100}
             page={page}
             onPageChange={handleChangePage}

@@ -264,7 +264,6 @@ const RecentOrdersTable: FC<MealInfoTableProps> = ({ mealInfoes }) => {
             </TableContainer>
             <Box p={2}>
                 <TablePagination
-
                     component="div"
                     count={mealInfoes.length}
                     onPageChange={handlePageChange}

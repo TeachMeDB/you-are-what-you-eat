@@ -265,7 +265,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                       {format(order.creation_time, 'MMM dd yyyy')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" noWrap>
-                      {format(order.creation_time, 'hh:mm:ss')}
+                      {format(order.creation_time, 'HH:mm:ss')}
                     </Typography>
                   </TableCell>
                   
@@ -312,7 +312,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ orders }) => {
                         }}
                         color="inherit"
                         size="small"
-                        href={`details/${order.id}`}
+                        href={`/orders/details/${order.id}`}
                       >
                         <LaunchIcon fontSize="small" />
                       </IconButton>

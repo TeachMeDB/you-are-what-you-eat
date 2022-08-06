@@ -35,7 +35,7 @@ interface OrderDetailBody {
   detail: OrderDetail;
 }
 
-const InvoiceBody: FC<OrderDetailBody> = ({ detail }) => {
+const OrderDetailBody: FC<OrderDetailBody> = ({ detail }) => {
   const { t }: { t: any } = useTranslation();
 
   return (
@@ -238,9 +238,9 @@ const InvoiceBody: FC<OrderDetailBody> = ({ detail }) => {
   );
 };
 
-InvoiceBody.propTypes = {
+OrderDetailBody.propTypes = {
   // @ts-ignore
   invoice: PropTypes.object.isRequired
 };
 
-export default InvoiceBody;
+export default OrderDetailBody;

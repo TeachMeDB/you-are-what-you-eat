@@ -4,7 +4,7 @@
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -25,9 +25,10 @@ import {
   Divider,
   CardHeader,
   MenuItem,
+  Alert,
 
 } from '@mui/material';
-import { formatDistance, subMinutes, subHours } from 'date-fns';
+import { formatDistance, subMinutes, subHours, addDays, format } from 'date-fns';
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import AlarmTwoToneIcon from '@mui/icons-material/AlarmTwoTone';
@@ -49,6 +50,13 @@ import startOfWeek from 'date-fns/startOfWeek';
 
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import InsertInvitationIcon from '@mui/icons-material/InsertInvitation';
+import { useRefMounted } from '@/hooks/useRefMounted';
+import { PayrollEntity, Salary } from '@/models/employee';
+import { salaryApi } from '@/queries/salary';
+import { scheduleApi } from '@/queries/schedule';
+import { Avaliable, ScheduleEntity, ScheduleUpload } from '@/models/schedule';
+import { days, times } from '@/components/Schedule';
+import { useRouter } from 'next/router';
 
 type CustomPickerDayProps = PickersDayProps<Date> & {
   dayIsBetween: boolean;
@@ -80,12 +88,15 @@ const CustomPickersDay = styled(PickersDay, {
 
 
 
-export function CustomDay() {
+export function CustomDay({handleSelectWeek}) {
+
+
   const [value, setValue] = React.useState<Date | null>(new Date());
+
 
   const renderWeekPickerDay = (
     date: Date,
-    selectedDates: Array<Date | null>,
+    _selectedDates: Array<Date | null>,
     pickersDayProps: PickersDayProps<Date>,
   ) => {
     if (!value) {
@@ -117,7 +128,14 @@ export function CustomDay() {
         label="Week picker"
         value={value}
         onChange={(newValue) => {
+
+
           setValue(newValue);
+          handleSelectWeek(newValue);
+
+          console.log(newValue);
+
+
         }}
         renderDay={renderWeekPickerDay}
         renderInput={(params) => <TextField {...params} />}
@@ -145,49 +163,108 @@ const RootWrapper = styled(Box)(
 
 
 
-
-const currencies = [
+function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSelectWeek,handleSelectPlace,handleSelectOccupation,week,people}:
   {
-    value: 'USD',
-    label: '$'
-  },
-  {
-    value: 'EUR',
-    label: '€'
-  },
-  {
-    value: 'BTC',
-    label: '฿'
-  },
-  {
-    value: 'JPY',
-    label: '¥'
-  }
-];
+    handleSelectStartTime:(value:string)=>void,
+    handleSelectEndTime:(value:string)=>void,
+    handleSelectWeek:(value:Date)=>void,
+    handleSelectPlace:(value:string)=>void,
+    handleSelectOccupation:(value:string)=>void,
+    week:Date,
+    people:Avaliable[]
+  }) {
 
 
+  const isMountedRef = useRefMounted();
 
-function ScheduleOperation() {
-  const user = {
-    name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg',
-    jobtitle: 'Software Developer'
+  const [levels,setLevels]=useState<Salary[]>([]);
+
+  const [day,setDay]=useState(0);
+
+  const handleDayChange = (event: { target: { value: string; }; }) => {
+    // setState({
+    //   ...state,
+    //   [event.target.name]: event.target.checked
+    // });
+    let d=parseInt(event.target.value);
+    setDay(d);
   };
 
-  const [state, setState] = useState({
-    invisible: true
-  });
+
+  const [start_time,setStartTime]=useState(times[0]);
+
+  const handleStartTimeChange = (event: { target: { value: string; }; }) => {
+    // setState({
+    //   ...state,
+    //   [event.target.name]: event.target.checked
+    // });
+    setStartTime(event.target.value);
 
 
-  const [currency, setCurrency] = useState('EUR');
+    const start = format(addDays(startOfWeek(week),day),"yyyy-MM-dd")+" "+event.target.value;
+
+    handleSelectStartTime(start)
+  };
 
 
-  const handleChange = (event) => {
-    setState({
-      ...state,
-      [event.target.name]: event.target.checked
-    });
-    setCurrency(event.target.value);
+  const [end_time,setEndTime]=useState(times[times.length-1]);
+
+  const handleEndTimeChange = (event: { target: { value: string; }; }) => {
+    // setState({
+    //   ...state,
+    //   [event.target.name]: event.target.checked
+    // });
+    setEndTime(event.target.value);
+
+
+    const end = format(addDays(startOfWeek(week),day),"yyyy-MM-dd")+" "+event.target.value;
+
+    handleSelectEndTime(end);
+  };
+
+
+  const getAllData = React.useCallback(async () => {
+    try {
+
+      let levels=await salaryApi.getSalary();
+
+
+      if (isMountedRef()) {
+        setLevels(levels);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
+
+
+  useEffect(() => {
+    getAllData();
+  }, [getAllData]);
+
+
+  const [place,setPlace]=useState("");
+
+
+  const handlePlaceChange = (event: { target: { value: string; }; }) => {
+    // setState({
+    //   ...state,
+    //   [event.target.name]: event.target.checked
+    // });
+    console.log(event.target.value)
+    setPlace(event.target.value);
+    handleSelectPlace(event.target.value);
+  };
+
+  const [occupation,setOccupation]=useState("");
+  const handleOccupationChange = (event: { target: { value: string; }; }) => {
+    // setState({
+    //   ...state,
+    //   [event.target.name]: event.target.checked
+    // });
+    console.log(event.target.value)
+    setOccupation(event.target.value);
+    handleSelectOccupation(event.target.value);
   };
 
   return (
@@ -199,7 +276,8 @@ function ScheduleOperation() {
       <Divider />
       <CardContent>
 
-        <CustomDay />
+        <CustomDay handleSelectWeek={handleSelectWeek}/>
+
       </CardContent>
 
 
@@ -217,29 +295,34 @@ function ScheduleOperation() {
           <div>
             <TextField
               id="select-place"
-              select
               label="工作地点"
-              value={currency}
-              onChange={handleChange}
-              helperText="请筛选地点"
+              value={place}
+              onChange={handlePlaceChange}
+              helperText="请筛选或填写地点"
             >
-              {currencies.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
+              {/* <MenuItem key="未指定" value="未指定">
+                未指定
                 </MenuItem>
-              ))}
+              {schedules.map((schedule) => (schedule.place)).filter((value, index, self) => (self.indexOf(value) === index)).map((place)=>(
+                <MenuItem key={place} value={place}>
+                  {place}
+                </MenuItem>
+              ))} */}
             </TextField>
             <TextField
               id="select-occupation"
               select
               label="职位"
-              value={currency}
-              onChange={handleChange}
-              helperText="请筛选职位"
+              value={occupation}
+              onChange={handleOccupationChange}
+              helperText="请筛选或填写职位"
             >
-              {currencies.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
+              <MenuItem key="未指定" value="">
+                  未指定
+                </MenuItem>
+              {levels.map((level) => (level.occupation)).filter((value, index, self) => (self.indexOf(value) === index)).map((occupation)=>(
+                <MenuItem key={occupation} value={occupation}>
+                  {occupation}
                 </MenuItem>
               ))}
             </TextField>
@@ -275,13 +358,13 @@ function ScheduleOperation() {
               id="select-occupation"
               select
               label="星期"
-              value={currency}
-              onChange={handleChange}
+              value={day}
+              onChange={handleDayChange}
               helperText="请填写排班星期"
             >
-              {currencies.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
+              {days.map((day,index) => (
+                <MenuItem key={index} value={index}>
+                  {day}
                 </MenuItem>
               ))}
             </TextField>
@@ -289,13 +372,13 @@ function ScheduleOperation() {
               id="select-place"
               select
               label="起始时间"
-              value={currency}
-              onChange={handleChange}
+              value={start_time}
+              onChange={handleStartTimeChange}
               helperText="请填写起始时间"
             >
-              {currencies.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
+              {times.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
                 </MenuItem>
               ))}
             </TextField>
@@ -303,20 +386,19 @@ function ScheduleOperation() {
               id="select-occupation"
               select
               label="终止时间"
-              value={currency}
-              onChange={handleChange}
+              value={end_time}
+              onChange={handleEndTimeChange}
               helperText="请填写终止时间"
             >
-              {currencies.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
+              {times.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
                 </MenuItem>
               ))}
             </TextField>
 
           </div>
         </Box>
-
 
 
         <Box py={3} display="flex" alignItems="flex-start">
@@ -338,45 +420,59 @@ function ScheduleOperation() {
         </Box>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <AvatarGroup>
-            <Tooltip arrow title="View profile for Remy Sharp">
-              <Avatar
-                sx={{
-                  width: 28,
-                  height: 28
-                }}
-                component={Link}
-                href="#"
-                alt="Remy Sharp"
-                src="/static/images/avatars/1.jpg"
-              />
-            </Tooltip>
-            <Tooltip arrow title="View profile for Travis Howard">
-              <Avatar
-                sx={{
-                  width: 28,
-                  height: 28
-                }}
-                component={Link}
-                href="#"
-                alt="Travis Howard"
-                src="/static/images/avatars/2.jpg"
-              />
-            </Tooltip>
-            <Tooltip arrow title="View profile for Craig Vaccaro">
-              <Avatar
-                sx={{
-                  width: 28,
-                  height: 28
-                }}
-                component={Link}
-                href="#"
-                alt="Craig Vaccaro"
-                src="/static/images/avatars/3.jpg"
-              />
-            </Tooltip>
+
+            {
+              people.map((person)=>{
+
+                return <Tooltip key={person.id} arrow title={"工号: "+person.id+" 姓名: "+person.name}>
+                  <Avatar
+                    sx={{
+                      width: 28,
+                      height: 28
+                    }}
+                    src={person.avatar}
+                  />
+                </Tooltip>
+
+
+              })
+            }
           </AvatarGroup>
 
-          <Button variant="contained" size="large">
+          <Button key={occupation+place+start_time+end_time+week.toISOString()+day.toString}
+          variant="contained" size="large"
+          onClick={()=>{
+
+            let upload={
+              employee_ids: people.map((person)=>person.id),
+              occupation:   occupation,
+              place:        place,
+              time_end:     format(addDays(startOfWeek(week),day),"yyyy-MM-dd")+" "+end_time,
+              time_start:   format(addDays(startOfWeek(week),day),"yyyy-MM-dd")+" "+start_time
+            } as ScheduleUpload;
+
+
+            const conduct=async ()=>{
+
+              console.log("arranged time:",start_time,end_time);
+
+              return scheduleApi.postSchedule(upload);
+
+            }
+
+            conduct().then((value)=>{
+
+              alert("排班结果："+value+'\n'+upload);
+
+              window.location.reload();
+
+
+            }).catch((value)=>{
+
+              alert("排班失败："+value);
+            });
+
+          }}>
             确认排班
           </Button>
         </Box>

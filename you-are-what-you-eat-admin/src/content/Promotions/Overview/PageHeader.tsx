@@ -6,6 +6,7 @@ import { wait } from 'src/utils/wait';
 import SelectDishTable from 'src/content/Promotions/Overview/SelectDishTable'
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import { getDayTime } from '@/utils/date';
+import { Dispatch, SetStateAction } from 'react';
 
 import {
   styled,
@@ -50,7 +51,7 @@ const IconButtonError = styled(IconButton)(
 `
 );
 
-function PageHeader() {
+function PageHeader(refresh?: boolean, setRefresh?: Dispatch<SetStateAction<boolean>>) {
   const isMountedRef = useRefMounted();
   const { t }: { t: any } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -96,18 +97,17 @@ function PageHeader() {
     else
       console.log('err');
     console.log(value, value1);
-    // enqueueSnackbar(t('A new invoice has been created successfully'), {
-    //   variant: 'success',
-    //   anchorOrigin: {
-    //     vertical: 'top',
-    //     horizontal: 'right'
-    //   },
-    //   TransitionComponent: Zoom
-    // });
+
+    alert(`新的活动创建成功`)
+
     setSelectedDishes([]);
-    setValue(null);
-    setValue1(null);
+    setValue(new Date());
+    setValue1(new Date(getDayTime(new Date(), -1, '')));
     setOpen(false);
+    // 刷新父组件，显示新的
+    if (setRefresh && refresh) {
+      setRefresh(!refresh)
+    }
   };
 
   return (
@@ -172,14 +172,28 @@ function PageHeader() {
             _values,
             { resetForm, setErrors, setStatus, setSubmitting }
           ) => {
+            const param = {
+              description: `${_values.title}: ${_values.desc}`,
+              start: getDayTime(value, 0, "begin"),
+              end: getDayTime(value1, 0, "end"),
+              dishes: selectedDishes.map((d) => {
+                return {
+                  discount: d.discount,
+                  name: d.name
+                }
+              })
+            }
             try {
               await wait(1000);
+              await promotionsApi.postNewPromotion(param);
               resetForm();
               setStatus({ success: true });
               setSubmitting(false);
-              handleCreatePromotionSuccess(_values.title, _values.desc);
-            } catch (err) {
+              handleCreatePromotionSuccess();
+            } 
+            catch (err) {
               console.error(err);
+              alert(`创建失败: ${JSON.stringify(param)} \n错误：${err}`);
               setStatus({ success: false });
               setErrors({ submit: err.message });
               setSubmitting(false);

@@ -90,7 +90,7 @@ class EnergyApi {
         // }
         const weekOriConsumptionArray = await Promise.all([-6, -5, -4, -3, -2, -1, 0].map(async (offset) => {
             return (await GetApi("Sensors/used", {
-                    begin: Number((new Date(getDayTime(new Date(), offset - 1, 'begin')).getTime() / 1000).toFixed(0)),
+                    begin: Number((new Date(getDayTime(new Date(), offset , 'begin')).getTime() / 1000).toFixed(0)),
                     end  : Number((new Date(getDayTime(new Date(), offset , 'end')).getTime() / 1000).toFixed(0))
                 })).data.data;
         }))
