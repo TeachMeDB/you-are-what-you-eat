@@ -301,7 +301,7 @@ const StockInfoesTable = () => {
                                                     conduct().then((value) => {
 
                                                         alert("成功：" + value);
-
+                                                        console.log("1111");
                                                         window.location.reload();
 
 
