@@ -66,9 +66,11 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
 export default function AssignSeat() {
   const [open, setOpen] = React.useState(false);
   const [openSuccessDialog, setOpenSuccessDialog] = React.useState(false);
+  const [openQueueDialog, setOpenQueueDialog] = React.useState(false);
   const [openErrorDialog, setOpenErrorDialog] = React.useState(false);
   const [inputNum, setInputNum] = useState<number>(1);
-  const [queueNum, setQueueNum] = useState<number>(1);
+  const [queueNum, setQueueNum] = useState<string>('1');
+  const [assignNum, setAssignNum] = useState<string>('1');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -76,7 +78,16 @@ export default function AssignSeat() {
   const handleClose = () => {
     setOpen(false);
     setOpenSuccessDialog(false);
+    setOpenQueueDialog(false);
     setOpenErrorDialog(false);
+  };
+  const handleSuccessClose = () => {
+    setOpen(false);
+    setOpenSuccessDialog(false);
+    setOpenQueueDialog(false);
+    setOpenErrorDialog(false);
+
+    window.location.reload();
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -99,7 +110,18 @@ export default function AssignSeat() {
       try {
         let res= await queryTableApi.getQueueTable(inputNum);
         console.log(res);
-        setOpenSuccessDialog(true);
+
+        if(res.has_table)
+        {
+          setAssignNum(res.table_id);
+          setOpenSuccessDialog(true);
+        }
+        else
+        {
+          setQueueNum(res.queue_id);
+          setOpenQueueDialog(true);
+        }
+        
       } 
       catch (err) {
         console.error(err);
@@ -182,15 +204,40 @@ export default function AssignSeat() {
 
                   <Dialog
                     open={openSuccessDialog}
+                    onClose={handleSuccessClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    maxWidth="sm"
+                    fullWidth
+                  >
+                    <DialogTitle id="alert-dialog-title">
+                      {"安排成功"}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText variant="h1">
+                        该顾客的桌号为: {assignNum}
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClose} autoFocus>
+                        OK
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+
+                  <Dialog
+                    open={openQueueDialog}
                     onClose={handleClose}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
+                    maxWidth="sm"
+                    fullWidth
                   >
                     <DialogTitle id="alert-dialog-title">
                       {"排队成功"}
                     </DialogTitle>
                     <DialogContent>
-                      <DialogContentText id="alert-dialog-description">
+                      <DialogContentText variant="h1">
                         该顾客的排号为: {queueNum}
                       </DialogContentText>
                     </DialogContent>
@@ -208,11 +255,11 @@ export default function AssignSeat() {
                     aria-describedby="alert-dialog-description"
                   >
                     <DialogTitle id="alert-dialog-title">
-                      {"排队错误"}
+                      {"错误"}
                     </DialogTitle>
                     <DialogContent>
                       <DialogContentText id="alert-dialog-description">
-                        排队失败
+                        请求安排失败
                       </DialogContentText>
                     </DialogContent>
                     <DialogActions>
