@@ -6,7 +6,7 @@ import {
     EmployeeEntity,
 } from '@/models/employee'
 
-import {GetApi,PostApi} from "@/utils/requests"
+import {DeleteApi, GetApi,PostApi} from "@/utils/requests"
 
 
 class HumanResourceApi {
@@ -26,6 +26,15 @@ class HumanResourceApi {
     public postEmployee=async (employee:EmployeeUpload)=>{
         return (await (PostApi("Employee/PostEmployeeInfo",employee))).statusText as string
     }
+
+    public deleteEmployee=async (id:string)=>{
+
+        return (await DeleteApi("Employee/DeleteEmployeeInfo",{
+            id:id
+        })).statusText as string
+    }
+
+    ///
 
 
 

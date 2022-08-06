@@ -142,7 +142,7 @@ function EmployeeManagementTab() {
 
 
   const [value, setValue] = useState<Date | null>(
-    new Date('2014-08-18T21:11:54'),
+    new Date('2014-08-18 21:11:54'),
   );
 
   const handleChange = (newValue: Date | null) => {
@@ -275,7 +275,7 @@ function EmployeeManagementTab() {
 
                       <CardMedia image="" />
                       <CardCoverAction>
-                        <Input accept="image/*" id="change-cover" multiple type="file" />
+                        <Input accept="image/*" id="change-cover" multiple type="file"/>
                         <label htmlFor="change-cover">
                           <Button
                             startIcon={<UploadTwoToneIcon />}
@@ -327,7 +327,7 @@ function EmployeeManagementTab() {
 
                   <DesktopDatePicker
                       label="生日"
-                      inputFormat="MM-dd-yyyy"
+                      inputFormat="yyyy-MM-dd"
                       value={value}
                       onChange={handleChange}
                       renderInput={(params) => <TextField {...params} />}
@@ -400,13 +400,33 @@ function EmployeeManagementTab() {
                           }}
                           color="inherit"
                           size="small"
+                          onClick={()=>{
+
+
+                              const conduct=async ()=>{
+
+                                return humanResourceApi.deleteEmployee(employee.id);
+
+                              }
+
+                            conduct().then((value)=>{
+
+                                alert("删除结果："+value+'\n');
+                                window.location.reload();
+
+                            }).catch((value)=>{
+
+                            alert("删除失败："+value);
+                            });
+
+                          }}
                         >
                           <DeleteTwoToneIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
                     </TableCell>
                     <TableCell align="right">
-                      <DetailEmployeePopup/>
+                      <DetailEmployeePopup userId={employee.id}/>
                     </TableCell>
 
                   </TableRow>

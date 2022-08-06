@@ -85,7 +85,7 @@ const CardCoverAction = styled(Box)(
 
 
 
-const ProfileCover = ({user}:{user:EmployeeDetail}) => {
+const ProfileCoverUpdate = ({user}:{user:EmployeeDetail}) => {
 
   return (
     <>
@@ -106,9 +106,34 @@ const ProfileCover = ({user}:{user:EmployeeDetail}) => {
       </Box>
       <CardCover>
         <CardMedia image={user.cover} />
+        <CardCoverAction>
+          <Input accept="image/*" id="change-cover" multiple type="file" />
+          <label htmlFor="change-cover">
+            <Button
+              startIcon={<UploadTwoToneIcon />}
+              variant="contained"
+              component="span"
+            >
+              更改封面
+            </Button>
+          </label>
+        </CardCoverAction>
       </CardCover>
       <AvatarWrapper>
         <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        <ButtonUploadWrapper>
+          <Input
+            accept="image/*"
+            id="icon-button-file"
+            name="icon-button-file"
+            type="file"
+          />
+          <label htmlFor="icon-button-file">
+            <IconButton component="span" color="primary">
+              <UploadTwoToneIcon />
+            </IconButton>
+          </label>
+        </ButtonUploadWrapper>
       </AvatarWrapper>
       <Box py={2} pl={2} mb={3}>
         <Typography gutterBottom variant="h4">
@@ -150,7 +175,7 @@ const ProfileCover = ({user}:{user:EmployeeDetail}) => {
   );
 };
 
-ProfileCover.propTypes = {
+ProfileCoverUpdate.propTypes = {
 };
 
-export default ProfileCover;
+export default ProfileCoverUpdate;

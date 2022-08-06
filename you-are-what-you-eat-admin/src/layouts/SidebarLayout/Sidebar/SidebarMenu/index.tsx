@@ -408,7 +408,7 @@ function SidebarMenu() {
             </List>
           </SubMenuWrapper>
         </List>
-        
+
         <List
           component="div"
           subheader={
@@ -521,6 +521,66 @@ function SidebarMenu() {
                     startIcon={<TableChartTwoToneIcon />}
                   >
                     库存管理
+                  </Button>
+                </NextLink>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              耗材管理
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <NextLink href="/ingredient/overview" passHref>
+                  <Button
+                    className={
+                      currentRoute === '//ingredient/overview'
+                        ? 'active'
+                        : ''
+                    }
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    startIcon={<TableChartTwoToneIcon />}
+                  >
+                    耗材管理
+                  </Button>
+                </NextLink>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              资产管理
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <NextLink href="/asset/overview" passHref>
+                  <Button
+                    className={
+                      currentRoute === '//asset/overview'
+                        ? 'active'
+                        : ''
+                    }
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    startIcon={<TableChartTwoToneIcon />}
+                  >
+                    资产管理
                   </Button>
                 </NextLink>
               </ListItem>

@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, styled } from '@mui/material';
 import ProfileCover from '../Profile/ProfileCover';
 import Summary from '../Profile/Summary';
 import { defaultUser, EmployeeDetail, EmployeeEntity } from '@/models/employee';
@@ -16,6 +16,7 @@ import { useRefMounted } from '@/hooks/useRefMounted';
 import { humanResourceApi } from '@/queries/employee';
 import { scheduleApi } from '@/queries/schedule';
 import { startOfWeek, endOfWeek, format } from 'date-fns';
+import ProfileCoverUpdate from '../Profile/ProfileCoverUpdate';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -26,8 +27,20 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function DetailEmployeePopup({userId}:{userId:string}) {
 
+
+const ButtonError = styled(Button)(
+  ({ theme }) => `
+     background: ${theme.colors.error.main};
+     color: ${theme.palette.error.contrastText};
+
+     &:hover {
+        background: ${theme.colors.error.dark};
+     }
+    `
+);
+
+export default function DetailEmployeeUpdate({userId}:{userId:string}) {
 
 
   const isMountedRef = useRefMounted();
@@ -62,9 +75,14 @@ export default function DetailEmployeePopup({userId}:{userId:string}) {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen} size="large">
-        查看
-      </Button>
+      <ButtonError size="large" variant="contained"
+            onClick={()=>{
+
+              handleClickOpen();
+            
+          }}>
+            更新
+          </ButtonError>
       <Dialog
         fullScreen
         open={open}
@@ -98,7 +116,7 @@ export default function DetailEmployeePopup({userId}:{userId:string}) {
           spacing={3}
         >
           <Grid item xs={12} md={8}>
-            <ProfileCover user={employee}/>
+            <ProfileCoverUpdate user={employee}/>
           </Grid>
           <Grid item xs={12} md={4}>
             <Summary user={employee} />
