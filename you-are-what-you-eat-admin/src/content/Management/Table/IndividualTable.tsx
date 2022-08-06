@@ -180,11 +180,12 @@ export default function IndividualTable(props:IndiTableProps) {
                     size="small"
                     onClick={handleClickOpen}                    
                     >安排</Button>
-                    :
+                    :                    
                     <Button 
                     size="small"
                     color='error'
-                    disabled                    
+                    //disabled    
+                    onClick={handleClickOpen}                  
                     >{"已有"+props.customer_number+"人使用"}</Button>
                       }
                     
