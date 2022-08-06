@@ -119,6 +119,15 @@ export default function ModifyDialog(props: VipProps) {
 
     resetOptimization();
   };
+  const handleSuccessClose = () => {
+    setOpen(false);
+    setOpenSuccessDialog(false);
+    setOpenErrorDialog(false);
+
+    resetOptimization();
+
+    window.location.reload();
+  };
 
   const theme = useTheme();
 
@@ -443,7 +452,7 @@ export default function ModifyDialog(props: VipProps) {
                       </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                      <Button onClick={handleClose} autoFocus>
+                      <Button onClick={handleSuccessClose} autoFocus>
                         OK
                       </Button>
                     </DialogActions>

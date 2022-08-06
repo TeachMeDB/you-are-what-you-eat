@@ -115,6 +115,13 @@ export default function IndividualTable(props:IndiTableProps) {
     setOpenSuccessDialog(false);
     setOpenErrorDialog(false);
   };
+  const handleSuccessClose = () => {
+    setOpen(false);
+    setOpenSuccessDialog(false);
+    setOpenErrorDialog(false);
+
+    window.location.reload();
+  };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
@@ -287,7 +294,7 @@ export default function IndividualTable(props:IndiTableProps) {
                       </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                      <Button onClick={handleClose} autoFocus>
+                      <Button onClick={handleSuccessClose} autoFocus>
                         OK
                       </Button>
                     </DialogActions>
