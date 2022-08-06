@@ -1,29 +1,27 @@
-import React from 'react';
-
-import { FC, ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 
 import PropTypes from 'prop-types';
 import {
-  Tooltip,
-  Divider,
   Box,
-  FormControl,
-  Card,
   Button,
+  Card,
+  CardHeader,
+  Divider,
+  FormControl,
   IconButton,
+  InputAdornment,
+  OutlinedInput,
+  styled,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TablePagination,
   TableRow,
-  TableContainer,
-  styled,
-  InputAdornment,
+  Tooltip,
   Typography,
   useTheme,
-  CardHeader,
-  OutlinedInput,
 } from '@mui/material';
 
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
@@ -36,10 +34,12 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 
 import DialogTitle from '@mui/material/DialogTitle';
+import { queryIngredientApi } from '@/queries/query_ingredient';
 
 interface IngredientInfoTableProps {
   className?: string;
   ingredientInfoes: IngredientInfo[];
+  setIngredientInfoes: any;
 }
 
 const OutlinedInputWrapper = styled(OutlinedInput)(
@@ -54,25 +54,59 @@ const ButtonSearch = styled(Button)(
   `,
 );
 
-const RecentOrdersTable: FC<IngredientInfoTableProps> = ({ ingredientInfoes }) => {
+const RecentIngredientTable: FC<IngredientInfoTableProps> = (props) => {
+  const { ingredientInfoes, setIngredientInfoes } = props;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
+
+  const [keyword, setKeyword] = useState('');
+  const [formValue, setFormValue] = useState(
+    { ingr_id: 0, ingr_name: '', ingr_type: '', ingr_description: '' });
+  const [open, setOpen] = React.useState(false);
 
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage);
   };
 
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setLimit(parseInt(event.target.value));
+    const newLimit = parseInt(event.target.value);
+    setLimit(newLimit);
   };
-  const [open, setOpen] = React.useState(false);
-  const handleClickOpen = () => {
+  const handleClickOpen = (ingredientInfo) => {
+    setFormValue(ingredientInfo);
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleSubmit = async () => {
+    console.log(formValue, ' <-- formValue');
+    await queryIngredientApi.updateIngredient(formValue);
+    const data = await queryIngredientApi.getIngredientList(keyword);
+    setIngredientInfoes(data);
+    setOpen(false);
+  };
+
+  const handleSearch = async () => {
+    const data = await queryIngredientApi.getIngredientList(keyword);
+    console.log(data, ' <-- data');
+    setPage(0);
+    setIngredientInfoes(data);
+  };
+
+  const handleFormChange = (field, e) => {
+    console.log(field, ' <-- field');
+    setFormValue({ ...formValue, [field]: e.target.value });
+  };
+
+  const handleDelete = async (id: string) => {
+    await queryIngredientApi.deleteIngredient(id);
+    setIngredientInfoes(ingredientInfoes.filter(val => val.ingr_id != id));
+  };
+
+  const data = ingredientInfoes.slice(page * limit, page * limit + limit);
 
   const theme = useTheme();
   return (
@@ -84,9 +118,15 @@ const RecentOrdersTable: FC<IngredientInfoTableProps> = ({ ingredientInfoes }) =
               <OutlinedInputWrapper
                 type="text"
                 placeholder="输入耗材名称"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
                 endAdornment={
                   <InputAdornment position="end">
-                    <ButtonSearch variant="contained" size="small">
+                    <ButtonSearch
+                      variant="contained"
+                      size="small"
+                      onClick={handleSearch}
+                    >
                       搜索
                     </ButtonSearch>
 
@@ -111,14 +151,13 @@ const RecentOrdersTable: FC<IngredientInfoTableProps> = ({ ingredientInfoes }) =
 
               <TableCell>耗材编号</TableCell>
               <TableCell>耗材名称</TableCell>
-              <TableCell>耗材描述</TableCell>
               <TableCell>耗材类型</TableCell>
+              <TableCell>耗材描述</TableCell>
               <TableCell>操作</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {ingredientInfoes.map((ingredientInfo) => {
-
+            {data.map((ingredientInfo) => {
               return (
                 <TableRow
                   hover
@@ -174,7 +213,7 @@ const RecentOrdersTable: FC<IngredientInfoTableProps> = ({ ingredientInfoes }) =
                   </TableCell>
 
                   <TableCell>
-                    <Tooltip title="编辑" arrow onClick={handleClickOpen}>
+                    <Tooltip title="编辑" arrow onClick={() => handleClickOpen(ingredientInfo)}>
                       <IconButton
                         sx={{
                           '&:hover': {
@@ -191,46 +230,53 @@ const RecentOrdersTable: FC<IngredientInfoTableProps> = ({ ingredientInfoes }) =
                     <Dialog open={open} onClose={handleClose}>
                       <DialogTitle>耗材信息</DialogTitle>
                       <DialogContent>
-
                         <TextField
-                          autoFocus
+                          disabled
                           margin="dense"
-                          id="id"
+                          id="ingr_id"
                           label="新的耗材编号"
                           fullWidth
                           variant="standard"
+                          value={formValue.ingr_id}
+                          style={{ minWidth: '400px' }}
                         />
                         <TextField
                           autoFocus
                           margin="dense"
-                          id="name"
+                          id="ingr_name"
                           label="新的耗材名称"
                           fullWidth
                           variant="standard"
+                          value={formValue.ingr_name}
+                          onChange={(e) => handleFormChange('ingr_name', e)}
                         />
                         <TextField
                           autoFocus
                           margin="dense"
-                          id="name"
-                          label="新的耗材价格"
+                          id="ingr_type"
+                          label="新的耗材类型"
                           fullWidth
+                          value={formValue.ingr_type}
+                          onChange={(e) => handleFormChange('ingr_type', e)}
                           variant="standard"
                         />
                         <TextField
                           autoFocus
                           margin="dense"
-                          id="name"
+                          id="ingr_description"
                           label="新的耗材描述"
                           fullWidth
                           variant="standard"
+                          value={formValue.ingr_description}
+                          onChange={(e) => handleFormChange('ingr_description', e)}
                         />
                       </DialogContent>
                       <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button onClick={handleClose}>Subscribe</Button>
+                        <Button onClick={handleClose}>取消</Button>
+                        <Button onClick={handleSubmit}>确定</Button>
                       </DialogActions>
                     </Dialog>
-                    <Tooltip title="删除" arrow>
+                    <Tooltip arrow title="删除">
                       <IconButton
                         sx={{
                           '&:hover': { background: theme.colors.error.lighter },
@@ -238,6 +284,7 @@ const RecentOrdersTable: FC<IngredientInfoTableProps> = ({ ingredientInfoes }) =
                         }}
                         color="inherit"
                         size="small"
+                        onClick={() => handleDelete(ingredientInfo.ingr_id)}
                       >
                         <DeleteTwoToneIcon fontSize="small" />
                       </IconButton>
@@ -251,7 +298,6 @@ const RecentOrdersTable: FC<IngredientInfoTableProps> = ({ ingredientInfoes }) =
       </TableContainer>
       <Box p={2}>
         <TablePagination
-
           component="div"
           count={ingredientInfoes.length}
           onPageChange={handlePageChange}
@@ -265,12 +311,12 @@ const RecentOrdersTable: FC<IngredientInfoTableProps> = ({ ingredientInfoes }) =
   );
 };
 
-RecentOrdersTable.propTypes = {
+RecentIngredientTable.propTypes = {
   ingredientInfoes: PropTypes.array.isRequired,
 };
 
-RecentOrdersTable.defaultProps = {
+RecentIngredientTable.defaultProps = {
   ingredientInfoes: [],
 };
 
-export default RecentOrdersTable;
+export default RecentIngredientTable;

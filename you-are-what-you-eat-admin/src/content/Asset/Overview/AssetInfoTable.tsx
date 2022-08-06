@@ -82,7 +82,7 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
   };
 
   const handleClickOpen = (assetInfo) => {
-    console.log(assetInfo, ' <-- assetInfo');
+    // console.log(assetInfo, ' <-- assetInfo');
     setFormValue(assetInfo);
     setOpen(true);
   };

@@ -26,15 +26,11 @@ const TabsWrapper = styled(Tabs)(
 `,
 );
 
-function PageHeader({
-                      employees = [],
-                      assets = [],
-                      currentTab = 1,
-                      handleTabsChange,
-                      setAssetInfoes,
-                      setManageInfoes,
-                    }) {
-
+function PageHeader(props) {
+  const {
+    employees = [], assets = [], currentTab = 1,
+    handleTabsChange, setAssetInfoes, setManageInfoes,
+  } = props;
   const [open, setOpen] = React.useState(false);
   const [formValue, setFormValue] = useState(
     { assets_type: '', assets_status: '', employee_id: 0 });
@@ -87,7 +83,7 @@ function PageHeader({
 
   const handleDateChange = (e) => {
     setManageFormValue({ ...manageFormValue, manage_date: e });
-  }
+  };
 
   const tabs = [
     { value: 1, label: '资产', description: '查看并编辑所有资产信息', addText: '新增资产' },
@@ -287,7 +283,7 @@ function PageHeader({
                     label="资产管理日期"
                     inputFormat="yyyy-MM-dd"
                     value={manageFormValue.manage_date}
-                    onChange={(e) => handleDateChange( e)}
+                    onChange={(e) => handleDateChange(e)}
                     renderInput={(params) => <TextField {...params} />}
                   />
                 </Box>

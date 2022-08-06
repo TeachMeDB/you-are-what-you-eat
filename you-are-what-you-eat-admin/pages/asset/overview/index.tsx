@@ -13,9 +13,11 @@ import AllManageInfo from '@/content/Asset/Manage/ManageInfo';
 import { queryManageApi } from '@/queries/query_manage';
 
 function assetOverview({ list = [], manageList = [], employees = [] }) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [assetInfoes, setAssetInfoes] = useState(list);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [manageInfoes, setManageInfoes] = useState(manageList);
-  console.log(assetInfoes, ' <-- assetInfoes');
+  // console.log(assetInfoes, ' <-- assetInfoes');
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [tab, setTab] = useState(1);
   return (

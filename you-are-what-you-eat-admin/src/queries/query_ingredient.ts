@@ -6,10 +6,15 @@ class QueryIngredientApi {
   public getIngredientList: (ingrName: string) => Promise<IngredientInfo[]> = async (ingrName = '') => {
     try {
       const r = await (await
-          fetch(`http://106.14.212.200:8000/app/api/Ingredient/GetIngredient?ingrName${ingrName}&token=${token}`)
+          fetch(`http://106.14.212.200:8000/app/api/Ingredient/GetIngredient?ingrName=${ingrName}&token=${token}`)
       ).text();
       const content = JSON.parse(r) || {};
-      return (content.data || []) as IngredientInfo[];
+      return (content.data || []).map(val => ({
+        ingr_id: val.ingrId,
+        ingr_name: val.ingrName,
+        ingr_type: val.ingrType,
+        ingr_description: val.ingrDescription,
+      })) as IngredientInfo[];
     } catch (err) {
       console.log(err);
       return null;

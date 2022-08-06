@@ -1,4 +1,4 @@
-export interface IngredientRecord {
+export interface IngredientRecordInfo {
   record_id: number;
   ingr_id: number;
   ingr_name: string;
