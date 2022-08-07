@@ -26,9 +26,11 @@ import {
   CardHeader,
   MenuItem,
   Alert,
+  Autocomplete,
+  Grid,
 
 } from '@mui/material';
-import { formatDistance, subMinutes, subHours, addDays, format } from 'date-fns';
+import { formatDistance, subMinutes, subHours, addDays, format, parse, compareAsc } from 'date-fns';
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import AlarmTwoToneIcon from '@mui/icons-material/AlarmTwoTone';
@@ -57,6 +59,7 @@ import { scheduleApi } from '@/queries/schedule';
 import { Avaliable, ScheduleEntity, ScheduleUpload } from '@/models/schedule';
 import { days, times } from '@/components/Schedule';
 import { useRouter } from 'next/router';
+import { TurnLeft } from '@mui/icons-material';
 
 type CustomPickerDayProps = PickersDayProps<Date> & {
   dayIsBetween: boolean;
@@ -181,46 +184,45 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
 
   const [day,setDay]=useState(0);
 
+  const [start_time,setStartTime]=useState("");
+
+  const [end_time,setEndTime]=useState("");
+
+
   const handleDayChange = (event: { target: { value: string; }; }) => {
-    // setState({
-    //   ...state,
-    //   [event.target.name]: event.target.checked
-    // });
+
     let d=parseInt(event.target.value);
     setDay(d);
   };
 
-
-  const [start_time,setStartTime]=useState(times[0]);
-
   const handleStartTimeChange = (event: { target: { value: string; }; }) => {
-    // setState({
-    //   ...state,
-    //   [event.target.name]: event.target.checked
-    // });
+
     setStartTime(event.target.value);
 
+    let start=""
 
-    const start = format(addDays(startOfWeek(week),day),"yyyy-MM-dd")+" "+event.target.value;
+    if((event.target.value)&&event.target.value!=""){
+      start = format(addDays(startOfWeek(week),day),"yyyy-MM-dd")+" "+event.target.value;
+    }
 
     handleSelectStartTime(start)
   };
 
-
-  const [end_time,setEndTime]=useState(times[times.length-1]);
-
   const handleEndTimeChange = (event: { target: { value: string; }; }) => {
-    // setState({
-    //   ...state,
-    //   [event.target.name]: event.target.checked
-    // });
+
     setEndTime(event.target.value);
 
+    let end="";
 
-    const end = format(addDays(startOfWeek(week),day),"yyyy-MM-dd")+" "+event.target.value;
+    if((event.target.value)&&event.target.value!=""){
+      end = format(addDays(startOfWeek(week),day),"yyyy-MM-dd")+" "+event.target.value;
+    }
 
     handleSelectEndTime(end);
   };
+
+
+  const [schedules, setSchedules] = useState<ScheduleEntity[]>([]);
 
 
   const getAllData = React.useCallback(async () => {
@@ -228,10 +230,14 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
 
       let levels=await salaryApi.getSalary();
 
+      let schedule = await scheduleApi.getSchedule(null,null,null,null,null);
 
       if (isMountedRef()) {
+        setSchedules(schedule);
         setLevels(levels);
       }
+
+
     } catch (err) {
       console.error(err);
     }
@@ -246,26 +252,38 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
   const [place,setPlace]=useState("");
 
 
-  const handlePlaceChange = (event: { target: { value: string; }; }) => {
-    // setState({
-    //   ...state,
-    //   [event.target.name]: event.target.checked
-    // });
-    console.log(event.target.value)
-    setPlace(event.target.value);
-    handleSelectPlace(event.target.value);
+  const handlePlaceChange = (_: any,value: string) => {
+
+    console.log(value)
+    setPlace(value);
+    handleSelectPlace(value);
   };
 
   const [occupation,setOccupation]=useState("");
   const handleOccupationChange = (event: { target: { value: string; }; }) => {
-    // setState({
-    //   ...state,
-    //   [event.target.name]: event.target.checked
-    // });
+
     console.log(event.target.value)
     setOccupation(event.target.value);
     handleSelectOccupation(event.target.value);
   };
+
+
+
+  const validate=(start:string,end:string)=>{
+
+    if(start===""||end===""){
+      return true;
+    }
+
+    let prefex="2001-06-26 ";
+
+    let from=Date.parse(prefex+start);
+    let to=Date.parse(prefex+end);
+
+    console.log(from,to)
+
+    return compareAsc(from,to)<0;
+  }
 
   return (
     <RootWrapper>
@@ -292,30 +310,31 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
           noValidate
           autoComplete="off"
         >
-          <div>
-            <TextField
+          <Grid container>
+            <Autocomplete
               id="select-place"
-              label="工作地点"
+              freeSolo
+              options={(schedules.map((schedule) => (schedule.place)).filter((value, index, self) => (value&&self.indexOf(value) === index)))}
+              getOptionLabel={(value)=>(value? value:"")}
               value={place}
               onChange={handlePlaceChange}
-              helperText="请筛选或填写地点"
-            >
-              {/* <MenuItem key="未指定" value="未指定">
-                未指定
-                </MenuItem>
-              {schedules.map((schedule) => (schedule.place)).filter((value, index, self) => (self.indexOf(value) === index)).map((place)=>(
-                <MenuItem key={place} value={place}>
-                  {place}
-                </MenuItem>
-              ))} */}
-            </TextField>
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="工作地点"
+                  helperText="请填写地点"
+                  fullWidth={true}
+                />)}
+            />
+            
             <TextField
               id="select-occupation"
               select
+              fullWidth={true}
               label="职位"
               value={occupation}
               onChange={handleOccupationChange}
-              helperText="请筛选或填写职位"
+              helperText="请筛选职位"
             >
               <MenuItem key="未指定" value="">
                   未指定
@@ -327,7 +346,7 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
               ))}
             </TextField>
 
-          </div>
+          </Grid>
         </Box>
       </CardContent>
 
@@ -362,11 +381,12 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
               onChange={handleDayChange}
               helperText="请填写排班星期"
             >
-              {days.map((day,index) => (
+              {['星期天','星期一','星期二','星期三','星期四','星期五','星期六'].map((day,index) => {
+                return (
                 <MenuItem key={index} value={index}>
                   {day}
                 </MenuItem>
-              ))}
+              )})}
             </TextField>
             <TextField
               id="select-place"
@@ -376,7 +396,10 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
               onChange={handleStartTimeChange}
               helperText="请填写起始时间"
             >
-              {times.map((option) => (
+              {
+              times.filter((value)=>{
+                return validate(value,end_time);
+              }).map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
                 </MenuItem>
@@ -390,7 +413,9 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
               onChange={handleEndTimeChange}
               helperText="请填写终止时间"
             >
-              {times.map((option) => (
+              {times.filter((value)=>{
+                return validate(start_time,value);;
+                }).map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
                 </MenuItem>
@@ -439,7 +464,9 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
             }
           </AvatarGroup>
 
-          <Button key={occupation+place+start_time+end_time+week.toISOString()+day.toString}
+          <Button
+          disabled={occupation==="" || place===""}
+          key={occupation+place+start_time+end_time+week.toISOString()+day.toString}
           variant="contained" size="large"
           onClick={()=>{
 
@@ -462,7 +489,7 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
 
             conduct().then((value)=>{
 
-              alert("排班结果："+value+'\n'+upload);
+              alert("排班结果："+value);
 
               window.location.reload();
 

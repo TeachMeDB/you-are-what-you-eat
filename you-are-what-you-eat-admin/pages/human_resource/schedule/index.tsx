@@ -75,8 +75,8 @@ const DrawerWrapperMobile = styled(Drawer)(
 
 function ScheduleManagement() {
 
-  const [selectedStartTime,setSelectedStartTime]=useState("2001-01-01 00:00:00");
-  const [selectedEndTime,setSelectedEndTime]=useState("2080-01-01 00:00:00");
+  const [selectedStartTime,setSelectedStartTime]=useState("");
+  const [selectedEndTime,setSelectedEndTime]=useState("");
 
 
   const [selectedPlace,setSelectedPlace]=useState("");

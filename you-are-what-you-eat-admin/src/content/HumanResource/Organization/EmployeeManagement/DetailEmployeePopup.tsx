@@ -11,7 +11,11 @@ import { TransitionProps } from '@mui/material/transitions';
 import { Container, Grid } from '@mui/material';
 import ProfileCover from '../Profile/ProfileCover';
 import Summary from '../Profile/Summary';
-import { EmployeeDetail } from '@/models/employee';
+import { defaultUser, EmployeeDetail, EmployeeEntity } from '@/models/employee';
+import { useRefMounted } from '@/hooks/useRefMounted';
+import { humanResourceApi } from '@/queries/employee';
+import { scheduleApi } from '@/queries/schedule';
+import { startOfWeek, endOfWeek, format } from 'date-fns';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -22,10 +26,33 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function DetailEmployeePopup({user}:{user:EmployeeDetail}) {
+export default function DetailEmployeePopup({userId}:{userId:string}) {
+
+
+
+  const isMountedRef = useRefMounted();
+  const [employee, setEmployee] = React.useState<EmployeeDetail>(defaultUser);
+
+  const getAllData = React.useCallback(async () => {
+    try {
+
+
+      let person = await humanResourceApi.getEmployeeDetail(userId);
+
+      if (isMountedRef()) {
+        setEmployee(person);
+        
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
+
+
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
+    getAllData();
     setOpen(true);
   };
 
@@ -71,10 +98,10 @@ export default function DetailEmployeePopup({user}:{user:EmployeeDetail}) {
           spacing={3}
         >
           <Grid item xs={12} md={8}>
-            <ProfileCover user={user}/>
+            <ProfileCover user={employee}/>
           </Grid>
           <Grid item xs={12} md={4}>
-            <Summary user={user} />
+            <Summary user={employee} />
           </Grid>
         </Grid>
 

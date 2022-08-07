@@ -16,12 +16,11 @@ import {
 } from '@mui/material';
 import TrendingUp from '@mui/icons-material/TrendingUp';
 import Text from 'src/components/Text';
-import { Chart } from 'src/components/Chart';
 import type { ApexOptions } from 'apexcharts';
 import Brightness1Icon from '@mui/icons-material/Brightness1';
 import { CryptoSummary2 } from '@/models/crypto_table';
 import { FC, ChangeEvent, useState } from 'react';
-import ReactApexChart from 'react-apexcharts';
+import { Chart } from 'src/components/Chart';
 
 
 interface TableSummaryProps {
@@ -37,7 +36,7 @@ const TableSummary2: FC<TableSummaryProps> = ({ cryptoSummary2 }) =>
 
   return (
     <Card>
-      <ReactApexChart  options={cryptoSummary2.options} series={cryptoSummary2.series} type="bar" height={350} />
+      <Chart  options={cryptoSummary2.options} series={cryptoSummary2.series} type="bar" height={350} />
     </Card>
   );
 }

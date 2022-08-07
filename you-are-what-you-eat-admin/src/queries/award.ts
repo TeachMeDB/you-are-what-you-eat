@@ -7,7 +7,7 @@ import {
     Award
 } from '@/models/employee'
 
-import {GetApi,PostApi} from "@/utils/requests"
+import {DeleteApi, GetApi,PostApi} from "@/utils/requests"
 
 
 class AwardApi {
@@ -29,7 +29,14 @@ class AwardApi {
         return (await (PostApi("Prize/PostAward",award))).statusText as string
     }
 
-    //Prize/DeleteAward
+    
+    public deleteAward=async (level:string)=>{
+
+        return (await DeleteApi("Prize/DeleteAward",{
+            level:level
+        })).statusText as string
+    }
+
 
 }
 

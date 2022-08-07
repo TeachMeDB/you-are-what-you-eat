@@ -1,15 +1,12 @@
-import { FC, ReactNode, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Box, styled, Typography } from '@mui/material';
+import { Box, Button, Grid, styled, Typography } from '@mui/material';
 import { Container } from '@mui/system';
-import { FilteringStyledOptions } from '@mui/styled-engine';
 
 import {People, ScheduleEntity } from '@/models/schedule'
 import { compareAsc,getDay } from 'date-fns';
-import { ScheduleSend } from '@mui/icons-material';
 
-
-
+import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 
 export const segs=['s','sf','st','sff','e','ef','et','eff','n','nf','nt','nff','l'];
 export const times=['06:00:00','07:30:00','09:00:00','10:30:00','12:00:00','13:30:00','15:00:00','16:30:00','18:00:00','19:30:00','21:00:00','22:30:00','23:59:59']
@@ -288,6 +285,10 @@ function Schedule({ className,children,schedules }:{className?: string,children?
         }
 
     }
+    
+    const getRandom=()=>{
+        return Math.floor(Math.random()*100);
+    }
 
     const callback=(schedule:ScheduleEntity,index:number)=>{
 
@@ -298,15 +299,28 @@ function Schedule({ className,children,schedules }:{className?: string,children?
                 "schedule-item schedule-"+days[day]+" "+
                 "time-from-"+FromTimeToSegment(schedule.time_start)+" "+
                 "time-to-"+ToTimeToSegment(schedule.time_end)+" "+ 
-                "bg-"+colors[index%5]}>
-                    {
-                        schedule.peoples.map((people:People,idx:number)=>{
+                "bg-"+colors[(index+getRandom())%5]}>
+                    <Grid container direction="row">   
 
-                            return (
-                                people.name+'\n'
-                            )
-                        })
-                    }
+                        <Grid item xs={12}>
+                        <Typography variant='h4'>
+                            <PeopleOutlineIcon/>
+                        </Typography>
+                        </Grid>                 
+                        {
+                            schedule.peoples.map((people:People,idx:number)=>{
+                                return (
+                                <Grid item key={people.id} xs={12}>
+                                    <Typography variant='h5'>
+                                        {people.name}
+                                    </Typography>
+                                    
+                                </Grid>
+                                )
+                                
+                            })
+                        }
+                    </Grid>
                 </div>);
     };
 
