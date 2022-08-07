@@ -66,9 +66,6 @@ const RecentOrdersTableSkeleton = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell padding="checkbox">
-              <Skeleton variant="text" />
-              </TableCell>
               <TableCell>订单号</TableCell>
               <TableCell>创建时间</TableCell>
               <TableCell>桌号</TableCell>
@@ -78,7 +75,7 @@ const RecentOrdersTableSkeleton = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <Skeleton variant="rectangular" />
+            <Skeleton variant="text" />
           </TableBody>
         </Table>
       </TableContainer>

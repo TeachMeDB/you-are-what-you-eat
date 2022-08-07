@@ -1,6 +1,7 @@
 import React from 'react'
 import { FC } from 'react'
 import {
+    Box,
     Grid,
     Divider,
     FormControl,
@@ -63,10 +64,10 @@ const CurOrderTable: FC<CurOrderTableProps> = ({ CurOrders }) => {
             />
             <Divider />
 
-            <Grid container spacing={10}>
+            <Box p={2}> 
+            <Grid container spacing={3}>
                 {
                     CurOrders.map((i) =>
-
                         <Grid item xs={4}>
                             <CheckList
                                 OrderId={i.OrderId}
@@ -78,6 +79,8 @@ const CurOrderTable: FC<CurOrderTableProps> = ({ CurOrders }) => {
                     )
                 }
             </Grid>
+            </Box>
+            
         </Card>
 
 

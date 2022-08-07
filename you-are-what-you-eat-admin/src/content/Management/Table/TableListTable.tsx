@@ -224,6 +224,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoTable }) => {
       )}
       <Divider />
 
+      <Box p={2}>    
       <Grid container spacing={1}>
       {paginatedCryptoTable.map((cryptoOrder) => {
               const isCryptoTableelected = selectedCryptoTable.includes(
@@ -241,6 +242,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoTable }) => {
               );
             })}
       </Grid>
+      </Box>
 
       <Box p={2}>
         <TablePagination

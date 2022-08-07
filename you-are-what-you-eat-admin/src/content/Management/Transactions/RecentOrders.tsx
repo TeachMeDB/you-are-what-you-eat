@@ -10,6 +10,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
 import OrderSummarySkeleton from '@/content/Dashboards/Crypto/OrderSummarySkeleton';
 import RecentOrdersTableSkeleton from './RecentOrdersTableSkeleton';
+import CurOrder from '@/content/Kitchen/Order/CurOrder';
 
 function RecentOrders() {
   const isMountedRef = useRefMounted();
@@ -70,6 +71,9 @@ function RecentOrders() {
           </Grid>
           <Grid item xs={12}>
             <RecentOrdersTable cryptoOrders={orderData.orders}/>
+          </Grid>
+          <Grid item xs={12}>
+            <CurOrder />
           </Grid>
         </Grid> 
     </>
