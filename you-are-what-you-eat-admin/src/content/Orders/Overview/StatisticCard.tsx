@@ -18,7 +18,7 @@ function RecentOrdersList() {
 
   const getOrdersInTimePeriod = useCallback(async () => {
     try {
-      const response = await ordersApi.getDailyOrderStatics(new Date(), new Date());
+      const response = await ordersApi.getDailyOrderStatics();
 
       if (isMountedRef()) {
         setStatisticData(response);
