@@ -275,9 +275,10 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
       return true;
     }
 
+    let prefex="2001-06-26 ";
 
-    let from=Date.parse(start_time);
-    let to=Date.parse(end_time);
+    let from=Date.parse(prefex+start);
+    let to=Date.parse(prefex+end);
 
     console.log(from,to)
 
@@ -488,7 +489,7 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
 
             conduct().then((value)=>{
 
-              alert("排班结果："+value+'\n'+upload);
+              alert("排班结果："+value);
 
               window.location.reload();
 

@@ -11,7 +11,7 @@ import { TransitionProps } from '@mui/material/transitions';
 import { Container, Grid, styled } from '@mui/material';
 import ProfileCover from '../Profile/ProfileCover';
 import Summary from '../Profile/Summary';
-import { defaultUser, EmployeeDetail, EmployeeEntity } from '@/models/employee';
+import { defaultUser, EmployeeDetail, EmployeeEntity, EmployeeUpload,defaultUploadEmployee } from '@/models/employee';
 import { useRefMounted } from '@/hooks/useRefMounted';
 import { humanResourceApi } from '@/queries/employee';
 import { scheduleApi } from '@/queries/schedule';
@@ -46,6 +46,17 @@ export default function DetailEmployeeUpdate({userId}:{userId:string}) {
   const isMountedRef = useRefMounted();
   const [employee, setEmployee] = React.useState<EmployeeDetail>(defaultUser);
 
+
+  const [open, setOpen] = React.useState(false);
+
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
+
+
   const getAllData = React.useCallback(async () => {
     try {
 
@@ -61,17 +72,12 @@ export default function DetailEmployeeUpdate({userId}:{userId:string}) {
     }
   }, [isMountedRef]);
 
-
-  const [open, setOpen] = React.useState(false);
-
   const handleClickOpen = () => {
     getAllData();
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+
 
   return (
     <div>
@@ -122,6 +128,8 @@ export default function DetailEmployeeUpdate({userId}:{userId:string}) {
             <Summary user={employee} />
           </Grid>
         </Grid>
+
+
 
       </Container>
       </Dialog>

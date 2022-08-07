@@ -70,6 +70,7 @@ function SelfManagementTab({user}:{user:EmployeeDetail}) {
             primary="更新重要信息"
             secondary="更新姓名、性别等重要信息"
           />
+          
           <DetailEmployeeUpdate userId={user.id}/>
           
         </ListItem>
@@ -106,6 +107,7 @@ function SelfManagementTab({user}:{user:EmployeeDetail}) {
           }).catch((value)=>{
 
           alert("删除失败："+value);
+
           });
             
           }}
