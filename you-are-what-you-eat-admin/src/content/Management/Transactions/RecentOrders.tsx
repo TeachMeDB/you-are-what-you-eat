@@ -6,6 +6,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import { queryOrderApi } from 'src/queries/query_order'
 import { Console } from 'console';
+import Skeleton from '@mui/material/Skeleton';
+import Box from '@mui/material/Box';
+import OrderSummarySkeleton from '@/content/Dashboards/Crypto/OrderSummarySkeleton';
+import RecentOrdersTableSkeleton from './RecentOrdersTableSkeleton';
 
 function RecentOrders() {
   const isMountedRef = useRefMounted();
@@ -33,7 +37,24 @@ function RecentOrders() {
   //console.log("--orderData--");
   //console.log(orderData);
   if (!orderData)
-    return null;
+    return (
+    <>
+    <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={4}
+        >
+          <Grid item xs={12}>
+            <OrderSummarySkeleton/>
+          </Grid>
+          <Grid item xs={12}>
+            <RecentOrdersTableSkeleton/>
+          </Grid>
+        </Grid> 
+    </>
+    );
 
   return (  
     <>   

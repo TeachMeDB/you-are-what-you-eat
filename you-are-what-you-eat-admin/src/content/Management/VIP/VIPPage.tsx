@@ -14,6 +14,8 @@ import {
   Divider
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Skeleton from '@mui/material/Skeleton';
+import VIPListTableSkeleton from './VIPListTableSkeleton';
 
 function VIPPage() {
   const [expanded, setExpanded] = useState<string | false>(false);
@@ -50,7 +52,25 @@ function VIPPage() {
   //console.log("--orderData--");
   //console.log(orderData);
   if (!vipData)
-    return null;
+    return (
+      <>
+      <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="stretch"
+            spacing={4}
+          >
+            <Grid item xs={12}>
+              <Skeleton variant="text" />
+              <Skeleton variant="text" />
+            </Grid>
+            <Grid item xs={12}>
+              <VIPListTableSkeleton/>
+            </Grid>
+          </Grid> 
+      </>
+      );
 
 
   return (  

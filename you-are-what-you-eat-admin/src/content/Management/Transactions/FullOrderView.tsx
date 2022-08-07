@@ -17,6 +17,8 @@ import DishOrderTable from './DishOrderTable';
 import { useState, useEffect, useCallback } from 'react';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import { queryDishOrderApi } from '@/queries/query_dishOrder';
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -93,7 +95,16 @@ export default function FullOrderView(props: DialogIDProps) {
   }, [getDishOrderData]);
 
   if (!dishOrderData)
-    return null;
+  {
+    return (
+    <Stack spacing={1}>
+      <Skeleton variant="text" />
+      <Skeleton variant="circular" width={40} height={40} />
+      <Skeleton variant="rectangular" width={210} height={118} />
+    </Stack>
+    );
+  }
+    
 
   /*
   const cryptoDishOrders: CryptoDishOrder[] = [
