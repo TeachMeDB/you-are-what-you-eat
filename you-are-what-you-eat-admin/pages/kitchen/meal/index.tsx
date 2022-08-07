@@ -9,7 +9,9 @@ import AllMealInfoes from '@/content/Kitchen/Meal/MealInfo';
 
 import { mealInfoApi } from '@/queries/meal';
 
-function mealInfo(mealinfo) {
+
+
+function mealInfo() {
     return (
         <>
             <Head>
@@ -24,12 +26,15 @@ function mealInfo(mealinfo) {
                     direction="row"
                     justifyContent="center"
                     alignItems="stretch"
-                    spacing={3}
+                    spacing={{ xs: 5, md: 3 }}
                 >
-                    <Grid item xs={12}>
+                    <Grid item xs={12} >
                         <AllMealInfoes />
                     </Grid>
+
                 </Grid>
+
+
             </Container>
             <Footer />
         </>

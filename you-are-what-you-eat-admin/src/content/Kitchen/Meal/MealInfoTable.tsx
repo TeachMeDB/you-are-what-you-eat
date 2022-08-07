@@ -85,10 +85,7 @@ const ButtonSearch = styled(Button)(
 
 const MealInfoTable = () => {
 
-    const idInputChange = (e) => {
 
-        m.id = e.target.value;
-    }
     const nameInputChange = (e) => {
         m.dis_name = e.target.value;
     }
@@ -157,8 +154,11 @@ const MealInfoTable = () => {
     const handleSearchChange = (e) => {
         Search = e.target.value;
         MealInfoes.map((item) => {
-            if (item.dis_name.indexOf(Search) != -1)
+            if (item.dis_name === (Search)) {
+                console.log(item);
                 newM.push(item);
+            }
+
         })
     }
     const handleSearchClick = () => {
@@ -294,15 +294,7 @@ const MealInfoTable = () => {
                                                 <DialogTitle>菜品信息</DialogTitle>
                                                 <DialogContent>
 
-                                                    <TextField
-                                                        autoFocus
-                                                        margin="dense"
-                                                        id="id"
-                                                        label="新的菜品编号"
-                                                        fullWidth
-                                                        variant="standard"
-                                                        onChange={idInputChange}
-                                                    />
+
                                                     <TextField
                                                         autoFocus
                                                         margin="dense"
@@ -343,20 +335,22 @@ const MealInfoTable = () => {
                                                 <DialogActions>
                                                     <Button onClick={handleClose}>取消</Button>
                                                     <Button onClick={() => {
+                                                        m.id = mealInfo.id;
+                                                        console.log(m);
                                                         const conduct = async () => {
                                                             return mealInfoApi.updateMeal(m);
                                                         }
 
                                                         conduct().then((value) => {
 
-                                                            alert("成功：" + value);
+                                                            alert("修改成功：" + value);
 
                                                         }).catch((value) => {
 
-                                                            alert("失败：" + value);
+                                                            alert("修改失败：" + value);
                                                         });
 
-                                                    }}>确定</Button>
+                                                    }} href="javascript:location.reload(true)">确定</Button>
                                                 </DialogActions>
                                             </Dialog>
                                             <Tooltip title="删除" arrow>

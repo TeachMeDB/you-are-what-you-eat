@@ -4,9 +4,8 @@ import { Grid } from '@mui/material';
 import { CurOrder } from "@/models/cur_order";
 
 
-export default function CurOrders(curorders: CurOrder) {
-    let arr = Object.values(curorders);
-    console.log(arr[0].curorder);
+export default function CurOrders() {
+
     return (
 
         <>
@@ -21,7 +20,7 @@ export default function CurOrders(curorders: CurOrder) {
                     <CurOrderSummary />
                 </Grid>
                 <Grid item xs={12}>
-                    <CurOrderTable CurOrders={arr[0].curorder} />
+                    <CurOrderTable />
                 </Grid>
             </Grid>
         </>

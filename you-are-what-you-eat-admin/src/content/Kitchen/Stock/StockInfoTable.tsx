@@ -53,10 +53,7 @@ const applyPagination = (
 
 
 
-interface StockInfoTableProps {
-    className?: string;
-    stockInfoes: StockInfo[];
-}
+
 
 const OutlinedInputWrapper = styled(OutlinedInput)(
     ({ theme }) => `

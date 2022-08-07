@@ -55,7 +55,7 @@ export default function CheckList(curOrder: CurOrder) {
     return (
         <Card>
             <div>
-                <FormControlLabel control={<Switch defaultChecked />} label="        开始处理" />
+
                 <CardHeader title={curOrder.order_id} />
             </div>
 

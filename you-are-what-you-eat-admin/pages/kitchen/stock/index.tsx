@@ -7,8 +7,7 @@ import Footer from '@/components/Footer';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import PageHeader from '@/content/Kitchen/Stock/PageHeader';
 import AllStockInfoes from '@/content/Kitchen/Stock/StockInfo';
-import { stockInfoApi } from '@/queries/stock';
-import { StockInfo } from '@/models/stock_info';
+
 
 function stockInfo() {
 

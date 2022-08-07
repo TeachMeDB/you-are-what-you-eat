@@ -155,7 +155,7 @@ function CurOrderSummary() {
     fill: {
       opacity: 1
     },
-    labels: ['制作中', '已完成'],
+    labels: ['未完成', '已完成'],
     legend: {
       labels: {
         colors: theme.colors.alpha.trueWhite[100]
@@ -264,7 +264,7 @@ function CurOrderSummary() {
                       <Brightness1Icon fontSize="large" color="warning" />
                     </ListItemAvatarWrapper>
                     <ListItemText
-                      primary="制作中"
+                      primary="未完成"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
                       secondary={(AllDishes - AllFinishedDishes).toString()}
                       secondaryTypographyProps={{
