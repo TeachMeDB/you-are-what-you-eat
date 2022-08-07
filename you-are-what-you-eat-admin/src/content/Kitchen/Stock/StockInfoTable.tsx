@@ -87,13 +87,13 @@ const StockInfoesTable = () => {
 
     const getAllData = useCallback(async () => {
         try {
-            console.log(stockInfoApi);
-            let MealInfoes = await stockInfoApi.getStockInfo();
+
+            let stockInfoes = await stockInfoApi.getStockInfo();
             if (isMountedRef()) {
-                setStockInfoes(MealInfoes);
+                setStockInfoes(stockInfoes);
             }
         } catch (err) {
-            console.error(err);
+            alert(err);
         }
     }, [isMountedRef]);
 
@@ -147,7 +147,7 @@ const StockInfoesTable = () => {
         s = e.target.value;
 
     }
-    console.log(StockInfoes);
+
     return (
         <Card>
             {(

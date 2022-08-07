@@ -98,7 +98,7 @@ const CurOrderTable: FC<CurOrderTableProps> = ({ CurOrders }) => {
                         {paginatedPromotions.map((i) => {
                             return (
 
-                                <Grid item xs={4}>
+                                <Grid item xs={3}>
                                     <CheckList
                                         order_id={i.order_id}
                                         order_status={i.order_status}
@@ -120,7 +120,7 @@ const CurOrderTable: FC<CurOrderTableProps> = ({ CurOrders }) => {
                     onRowsPerPageChange={handleLimitChange}
                     page={page}
                     rowsPerPage={limit}
-                    rowsPerPageOptions={[6, 12, 18, 24]}
+                    rowsPerPageOptions={[8, 16, 24]}
                 />
             </Box>
 

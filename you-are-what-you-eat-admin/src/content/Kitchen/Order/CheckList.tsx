@@ -8,10 +8,15 @@ import { Card, CardHeader, Divider, CardContent } from '@mui/material';
 import {
     LinearProgress,
     styled,
+    FormControlLabel
 } from '@mui/material';
 
 import { curOrderApi } from '@/queries/cur_order';
 import DishOrderTable from '@/content/Management/Transactions/DishOrderTable';
+
+
+
+
 
 const LinearProgressWrapper = styled(LinearProgress)(
     ({ theme }) => `
@@ -49,7 +54,11 @@ export default function CheckList(curOrder: CurOrder) {
     }
     return (
         <Card>
-            <CardHeader title={curOrder.order_id} />
+            <div>
+                <FormControlLabel control={<Switch defaultChecked />} label="        开始处理" />
+                <CardHeader title={curOrder.order_id} />
+            </div>
+
             <Divider />
             <CardContent>
                 <List
@@ -58,7 +67,7 @@ export default function CheckList(curOrder: CurOrder) {
                     {
                         curOrder.dish.map((item) =>
                             <ListItem divider>
-                                <ListItemText id={item.dish_name} primary={item.dish_name} />
+                                <ListItemText id={item.dish_name} primary={item.dish_name + "    备注：xxxxxxxxx"} />
 
                                 <Switch
 
