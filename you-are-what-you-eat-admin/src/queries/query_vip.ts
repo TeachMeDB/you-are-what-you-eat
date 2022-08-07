@@ -3,7 +3,130 @@ import { CryptoVip,CryptoAllVip } from "@/models/crypto_vip";
 import {GetApi,PostApi} from "@/utils/requests"
 
 class QueryVipApi {
-    public getVip: () => Promise<CryptoAllVip> = async () => {
+    public getVip: () => Promise<CryptoAllVip> = async () => {        
+        try {
+          //const r = await (await fetch('http://106.14.212.200:8000/app/api/VIP/GetAllVIPInfo')).text();
+          //console.log(JSON.parse(r));
+          //console.log(data);
+          //let rawData: CryptoAllVip =JSON.parse(r) as CryptoAllVip;
+          const rawData = (await GetApi("VIP/GetAllVIPInfo",)).data;
+          //console.log("rawData");
+          //console.log(rawData);
+          rawData.summary.options=
+          {
+            chart: {
+              type: 'bar',
+              height: 350,
+              stacked: true,
+              toolbar: {
+                show: true
+              },
+              zoom: {
+                enabled: true
+              }
+            },
+            responsive: 
+            [{
+              breakpoint: 480,
+              options: {
+                legend: {
+                  position: 'bottom',
+                  offsetX: -10,
+                  offsetY: 0
+                }
+              }
+            }],
+            plotOptions: 
+            {
+              bar: {
+                horizontal: false,
+                borderRadius: 10
+              },
+            },
+            xaxis: 
+            {
+              type: 'text',
+              categories: rawData.summary.options.xaxis.categories,
+            },
+            legend: 
+            {
+              position: 'right',
+              offsetY: 40
+            },
+            fill: 
+            {
+              opacity: 1
+            }    
+          }
+
+          rawData.summary2.options=
+          {
+            chart: {
+              type: 'bar',
+              height: 350,
+              stacked: true,
+              toolbar: {
+                show: true
+              },
+              zoom: {
+                enabled: true
+              }
+            },
+            responsive: 
+            [{
+              breakpoint: 480,
+              options: {
+                legend: {
+                  position: 'bottom',
+                  offsetX: -10,
+                  offsetY: 0
+                }
+              }
+            }],
+            plotOptions: 
+            {
+              bar: {
+                horizontal: false,
+                borderRadius: 10
+              },
+            },
+            xaxis: 
+            {
+              type: 'text',
+              categories: rawData.summary2.options.xaxis.categories,
+            },
+            legend: 
+            {
+              position: 'right',
+              offsetY: 40
+            },
+            fill: 
+            {
+              opacity: 1
+            }    
+          }
+
+          return rawData;
+      } 
+      catch(err) {
+          console.log(err);
+          return null;
+      }
+
+      //  return Promise.resolve(data); 
+    }
+
+    public editVip: (vip: CryptoVip) => Promise<string> = async (vip) => {
+      const r = (await (PostApi("VIP/PostUpdateVIP", vip)));
+      return r.statusText;
+  }
+
+}
+
+export const queryVipApi = new QueryVipApi();
+
+
+/*
         const data:CryptoAllVip = 
         {
           summary:
@@ -160,122 +283,4 @@ class QueryVipApi {
             }
           ]
         };
-
-        
-        try {
-          const r = await (await fetch('http://106.14.212.200:8000/app/api/VIP/GetAllVIPInfo')).text();
-          console.log(JSON.parse(r));
-          console.log(data);
-          let rawData: CryptoAllVip =JSON.parse(r) as CryptoAllVip;
-          rawData.summary.options=
-          {
-            chart: {
-              type: 'bar',
-              height: 350,
-              stacked: true,
-              toolbar: {
-                show: true
-              },
-              zoom: {
-                enabled: true
-              }
-            },
-            responsive: 
-            [{
-              breakpoint: 480,
-              options: {
-                legend: {
-                  position: 'bottom',
-                  offsetX: -10,
-                  offsetY: 0
-                }
-              }
-            }],
-            plotOptions: 
-            {
-              bar: {
-                horizontal: false,
-                borderRadius: 10
-              },
-            },
-            xaxis: 
-            {
-              type: 'text',
-              categories: rawData.summary.options.xaxis.categories,
-            },
-            legend: 
-            {
-              position: 'right',
-              offsetY: 40
-            },
-            fill: 
-            {
-              opacity: 1
-            }    
-          }
-
-          rawData.summary2.options=
-          {
-            chart: {
-              type: 'bar',
-              height: 350,
-              stacked: true,
-              toolbar: {
-                show: true
-              },
-              zoom: {
-                enabled: true
-              }
-            },
-            responsive: 
-            [{
-              breakpoint: 480,
-              options: {
-                legend: {
-                  position: 'bottom',
-                  offsetX: -10,
-                  offsetY: 0
-                }
-              }
-            }],
-            plotOptions: 
-            {
-              bar: {
-                horizontal: false,
-                borderRadius: 10
-              },
-            },
-            xaxis: 
-            {
-              type: 'text',
-              categories: rawData.summary2.options.xaxis.categories,
-            },
-            legend: 
-            {
-              position: 'right',
-              offsetY: 40
-            },
-            fill: 
-            {
-              opacity: 1
-            }    
-          }
-
-          return rawData;
-      } 
-      catch(err) {
-          console.log(err);
-          return null;
-      }
-
-      //  return Promise.resolve(data); 
-    }
-
-    public editVip: (vip: CryptoVip) => Promise<string> = async (vip) => {
-      const r = (await (PostApi("VIP/PostUpdateVIP", vip)));
-      return r.statusText;
-  }
-
-}
-
-export const queryVipApi = new QueryVipApi();
+*/

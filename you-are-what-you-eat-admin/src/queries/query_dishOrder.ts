@@ -6,13 +6,17 @@ class QueryDishOrderApi {
         
         
         try {
-            const r = await (await 
+            /*const r = await (await 
                 fetch('http://106.14.212.200:8000/app/api/Order/GetOrderDish?order_id='+id)                
-                ).text();
+                ).text();*/
             //console.log(JSON.parse(r));
             //console.log(data);
 
-            const data=JSON.parse(r)
+            const data = (await GetApi("Order/GetOrderDish", {
+                order_id: id
+            })).data;
+
+            //const data=JSON.parse(r)
 
             const dishes = await Promise.all(data.data.map(async (d) => {
                 return {

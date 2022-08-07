@@ -8,10 +8,11 @@ class QueryTableApi {
         
 
         try {
-          const r = await (await fetch('http://106.14.212.200:8000/app/api/Table/GetAllTable')).text();
+          //const r = await (await fetch('http://106.14.212.200:8000/app/api/Table/GetAllTable')).text();
           //console.log(JSON.parse(r));
           //console.log(data);
-          let rawData: CryptoAllTable =JSON.parse(r) as CryptoAllTable;          
+          //let rawData: CryptoAllTable =JSON.parse(r) as CryptoAllTable;      
+          const rawData = (await GetApi("Table/GetAllTable",)).data;    
           rawData.summary2.options=
           {
             chart: {
