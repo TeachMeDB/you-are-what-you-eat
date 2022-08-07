@@ -212,7 +212,7 @@ export default function IndividualTable(props:IndiTableProps) {
                     size="small"
                     color='error'
                     //disabled    
-                    onClick={handleClickOpen}                  
+                    //onClick={handleClickOpen}                  
                     >{"已有"+props.customer_number+"人使用"}</Button>
                       }
                     

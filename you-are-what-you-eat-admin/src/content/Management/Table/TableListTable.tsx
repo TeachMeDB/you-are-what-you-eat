@@ -88,7 +88,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoTable }) => {
   );
   const selectedBulkActions = selectedCryptoTable.length > 0;
   const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(100);
+  const [limit, setLimit] = useState<number>(24);
   const [filters, setFilters] = useState<Filters>({
     status: null,
     search: null
@@ -250,7 +250,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoTable }) => {
           onRowsPerPageChange={handleLimitChange}
           page={page}
           rowsPerPage={limit}
-          rowsPerPageOptions={[100, 200, 300]}
+          rowsPerPageOptions={[24, 48, 96]}
         />
       </Box>
     </Card>
