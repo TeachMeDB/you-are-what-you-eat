@@ -165,6 +165,7 @@ export default function FullOrderView(props: DialogIDProps) {
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
+        maxWidth={"md"}
       >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
           订单：{props.id}
