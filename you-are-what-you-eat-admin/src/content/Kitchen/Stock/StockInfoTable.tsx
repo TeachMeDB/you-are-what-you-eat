@@ -144,7 +144,7 @@ const StockInfoesTable = () => {
         s = e.target.value;
 
     }
-
+    console.log(StockInfoes);
     return (
         <Card>
             {(
@@ -190,6 +190,7 @@ const StockInfoesTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
+
                         {paginatedPromotions.map((stockInfo) => {
                             return (
                                 <TableRow
@@ -250,7 +251,7 @@ const StockInfoesTable = () => {
                                             gutterBottom
                                             noWrap
                                         >
-                                            {stockInfo.surplus}
+                                            {(stockInfo.surplus)}
 
                                         </Typography>
 
@@ -290,6 +291,10 @@ const StockInfoesTable = () => {
                                                 <Button onClick={handleClose}>退出</Button>
                                                 <Button onClick={() => {
                                                     const conduct = async () => {
+                                                        console.log({
+                                                            record_id: (stockInfo.record_id),
+                                                            surplus: parseInt(s)
+                                                        });
                                                         return stockInfoApi.updateStock(
                                                             {
                                                                 record_id: (stockInfo.record_id),

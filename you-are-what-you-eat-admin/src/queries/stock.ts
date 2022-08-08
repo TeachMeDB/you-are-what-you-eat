@@ -4,7 +4,7 @@ import {
     SurplusUpload
 } from '@/models/stock_info'
 
-import { GetApi, PostApi } from "@/utils/requests"
+import { GetApi, PostApi, DeleteApi } from "@/utils/requests"
 
 
 class StockInfoApi {
@@ -33,7 +33,7 @@ class StockInfoApi {
         }))).statusText as string
     }
     public delStock = async (record_id: number) => {
-        return (await (PostApi("/IngredientRecords/Delete", {
+        return (await (DeleteApi("/IngredientRecords/Delete", {
             record_id
         }))).statusText as string
     }
