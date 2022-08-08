@@ -12,7 +12,7 @@ class QueryTableApi {
           //console.log(JSON.parse(r));
           //console.log(data);
           //let rawData: CryptoAllTable =JSON.parse(r) as CryptoAllTable;      
-          const rawData = (await GetApi("Table/GetAllTable",)).data;    
+          const rawData = (await GetApi("Table/GetAllTable",)).data as CryptoAllTable;    
           rawData.summary2.options=
           {
             chart: {
@@ -58,6 +58,17 @@ class QueryTableApi {
             {
               opacity: 1
             }    
+          }
+          let tmp=rawData.summary.available_count;
+          
+          //后端的available_count和occupied_count返回反了，这里正过来
+          rawData.summary=
+          {
+            available_count:rawData.summary.occupied_count,
+            occupied_count:tmp,
+            today_customer:rawData.summary.today_customer,
+            total_count:rawData.summary.total_count,
+            total_customer:rawData.summary.total_customer
           }
 
           return rawData;
