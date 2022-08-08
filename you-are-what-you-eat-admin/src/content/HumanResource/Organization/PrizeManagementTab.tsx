@@ -41,10 +41,12 @@ import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useRefMounted } from '@/hooks/useRefMounted';
-import { Award, EmployeeEntity, PrizeEntity, Salary } from '@/models/employee';
+import { Award, AwardUpload, EmployeeEntity, PrizeEntity, PrizeUpload, Salary } from '@/models/employee';
 import { humanResourceApi } from '@/queries/employee';
 import { salaryApi } from '@/queries/salary';
 import { awardApi } from '@/queries/award';
+import { ApprovalRounded } from '@mui/icons-material';
+import { format } from 'date-fns';
 
 
 
@@ -81,7 +83,7 @@ function PrizeManagementTab() {
 
 
 
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (
@@ -100,6 +102,19 @@ function PrizeManagementTab() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+
+
+  const [uploadAward,setUploadAward]=useState<AwardUpload>({
+    level:"",
+    amount:0
+  })
+
+  const [uploadPrize,setUploadPrize]=useState<PrizeUpload>({
+    id:"",
+    level:"",
+    time: format(Date.now(),"yyyy-MM-dd HH:mm:ss")
+  })
 
   return (
     <Grid container spacing={3}>
@@ -205,11 +220,25 @@ function PrizeManagementTab() {
                     required
                     id="occupation"
                     label="奖励名"
+                    value={uploadAward.level}
+                    onChange={(event)=>{
+                      setUploadAward({
+                        amount:uploadAward.amount,
+                        level:event.target.value
+                      })
+                    }}
                   />
                   <TextField
                     required
                     id="amount"
                     label="金额"
+                    value={uploadAward.amount.toString()}
+                    onChange={(event)=>{
+                      setUploadAward({
+                        level:uploadAward.level,
+                        amount:parseInt(event.target.value)
+                      })
+                    }}
                   />
                 </div>
 
@@ -217,7 +246,21 @@ function PrizeManagementTab() {
                 
               </Box>
               <Grid item xs={3} textAlign="end">
-                <Button variant="contained" size="large">
+                <Button variant="contained" size="large"
+                onClick={()=>{
+                  const conduct=async()=>{
+                    return await awardApi.postAward(uploadAward);
+                  }
+
+                  conduct().then((value)=>{
+                    alert("添加结果："+value);
+                    window.location.reload();
+                  }).catch((value)=>{
+                    alert("添加失败："+value)
+                  })
+
+
+                }}>
                 <AddBoxIcon/>确认添加
                 </Button>
               </Grid>
@@ -250,23 +293,59 @@ function PrizeManagementTab() {
                     required
                     id="id"
                     label="员工号"
+                    value={uploadPrize.id}
+                    onChange={(event)=>{
+                      setUploadPrize({
+                        id:event.target.value,
+                        level:uploadPrize.level,
+                        time: uploadPrize.time
+                      })
+                    }}
                   />
 
                   <TextField
                     required
                     id="occupation"
                     label="奖励名"
+                    value={uploadPrize.level}
+                    onChange={(event)=>{
+                      setUploadPrize({
+                        id:uploadPrize.id,
+                        level:event.target.value,
+                        time: uploadPrize.time
+                      })
+                    }}
                   />
                   <TextField
                     disabled
                     id="outlined-disabled"
-                    defaultValue={new Date().toISOString()}
+                    value={uploadPrize.time}
                   />
                 
                 </div>
               </Box>
               <Grid item xs={3} textAlign="end">
-                <Button variant="contained" size="large">
+                <Button variant="contained" size="large"
+                onClick={()=>{
+
+                  const conduct=async()=>{
+
+                    return await awardApi.postPrize(uploadPrize);
+
+
+                  }
+                  
+                  conduct().then((value)=>{
+                    alert("添加成功："+value);
+
+                    window.location.reload();
+                  }).catch((value)=>{
+
+                    alert("添加失败："+value);
+
+                  })
+
+                }}>
                 <AddCircleIcon/> 确认添加
                 </Button>
               </Grid>
@@ -303,7 +382,7 @@ function PrizeManagementTab() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {prizes.map((prize) => (
+                {prizes.slice((page)*rowsPerPage,(page+1)*rowsPerPage).map((prize) => (
                   <TableRow key={prize.id} hover>
                     <TableCell>{prize.id}</TableCell>
                     <TableCell>{prize.name}</TableCell>
@@ -319,7 +398,7 @@ function PrizeManagementTab() {
           <Box p={2}>
             <TablePagination
               component="div"
-              count={100}
+              count={prizes.length}
               page={page}
               onPageChange={handleChangePage}
               rowsPerPage={rowsPerPage}

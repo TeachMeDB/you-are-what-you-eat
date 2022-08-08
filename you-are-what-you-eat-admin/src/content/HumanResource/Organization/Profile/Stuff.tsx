@@ -87,8 +87,8 @@ function Stuff({employees}:{user:EmployeeDetail,employees:EmployeeEntity[]}) {
 
 
 
-  const [page, setPage] = useState(2);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(6);
 
   const handleChangePage = (
     _event: MouseEvent<HTMLButtonElement> | null,
@@ -110,7 +110,7 @@ function Stuff({employees}:{user:EmployeeDetail,employees:EmployeeEntity[]}) {
             <Divider />
             <Box p={2}>
                 <Grid container spacing={0}>
-                    {employees.map((stuff:EmployeeEntity) => (
+                    {employees.slice((page)*rowsPerPage,(page+1)*rowsPerPage).map((stuff:EmployeeEntity) => (
                         <Grid key={stuff.id} item xs={12} sm={6} lg={4}>
                             <Box p={3} display="flex" alignItems="flex-start">
                                 <Avatar src={stuff.avatar} />
@@ -133,10 +133,11 @@ function Stuff({employees}:{user:EmployeeDetail,employees:EmployeeEntity[]}) {
             <Box p={2}>
           <TablePagination
             component="div"
-            count={100}
+            count={employees.length}
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[6]}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Box>

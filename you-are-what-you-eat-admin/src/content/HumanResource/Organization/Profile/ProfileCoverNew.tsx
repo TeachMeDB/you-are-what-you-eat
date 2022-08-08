@@ -159,7 +159,7 @@ const ProfileCoverNew = ({ upload, setSelectedUpload }: { upload: EmployeeUpload
   return (
     <>
       <CardCover>
-        <CardMedia key={upload.id} image={upload.cover} />
+        <CardMedia image={upload.cover} />
         <CardCoverAction>
           <Input accept="image/*" id="change-cover"
             type="file"
@@ -197,7 +197,7 @@ const ProfileCoverNew = ({ upload, setSelectedUpload }: { upload: EmployeeUpload
         </CardCoverAction>
       </CardCover>
       <AvatarWrapper>
-        <Avatar key={upload.id} variant="rounded" alt={upload.name} src={upload.avatar} />
+        <Avatar variant="rounded" alt={upload.name} src={upload.avatar} />
         <ButtonUploadWrapper>
           <Input
             accept="image/*"

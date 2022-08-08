@@ -72,8 +72,8 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
 
 
 
-  const [page, setPage] = useState(2);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(6);
 
   const handleChangePage = (
     _event: MouseEvent<HTMLButtonElement> | null,
@@ -138,7 +138,7 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
                 <Box p={1.5}>
                   <Grid container direction="row">
 
-                    <Grid item xs={6}>
+                    <Grid item xs={5.75}>
                       {
                         (!selected.find((person)=> person.id===stuff.id)) && (
                           <Button
@@ -163,6 +163,7 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
                             }} 
                             variant="outlined"
                             size="small"
+                            fullWidth={true}
                             startIcon={<AddTwoToneIcon />
                           }
                           >
@@ -189,6 +190,7 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
                             }} 
                             variant="contained"
                             size="small"
+                            fullWidth={true}
                             startIcon={<RemoveIcon />}
                           >
                             移除待排
@@ -197,8 +199,8 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
                       }
                       
                     </Grid>
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs={5}>
+                    <Grid item xs={0.5}></Grid>
+                    <Grid item xs={5.75}>
                       <EmployeeSchedule person={stuff} week={new Date(startTime)}/>
                     </Grid>
                   </Grid>
@@ -215,10 +217,11 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
           {(occupation!=""&&place!=""&&availables.length>0)&&(<Box p={2}>
             <TablePagination
               component="div"
-              count={100}
+              count={availables.length}
               page={page}
               onPageChange={handleChangePage}
               rowsPerPage={rowsPerPage}
+              rowsPerPageOptions={[6]}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
           </Box>)}

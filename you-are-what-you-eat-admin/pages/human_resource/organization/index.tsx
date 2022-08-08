@@ -1,10 +1,10 @@
 import Head from 'next/head';
 import SidebarLayout from '@/layouts/SidebarLayout';
 
-import { Container, Tabs, Tab, Grid } from '@mui/material';
+import { Container, Tabs, Tab, Grid, Card, CardHeader, Divider, Typography, Button } from '@mui/material';
 import Footer from '@/components/Footer';
 import { styled } from '@mui/material/styles';
-
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import { useState, ChangeEvent, ReactChild, ReactFragment, ReactPortal, useCallback, useEffect } from 'react';
 
 import ProfileCover from '@/content/HumanResource/Organization/Profile/ProfileCover';
@@ -18,6 +18,13 @@ import PrizeManagementTab from '@/content/HumanResource/Organization/PrizeManage
 import EmployeeManagementTab from '@/content/HumanResource/Organization/EmployeeManagementTab';
 import { EmployeeDetail, EmployeeEntity } from '@/models/employee';
 import { humanResourceApi } from '@/queries/employee';
+import { scheduleApi } from '@/queries/schedule';
+import { endOfWeek, format, startOfWeek } from 'date-fns';
+import { ScheduleEntity } from '@/models/schedule';
+import Schedule  from '@/components/Schedule';
+
+
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const TabsWrapper = styled(Tabs)(
   () => `
@@ -30,7 +37,7 @@ const TabsWrapper = styled(Tabs)(
 const init_id:string="1001";
 
 
-function Organization( {user,employees} :{ user:EmployeeDetail,employees:EmployeeEntity[] }) {
+function Organization( {user,employees,schedules} :{ user:EmployeeDetail,employees:EmployeeEntity[],schedules:ScheduleEntity[] }) {
 
   const [currentTab, setCurrentTab] = useState<string>('SelfManagementTab');
 
@@ -72,6 +79,73 @@ function Organization( {user,employees} :{ user:EmployeeDetail,employees:Employe
             <QuickLink  user={user}/>
           </Grid>
         </Grid>
+
+      </Container>
+
+      <Container maxWidth="lg">
+        <Grid
+          container
+          direction="row"
+          alignItems="stretch"
+          spacing={3}
+        >
+          <Grid item xs={12}></Grid>
+        
+        <Grid item xs={12}>
+          <Card>
+
+            <CardHeader title={
+              
+                <Grid container >
+                  <Grid item xs={10}>
+                  
+                  <Typography variant="h3">
+                  <EventAvailableIcon /> 
+
+                   个人排班表
+                
+                  </Typography>
+
+                  </Grid>
+                  <Grid item xs={2}>
+                  <Button size="large"
+                  variant='contained'
+                  onClick={()=>{
+
+
+
+
+                    //这里有个比较麻烦的签到
+
+
+                  }}>
+                    < CheckCircleIcon/>
+                    今日签到</Button>
+                    
+                  </Grid>
+
+                </Grid>
+                
+              
+              } />
+            <Divider />
+            <Schedule schedules={schedules}/>
+
+
+            </Card>
+            
+
+        </Grid>
+
+          
+          
+
+
+        </Grid>
+
+        
+
+
 
       </Container>
 
@@ -125,5 +199,12 @@ export async function getServerSideProps() {
 
   const employees = await humanResourceApi.getEmployees();
 
-  return { props: { user,employees } }
+  let week=Date.now();
+
+  let start=startOfWeek(week);
+  let end=endOfWeek(week);
+
+  const schedules=await scheduleApi.getSchedule(format(start,"yyyy-MM-dd HH:mm:ss"),format(end,"yyyy-MM-dd HH:mm:ss"),user.id)
+
+  return { props: { user,employees,schedules } }
 }

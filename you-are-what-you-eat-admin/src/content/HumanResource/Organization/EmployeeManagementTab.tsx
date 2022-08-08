@@ -139,7 +139,7 @@ function EmployeeManagementTab() {
 
   const theme = useTheme();
 
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
 
@@ -203,8 +203,9 @@ function EmployeeManagementTab() {
               <TableHead>
                 <TableRow>
                   <TableCell>职位</TableCell>
-                  <TableCell>薪资</TableCell>
+                  
                   <TableCell>人数</TableCell>
+                  <TableCell>薪资</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -333,7 +334,7 @@ function EmployeeManagementTab() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {employees.map((employee) => (
+                {employees.slice((page)*rowsPerPage,(page+1)*rowsPerPage).map((employee) => (
                   <TableRow key={employee.id} hover>
                     <TableCell>{employee.id}</TableCell>
                     <TableCell>
@@ -392,7 +393,7 @@ function EmployeeManagementTab() {
           <Box p={2}>
             <TablePagination
               component="div"
-              count={100}
+              count={employees.length}
               page={page}
               onPageChange={handleChangePage}
               rowsPerPage={rowsPerPage}

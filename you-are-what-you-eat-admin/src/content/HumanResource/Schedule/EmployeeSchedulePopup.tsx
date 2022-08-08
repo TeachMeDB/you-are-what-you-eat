@@ -86,6 +86,7 @@ export default function EmployeeSchedule({person,week}:{person:Avaliable,week:Da
         size="small"
         startIcon={<PageviewIcon/>}
         onClick={handleClickOpen}
+        fullWidth={true}
       >
         查看日程
       </Button>

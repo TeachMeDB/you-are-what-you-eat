@@ -25,8 +25,10 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useRefMounted } from '@/hooks/useRefMounted';
-import { PayrollEntity, Salary } from '@/models/employee';
+import { PayrollEntity, PayrollUpload, Salary } from '@/models/employee';
 import { salaryApi } from '@/queries/salary';
+import { format } from 'date-fns'
+import { awardApi } from '@/queries/award';
 
 
 
@@ -60,7 +62,7 @@ function SalaryManagementTab() {
     getAllData();
   }, [getAllData]);
 
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (
@@ -77,6 +79,15 @@ function SalaryManagementTab() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+
+
+
+  const [upload,setUpload]=useState<PayrollUpload>({
+    id:"",
+    time:format(Date.now(),"yyyy-MM-dd HH:mm-ss")
+  } as PayrollUpload
+  )
 
 
   return (
@@ -102,8 +113,9 @@ function SalaryManagementTab() {
               <TableHead>
                 <TableRow>
                   <TableCell>职位</TableCell>
-                  <TableCell>薪资</TableCell>
+                  
                   <TableCell>人数</TableCell>
+                  <TableCell>薪资</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -122,7 +134,7 @@ function SalaryManagementTab() {
       </Grid>
 
 
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <Box pb={2}>
           <Typography variant="h3">添加新员工职位</Typography>
           <Typography variant="subtitle2">
@@ -165,7 +177,7 @@ function SalaryManagementTab() {
             </ListItem>
           </List>
         </Card>
-      </Grid>
+      </Grid> */}
 
       <Grid item xs={12}>
         <Box pb={2}>
@@ -191,18 +203,51 @@ function SalaryManagementTab() {
                     required
                     id="id"
                     label="员工号"
+                    value={upload.id}
+                    onChange={(event)=>{
+                     let upload={
+                        id:event.target.value,
+                        time: format(Date.now(),"yyyy-MM-dd HH:mm-ss")
+                      } as PayrollUpload;
+                      setUpload(upload);
+                    }}
                   />
                   <TextField
-                    key="gender"
                     disabled
                     id="outlined-disabled"
-                    defaultValue={new Date().toISOString()}
+                    value={format(Date.now(),"yyyy-MM-dd HH:mm-ss")}
                   />
                 
                 </div>
               </Box>
               <Grid item xs={3} textAlign="end">
-                <Button variant="contained" size="large">
+                <Button variant="contained" size="large"
+                onClick={()=>{
+
+
+                  const conduct=async ()=>{
+
+                    return await salaryApi.postPayroll(upload);
+
+                  }
+
+                  conduct().then((value)=>{
+
+
+                    alert("添加成功："+ value);
+
+                    window.location.reload();
+
+                  }).catch((value)=>{
+
+                    alert("添加失败："+value);
+
+
+                  })
+
+
+
+                }}>
                 <AddCircleIcon/> 确认添加
                 </Button>
               </Grid>
@@ -241,7 +286,7 @@ function SalaryManagementTab() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {payrolls.map((payroll) => (
+                {payrolls.slice((page)*rowsPerPage,(page+1)*rowsPerPage).map((payroll) => (
                   <TableRow key={payroll.id} hover>
                     <TableCell>{payroll.id}</TableCell>
                     <TableCell>{payroll.name}</TableCell>
@@ -257,7 +302,7 @@ function SalaryManagementTab() {
           <Box p={2}>
             <TablePagination
               component="div"
-              count={100}
+              count={payrolls.length}
               page={page}
               onPageChange={handleChangePage}
               rowsPerPage={rowsPerPage}
