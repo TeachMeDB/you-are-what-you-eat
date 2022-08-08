@@ -108,6 +108,7 @@ function PageHeader(refresh?: boolean, setRefresh?: Dispatch<SetStateAction<bool
     if (setRefresh && refresh) {
       setRefresh(!refresh)
     }
+    window.parent.location.reload();
   };
 
   return (
