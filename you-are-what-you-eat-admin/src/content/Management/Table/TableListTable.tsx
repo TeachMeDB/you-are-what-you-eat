@@ -88,7 +88,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoTable }) => {
   );
   const selectedBulkActions = selectedCryptoTable.length > 0;
   const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(100);
+  const [limit, setLimit] = useState<number>(24);
   const [filters, setFilters] = useState<Filters>({
     status: null,
     search: null
@@ -224,6 +224,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoTable }) => {
       )}
       <Divider />
 
+      <Box p={2}>    
       <Grid container spacing={1}>
       {paginatedCryptoTable.map((cryptoOrder) => {
               const isCryptoTableelected = selectedCryptoTable.includes(
@@ -241,6 +242,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoTable }) => {
               );
             })}
       </Grid>
+      </Box>
 
       <Box p={2}>
         <TablePagination
@@ -250,7 +252,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoTable }) => {
           onRowsPerPageChange={handleLimitChange}
           page={page}
           rowsPerPage={limit}
-          rowsPerPageOptions={[100, 200, 300]}
+          rowsPerPageOptions={[24, 48, 96]}
         />
       </Box>
     </Card>

@@ -11,12 +11,14 @@ import Typography from '@mui/material/Typography';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import {useTheme} from '@mui/material';
 
-import { CryptoDishOrder,CryptoDishOrderStatus } from '@/models/crypto_dishOrder';
+import { CryptoDishOrder,CryptoDishOrderStatus,CryptoAllDishOrder } from '@/models/crypto_dishOrder';
 import { Grid } from '@mui/material';
 import DishOrderTable from './DishOrderTable';
 import { useState, useEffect, useCallback } from 'react';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import { queryDishOrderApi } from '@/queries/query_dishOrder';
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -74,7 +76,7 @@ export default function FullOrderView(props: DialogIDProps) {
   const theme = useTheme();
 
   const isMountedRef = useRefMounted();
-  const [dishOrderData, setDishOrderData] = useState<CryptoDishOrder[]>([]);
+  const [dishOrderData, setDishOrderData] = useState<CryptoAllDishOrder>(null);
 
   const getDishOrderData = useCallback(async () => {
     try {
@@ -91,6 +93,16 @@ export default function FullOrderView(props: DialogIDProps) {
   useEffect(() => {
     getDishOrderData();
   }, [getDishOrderData]);
+
+  if (!dishOrderData)
+  {
+    return (
+    <Stack spacing={1}>
+      <Skeleton animation="wave" variant="text"/>
+    </Stack>
+    );
+  }
+    
 
   /*
   const cryptoDishOrders: CryptoDishOrder[] = [
@@ -151,6 +163,7 @@ export default function FullOrderView(props: DialogIDProps) {
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
+        maxWidth={"md"}
       >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
           订单：{props.id}
@@ -163,7 +176,7 @@ export default function FullOrderView(props: DialogIDProps) {
           spacing={4}
         >
           <Grid item xs={12}>
-            <DishOrderTable cryptoDishOrder={dishOrderData}/>
+            <DishOrderTable cryptoDishOrder={dishOrderData.data}/>
           </Grid>
         </Grid> 
       </BootstrapDialog>

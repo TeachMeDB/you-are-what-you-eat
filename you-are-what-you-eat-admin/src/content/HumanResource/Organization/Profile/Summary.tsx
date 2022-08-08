@@ -81,7 +81,10 @@ function Summary({user}:{user:EmployeeDetail}) {
                             >
                                 薪资金额
                             </Typography>
-                            <Typography variant="h2">{user.payrolls[0].amount}</Typography>
+                            <Typography variant="h2">
+                                {user.payrolls.length>0&&(user.payrolls[0].amount)}
+                                {user.payrolls.length<=0&&("未知")}
+                            </Typography>
                         </Box>
                         <Box>
                             <Typography
@@ -91,7 +94,10 @@ function Summary({user}:{user:EmployeeDetail}) {
                             >
                                 最近发薪日
                             </Typography>
-                            <Typography variant="h4">{user.payrolls[0].pay_datetime.split(' ')[0]}</Typography>
+                            <Typography variant="h4">
+                                {user.payrolls.length>0&&(user.payrolls[0].pay_datetime.split(' ')[0])}
+                                {user.payrolls.length<=0&&("未知")}
+                            </Typography>
                         </Box>
                     </Box>
                 </Box>
@@ -113,14 +119,17 @@ function Summary({user}:{user:EmployeeDetail}) {
                             >
                                 奖金累计
                             </Typography>
-                            <Typography variant="h2">{user.prizes.reduce((pre,cur)=>{
+                            <Typography variant="h2">{
+                                user.prizes.length>0?
+                                user.prizes.reduce((pre,cur)=>{
                                     let prize:Prize={
                                         amount: pre.amount+cur.amount,
                                         level:"yaya",
                                         prize_datetime:"2021"
                                     };
                                     return prize;
-                                }).amount}
+                                }).amount :0
+                                }
                             </Typography>
                         </Box>
                         <Box>

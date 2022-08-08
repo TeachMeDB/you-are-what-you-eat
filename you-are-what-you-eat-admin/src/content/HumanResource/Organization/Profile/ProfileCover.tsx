@@ -106,34 +106,9 @@ const ProfileCover = ({user}:{user:EmployeeDetail}) => {
       </Box>
       <CardCover>
         <CardMedia image={user.cover} />
-        <CardCoverAction>
-          <Input accept="image/*" id="change-cover" multiple type="file" />
-          <label htmlFor="change-cover">
-            <Button
-              startIcon={<UploadTwoToneIcon />}
-              variant="contained"
-              component="span"
-            >
-              更改封面
-            </Button>
-          </label>
-        </CardCoverAction>
       </CardCover>
       <AvatarWrapper>
         <Avatar variant="rounded" alt={user.name} src={user.avatar} />
-        <ButtonUploadWrapper>
-          <Input
-            accept="image/*"
-            id="icon-button-file"
-            name="icon-button-file"
-            type="file"
-          />
-          <label htmlFor="icon-button-file">
-            <IconButton component="span" color="primary">
-              <UploadTwoToneIcon />
-            </IconButton>
-          </label>
-        </ButtonUploadWrapper>
       </AvatarWrapper>
       <Box py={2} pl={2} mb={3}>
         <Typography gutterBottom variant="h4">
@@ -149,7 +124,7 @@ const ProfileCover = ({user}:{user:EmployeeDetail}) => {
           员工出生日期 ： {user.birthday} | 年龄 ： {differenceInYears(Date.now(),Date.parse(user.birthday))}岁
         </Typography>
 
-        <Grid spacing={3} direction="column">
+        <Grid>
 
           <Box
             display={{ xs: 'block', md: 'flex' }}

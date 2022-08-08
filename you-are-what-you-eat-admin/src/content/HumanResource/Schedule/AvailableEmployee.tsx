@@ -11,7 +11,8 @@ import {
   lighten,
   styled,
   TablePagination,
-  useTheme
+  useTheme,
+  Stack
 } from '@mui/material';
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
@@ -24,7 +25,7 @@ import { useState, MouseEvent, ChangeEvent, useCallback, useEffect } from 'react
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import EmployeeSchedule from './EmployeeSchedulePopup';
 import { useRefMounted } from '@/hooks/useRefMounted';
-import { Avaliable, ScheduleEntity } from '@/models/schedule';
+import { Avaliable} from '@/models/schedule';
 import { scheduleApi } from '@/queries/schedule';
 
 const RootWrapper = styled(Box)(
@@ -35,7 +36,13 @@ const RootWrapper = styled(Box)(
 );
 
 
-function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeople}) {
+function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeople}:{
+  startTime:string,
+  endTime:string,
+  place:string,
+  occupation:string,
+  handleSelectPeople:(value:Avaliable[])=>void
+}) {
 
   const [selected,setSelected]=useState<Avaliable[]>([]);
 
@@ -45,8 +52,7 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
   const getAllData = useCallback(async () => {
 
 
-    console.log("start of week",startTime);
-    console.log("end of week",endTime);
+    console.log("avaliable request:",place,occupation,startTime,endTime);
 
     try {
 
@@ -91,7 +97,28 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
         <Divider />
         <Box p={2}>
           <Grid container spacing={0}>
-            {availables.map((stuff: Avaliable) => (
+
+            {(occupation===""||place===""||startTime===""||endTime===""||availables.length===0)&&
+              (
+              
+                <Grid container direction="row" spacing={0}>
+                  <Grid xs={12} item>
+                    <Typography variant='h2'>请筛选职位和地点</Typography>
+                  </Grid>
+                  
+                   <Grid xs={12} item>
+                   
+                   </Grid>
+                   <Grid xs={12} item>
+                   <img alt="404" height={520} src="/static/images/status/maintenance.svg"/>
+                   </Grid>
+                 
+              
+                </Grid>)
+            }
+          
+            {(occupation!=""&&place!=""&&startTime!=""&&endTime!=""&&availables.length>0)&&(availables.map((stuff: Avaliable) =>{
+              return (
               <Grid key={stuff.id} item xs={12} sm={6} lg={4}>
                 <Box p={1.5} display="flex" alignItems="flex-start">
                   <Avatar src={stuff.avatar} />
@@ -109,7 +136,7 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
 
                 </Box>
                 <Box p={1.5}>
-                  <Grid container direction="row" xs={12}>
+                  <Grid container direction="row">
 
                     <Grid item xs={6}>
                       {
@@ -128,8 +155,6 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
                                   }] as Avaliable[]);
 
                                 setSelected(another);
-
-                                console.log(another);
       
                                 handleSelectPeople(another);
 
@@ -141,7 +166,7 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
                             startIcon={<AddTwoToneIcon />
                           }
                           >
-                            添加到待班表列
+                            添加待排
                           </Button>
                         )
                       }
@@ -156,8 +181,6 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
                                 let another=selected.filter((person)=>person.id!=stuff.id);
 
                                 setSelected(another);
-
-                                console.log(another);
       
                                 handleSelectPeople(another);
 
@@ -168,7 +191,7 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
                             size="small"
                             startIcon={<RemoveIcon />}
                           >
-                            从待班表列移除
+                            移除待排
                           </Button>
                         )
                       }
@@ -186,19 +209,19 @@ function AvailableEmployee({startTime,endTime,place,occupation,handleSelectPeopl
                 <Box p={2}></Box>
 
               </Grid>
-            ))}
+            );}))}
           </Grid>
 
-          <Box p={2}>
+          {(occupation!=""&&place!=""&&availables.length>0)&&(<Box p={2}>
             <TablePagination
-              component="p"
+              component="div"
               count={100}
               page={page}
               onPageChange={handleChangePage}
               rowsPerPage={rowsPerPage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
-          </Box>
+          </Box>)}
 
 
         </Box>

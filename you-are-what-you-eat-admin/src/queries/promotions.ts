@@ -4,7 +4,8 @@ import {
     SelectableDish,
     PromotionUpload
 } from '@/models/promotion';
-import { GetApi, PostApi } from 'src/utils/requests';
+import { GetApi, PostApi, DeleteApi } from 'src/utils/requests';
+import { getTitle, getDesc } from 'src/utils/array';
 
 class PromotionsApi {
     // Almost OK
@@ -41,10 +42,10 @@ class PromotionsApi {
         const promotions = r.map((promotion) => {
             return {
                 id: promotion.promotion_id,
-                name: promotion.description,
+                name: getTitle(promotion.description),
                 start: new Date(promotion.begin),
                 end:   new Date(promotion.end),
-                description: promotion.description,
+                description: getDesc(promotion.description),
                 dishes: (promotion.dishes.map((dish) => {
                     return {
                         name: dish.dish.dish_name,
@@ -184,6 +185,13 @@ class PromotionsApi {
     public postNewPromotion: (promotion: PromotionUpload) => Promise<string> = async (promotion) => {
         const r = (await (PostApi("Promotions", promotion)));
         return r.statusText;
+    }
+
+
+    public deletePromotionById: (promotion_id: string) => Promise<string> = async (promotion_id) => {
+        return (await (DeleteApi("Promotions/DelPromotionById", {
+            id: promotion_id
+        })) ).statusText;
     }
 }
 

@@ -9,7 +9,7 @@ export interface CryptoAllVip{
 export interface CryptoVip {
   user_name : string;
   birthday : string;
-  gender : number;
+  gender : string;
   status: CryptoVipStatus;
   balance: number;
   credit: number;

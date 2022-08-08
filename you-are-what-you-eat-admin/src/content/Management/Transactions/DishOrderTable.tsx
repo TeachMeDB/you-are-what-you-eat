@@ -214,7 +214,7 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
       {!selectedBulkActions && (
         <CardHeader
           action={
-            <Box width={400}>
+            <Box width={500}>
             <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
               <TextField 
               id="outlined-basic" 
@@ -259,6 +259,7 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
               </TableCell>
               <TableCell>点菜号</TableCell>
               <TableCell>所属订单</TableCell>
+              <TableCell>菜谱号</TableCell>
               <TableCell>菜品名称</TableCell>
               <TableCell align="right">结算价格</TableCell>
               <TableCell align="right">状态</TableCell>
@@ -322,6 +323,18 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
                       noWrap
                     >
                       {cryptoOrder.dish_id}
+                    </Typography>
+                  </TableCell>
+
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {cryptoOrder.dish_name}
                     </Typography>
                   </TableCell>
                   

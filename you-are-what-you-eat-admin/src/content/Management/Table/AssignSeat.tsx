@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -13,10 +14,11 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import {useTheme} from '@mui/material';
 
-import { CryptoVip,CryptoVipStatus } from '@/models/crypto_vip';
+import { CryptoAutoAssignTable,CryptoTable } from '@/models/crypto_table';
 import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import { queryTableApi } from '@/queries/query_table';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -35,10 +37,6 @@ export interface DialogTitleProps {
 
 export interface DialogIDProps{
     id: string;
-}
-
-export interface VipProps{
-  info:CryptoVip
 }
 
 const BootstrapDialogTitle = (props: DialogTitleProps) => {
@@ -67,14 +65,31 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
 
 export default function AssignSeat() {
   const [open, setOpen] = React.useState(false);
+  const [openSuccessDialog, setOpenSuccessDialog] = React.useState(false);
+  const [openQueueDialog, setOpenQueueDialog] = React.useState(false);
+  const [openErrorDialog, setOpenErrorDialog] = React.useState(false);
   const [inputNum, setInputNum] = useState<number>(1);
+  const [queueNum, setQueueNum] = useState<string>('1');
+  const [assignNum, setAssignNum] = useState<string>('1');
 
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+    setOpenSuccessDialog(false);
+    setOpenQueueDialog(false);
+    setOpenErrorDialog(false);
   };
+  const handleSuccessClose = () => {
+    setOpen(false);
+    setOpenSuccessDialog(false);
+    setOpenQueueDialog(false);
+    setOpenErrorDialog(false);
+
+    window.location.reload();
+  };
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
 
@@ -84,6 +99,36 @@ export default function AssignSeat() {
 
     setInputNum(parseInt(value));
   };
+
+  const handleAssignConfirm = async() =>
+  {
+
+    console.log("assign confirm");
+
+      //数据检验
+      
+      try {
+        let res= await queryTableApi.getQueueTable(inputNum);
+        console.log(res);
+
+        if(res.has_table)
+        {
+          setAssignNum(res.table_id);
+          setOpenSuccessDialog(true);
+        }
+        else
+        {
+          setQueueNum(res.queue_id);
+          setOpenQueueDialog(true);
+        }
+        
+      } 
+      catch (err) {
+        console.error(err);
+        setOpenErrorDialog(true);
+      }
+
+  }
 
   const theme = useTheme();
 
@@ -141,7 +186,8 @@ export default function AssignSeat() {
           </Box>
           {inputNum>0?  
           <Button
-          startIcon={<AddTwoToneIcon fontSize="small" />}          
+          startIcon={<AddTwoToneIcon fontSize="small" />} 
+          onClick={handleAssignConfirm}         
           >
           确认安排
         </Button>
@@ -155,6 +201,73 @@ export default function AssignSeat() {
         
       }   
       </BootstrapDialog>
+
+                  <Dialog
+                    open={openSuccessDialog}
+                    onClose={handleSuccessClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    maxWidth="sm"
+                    fullWidth
+                  >
+                    <DialogTitle id="alert-dialog-title">
+                      {"安排成功"}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText variant="h1">
+                        该顾客的桌号为: {assignNum}
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClose} autoFocus>
+                        OK
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+
+                  <Dialog
+                    open={openQueueDialog}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    maxWidth="sm"
+                    fullWidth
+                  >
+                    <DialogTitle id="alert-dialog-title">
+                      {"排队成功"}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText variant="h1">
+                        该顾客的排号为: {queueNum}
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClose} autoFocus>
+                        OK
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+
+                  <Dialog
+                    open={openErrorDialog}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle id="alert-dialog-title">
+                      {"错误"}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        请求安排失败
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClose} autoFocus>
+                        OK
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
     </div>
   );
 }

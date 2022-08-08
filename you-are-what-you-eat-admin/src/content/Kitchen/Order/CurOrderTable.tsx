@@ -1,6 +1,7 @@
 import React from 'react'
 import { FC, ChangeEvent, useState, useEffect, useCallback } from 'react'
 import {
+    Box,
     Grid,
     Divider,
     FormControl,
@@ -15,7 +16,7 @@ import {
     TablePagination,
 
     TableContainer,
-    Box
+
 } from '@mui/material'
 import CheckList from './CheckList'
 import { CurOrder } from '@/models/cur_order'
@@ -135,40 +136,29 @@ const CurOrderTable = () => {
                 title="实时订单列表"
             />
             <Divider />
-            <TableContainer>
-                <Table>
-                    <Grid container spacing={10}>
-                        {paginatedPromotions.map((i) => {
-                            if (i.order_status != "已完成") {
-                                return (
 
-                                    <Grid item xs={3}>
-                                        <CheckList
-                                            order_id={i.order_id}
-                                            order_status={i.order_status}
-                                            dish={i.dish}
-                                        />
-                                    </Grid>
-                                )
-                            }
-                        })
-                        }
-                    </Grid>
-                </Table>
-            </TableContainer>
+
+
+
             <Box p={2}>
-                <TablePagination
-                    component="div"
-                    count={CurOrders.length}
-                    onPageChange={handlePageChange}
-                    onRowsPerPageChange={handleLimitChange}
-                    page={page}
-                    rowsPerPage={limit}
-                    rowsPerPageOptions={[8, 16, 24]}
-                />
+                <Grid container spacing={3}>
+                    {
+                        CurOrders.map((i) =>
+                            <Grid item xs={4}>
+                                <CheckList
+                                    order_id={i.order_id}
+                                    order_status={i.order_status}
+                                    dish={i.dish}
+                                />
+                            </Grid>
+
+                        )
+                    }
+                </Grid>
             </Box>
 
-        </Card >
+        </Card>
+
 
 
 

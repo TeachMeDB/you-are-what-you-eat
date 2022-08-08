@@ -24,3 +24,19 @@ export function arrSum(arr: any[], callback: (e) => number): number {
     })
     return res;
 }
+
+export function getTitle(fullDesc: string): string {
+    const ls = fullDesc.split(": ");
+    return ls[0]
+}
+
+export function getDesc(fullDesc: string): string {
+    const ls = fullDesc.split(": ");
+    var desc: string = '';
+    for (var i = 1; i < ls.length; ++i) {
+        desc += ls[i];
+        if (i < ls.length - 1)
+            desc += ": ";
+    }
+    return desc;
+}

@@ -7,6 +7,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { ScheduleEntity } from '@/models/schedule';
 import { scheduleApi } from '@/queries/schedule';
 import { endOfWeek, format, startOfWeek } from 'date-fns';
+import ScheduleDelete from '@/components/ScheduleDelete';
 
 
 const RootWrapper = styled(Box)(
@@ -26,11 +27,13 @@ function PositionSchedule({place,occupation,week}:{place:string,occupation:strin
 
   const getAllData = useCallback(async () => {
 
+    
+
     let weekStart=startOfWeek(week);
     let weekEnd=endOfWeek(week);
 
-    console.log("start of week",weekStart);
-    console.log("end of week",weekEnd);
+    console.log("this is asking a whole schedule:")
+    console.log(place,occupation,weekStart,weekEnd)
 
     try {
 
@@ -55,7 +58,7 @@ function PositionSchedule({place,occupation,week}:{place:string,occupation:strin
 
         <CardHeader title={<Typography variant="h3"><EventAvailableIcon />  选中排班表</Typography>} />
         <Divider />
-        <Schedule schedules={schedules}/>
+        <ScheduleDelete schedules={schedules}/>
 
 
       </Card>

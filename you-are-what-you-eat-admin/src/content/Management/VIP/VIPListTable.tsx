@@ -206,13 +206,15 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
 
   return (
     <Card>
-      {selectedBulkActions && (
+      {/*selectedBulkActions && (
         <Box flex={1} p={2}>
           <BulkActions />
         </Box>
       )}
       {!selectedBulkActions && (
-        <CardHeader
+        
+      )*/}
+      <CardHeader
           action={
             <Box width={400}>
               <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
@@ -243,7 +245,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
           }
           title="会员"
         />
-      )}
+        
       <Divider />
       <TableContainer>
         <Table>
@@ -323,7 +325,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.gender==1?'男':'女'}
+                      {cryptoOrder.gender}
                     </Typography>
                   </TableCell>
                   

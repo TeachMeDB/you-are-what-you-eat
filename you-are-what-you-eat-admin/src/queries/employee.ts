@@ -6,30 +6,37 @@ import {
     EmployeeEntity,
 } from '@/models/employee'
 
-import {GetApi,PostApi} from "@/utils/requests"
+import {DeleteApi, GetApi,PostApi} from "@/utils/requests"
 
 
 class HumanResourceApi {
 
 
-    public async getEmployees(){
+    public getEmployees= async ()=>{
         return (await (GetApi("Employee/GetAllEmployeeInfo"))).data as EmployeeEntity[]
     }
 
-    public async getEmployeeDetail(id:string){
+    public  getEmployeeDetail=async(id:string)=>{
         return (await (GetApi("Employee/GetOneEmployeeInfo",
         {
             id:id
         }))).data as EmployeeDetail
     }
 
-    public async postEmployee(employee:EmployeeUpload){
+    public postEmployee=async (employee:EmployeeUpload)=>{
         return (await (PostApi("Employee/PostEmployeeInfo",employee))).statusText as string
     }
 
-    // public async deleteEmployee(id:string){
-    //     return (await (DeleteApi("Employee/DeleteEmployeeInfo/1014"))).data
-    // }
+    public deleteEmployee=async (id:string)=>{
+
+        return (await DeleteApi("Employee/DeleteEmployeeInfo",{
+            id:id
+        })).statusText as string
+    }
+
+    ///
+
+
 
     
 }
