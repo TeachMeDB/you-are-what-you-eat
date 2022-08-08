@@ -155,7 +155,7 @@ const OrderSummarySkeleton = () =>
             </Typography>
             <Box>
               <Typography variant="h1" gutterBottom>
-                <Skeleton variant="text"/>
+                <Skeleton animation="wave" variant="text"/>
               </Typography>
               <Box
                 display="flex"
@@ -173,7 +173,7 @@ const OrderSummarySkeleton = () =>
                   <TrendingUp fontSize="large" />
                 </AvatarSuccess>
                 <Box>
-                  <Typography variant="h4"><Skeleton variant="text"/></Typography>
+                  <Typography variant="h4"><Skeleton animation="wave" variant="text"/></Typography>
                   <Typography variant="subtitle2" noWrap>
                     今天
                   </Typography>
@@ -228,10 +228,10 @@ const OrderSummarySkeleton = () =>
                     <ListItemAvatarWrapper>
                        <Brightness1Icon fontSize="large" color="error"/>
                     </ListItemAvatarWrapper>
-                    <Skeleton variant="text"/>
+                    <Skeleton animation="wave" variant="text"/>
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        <Skeleton variant="text"/>
+                        <Skeleton animation="wave" variant="text"/>
                       </Typography>
                     </Box>
                   </ListItem>
@@ -239,10 +239,10 @@ const OrderSummarySkeleton = () =>
                     <ListItemAvatarWrapper>
                       <Brightness1Icon fontSize="large" color="warning"/>
                     </ListItemAvatarWrapper>
-                      <Skeleton variant="text"/>
+                      <Skeleton animation="wave" variant="text"/>
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        <Skeleton variant="text"/>
+                        <Skeleton animation="wave" variant="text"/>
                       </Typography>
                     </Box>
                   </ListItem>
@@ -250,10 +250,10 @@ const OrderSummarySkeleton = () =>
                     <ListItemAvatarWrapper>
                       <Brightness1Icon fontSize="large" color="success"/>
                     </ListItemAvatarWrapper>
-                      <Skeleton variant="text"/>
+                      <Skeleton animation="wave" variant="text"/>
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        <Skeleton variant="text"/>
+                        <Skeleton animation="wave" variant="text"/>
                       </Typography>
                     </Box>
                   </ListItem>
@@ -261,10 +261,10 @@ const OrderSummarySkeleton = () =>
                     <ListItemAvatarWrapper>
                       <Brightness1Icon fontSize="large" color="primary"/>
                     </ListItemAvatarWrapper>
-                      <Skeleton variant="text"/>
+                      <Skeleton animation="wave" variant="text"/>
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        <Skeleton variant="text"/>
+                        <Skeleton animation="wave" variant="text"/>
                       </Typography>
                     </Box>
                   </ListItem>

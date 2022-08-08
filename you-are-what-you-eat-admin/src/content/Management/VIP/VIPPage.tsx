@@ -62,8 +62,8 @@ function VIPPage() {
             spacing={4}
           >
             <Grid item xs={12}>
-              <Skeleton variant="text" />
-              <Skeleton variant="text" />
+              <Skeleton animation="wave" variant="text" />
+              <Skeleton animation="wave" variant="text" />
             </Grid>
             <Grid item xs={12}>
               <VIPListTableSkeleton/>

@@ -158,7 +158,7 @@ const TableSummarySkeleton = () =>
             </Typography>
             <Box>
               <Typography variant="h1" gutterBottom>
-                <Skeleton variant="text" />
+                <Skeleton animation="wave" variant="text" />
               </Typography>
               <Box
                 display="flex"
@@ -176,7 +176,7 @@ const TableSummarySkeleton = () =>
                   <TrendingUp fontSize="large" />
                 </AvatarSuccess>
                 <Box>
-                  <Typography variant="h4"> <Skeleton variant="text" /> </Typography>
+                  <Typography variant="h4"> <Skeleton animation="wave" variant="text" /> </Typography>
                   <Typography variant="subtitle2" noWrap>
                     今日接待
                   </Typography>
@@ -231,10 +231,10 @@ const TableSummarySkeleton = () =>
                     <ListItemAvatarWrapper>
                        <Brightness1Icon fontSize="large" color="primary"/>
                     </ListItemAvatarWrapper>
-                    <Skeleton variant="text" />
+                    <Skeleton animation="wave" variant="text" />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                      <Skeleton variant="text" />
+                      <Skeleton animation="wave" variant="text" />
                       </Typography>
                     </Box>
                   </ListItem>
@@ -242,10 +242,10 @@ const TableSummarySkeleton = () =>
                     <ListItemAvatarWrapper>
                       <Brightness1Icon fontSize="large" color="warning"/>
                     </ListItemAvatarWrapper>
-                    <Skeleton variant="text" />
+                    <Skeleton animation="wave" variant="text" />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                      <Skeleton variant="text" />
+                      <Skeleton animation="wave" variant="text" />
                       </Typography>
                     </Box>
                   </ListItem>         

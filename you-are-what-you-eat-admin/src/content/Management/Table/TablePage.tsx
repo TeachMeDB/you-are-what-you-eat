@@ -65,7 +65,7 @@ function TablePage() {
             <TableSummarySkeleton/>
           </Grid>
           <Grid item xs={12}>
-            <Skeleton variant="text" />                     
+            <Skeleton animation="wave" variant="text" />                     
           </Grid>
 
           <Grid item xs={12}>

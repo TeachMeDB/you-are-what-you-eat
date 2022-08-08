@@ -49,12 +49,12 @@ const RecentOrdersTableSkeleton = () => {
           action={
             <Box width={400}>
             <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
-              <Skeleton variant="text" />
+              <Skeleton animation="wave" variant="text" />
             </FormControl>
 
             <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
                  <InputLabel >筛选</InputLabel>
-                 <Skeleton variant="text" />                           
+                 <Skeleton animation="wave" variant="text" />                           
             </FormControl>              
           </Box>
           }
@@ -75,12 +75,12 @@ const RecentOrdersTableSkeleton = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <Skeleton variant="text" />
+            <Skeleton animation="wave" variant="text" />
           </TableBody>
         </Table>
       </TableContainer>
       <Box p={2}>
-        <Skeleton variant="text" />
+        <Skeleton animation="wave" variant="text" />
       </Box>
     </Card>    
   );

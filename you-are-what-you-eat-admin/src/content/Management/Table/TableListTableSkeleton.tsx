@@ -48,12 +48,12 @@ const TableListTableSkeleton = () => {
           action={
             <Box width={400}>
               <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
-              <Skeleton variant="text" />
+              <Skeleton animation="wave" variant="text" />
               </FormControl>
 
               <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
                    <InputLabel >筛选</InputLabel>
-                   <Skeleton variant="text" />                            
+                   <Skeleton animation="wave" variant="text" />                            
               </FormControl>              
             </Box>
           }
@@ -63,13 +63,13 @@ const TableListTableSkeleton = () => {
       <Divider />
 
       <Grid container spacing={1}>
-      <Skeleton variant="text" />
-      <Skeleton variant="text" />
-      <Skeleton variant="text" />
+      <Skeleton animation="wave" variant="text" />
+      <Skeleton animation="wave" variant="text" />
+      <Skeleton animation="wave" variant="text" />
       </Grid>
 
       <Box p={2}>
-      <Skeleton variant="text" />
+      <Skeleton animation="wave" variant="text" />
       </Box>
     </Card>
   );
