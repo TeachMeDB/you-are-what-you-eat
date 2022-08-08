@@ -103,6 +103,7 @@ const StockInfoesTable = () => {
 
     const [page, setPage] = useState<number>(0);
     const [limit, setLimit] = useState<number>(5);
+    const [idChange, setidChange] = useState<string>('');
     const handlePageChange = (_event: any, newPage: number): void => {
         setPage(newPage);
 
@@ -263,7 +264,7 @@ const StockInfoesTable = () => {
                                     <TableCell >
                                         <Tooltip title="编辑" arrow onClick={() => {
 
-
+                                            setidChange(stockInfo.record_id);
                                             setOpen(true);
                                         }}>
                                             <IconButton
@@ -299,8 +300,7 @@ const StockInfoesTable = () => {
                                                 <Button onClick={() => {
 
                                                     const conduct = async () => {
-                                                        s.record_id = stockInfo.record_id;
-                                                        console.log(s);
+                                                        s.record_id = idChange;
                                                         return stockInfoApi.updateStock(
                                                             s
                                                         );
@@ -308,11 +308,11 @@ const StockInfoesTable = () => {
 
                                                     conduct().then((value) => {
 
-                                                        alert("成功：" + value);
+                                                        alert("修改成功：" + value);
 
                                                     }).catch((value) => {
 
-                                                        alert("失败：" + value);
+                                                        alert("修改失败：" + value);
                                                     });
                                                     setOpen(false);
                                                     window.location.reload();

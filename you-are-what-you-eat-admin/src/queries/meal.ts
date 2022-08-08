@@ -29,7 +29,7 @@ class MealInfoApi {
     }
 
     public delMeal = async (id: string) => {
-        return (await (DeleteApi("/Dishes/DelDishById", id))).statusText as string
+        return (await (DeleteApi("/Dishes/DelDishById", { id }))).statusText as string
     }
 }
 

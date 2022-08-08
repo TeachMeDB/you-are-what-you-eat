@@ -124,7 +124,7 @@ const MealInfoTable = () => {
 
     const [page, setPage] = useState<number>(0);
     const [limit, setLimit] = useState<number>(5);
-
+    const [idChange, setidChange] = useState<string>('');
     const handlePageChange = (_event: any, newPage: number): void => {
         setPage(newPage);
 
@@ -276,7 +276,11 @@ const MealInfoTable = () => {
                                         </TableCell>
 
                                         <TableCell >
-                                            <Tooltip title="编辑" arrow onClick={handleClickOpen}>
+                                            <Tooltip title="编辑" arrow onClick={() => {
+                                                setidChange(mealInfo.id);
+                                                handleClickOpen();
+                                            }
+                                            }>
                                                 <IconButton
                                                     sx={{
                                                         '&:hover': {
@@ -335,8 +339,8 @@ const MealInfoTable = () => {
                                                 <DialogActions>
                                                     <Button onClick={handleClose}>取消</Button>
                                                     <Button onClick={() => {
-                                                        m.id = Number(mealInfo.id);
-                                                        console.log(m);
+                                                        m.id = Number(idChange);
+                                                        console.log(idChange);
                                                         const conduct = async () => {
                                                             return mealInfoApi.updateMeal(m);
                                                         }
@@ -362,10 +366,12 @@ const MealInfoTable = () => {
                                                     color="inherit"
                                                     size="small"
                                                     onClick={() => {
-                                                        console.log(mealInfo.id);
+
+
                                                         const conduct = async () => {
+                                                            let d = mealInfo.id;
                                                             console.log(mealInfo.id);
-                                                            return mealInfoApi.delMeal(mealInfo.id);
+                                                            return mealInfoApi.delMeal(d);
                                                         }
 
                                                         conduct().then((value) => {
@@ -377,7 +383,7 @@ const MealInfoTable = () => {
                                                             alert("失败：" + value);
                                                         });
 
-                                                    }}
+                                                    }} href="javascript:location.reload(true)"
                                                 >
                                                     <DeleteTwoToneIcon fontSize="small" />
                                                 </IconButton>
