@@ -13,8 +13,12 @@ import {
 
 import { curOrderApi } from '@/queries/cur_order';
 import DishOrderTable from '@/content/Management/Transactions/DishOrderTable';
+import { DishStatusUpload } from "@/models/cur_order";
 
-
+let s: DishStatusUpload = {
+    dish_order_id: "",
+    dish_status: ""
+}
 
 
 
@@ -74,18 +78,18 @@ export default function CheckList(curOrder: CurOrder) {
                                     edge="end"
                                     onChange={() => {
                                         const conduct = async () => {
+                                            s.dish_order_id = item.dish_order_id;
+                                            s.dish_status = "已完成"
+                                            console.log(s);
                                             return curOrderApi.updateDishStatus(
-                                                {
-                                                    dish_id: parseInt(item.dish_order_id),
-                                                    dish_status: "已完成",
-                                                    order_id: curOrder.order_id
-                                                }
+                                                s
                                             );
                                         }
 
                                         conduct().then((value) => {
 
                                             alert("成功：" + value);
+                                            window.location.reload();
 
                                         }).catch((value) => {
 
@@ -97,6 +101,7 @@ export default function CheckList(curOrder: CurOrder) {
                                     inputProps={{
                                         'aria-labelledby': item.dish_name,
                                     }}
+
                                 />
 
                             </ListItem>

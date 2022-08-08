@@ -28,9 +28,9 @@ class StockInfoApi {
     }
 
     public updateStock = async (surplusUpload: SurplusUpload) => {
-        return (await (PostApi("/IngredientRecords/UpdateIngredientRecord", {
+        return (await (PostApi("/IngredientRecords/UpdateIngredientRecord",
             surplusUpload
-        }))).statusText as string
+        ))).statusText as string
     }
     public delStock = async (record_id: number) => {
         return (await (DeleteApi("/IngredientRecords/Delete", {

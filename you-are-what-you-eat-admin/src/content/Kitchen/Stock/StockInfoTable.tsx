@@ -28,7 +28,7 @@ import {
 } from '@mui/material';
 
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import { StockInfo } from '@/models/stock_info';
+import { StockInfo, SurplusUpload } from '@/models/stock_info';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import TextField from '@mui/material/TextField';
@@ -139,9 +139,12 @@ const StockInfoesTable = () => {
     const handleSearchClick = () => {
         setStockInfoes(newM);
     }
-    let s = "";
+    let s: SurplusUpload = {
+        record_id: "",
+        surplus: 0
+    };
     const surplusChange = (e) => {
-        s = e.target.value;
+        s.surplus = parseInt(e.target.value);
 
     }
     console.log(StockInfoes);
@@ -258,7 +261,11 @@ const StockInfoesTable = () => {
                                     </TableCell>
 
                                     <TableCell >
-                                        <Tooltip title="编辑" arrow onClick={handleClickOpen}>
+                                        <Tooltip title="编辑" arrow onClick={() => {
+
+
+                                            setOpen(true);
+                                        }}>
                                             <IconButton
                                                 sx={{
                                                     '&:hover': {
@@ -290,16 +297,12 @@ const StockInfoesTable = () => {
                                             <DialogActions>
                                                 <Button onClick={handleClose}>退出</Button>
                                                 <Button onClick={() => {
+
                                                     const conduct = async () => {
-                                                        console.log({
-                                                            record_id: (stockInfo.record_id),
-                                                            surplus: parseInt(s)
-                                                        });
+                                                        s.record_id = stockInfo.record_id;
+                                                        console.log(s);
                                                         return stockInfoApi.updateStock(
-                                                            {
-                                                                record_id: (stockInfo.record_id),
-                                                                surplus: parseInt(s)
-                                                            }
+                                                            s
                                                         );
                                                     }
 
@@ -311,8 +314,10 @@ const StockInfoesTable = () => {
 
                                                         alert("失败：" + value);
                                                     });
+                                                    setOpen(false);
+                                                    window.location.reload();
 
-                                                }} href="javascript:location.reload(true)">确定</Button>
+                                                }} >确定</Button>
                                             </DialogActions>
                                         </Dialog>
                                         <Tooltip title="删除" arrow >
@@ -339,7 +344,7 @@ const StockInfoesTable = () => {
                                                 }}
                                                 color="inherit"
                                                 size="small"
-                                                href="javascript:location.reload(true)"
+
                                             >
                                                 <DeleteTwoToneIcon fontSize="small" />
                                             </IconButton>

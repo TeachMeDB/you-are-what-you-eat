@@ -19,14 +19,14 @@ class CurOrderApi {
         }))).data as CurOrder[];
     }
     public updateDishStatus = async (dishStatusUpload: DishStatusUpload) => {
-        return (await (PostApi("/Dishes/UpdateOrderStatus", {
+        return (await (PostApi("/Dishes/UpdateDishStatus",
             dishStatusUpload
-        }))).statusText as string
+        ))).statusText as string
     }
     public updateOrderStatus = async (orderStatusUpload: OrderStatusUpload) => {
-        return (await (PostApi("/Dishes/UpdateOrderStatus", {
+        return (await (PostApi("/Dishes/UpdateOrderStatus",
             orderStatusUpload
-        }))).statusText as string
+        ))).statusText as string
     }
 
 

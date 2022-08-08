@@ -10,9 +10,9 @@ export interface Dish {
     status: string;
 }
 export interface DishStatusUpload {
-    dish_id: number;
+    dish_order_id: string,
     dish_status: string;
-    order_id: string;
+
 }
 
 export interface OrderStatusUpload {
