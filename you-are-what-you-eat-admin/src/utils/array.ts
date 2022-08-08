@@ -26,11 +26,15 @@ export function arrSum(arr: any[], callback: (e) => number): number {
 }
 
 export function getTitle(fullDesc: string): string {
+    if (!fullDesc || fullDesc.length <= 0)
+        return "";
     const ls = fullDesc.split(": ");
     return ls[0]
 }
 
 export function getDesc(fullDesc: string): string {
+    if (!fullDesc || fullDesc.length <= 0)
+        return "";
     const ls = fullDesc.split(": ");
     var desc: string = '';
     for (var i = 1; i < ls.length; ++i) {

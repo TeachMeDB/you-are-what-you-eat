@@ -7,14 +7,7 @@ import { ordersApi } from '@/queries/orders'
 
 function RecentOrdersList() {
   const isMountedRef = useRefMounted();
-  const [statisticData, setStatisticData] = useState<DailyOrderStatic>({
-    order_num: 0,
-    order_num_change: 0,
-    dish_order_num: 0,
-    dish_order_num_change: 0,
-    turnover: 0,
-    turnover_change: 0
-  });
+  const [statisticData, setStatisticData] = useState<DailyOrderStatic>(null);
 
   const getOrdersInTimePeriod = useCallback(async () => {
     try {
@@ -31,6 +24,9 @@ function RecentOrdersList() {
   useEffect(() => {
     getOrdersInTimePeriod();
   }, [getOrdersInTimePeriod]);
+
+  if (!statisticData)
+    return null;
 
   return (
     <>

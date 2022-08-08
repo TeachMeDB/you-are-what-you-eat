@@ -63,10 +63,12 @@ class OrdersApi {
         const yesterdatStart = getDayTime(new Date(), -1, 'begin');
         const yesterdayEnd = getDayTime(new Date(), -1, 'end');
 
+        console.log(111);
         const todayOrders = (await GetApi("Orderlists/GetOrdersByTime", {
-            begin: toTimeStamp(todayStart),
-            end  : toTimeStamp(todayEnd)
+            begin: toTimeStamp(getDayTime(new Date(), 0, 'begin')),
+            end  : toTimeStamp(getDayTime(new Date(), 0, 'end'))
         })).data.summary;
+        console.log(222);
         const yesterdayOrders = (await GetApi("Orderlists/GetOrdersByTime", {
             begin: toTimeStamp(yesterdatStart),
             end  : toTimeStamp(yesterdayEnd)

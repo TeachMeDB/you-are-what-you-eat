@@ -31,13 +31,39 @@ import {
   useTheme,
   useMediaQuery,
   TableFooter,
-  MenuItem
+  MenuItem,
+  Card,
+  CardMedia
 } from '@mui/material';
 import DatePicker from '@mui/lab/DatePicker';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
+import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone'
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import { SelectableDish, SelectedDish } from '@/models/promotion';
 import { promotionsApi } from '@/queries/promotions';
+import { GenerateBase64 } from '@/utils/image';
+
+const Input = styled('input')({
+  display: 'none'
+});
+
+const CardCover = styled(Card)(
+  ({ theme }) => `
+    position: relative;
+
+    .MuiCardMedia-root {
+      height: ${theme.spacing(26)};
+    }
+`
+);
+
+const CardCoverAction = styled(Box)(
+  ({ theme }) => `
+    position: absolute;
+    right: ${theme.spacing(2)};
+    bottom: ${theme.spacing(2)};
+`
+);
 
 const IconButtonError = styled(IconButton)(
   ({ theme }) => `
@@ -58,6 +84,7 @@ function PageHeader(refresh?: boolean, setRefresh?: Dispatch<SetStateAction<bool
   const [selectDishDialogOpen, setSelectDishDialogOpen] = useState(false);
   const [selectableDishes, setSelectableDishes] = useState<SelectableDish[]>([]);
   const [selectedDishes, setSelectedDishes] = useState<SelectedDish[]>([]);
+  const [newPromotionCover, setNewPromotionCover] = useState<string>('');
 
   const getSelectableDishes = useCallback(async() => {
     try {
@@ -86,6 +113,7 @@ function PageHeader(refresh?: boolean, setRefresh?: Dispatch<SetStateAction<bool
   };
 
   const handleCreatePromotionClose = () => {
+    // setNewPromotionCover('');
     setOpen(false);
   };
 
@@ -104,6 +132,7 @@ function PageHeader(refresh?: boolean, setRefresh?: Dispatch<SetStateAction<bool
     setValue(new Date());
     setValue1(new Date(getDayTime(new Date(), -1, '')));
     setOpen(false);
+    setNewPromotionCover('');
     // 刷新父组件，显示新的
     if (setRefresh && refresh) {
       setRefresh(!refresh)
@@ -182,7 +211,8 @@ function PageHeader(refresh?: boolean, setRefresh?: Dispatch<SetStateAction<bool
                   discount: d.discount,
                   name: d.name
                 }
-              })
+              }),
+              cover: newPromotionCover === '' ? null : newPromotionCover.split('base64,')[1]
             }
             try {
               await wait(1000);
@@ -287,6 +317,38 @@ function PageHeader(refresh?: boolean, setRefresh?: Dispatch<SetStateAction<bool
                         />
                       )}
                     />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box m={2}>
+                    <Box pb={1} mb={1}>
+                      <b>{t('活动封面图')}:</b>
+                    </Box>
+                    <CardCover>
+                      <CardMedia image={newPromotionCover} />
+                      <CardCoverAction>
+                        <Input accept="image/*" id="change-cover"
+                        multiple 
+                        type="file" 
+                        onChange={(event)=>{
+                          if(event.target.files.length>0){
+                            let file=event.target.files[0];
+                            GenerateBase64(file,(url:string)=>{
+                              setNewPromotionCover(url);
+                            });
+                          }
+                        }}/>
+                        <label htmlFor="change-cover">
+                          <Button
+                            startIcon={<UploadTwoToneIcon />}
+                            variant="contained"
+                            component="span"
+                          >
+                            上传活动封面
+                          </Button>
+                        </label>
+                      </CardCoverAction>
+                    </CardCover>  
+                    </ Box>
                   </Grid>
                 </Grid>
               </DialogContent>
