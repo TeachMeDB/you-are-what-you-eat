@@ -30,18 +30,19 @@ import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import * as React from 'react';
 import { GenerateBase64 } from '@/utils/image';
 import DialogActions from '@mui/material/DialogActions';
-import { MealInfoUpload } from '@/models/meal_info';
+import { MealInfoUpload, MealInfoAdd } from '@/models/meal_info';
 import { mealInfoApi } from '@/queries/meal';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone'
 
 import { useTranslation } from 'react-i18next';
 
-let m: MealInfoUpload = {
+let m: MealInfoAdd = {
     id: 123,
     dis_name: '123',
     price: 123,
     description: '123',
-    tags: [""]
+    tags: [""],
+    picture: null
 }
 
 const Input = styled('input')({
@@ -204,8 +205,11 @@ function PageHeader() {
                     <DialogActions>
                         <Button onClick={handleClose}>退出</Button>
                         <Button onClick={() => {
+
+
                             const conduct = async () => {
-                                console.log(newPromotionCover);
+                                m.picture = newPromotionCover;
+                                console.log(m.picture);
                                 return mealInfoApi.addMeal(m);
                             }
 
@@ -218,7 +222,7 @@ function PageHeader() {
                                 alert("增加失败：" + value);
                             });
 
-                        }}>确定</Button>
+                        }} >确定</Button>
                     </DialogActions>
                 </Dialog>
             </Grid>

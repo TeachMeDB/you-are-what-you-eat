@@ -362,7 +362,9 @@ const MealInfoTable = () => {
                                                     color="inherit"
                                                     size="small"
                                                     onClick={() => {
+                                                        console.log(mealInfo.id);
                                                         const conduct = async () => {
+                                                            console.log(mealInfo.id);
                                                             return mealInfoApi.delMeal(mealInfo.id);
                                                         }
 

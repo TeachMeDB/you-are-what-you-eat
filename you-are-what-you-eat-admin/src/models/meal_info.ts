@@ -14,3 +14,12 @@ export interface MealInfoUpload {
     price: number;
     tags: string[];
 }
+
+export interface MealInfoAdd {
+    description: string;
+    dis_name: string;
+    id: number;
+    picture: string;
+    price: number;
+    tags: string[];
+}
