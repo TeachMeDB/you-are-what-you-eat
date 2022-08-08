@@ -91,7 +91,7 @@ const CardCoverAction = styled(Box)(
 
 
 
-const ProfileCoverUpdate = ({ upload,setSelectedUpload }: { upload:EmployeeUpload,setSelectedUpload:(upload:EmployeeUpload)=>void}) => {
+const ProfileCoverNew = ({ upload, setSelectedUpload }: { upload: EmployeeUpload, setSelectedUpload: (upload: EmployeeUpload) => void }) => {
 
   console.log(upload);
 
@@ -109,7 +109,7 @@ const ProfileCoverUpdate = ({ upload,setSelectedUpload }: { upload:EmployeeUploa
 
   }
 
-  const handleBirthdayChange = (value:Date) => {
+  const handleBirthdayChange = (value: Date) => {
 
     console.log(value);
 
@@ -132,7 +132,7 @@ const ProfileCoverUpdate = ({ upload,setSelectedUpload }: { upload:EmployeeUploa
       let newUpload = { ...upload };
       newUpload.gender = event.target.value;
 
-       
+
       setSelectedUpload(newUpload);
 
     }
@@ -147,7 +147,7 @@ const ProfileCoverUpdate = ({ upload,setSelectedUpload }: { upload:EmployeeUploa
       let newUpload = { ...upload };
       newUpload.occupation = event.target.value;
 
-       
+
       setSelectedUpload(newUpload);
 
     }
@@ -158,21 +158,6 @@ const ProfileCoverUpdate = ({ upload,setSelectedUpload }: { upload:EmployeeUploa
 
   return (
     <>
-      <Box display="flex" mb={3}>
-        <Tooltip arrow placement="top" title="个人信息">
-          <IconButton color="primary" sx={{ p: 2, mr: 2 }}>
-            <BadgeIcon />
-          </IconButton>
-        </Tooltip>
-        <Box>
-          <Typography variant="h3" component="h3" gutterBottom>
-            员工信息 ：{upload.id}
-          </Typography>
-          <Typography variant="subtitle2">
-            员工个人信息、常用人事信息、数据统计、管理界面
-          </Typography>
-        </Box>
-      </Box>
       <CardCover>
         <CardMedia key={upload.id} image={upload.cover} />
         <CardCoverAction>
@@ -190,7 +175,7 @@ const ProfileCoverUpdate = ({ upload,setSelectedUpload }: { upload:EmployeeUploa
                   let newUpload = { ...upload };
                   newUpload.cover = url;
 
-                   
+
                   setSelectedUpload(newUpload);
 
 
@@ -231,7 +216,7 @@ const ProfileCoverUpdate = ({ upload,setSelectedUpload }: { upload:EmployeeUploa
                   let newUpload = { ...upload };
                   newUpload.avatar = url;
 
-                   
+
                   setSelectedUpload(newUpload);
 
                 });
@@ -251,12 +236,12 @@ const ProfileCoverUpdate = ({ upload,setSelectedUpload }: { upload:EmployeeUploa
       <Box py={2} pl={2} mb={3}>
 
         <Grid container spacing={3}>
-        <Grid item xs={12}>
+          <Grid item xs={12}>
 
-          <Divider/>
+            <Divider />
 
 
-      </Grid>
+          </Grid>
 
           <Grid item xs={12}>
 
@@ -286,33 +271,7 @@ const ProfileCoverUpdate = ({ upload,setSelectedUpload }: { upload:EmployeeUploa
                   renderInput={(params) => <TextField sx={{ mx: 1 }} {...params} />}
                 />
 
-              </Box>
-
-            </Grid>
-
-
-          </Grid>
-
-          <Grid item xs={12}>
-            
-
-          <Divider/>
-
-
-
-          </Grid>
-
-          <Grid item xs={12}>
-
-            <Grid container>
-
-              <Box
-                display={{ xs: 'block', md: 'flex' }}
-                alignItems="center"
-                justifyContent="space-between"
-              >
                 <TextField
-                  size="small"
                   variant="outlined"
                   value={upload.gender}
                   required
@@ -321,7 +280,7 @@ const ProfileCoverUpdate = ({ upload,setSelectedUpload }: { upload:EmployeeUploa
                   onChange={handleGenderChange}
                 />
                 <TextField
-                  size="small" sx={{ mx: 1 }}
+                  sx={{ mx: 1 }}
                   variant="outlined"
                   required
                   value={upload.occupation}
@@ -332,30 +291,21 @@ const ProfileCoverUpdate = ({ upload,setSelectedUpload }: { upload:EmployeeUploa
 
               </Box>
 
-            
-
-
+            </Grid>
           </Grid>
 
-          </Grid>
-            <Grid item xs={12}>
-            
-
-          <Divider/>
+        
+        <Grid item xs={12}>
 
 
 
-          </Grid>
-
-
-
-
-
+          <Divider />
 
 
 
         </Grid>
 
+        </Grid>
 
 
       </Box>
@@ -363,7 +313,7 @@ const ProfileCoverUpdate = ({ upload,setSelectedUpload }: { upload:EmployeeUploa
   );
 };
 
-ProfileCoverUpdate.propTypes = {
+ProfileCoverNew.propTypes = {
 };
 
-export default ProfileCoverUpdate;
+export default ProfileCoverNew;

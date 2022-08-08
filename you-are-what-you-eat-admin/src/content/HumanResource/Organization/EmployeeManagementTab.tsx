@@ -31,10 +31,12 @@ import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import DetailEmployeePopup from './EmployeeManagement/DetailEmployeePopup';
-import { EmployeeDetail, EmployeeEntity, Salary } from '@/models/employee';
+import { defaultUser, EmployeeDetail, EmployeeEntity, EmployeeUpload, Salary } from '@/models/employee';
 import { humanResourceApi } from '@/queries/employee';
 import { salaryApi } from '@/queries/salary';
 import { useRefMounted } from '@/hooks/useRefMounted';
+import ProfileCoverUpdate from './Profile/ProfileCoverUpdate';
+import ProfileCoverNew from './Profile/ProfileCoverNew';
 
 
 const Input = styled('input')({
@@ -163,6 +165,21 @@ function EmployeeManagementTab() {
     setPage(0);
   };
 
+
+
+  const [upload, setUpload] = useState<EmployeeUpload>(
+    { 
+      id:null,
+      name:"",
+      gender:"",
+      occupation:"",
+      cover:"",
+      avatar:"",
+      birthday:"2001-01-01"
+
+    } as EmployeeUpload);
+
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -217,131 +234,69 @@ function EmployeeManagementTab() {
           <List>
 
             <ListItem sx={{ p: 3 }}>
-              <Box
-                component="form"
-                sx={{
-                  '& .MuiTextField-root': { m: 1, width: '20ch' }
-                }}
-                noValidate
-                autoComplete="off"
-              >
-                <div>
-                  <TextField
-                    key="name"
-                    required
-                    id="outlined-required"
-                    label="姓名"
-                  />
-                  <TextField
-                    key="gender"
-                    required
-                    id="outlined-disabled"
-                    label="性别"
-                  />
-                  <TextField
-                    key="occupation"
-                    required
-                    id="outlined-disabled"
-                    label="职位"
-                  />
-                  <TextField
-                    required
-                    id="outlined-password-input"
-                    label="密码"
-                    type="password"
-                    autoComplete="current-password"
-                  />
-                </div>
-              </Box>
-              <Grid item xs={3} textAlign="end">
-                <Button variant="contained" size="large">
-                <PersonAddAltIcon/>确认添加
-                </Button>
-              </Grid>
-            </ListItem>
-            
-            <Divider component="li" />
-            <ListItem sx={{ p: 2 }}>
+              <Grid container>
+                <Grid item xs={12}>
+                  <ProfileCoverNew upload={upload} setSelectedUpload={(uploaded:EmployeeUpload)=>{setUpload(uploaded)}}/>
+                </Grid>
+                <Grid item xs={12}>
+                  
+                      
+                  <Button
+                  size="large"
+                  variant='contained'
+                  fullWidth={true}
+                  disabled={
+                    (!upload.name||upload.name===""
+                    ||!upload.gender||upload.gender===""
+                    ||!upload.occupation||upload.occupation===""
+                    ||!upload.birthday||upload.birthday===""
+                    ||!upload.avatar||upload.avatar===""
+                    ||!upload.cover||upload.cover==="")
+                  }
+                  onClick={()=>{
 
-              <Box
-                component="form"
-                noValidate
-                autoComplete="off"
-              >
-                <Grid container direction="row">
-                  <Grid item xs={4}>
-                    <Typography variant='h3'> 封面：</Typography>
-                    <CardCover>
+                    console.log(upload);
 
-                      <CardMedia image="" />
-                      <CardCoverAction>
-                        <Input accept="image/*" id="change-cover" multiple type="file"/>
-                        <label htmlFor="change-cover">
-                          <Button
-                            startIcon={<UploadTwoToneIcon />}
-                            variant="contained"
-                            component="span"
-                          >
-                            更改封面
-                          </Button>
-                        </label>
-                      </CardCoverAction>
-                    </CardCover>
+                    const conduct=async()=>{
 
-                  </Grid>
+                      return await(humanResourceApi.postEmployee({
+                        id:null,
 
-                  <Grid item xs={1}>
+                        name:upload.name,
+                        gender:upload.gender,
+                        birthday:upload.birthday,
+                        occupation:upload.occupation,
 
-                  </Grid>
+                        cover:upload.cover,
+                        avatar:upload.avatar
 
-                  <Grid item xs={4}>
+                      }as EmployeeUpload))
 
-                    <Typography variant='h3'> 头像：</Typography>
-                    <AvatarWrapper>
+                    }
 
-                      <Avatar variant="rounded" alt="" src="" />
-                      <ButtonUploadWrapper>
-                        <Input
-                          accept="image/*"
-                          id="icon-button-file"
-                          name="icon-button-file"
-                          type="file"
-                        />
-                        <label htmlFor="icon-button-file">
-                          <IconButton component="span" color="primary">
-                            <UploadTwoToneIcon />
-                          </IconButton>
-                        </label>
-                      </ButtonUploadWrapper>
-                    </AvatarWrapper>
+                    conduct().then((value)=>{
+
+                      alert("添加成功："+value)
+
+
+                      //这里应该跳到鉴权那边设置登陆密码之类的
+
+
+                    }).catch((value)=>{
+
+                      alert("添加失败："+value)
+                    })
+
+
+                  }}
+                  >
+                    <UploadTwoToneIcon/>
+                    提交新员工
+                  </Button>
 
                     
-
-                  </Grid>
-
-                  <Grid item xs={3}>
-
-                  <Typography variant='h3'> 生日 ：</Typography>
-
-                  <AvatarWrapper>
-
-                  <DesktopDatePicker
-                      label="生日"
-                      inputFormat="yyyy-MM-dd"
-                      value={value}
-                      onChange={handleChange}
-                      renderInput={(params) => <TextField {...params} />}
-                      
-                    />
-
-                  </AvatarWrapper>
-
-
-                  </Grid>
-
                 </Grid>
-
-              </Box>
+            </Grid>
             </ListItem>
           </List>
         </Card>

@@ -11,12 +11,13 @@ import { TransitionProps } from '@mui/material/transitions';
 import { Container, Grid, styled } from '@mui/material';
 import ProfileCover from '../Profile/ProfileCover';
 import Summary from '../Profile/Summary';
-import { defaultUser, EmployeeDetail, EmployeeEntity, EmployeeUpload,defaultUploadEmployee } from '@/models/employee';
+import { defaultUser, EmployeeDetail, EmployeeEntity, EmployeeUpload} from '@/models/employee';
 import { useRefMounted } from '@/hooks/useRefMounted';
 import { humanResourceApi } from '@/queries/employee';
 import { scheduleApi } from '@/queries/schedule';
 import { startOfWeek, endOfWeek, format } from 'date-fns';
 import ProfileCoverUpdate from '../Profile/ProfileCoverUpdate';
+import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -49,12 +50,22 @@ export default function DetailEmployeeUpdate({userId}:{userId:string}) {
 
   const [open, setOpen] = React.useState(false);
 
+  const [upload, setUpload] = React.useState<EmployeeUpload>(
+    { 
+      id:employee.id,
+      name:employee.name,
+      gender:employee.gender,
+      occupation:employee.occupation,
+      cover:employee.cover,
+      avatar:employee.avatar,
+      birthday:employee.birthday
+
+    } as EmployeeUpload)
+
 
   const handleClose = () => {
     setOpen(false);
   };
-
-
 
 
   const getAllData = React.useCallback(async () => {
@@ -64,7 +75,19 @@ export default function DetailEmployeeUpdate({userId}:{userId:string}) {
       let person = await humanResourceApi.getEmployeeDetail(userId);
 
       if (isMountedRef()) {
+
         setEmployee(person);
+
+        setUpload({ 
+          id:employee.id,
+          name:employee.name,
+          gender:employee.gender,
+          occupation:employee.occupation,
+          cover:employee.cover,
+          avatar:employee.avatar,
+          birthday:employee.birthday
+    
+        } as EmployeeUpload);
         
       }
     } catch (err) {
@@ -108,7 +131,36 @@ export default function DetailEmployeeUpdate({userId}:{userId:string}) {
             <Typography sx={{ ml: 4, flex: 1 }} variant="h2" component="div">
               员工详情界面
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose} size="large">
+            <Button autoFocus color="inherit"
+            size="large"
+            onClick={()=>{
+
+              const conduct=async()=>{
+
+                let uploaded={
+                  "id":upload.id,
+                  "gender": upload.gender,
+                  "occupation": upload.occupation,
+                  "birthday": upload.birthday,
+                  "avatar": upload.avatar,
+                  "cover": upload.cover,
+                  "name": upload.name,
+                } as EmployeeUpload;
+
+                return await humanResourceApi.postEmployee(uploaded) 
+
+              }
+
+              conduct().then((value)=>{
+                alert("更新成功："+value);
+
+                handleClose();
+              }).catch((value)=>{
+                alert("更新失败："+value);
+              })
+
+              
+            }}>
               保存
             </Button>
           </Toolbar>
@@ -122,7 +174,7 @@ export default function DetailEmployeeUpdate({userId}:{userId:string}) {
           spacing={3}
         >
           <Grid item xs={12} md={8}>
-            <ProfileCoverUpdate user={employee}/>
+            <ProfileCoverUpdate upload={upload} setSelectedUpload={(uploaded:EmployeeUpload)=>{setUpload(uploaded)}}/>
           </Grid>
           <Grid item xs={12} md={4}>
             <Summary user={employee} />
