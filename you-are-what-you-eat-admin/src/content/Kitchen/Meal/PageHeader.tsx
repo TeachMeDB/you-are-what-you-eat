@@ -1,25 +1,40 @@
-import { Typography, Button, Grid } from '@mui/material';
-
+import {
+    styled,
+    Grid,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    Box,
+    Typography,
+    TextField,
+    CircularProgress,
+    Button,
+    Table,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody,
+    TableContainer,
+    Tooltip,
+    IconButton,
+    lighten,
+    useTheme,
+    useMediaQuery,
+    TableFooter,
+    MenuItem,
+    Card,
+    CardMedia
+} from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import * as React from 'react';
-
-
-
-
-
-
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
+import { GenerateBase64 } from '@/utils/image';
 import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-
-import DialogTitle from '@mui/material/DialogTitle';
-
 import { MealInfoUpload } from '@/models/meal_info';
-
-
 import { mealInfoApi } from '@/queries/meal';
+import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone'
 
+import { useTranslation } from 'react-i18next';
 
 let m: MealInfoUpload = {
     id: 123,
@@ -29,11 +44,34 @@ let m: MealInfoUpload = {
     tags: [""]
 }
 
+const Input = styled('input')({
+    display: 'none'
+});
+
+const CardCover = styled(Card)(
+    ({ theme }) => `
+      position: relative;
+  
+      .MuiCardMedia-root {
+        height: ${theme.spacing(26)};
+      }
+  `
+);
+const CardCoverAction = styled(Box)(
+    ({ theme }) => `
+      position: absolute;
+      right: ${theme.spacing(2)};
+      bottom: ${theme.spacing(2)};
+  `
+);
 
 
 function PageHeader() {
 
+    const { t }: { t: any } = useTranslation();
+
     const [open, setOpen] = React.useState(false);
+    const [newPromotionCover, setNewPromotionCover] = useState<string>('');
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -130,11 +168,44 @@ function PageHeader() {
                             variant="standard"
                             onChange={tagsInputChange}
                         />
+                        <Grid item xs={12}>
+                            <Box m={2}>
+                                <Box pb={1} mb={1}>
+                                    <b>{t('活动封面图')}:</b>
+                                </Box>
+                                <CardCover>
+                                    <CardMedia image={newPromotionCover} />
+                                    <CardCoverAction>
+                                        <Input accept="image/*" id="change-cover"
+                                            multiple
+                                            type="file"
+                                            onChange={(event) => {
+                                                if (event.target.files.length > 0) {
+                                                    let file = event.target.files[0];
+                                                    GenerateBase64(file, (url: string) => {
+                                                        setNewPromotionCover(url);
+                                                    });
+                                                }
+                                            }} />
+                                        <label htmlFor="change-cover">
+                                            <Button
+                                                startIcon={<UploadTwoToneIcon />}
+                                                variant="contained"
+                                                component="span"
+                                            >
+                                                上传菜品图片
+                                            </Button>
+                                        </label>
+                                    </CardCoverAction>
+                                </CardCover>
+                            </ Box>
+                        </Grid>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>退出</Button>
                         <Button onClick={() => {
                             const conduct = async () => {
+                                console.log(newPromotionCover);
                                 return mealInfoApi.addMeal(m);
                             }
 
