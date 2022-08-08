@@ -14,6 +14,7 @@ import type { OriginalSensorData } from 'src/models/energy'
 import { energyApi } from 'src/queries/energy'
 import Results from '@/content/Energy/Details/DetailsTable';
 import { count } from 'src/utils/array'
+import { format } from 'date-fns'
 
 function SensorDataCards() {
   const isMountedRef = useRefMounted();
@@ -22,8 +23,8 @@ function SensorDataCards() {
   const getOriginalData = useCallback(async () => {
     try {
       const response = await energyApi.getOriginalSensorData(
-        0,
-        Number((new Date().getTime() / 1000).toFixed(0))
+        '1970-01-01 00:00:00',
+        format(new Date(), 'yyyy-MM-dd HH:mm:ss')
       );
 
       if (isMountedRef()) {
