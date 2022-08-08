@@ -28,7 +28,7 @@ import {
 } from '@mui/material';
 
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import { MealInfo } from '@/models/meal_info';
+import { MealInfo, MealInfoUpload } from '@/models/meal_info';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import TextField from '@mui/material/TextField';
@@ -43,8 +43,8 @@ import { mealInfoApi } from '@/queries/meal';
 
 import { useRefMounted } from '@/hooks/useRefMounted';
 import stockInfo from 'pages/kitchen/stock';
-let m: MealInfo = {
-    id: '123',
+let m: MealInfoUpload = {
+    id: 123,
     dis_name: '123',
     price: 123,
     description: '123',
@@ -87,7 +87,7 @@ const MealInfoTable = () => {
 
 
     const nameInputChange = (e) => {
-        m.dis_name = e.target.value;
+        m.dis_name = (e.target.value);
     }
     const priceInputChange = (e) => {
         m.price = Number(e.target.value);
@@ -335,7 +335,7 @@ const MealInfoTable = () => {
                                                 <DialogActions>
                                                     <Button onClick={handleClose}>取消</Button>
                                                     <Button onClick={() => {
-                                                        m.id = mealInfo.id;
+                                                        m.id = Number(mealInfo.id);
                                                         console.log(m);
                                                         const conduct = async () => {
                                                             return mealInfoApi.updateMeal(m);

@@ -1,6 +1,7 @@
 
 import {
-    MealInfo
+    MealInfo,
+    MealInfoUpload
 } from '@/models/meal_info'
 
 import { GetApi, PostApi } from "@/utils/requests"
@@ -17,17 +18,17 @@ class MealInfoApi {
             tags: tags
         }))).data as MealInfo[];
     }
-    public addMeal = async (meal: MealInfo) => {
+    public addMeal = async (meal: MealInfoUpload) => {
         return (await (PostApi("/Dishes/AddDish", meal))).statusText as string
     }
 
 
-    public updateMeal = async (meal: MealInfo) => {
+    public updateMeal = async (meal: MealInfoUpload) => {
         return (await (PostApi("/Dishes/UpdateDish", meal))).statusText as string
     }
 
     public delMeal = async (id: string) => {
-        return (await (PostApi("/Dishes", id))).statusText as string
+        return (await (PostApi("/Dishes/DelDishById", id))).statusText as string
     }
 }
 

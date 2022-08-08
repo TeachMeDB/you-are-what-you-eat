@@ -15,14 +15,14 @@ import DialogContent from '@mui/material/DialogContent';
 
 import DialogTitle from '@mui/material/DialogTitle';
 
-import { MealInfo } from '@/models/meal_info';
+import { MealInfoUpload } from '@/models/meal_info';
 
 
 import { mealInfoApi } from '@/queries/meal';
 
 
-let m: MealInfo = {
-    id: '123',
+let m: MealInfoUpload = {
+    id: 123,
     dis_name: '123',
     price: 123,
     description: '123',
@@ -43,7 +43,7 @@ function PageHeader() {
 
     const idInputChange = (e) => {
 
-        m.id = e.target.value;
+        m.id = Number(e.target.value);
     }
     const nameInputChange = (e) => {
         m.dis_name = e.target.value;
