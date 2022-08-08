@@ -20,7 +20,7 @@ let n: StockInfo = {
     "surplus": 0
 }
 
-function PageHeader() {
+function StockPageHeader() {
 
     const [open, setOpen] = React.useState(false);
 
@@ -52,7 +52,7 @@ function PageHeader() {
         <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
                 <Typography variant="h3" component="h3" gutterBottom>
-                    库存
+                    库存信息
                 </Typography>
                 <Typography variant="subtitle2">
                     查看并编辑所有的库存信息
@@ -150,4 +150,4 @@ function PageHeader() {
     );
 }
 
-export default PageHeader;
+export default StockPageHeader;

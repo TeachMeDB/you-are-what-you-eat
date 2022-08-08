@@ -379,7 +379,7 @@ function SidebarMenu() {
                 <NextLink href="/management/VIP" passHref>
                   <Button
                     className={
-                      currentRoute === '/management/VIP'  
+                      currentRoute === '/management/VIP'
                         ? 'active'
                         : ''
                     }
@@ -482,7 +482,7 @@ function SidebarMenu() {
                     onClick={closeSidebar}
                     startIcon={<LunchDiningIcon />}
                   >
-                    菜品信息管理
+                    菜品及库存信息管理
                   </Button>
                 </NextLink>
               </ListItem>

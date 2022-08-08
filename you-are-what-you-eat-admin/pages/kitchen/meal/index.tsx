@@ -10,33 +10,56 @@ import AllMealInfoes from '@/content/Kitchen/Meal/MealInfo';
 import { mealInfoApi } from '@/queries/meal';
 
 
-
+import AllStockInfoes from '@/content/Kitchen/Stock/StockInfo';
+import StockPageHeader from '@/content/Kitchen/Stock/PageHeader';
 function mealInfo() {
     return (
         <>
-            <Head>
-                <title>菜品信息</title>
-            </Head>
-            <PageTitleWrapper>
-                <PageHeader />
-            </PageTitleWrapper>
-            <Container maxWidth="lg">
-                <Grid
-                    container
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="stretch"
-                    spacing={{ xs: 5, md: 3 }}
-                >
-                    <Grid item xs={12} >
-                        <AllMealInfoes />
-                    </Grid>
-
+            <Grid container spacing={4}>
+                <Head>
+                    <title>菜品及库存信息</title>
+                </Head>
+                <Grid item xs={12} >
+                    <PageTitleWrapper>
+                        <PageHeader />
+                    </PageTitleWrapper>
                 </Grid>
 
+                <Container maxWidth="lg">
+                    <Grid
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="stretch"
+                        spacing={{ xs: 5, md: 3 }}
+                    >
+                        <Grid item xs={12} >
+                            <AllMealInfoes />
+                        </Grid>
 
-            </Container>
-            <Footer />
+                    </Grid>
+                </Container>
+                <Grid item xs={12} >
+                    <PageTitleWrapper>
+                        <StockPageHeader />
+                    </PageTitleWrapper>
+                </Grid>
+
+                <Container maxWidth="lg">
+                    <Grid
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="stretch"
+                        spacing={3}
+                    >
+                        <Grid item xs={12}>
+                            <AllStockInfoes />
+                        </Grid>
+                    </Grid>
+                </Container>
+                <Footer />
+            </Grid>
         </>
     )
 }

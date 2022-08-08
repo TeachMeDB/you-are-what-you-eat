@@ -5,7 +5,7 @@ import { Grid, Container } from '@mui/material';
 import Footer from '@/components/Footer';
 
 import PageTitleWrapper from '@/components/PageTitleWrapper';
-import PageHeader from '@/content/Kitchen/Stock/PageHeader';
+import StockPageHeader from '@/content/Kitchen/Stock/PageHeader';
 import AllStockInfoes from '@/content/Kitchen/Stock/StockInfo';
 
 
@@ -19,7 +19,7 @@ function stockInfo() {
                 <title>库存信息</title>
             </Head>
             <PageTitleWrapper>
-                <PageHeader />
+                <StockPageHeader />
             </PageTitleWrapper>
             <Container maxWidth="lg">
                 <Grid

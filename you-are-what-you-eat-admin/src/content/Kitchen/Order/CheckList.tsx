@@ -13,11 +13,15 @@ import {
 
 import { curOrderApi } from '@/queries/cur_order';
 import DishOrderTable from '@/content/Management/Transactions/DishOrderTable';
-import { DishStatusUpload } from "@/models/cur_order";
+import { DishStatusUpload, OrderStatusUpload } from "@/models/cur_order";
 
 let s: DishStatusUpload = {
     dish_order_id: "",
     dish_status: ""
+}
+let b: OrderStatusUpload = {
+    order_id: "",
+    order_status: ""
 }
 
 
@@ -56,6 +60,16 @@ export default function CheckList(curOrder: CurOrder) {
     const check = (item) => {
         return item.status == "已完成";
     }
+    const countUnFinished = (curOrder: CurOrder) => {
+        let i = 0;
+        curOrder.dish.map((item) => {
+            if (item.status != "已完成") {
+                i++
+            }
+        })
+        return i;
+
+    }
     return (
         <Card>
             <div>
@@ -77,24 +91,45 @@ export default function CheckList(curOrder: CurOrder) {
 
                                     edge="end"
                                     onChange={() => {
-                                        const conduct = async () => {
+                                        const conduct1 = async () => {
                                             s.dish_order_id = item.dish_order_id;
                                             s.dish_status = "已完成"
-                                            console.log(s);
+
+
                                             return curOrderApi.updateDishStatus(
                                                 s
                                             );
                                         }
+                                        const conduct2 = async () => {
+                                            b.order_id = curOrder.order_id;
+                                            b.order_status = "已完成"
 
-                                        conduct().then((value) => {
+                                            return curOrderApi.updateOrderStatus(
+                                                b
+                                            );
+                                        }
+                                        conduct1().then((value) => {
 
                                             alert("成功：" + value);
-                                            window.location.reload();
+
 
                                         }).catch((value) => {
 
                                             alert("失败：" + value);
                                         });
+                                        console.log("完成没？");
+                                        console.log(countUnFinished(curOrder));
+                                        if (countUnFinished(curOrder) == 1) {
+                                            conduct2().then((value) => {
+
+                                                alert("该订单已完成：" + value);
+                                                window.location.reload();
+
+                                            }).catch((value) => {
+
+                                                alert("失败：" + value);
+                                            });
+                                        }
 
                                     }}
                                     checked={check(item)}
