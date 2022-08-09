@@ -287,7 +287,7 @@ function SalaryManagementTab() {
               </TableHead>
               <TableBody>
                 {payrolls.slice((page)*rowsPerPage,(page+1)*rowsPerPage).map((payroll) => (
-                  <TableRow key={payroll.id} hover>
+                  <TableRow key={payroll.id+payroll.time} hover>
                     <TableCell>{payroll.id}</TableCell>
                     <TableCell>{payroll.name}</TableCell>
                     <TableCell>{payroll.occupation}</TableCell>

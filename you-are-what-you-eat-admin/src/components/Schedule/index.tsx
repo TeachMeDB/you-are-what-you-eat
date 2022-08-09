@@ -299,7 +299,7 @@ function Schedule({ className,children,schedules }:{className?: string,children?
                 "schedule-item schedule-"+days[day]+" "+
                 "time-from-"+FromTimeToSegment(schedule.time_start)+" "+
                 "time-to-"+ToTimeToSegment(schedule.time_end)+" "+ 
-                "bg-"+colors[(index+getRandom())%5]}>
+                "bg-"+colors[(index^parseInt(schedule.plan_id))%5]}>
                     <Grid container direction="row">   
 
                         <Grid item xs={12}>

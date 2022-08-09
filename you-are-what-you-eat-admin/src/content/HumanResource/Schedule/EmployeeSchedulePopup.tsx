@@ -110,7 +110,7 @@ export default function EmployeeSchedule({person,week}:{person:Avaliable,week:Da
               员工详情时间表界面
             </Typography>
             <Button autoFocus color="inherit" onClick={handleClose} size="large">
-              保存
+              关闭
             </Button>
           </Toolbar>
         </AppBar>
@@ -148,7 +148,7 @@ export default function EmployeeSchedule({person,week}:{person:Avaliable,week:Da
 
         <Card>
 
-        <CardHeader title={<Typography variant="h3"><EventAvailableIcon />  选中排班表</Typography>} />
+        <CardHeader title={<Typography variant="h3"><EventAvailableIcon />  当期排班表</Typography>} />
         <Divider />
         <Schedule schedules={schedules}/>
 

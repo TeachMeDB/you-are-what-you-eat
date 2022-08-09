@@ -383,7 +383,7 @@ function PrizeManagementTab() {
               </TableHead>
               <TableBody>
                 {prizes.slice((page)*rowsPerPage,(page+1)*rowsPerPage).map((prize) => (
-                  <TableRow key={prize.id} hover>
+                  <TableRow key={prize.id+prize.time} hover>
                     <TableCell>{prize.id}</TableCell>
                     <TableCell>{prize.name}</TableCell>
                     <TableCell>{prize.level}</TableCell>

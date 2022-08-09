@@ -43,7 +43,7 @@ export interface EmployeeUpload {
     /**
      * base64的图片
      */
-    avatar: string;
+    avatar: null | string;
     /**
      * 员工生日
      */
@@ -51,9 +51,9 @@ export interface EmployeeUpload {
     /**
      * base64的图片
      */
-    cover:      string;
+    cover:      null | string;
     gender:     string;
-    id:         string;
+    id:         null | string;
     name:       string;
     occupation: string;
 }

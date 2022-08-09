@@ -102,7 +102,7 @@ function Organization( {user,employees,schedules} :{ user:EmployeeDetail,employe
                   <Typography variant="h3">
                   <EventAvailableIcon /> 
 
-                   个人排班表
+                   个人本期排班表
                 
                   </Typography>
 

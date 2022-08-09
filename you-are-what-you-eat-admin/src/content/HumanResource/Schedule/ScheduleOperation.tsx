@@ -252,11 +252,11 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
   const [place,setPlace]=useState("");
 
 
-  const handlePlaceChange = (_: any,value: string) => {
+  const handlePlaceChange = (event: { target: { value: string; }; }) => {
 
-    console.log(value)
-    setPlace(value);
-    handleSelectPlace(value);
+    console.log(event.target.value)
+    setPlace(event.target.value);
+    handleSelectPlace(event.target.value);
   };
 
   const [occupation,setOccupation]=useState("");
@@ -317,10 +317,11 @@ function ScheduleOperation({handleSelectStartTime,handleSelectEndTime,handleSele
               options={(schedules.map((schedule) => (schedule.place)).filter((value, index, self) => (value&&self.indexOf(value) === index)))}
               getOptionLabel={(value)=>(value? value:"")}
               value={place}
-              onChange={handlePlaceChange}
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  onChange={handlePlaceChange}
+                  value={place}
                   label="工作地点"
                   helperText="请填写地点"
                   fullWidth={true}

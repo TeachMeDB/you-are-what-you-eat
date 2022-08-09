@@ -173,8 +173,8 @@ function EmployeeManagementTab() {
       name:"",
       gender:"",
       occupation:"",
-      cover:"",
-      avatar:"",
+      cover:"http://dummyimage.com/800x300",
+      avatar:"http://dummyimage.com/150x150",
       birthday:"2001-01-01"
 
     } as EmployeeUpload);

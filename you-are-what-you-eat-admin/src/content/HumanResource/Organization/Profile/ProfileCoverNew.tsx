@@ -22,7 +22,7 @@ import { EmployeeDetail, EmployeeUpload } from '@/models/employee';
 
 
 import { differenceInYears, format, formatDistance, formatRelative, parse, subDays } from 'date-fns'
-import { GenerateBase64 } from '@/utils/image';
+import { GenerateBase64} from '@/utils/image';
 import { Upload } from '@mui/icons-material';
 import { DesktopDatePicker } from '@mui/lab';
 import { handleClientScriptLoad } from 'next/script';

@@ -85,7 +85,7 @@ export default function DetailEmployeePopup({userId}:{userId:string}) {
               员工详情界面
             </Typography>
             <Button autoFocus color="inherit" onClick={handleClose} size="large">
-              保存
+              关闭
             </Button>
           </Toolbar>
         </AppBar>
