@@ -10,10 +10,13 @@ import {
     styled,
     FormControlLabel
 } from '@mui/material';
+import Button from '@mui/material/Button';
 
 import { curOrderApi } from '@/queries/cur_order';
 import DishOrderTable from '@/content/Management/Transactions/DishOrderTable';
 import { DishStatusUpload, OrderStatusUpload } from "@/models/cur_order";
+
+import { FC, ChangeEvent, useState, useEffect, useCallback } from 'react'
 
 let s: DishStatusUpload = {
     dish_order_id: "",
@@ -70,89 +73,138 @@ export default function CheckList(curOrder: CurOrder) {
         return i;
 
     }
-    return (
-        <Card>
-            <div>
+    if (curOrder.order_status != "待处理")
+        return (
+            <Card >
+                <div>
 
-                <CardHeader title={curOrder.order_id} />
-            </div>
+                    <CardHeader title={curOrder.order_id} />
+                </div>
 
-            <Divider />
-            <CardContent>
-                <List
-                    sx={{ width: '100%', maxWidth: 350, bgcolor: 'background.paper' }}
-                >
-                    {
-                        curOrder.dish.map((item) =>
-                            <ListItem divider>
-                                <ListItemText id={item.dish_name} primary={item.dish_name + "    备注：xxxxxxxxx"} />
+                <Divider />
+                <CardContent>
+                    <List
+                        sx={{ width: '100%', maxWidth: 350, bgcolor: 'background.paper' }}
+                    >
+                        {
+                            curOrder.dish.map((item) =>
+                                <ListItem divider>
+                                    <ListItemText id={item.dish_name} primary={item.dish_name + "    备注：xxxxxxxxx"} />
 
-                                <Switch
+                                    <Switch
 
-                                    edge="end"
-                                    onChange={() => {
-                                        const conduct1 = async () => {
-                                            s.dish_order_id = item.dish_order_id;
-                                            s.dish_status = "已完成"
-
-
-                                            return curOrderApi.updateDishStatus(
-                                                s
-                                            );
-                                        }
-                                        const conduct2 = async () => {
-                                            b.order_id = curOrder.order_id;
-                                            b.order_status = "已完成"
-
-                                            return curOrderApi.updateOrderStatus(
-                                                b
-                                            );
-                                        }
-                                        conduct1().then((value) => {
-
-                                            alert("成功：" + value);
+                                        edge="end"
+                                        onChange={() => {
+                                            const conduct1 = async () => {
+                                                s.dish_order_id = item.dish_order_id;
+                                                s.dish_status = "已完成"
 
 
-                                        }).catch((value) => {
+                                                return curOrderApi.updateDishStatus(
+                                                    s
+                                                );
+                                            }
+                                            const conduct2 = async () => {
+                                                b.order_id = curOrder.order_id;
+                                                b.order_status = "已完成"
 
-                                            alert("失败：" + value);
-                                        });
-                                        console.log("完成没？");
-                                        console.log(countUnFinished(curOrder));
-                                        if (countUnFinished(curOrder) == 1) {
-                                            conduct2().then((value) => {
+                                                return curOrderApi.updateOrderStatus(
+                                                    b
+                                                );
+                                            }
+                                            conduct1().then((value) => {
 
-                                                alert("该订单已完成：" + value);
-                                                window.location.reload();
+                                                alert("成功：" + value);
+
 
                                             }).catch((value) => {
 
                                                 alert("失败：" + value);
                                             });
-                                        }
+                                            console.log("完成没？");
+                                            console.log(countUnFinished(curOrder));
+                                            if (countUnFinished(curOrder) == 1) {
+                                                conduct2().then((value) => {
 
-                                    }}
-                                    checked={check(item)}
-                                    inputProps={{
-                                        'aria-labelledby': item.dish_name,
-                                    }}
+                                                    alert("该订单已完成：" + value);
+                                                    window.location.reload();
 
-                                />
+                                                }).catch((value) => {
 
-                            </ListItem>
-                        )
-                    }
-                </List>
-            </CardContent>
-            <LinearProgressWrapper
-                value={finished}
-                color="primary"
-                variant="determinate"
-            />
+                                                    alert("失败：" + value);
+                                                });
+                                            }
+
+                                        }}
+                                        checked={check(item)}
+                                        inputProps={{
+                                            'aria-labelledby': item.dish_name,
+                                        }}
+
+                                    />
+
+                                </ListItem>
+                            )
+                        }
+                    </List>
+                </CardContent>
 
 
 
-        </Card>
+                <LinearProgressWrapper
+                    value={finished}
+                    color="primary"
+                    variant="determinate"
+                />
 
-    );
+
+
+
+
+
+
+            </Card>
+
+        );
+    else {
+        return (
+            <Card >
+                <div>
+
+                    <CardHeader title={curOrder.order_id} />
+                </div>
+                <Button
+                    variant="contained"
+                    onClick={() => {
+
+                        const conduct3 = async () => {
+                            b.order_id = curOrder.order_id;
+                            b.order_status = "制作中"
+
+                            return curOrderApi.updateOrderStatus(
+                                b
+                            );
+                        }
+
+
+                        conduct3().then((value) => {
+
+                            alert("开始制作该订单：" + value);
+                            window.location.reload();
+
+                        }).catch((value) => {
+
+                            alert("失败：" + value);
+                        });
+
+
+                    }}>
+                    开始制作
+                </Button>
+            </Card>
+
+
+        )
+    }
+
 }

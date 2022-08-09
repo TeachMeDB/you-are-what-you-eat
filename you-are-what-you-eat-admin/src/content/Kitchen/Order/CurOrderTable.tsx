@@ -137,34 +137,30 @@ const CurOrderTable = () => {
             />
             <Divider />
 
-
-
-
             <Box p={2}>
                 <Grid container spacing={3}>
                     {
-                        CurOrders.map((i) =>
-                            <Grid item xs={4}>
-                                <CheckList
-                                    order_id={i.order_id}
-                                    order_status={i.order_status}
-                                    dish={i.dish}
-                                />
-                            </Grid>
+                        CurOrders.map((i) => {
+                            if (i.order_status != "已完成") {
+                                return (
+                                    < Grid item xs={4} >
+                                        <CheckList
+                                            order_id={i.order_id}
+                                            order_status={i.order_status}
+                                            dish={i.dish}
+                                        />
+                                    </Grid>
+                                )
 
+                            }
+                        }
                         )
                     }
                 </Grid>
+
             </Box>
 
-        </Card>
-
-
-
-
-
-
-
+        </Card >
     )
 }
 
