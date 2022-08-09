@@ -49,7 +49,7 @@ export default function CheckList(curOrder: CurOrder) {
 
 
 
-
+    const [deal, setDeal] = useState<string>(curOrder.order_status);
 
     const CountFinished = () => {
         var i = 0;
@@ -73,7 +73,7 @@ export default function CheckList(curOrder: CurOrder) {
         return i;
 
     }
-    if (curOrder.order_status != "待处理")
+    if (deal != "待处理")
         return (
             <Card >
                 <div>
@@ -188,9 +188,9 @@ export default function CheckList(curOrder: CurOrder) {
 
 
                         conduct3().then((value) => {
-
+                            setDeal("制作中");
                             alert("开始制作该订单：" + value);
-                            window.location.reload();
+
 
                         }).catch((value) => {
 
