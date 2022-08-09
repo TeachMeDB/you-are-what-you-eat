@@ -97,6 +97,7 @@ function PageHeader() {
         m.tags = e.target.value.split(" ");
         console.log(m.tags);
     }
+    const Src = "//player.bilibili.com/player.html?bvid=BV1bL4y1N7iX&high_quality=1&danmaku=0";
 
     return (
         <Grid container justifyContent="space-between" alignItems="center">
@@ -169,6 +170,15 @@ function PageHeader() {
                             variant="standard"
                             onChange={tagsInputChange}
                         />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="视频链接"
+                            fullWidth
+                            variant="standard"
+                            onChange={tagsInputChange}
+                        />
                         <Grid item xs={12}>
                             <Box m={2}>
                                 <Box pb={1} mb={1}>
@@ -201,6 +211,7 @@ function PageHeader() {
                                 </CardCover>
                             </ Box>
                         </Grid>
+                        <iframe src={Src} allowfullscreen="allowfullscreen" width="100%" height="270px" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>退出</Button>
