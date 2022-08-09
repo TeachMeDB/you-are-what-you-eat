@@ -4,8 +4,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
 import { CurOrder, Dish } from '@/models/cur_order';
-import { Card, CardHeader, Divider, CardContent } from '@mui/material';
+import { Card, CardHeader, Divider, CardContent, Box } from '@mui/material';
 import {
+
     LinearProgress,
     styled,
     FormControlLabel
@@ -17,6 +18,8 @@ import DishOrderTable from '@/content/Management/Transactions/DishOrderTable';
 import { DishStatusUpload, OrderStatusUpload } from "@/models/cur_order";
 
 import { FC, ChangeEvent, useState, useEffect, useCallback } from 'react'
+
+
 
 let s: DishStatusUpload = {
     dish_order_id: "",
@@ -48,7 +51,7 @@ const LinearProgressWrapper = styled(LinearProgress)(
 export default function CheckList(curOrder: CurOrder) {
 
 
-
+    const [done, setDone] = useState<string>("未完成");
     const [deal, setDeal] = useState<string>(curOrder.order_status);
 
     const CountFinished = () => {
@@ -115,8 +118,6 @@ export default function CheckList(curOrder: CurOrder) {
                                             conduct1().then((value) => {
 
                                                 alert("成功：" + value);
-
-
                                             }).catch((value) => {
 
                                                 alert("失败：" + value);
@@ -173,35 +174,39 @@ export default function CheckList(curOrder: CurOrder) {
 
                     <CardHeader title={curOrder.order_id} />
                 </div>
-                <Button
-                    variant="contained"
-                    onClick={() => {
+                <Box p={2} >
+                    <Button
+                        variant="contained"
+                        onClick={() => {
 
-                        const conduct3 = async () => {
-                            b.order_id = curOrder.order_id;
-                            b.order_status = "制作中"
+                            const conduct3 = async () => {
+                                b.order_id = curOrder.order_id;
+                                b.order_status = "制作中"
 
-                            return curOrderApi.updateOrderStatus(
-                                b
-                            );
-                        }
-
-
-                        conduct3().then((value) => {
-                            setDeal("制作中");
-                            alert("开始制作该订单：" + value);
+                                return curOrderApi.updateOrderStatus(
+                                    b
+                                );
+                            }
 
 
-                        }).catch((value) => {
+                            conduct3().then((value) => {
+                                setDeal("制作中");
 
-                            alert("失败：" + value);
-                        });
+                                window.prompt("开始制作该订单：" + value);
 
 
-                    }}>
-                    开始制作
-                </Button>
-            </Card>
+                            }).catch((value) => {
+
+                                alert("失败：" + value);
+                            });
+
+
+                        }}>
+                        开始制作
+                    </Button>
+                </Box>
+
+            </Card >
 
 
         )

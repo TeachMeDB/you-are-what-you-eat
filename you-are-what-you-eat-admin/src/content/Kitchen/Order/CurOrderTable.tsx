@@ -57,14 +57,16 @@ const CurOrderTable = () => {
 
     const isMountedRef = useRefMounted();
     const [CurOrders, setCurOrders] = useState<CurOrder[]>([]);
-
+    const [SearchOrders, setSearchOrders] = useState<CurOrder[]>([]);
 
     const getAllData = useCallback(async () => {
         try {
             let curOrders = await curOrderApi.getCurOrder();
             console.log(curOrders);
             if (isMountedRef()) {
+                setSearchOrders(curOrders);
                 setCurOrders(curOrders);
+
             }
         } catch (err) {
             console.error(err);
@@ -93,10 +95,11 @@ const CurOrderTable = () => {
     };
     var Search: string;
 
-    const newM: CurOrder[] = [];
+    let newM: CurOrder[] = [];
     const handleSearchChange = (e) => {
+        newM = [];
         Search = e.target.value;
-        CurOrders.map((item) => {
+        SearchOrders.map((item) => {
             if (item.order_id.indexOf(Search) != -1) {
                 console.log(item);
                 newM.push(item);
