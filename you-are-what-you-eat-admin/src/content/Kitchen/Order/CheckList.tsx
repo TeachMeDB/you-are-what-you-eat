@@ -30,7 +30,7 @@ let b: OrderStatusUpload = {
     order_status: ""
 }
 
-
+const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 const LinearProgressWrapper = styled(LinearProgress)(
     ({ theme }) => `
@@ -50,19 +50,23 @@ const LinearProgressWrapper = styled(LinearProgress)(
 
 export default function CheckList(curOrder: CurOrder) {
 
-
-    const [done, setDone] = useState<string>("未完成");
-    const [deal, setDeal] = useState<string>(curOrder.order_status);
-
     const CountFinished = () => {
         var i = 0;
         curOrder.dish.map((item) => {
             if (item.status == "已完成")
                 i++;
         })
-        return Math.round((i / curOrder.dish.length) * 100);
+        return i;
     }
-    var finished = CountFinished();
+    let f = CountFinished();
+
+    const [deal, setDeal] = useState<string>(curOrder.order_status);
+
+    const [finished, setFinished] = useState<number>(f);
+
+
+
+
     const check = (item) => {
         return item.status == "已完成";
     }
@@ -93,16 +97,16 @@ export default function CheckList(curOrder: CurOrder) {
                             curOrder.dish.map((item) =>
                                 <ListItem divider>
                                     <ListItemText id={item.dish_name} primary={item.dish_name + "    备注：xxxxxxxxx"} />
-
                                     <Switch
-
-                                        edge="end"
+                                        defaultChecked={check(item)}
+                                        {...label}
+                                        inputProps={{
+                                            'aria-labelledby': item.dish_name,
+                                        }}
                                         onChange={() => {
                                             const conduct1 = async () => {
                                                 s.dish_order_id = item.dish_order_id;
                                                 s.dish_status = "已完成"
-
-
                                                 return curOrderApi.updateDishStatus(
                                                     s
                                                 );
@@ -115,6 +119,7 @@ export default function CheckList(curOrder: CurOrder) {
                                                     b
                                                 );
                                             }
+                                            setFinished(finished + 1);
                                             conduct1().then((value) => {
 
                                                 alert("成功：" + value);
@@ -136,34 +141,18 @@ export default function CheckList(curOrder: CurOrder) {
                                                 });
                                             }
 
-                                        }}
-                                        checked={check(item)}
-                                        inputProps={{
-                                            'aria-labelledby': item.dish_name,
-                                        }}
-
-                                    />
+                                        }} />
 
                                 </ListItem>
                             )
                         }
                     </List>
                 </CardContent>
-
-
-
                 <LinearProgressWrapper
-                    value={finished}
+                    value={Math.round((finished / curOrder.dish.length) * 100)}
                     color="primary"
                     variant="determinate"
                 />
-
-
-
-
-
-
-
             </Card>
 
         );
@@ -192,7 +181,7 @@ export default function CheckList(curOrder: CurOrder) {
                             conduct3().then((value) => {
                                 setDeal("制作中");
 
-                                window.prompt("开始制作该订单：" + value);
+
 
 
                             }).catch((value) => {
