@@ -80,7 +80,7 @@ const StockInfoesTable = () => {
 
     const isMountedRef = useRefMounted();
     const [StockInfoes, setStockInfoes] = useState<StockInfo[]>([]);
-
+    const [SearchStockInfoes, setSearchStockInfoes] = useState<StockInfo[]>([]);
 
     const getAllData = useCallback(async () => {
         try {
@@ -88,6 +88,7 @@ const StockInfoesTable = () => {
             let stockInfoes = await stockInfoApi.getStockInfo();
             if (isMountedRef()) {
                 setStockInfoes(stockInfoes);
+                setSearchStockInfoes(stockInfoes);
             }
         } catch (err) {
             alert(err);
@@ -131,8 +132,9 @@ const StockInfoesTable = () => {
 
     let newM: StockInfo[] = [];
     const handleSearchChange = (e) => {
+        newM = [];
         Search = e.target.value;
-        StockInfoes.map((item) => {
+        SearchStockInfoes.map((item) => {
             if (item.ing_name.indexOf(Search) != -1)
                 newM.push(item);
         })

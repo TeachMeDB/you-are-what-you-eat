@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-import { ChangeEvent, useState, useEffect, useCallback } from 'react';
+import { ChangeEvent, useState, useEffect, useCallback, setState } from 'react';
 
 import PropTypes from 'prop-types';
 import {
@@ -43,6 +43,9 @@ import { mealInfoApi } from '@/queries/meal';
 
 import { useRefMounted } from '@/hooks/useRefMounted';
 import stockInfo from 'pages/kitchen/stock';
+
+
+
 let m: MealInfoUpload = {
     id: 123,
     dis_name: '123',
@@ -86,6 +89,7 @@ const ButtonSearch = styled(Button)(
 const MealInfoTable = () => {
 
 
+
     const nameInputChange = (e) => {
         m.dis_name = (e.target.value);
     }
@@ -102,13 +106,14 @@ const MealInfoTable = () => {
 
     const isMountedRef = useRefMounted();
     const [MealInfoes, setMealInfoes] = useState<MealInfo[]>([]);
-
+    const [SearchMealInfoes, setSearchMealInfoes] = useState<MealInfo[]>([]);
 
     const getAllData = useCallback(async () => {
         try {
             let MealInfoes = await mealInfoApi.getMealInfo();
             console.log(MealInfoes);
             if (isMountedRef()) {
+                setSearchMealInfoes(MealInfoes);
                 setMealInfoes(MealInfoes);
             }
         } catch (err) {
@@ -146,15 +151,16 @@ const MealInfoTable = () => {
     const paginatedPromotions = applyPagination(MealInfoes, page, limit);
 
     const theme = useTheme();
-    const newM: MealInfo[] = [];
+    let newM: MealInfo[] = [];
 
     var Search: string;
 
 
     const handleSearchChange = (e) => {
+        newM = [];
         Search = e.target.value;
-        MealInfoes.map((item) => {
-            if (item.dis_name === (Search)) {
+        SearchMealInfoes.map((item) => {
+            if (item.dis_name.indexOf(Search) != -1) {
                 console.log(item);
                 newM.push(item);
             }
@@ -297,8 +303,6 @@ const MealInfoTable = () => {
                                             <Dialog open={open} onClose={handleClose}>
                                                 <DialogTitle>菜品信息</DialogTitle>
                                                 <DialogContent>
-
-
                                                     <TextField
                                                         autoFocus
                                                         margin="dense"
