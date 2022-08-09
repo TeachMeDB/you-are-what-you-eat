@@ -34,14 +34,15 @@ function PageHeader(props) {
   const [open, setOpen] = React.useState(false);
   const [formValue, setFormValue] = useState(
     { assets_type: '', assets_status: '', employee_id: 0 });
-  const [manageFormValue, setManageFormValue] = useState({
+  const defaultManageValue = {
     employee_id: '',
     assets_id: '',
     manage_type: '',
     manage_date: new Date(),
     manage_reason: '',
     manage_cost: '',
-  });
+  };
+  const [manageFormValue, setManageFormValue] = useState(defaultManageValue);
   console.log(employees, ' <-- manageFormValue');
 
   const handleClickOpen = () => {
@@ -64,11 +65,12 @@ function PageHeader(props) {
     setOpen(false);
   };
   const handleSubmitManageForm = async () => {
-    console.log(manageFormValue, ' <-- manageFormValue');
+    // console.log(manageFormValue, ' <-- manageFormValue');
     const { manage_date, ...params } = manageFormValue;
     await queryManageApi.addManage({ ...params, manage_date: format(manage_date, 'yyyy-MM-dd') });
     const data = await queryManageApi.getManageList();
     setManageInfoes(data);
+    setManageFormValue(defaultManageValue);
     setOpen(false);
   };
 

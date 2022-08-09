@@ -91,7 +91,7 @@ class QueryManageApi {
   public addManage: (params: any) => Promise<string> = async (params) => {
     try {
       return await (await
-          fetch('http://106.14.212.200:8000/app/api/manages/Asset/PostAddAssetRecord', {
+          fetch('http://106.14.212.200:8000/app/api/Asset/PostAddAssetRecord', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...params, token }),

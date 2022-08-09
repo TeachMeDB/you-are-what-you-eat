@@ -28,7 +28,7 @@ import {
 } from '@mui/material';
 
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import { AssetInfo } from '@/models/asset_info';
+import { AssetInfo, Repair } from '@/models/asset_info';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BuildTwoTone from '@mui/icons-material/BuildTwoTone';
@@ -128,34 +128,46 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
     setAssetInfoes(assetInfoes.filter(val => val.assets_id != id));
   };
 
-  const repairs = [
-    {
-      name: '上海市嘉定区安亭镇曹安公路4800号',
-      phone: '13907589021',
-      longitude: 121.21792,
-      latitude: 31.28698,
-    },
-    {
-      name: '上海市嘉定区嘉松北路6130弄',
-      phone: '17809563528',
-      longitude: 121.22216,
-      latitude: 31.28826,
-    },
-    {
-      name: '上海市嘉定区雅丹路673号',
-      phone: '189086902367',
-      longitude: 121.19936,
-      latitude: 31.29346,
-    },
-    {
-      name: '上海市嘉定区绿苑路587号',
-      phone: '18200985623',
-      longitude: 121.21105,
-      latitude: 31.28032,
-    },
-  ];
-
   const data = assetInfoes.slice(page * limit, page * limit + limit);
+    // .map(val => {
+    //   val.repair = [
+    //     {
+    //       name: '上海市嘉定区安亭镇曹安公路4800号',
+    //       phone: '13907589021',
+    //       longitude: 121.21792,
+    //       latitude: 31.28698,
+    //     },
+    //     {
+    //       name: '上海市嘉定区嘉松北路6130弄',
+    //       phone: '17809563528',
+    //       longitude: 121.22216,
+    //       latitude: 31.28826,
+    //     },
+    //     {
+    //       name: '上海市嘉定区雅丹路673号',
+    //       phone: '189086902367',
+    //       longitude: 121.19936,
+    //       latitude: 31.29346,
+    //     },
+    //     {
+    //       name: '上海市嘉定区绿苑路587号',
+    //       phone: '18200985623',
+    //       longitude: 121.21105,
+    //       latitude: 31.28032,
+    //     },
+    //   ];
+    //   return val;
+    // });
+
+  const mapCenter = (points?: Repair[]) => {
+    if (!points) {
+      return { longitude: 121.21000, latitude: 31.28698 };
+    }
+    return {
+      longitude: points.reduce((prev, curr) => prev + curr.longitude, 0) / points.length,
+      latitude: points.reduce((prev, curr) => prev + curr.latitude, 0) / points.length,
+    };
+  };
 
   const theme = useTheme();
   return (
@@ -432,11 +444,11 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
                             amapkey={'7f7527142abd6382ecc1950a2d568888'}
                             version={'1.4.0'}
                             plugins={['ToolBar']}
-                            center={{ longitude: 121.21000, latitude: 31.28698 }}
+                            center={mapCenter(assetInfo.repair)}
                             zoom={14}
                           >
                             {
-                              repairs.map((val, i) =>
+                              (assetInfo.repair || []).map((val, i) =>
                                 <Marker
                                   key={val.name}
                                   position={{ longitude: val.longitude, latitude: val.latitude }}

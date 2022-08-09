@@ -531,37 +531,7 @@ function SidebarMenu() {
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
-              耗材管理
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
-                <NextLink href="/ingredient/overview" passHref>
-                  <Button
-                    className={
-                      currentRoute === '//ingredient/overview'
-                        ? 'active'
-                        : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<TableChartTwoToneIcon />}
-                  >
-                    耗材管理
-                  </Button>
-                </NextLink>
-              </ListItem>
-            </List>
-          </SubMenuWrapper>
-        </List>
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              资产管理
+              资产|耗材管理
             </ListSubheader>
           }
         >
@@ -581,6 +551,27 @@ function SidebarMenu() {
                     startIcon={<TableChartTwoToneIcon />}
                   >
                     资产管理
+                  </Button>
+                </NextLink>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <NextLink href="/ingredient/overview" passHref>
+                  <Button
+                    className={
+                      currentRoute === '//ingredient/overview'
+                        ? 'active'
+                        : ''
+                    }
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    startIcon={<TableChartTwoToneIcon />}
+                  >
+                    耗材管理
                   </Button>
                 </NextLink>
               </ListItem>
