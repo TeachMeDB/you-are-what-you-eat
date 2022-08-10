@@ -9,7 +9,8 @@ import {
 
     LinearProgress,
     styled,
-    FormControlLabel
+    FormControlLabel,
+    Grid
 } from '@mui/material';
 import Button from '@mui/material/Button';
 
@@ -164,35 +165,46 @@ export default function CheckList(curOrder: CurOrder) {
                     <CardHeader title={curOrder.order_id} />
                 </div>
                 <Box p={2} >
-                    <Button
-                        variant="contained"
-                        onClick={() => {
+                    <Grid container spacing={2}>
+                        <Grid xs={4.5}>
+                            <Button></Button>
+                        </Grid>
+                        <Grid xs={6}>
 
-                            const conduct3 = async () => {
-                                b.order_id = curOrder.order_id;
-                                b.order_status = "制作中"
+                            <Button
+                                size="large"
+                                variant="contained"
+                                onClick={() => {
 
-                                return curOrderApi.updateOrderStatus(
-                                    b
-                                );
-                            }
+                                    const conduct3 = async () => {
+                                        b.order_id = curOrder.order_id;
+                                        b.order_status = "制作中"
 
-
-                            conduct3().then((value) => {
-                                setDeal("制作中");
-
-
-
-
-                            }).catch((value) => {
-
-                                alert("失败：" + value);
-                            });
+                                        return curOrderApi.updateOrderStatus(
+                                            b
+                                        );
+                                    }
 
 
-                        }}>
-                        开始制作
-                    </Button>
+                                    conduct3().then((value) => {
+                                        setDeal("制作中");
+
+
+
+
+                                    }).catch((value) => {
+
+                                        alert("失败：" + value);
+                                    });
+
+
+                                }}>
+                                开始制作
+                            </Button>
+                        </Grid>
+
+                    </Grid>
+
                 </Box>
 
             </Card >
