@@ -7,13 +7,15 @@ import type { Order } from '@/models/order';
 import RecentOrdersTable from './RecentOrdersTable';
 import { ordersApi } from '@/queries/orders'
 
+import { format } from 'date-fns'
+
 function RecentOrdersList() {
   const isMountedRef = useRefMounted();
   const [orders, setOrders] = useState<Order[]>();
 
   const getOrdersInTimePeriod = useCallback(async () => {
     try {
-      const response = await ordersApi.getOrdersInTimePeriod(0, Number((new Date().getTime() / 1000).toFixed(0)));
+      const response = await ordersApi.getOrdersInTimePeriod('1970-01-01 00:00:00', format(new Date(),"yyyy-MM-dd HH:mm:ss"));
 
       if (isMountedRef()) {
         setOrders(response);

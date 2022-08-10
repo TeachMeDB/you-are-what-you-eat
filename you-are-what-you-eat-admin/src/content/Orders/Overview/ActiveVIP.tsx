@@ -7,6 +7,7 @@ import type { ActiveVIP } from '@/models/order';
 import ActiveVIPData from './ActiveVIPData';
 import { ordersApi } from '@/queries/orders'
 import { getDayTime } from '@/utils/date';
+import { format } from 'date-fns'
 
 function ActiveVIPComponent() {
   const isMountedRef = useRefMounted();
@@ -15,8 +16,8 @@ function ActiveVIPComponent() {
   const getOrdersInTimePeriod = useCallback(async () => {
     try {
       const response = await ordersApi.getActiveVIPs(
-        Number((new Date(getDayTime(new Date(), -7, 'begin')).getTime() / 1000).toFixed(0)), 
-        Number((new Date().getTime() / 1000).toFixed(0))
+        getDayTime(new Date(), -7, 'begin'), 
+        format(new Date(), 'yyyy-MM-dd HH:mm:ss')
         );
 
       if (isMountedRef()) {

@@ -544,7 +544,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
               {t('再想想')}
             </Button>
             <ButtonError
-              onClick={handleDeleteCompleted}
+              onClick={() => {handleDeleteCompleted(); window.location.reload();}}
               size="large"
               sx={{
                 mx: 1,

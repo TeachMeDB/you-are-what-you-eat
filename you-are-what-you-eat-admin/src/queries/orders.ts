@@ -9,14 +9,14 @@ import {
     OrderStatus
 } from "@/models/order";
 import { GetApi } from 'src/utils/requests';
-import { getDayTime, toTimeStamp } from 'src/utils/date';
+import { getDayTime } from 'src/utils/date';
 import { arrSum } from "@/utils/array";
 // import { count } from 'src/utils/array';
 
 class OrdersApi {
     
     // OK
-    public getOrdersInTimePeriod: (start: number, end: number) => Promise<Order[]> = async (start, end) => {
+    public getOrdersInTimePeriod: (start: string, end: string) => Promise<Order[]> = async (start, end) => {
         const r = (await GetApi("Orderlists/GetOrdersByTime", {
             begin: start,
             end  : end
@@ -36,7 +36,7 @@ class OrdersApi {
     }
 
     // OK
-    public getDishSaleVolumeInTimePeriod: (start: number, end: number) => Promise<DishOrderStat[]> = async (start, end) => {
+    public getDishSaleVolumeInTimePeriod: (start: string, end: string) => Promise<DishOrderStat[]> = async (start, end) => {
         const r = (await GetApi("Orderlists/GetDishOrderNum", {
             begin: start,
             end  : end
@@ -63,21 +63,23 @@ class OrdersApi {
         const yesterdatStart = getDayTime(new Date(), -1, 'begin');
         const yesterdayEnd = getDayTime(new Date(), -1, 'end');
 
+        console.log(111);
         const todayOrders = (await GetApi("Orderlists/GetOrdersByTime", {
-            begin: toTimeStamp(todayStart),
-            end  : toTimeStamp(todayEnd)
+            begin: getDayTime(new Date(), 0, 'begin'),
+            end  : getDayTime(new Date(), 0, 'end')
         })).data.summary;
+        console.log(222);
         const yesterdayOrders = (await GetApi("Orderlists/GetOrdersByTime", {
-            begin: toTimeStamp(yesterdatStart),
-            end  : toTimeStamp(yesterdayEnd)
+            begin: yesterdatStart,
+            end  : yesterdayEnd
         })).data.summary;
         const todayDishOrders = (await GetApi("Orderlists/GetDishordersByTime", {
-            begin: toTimeStamp(todayStart),
-            end  : toTimeStamp(todayEnd)
+            begin: todayStart,
+            end  : todayEnd
         })).data.data.length;
         const yesterdayDishOrders = (await GetApi("Orderlists/GetDishordersByTime", {
-            begin: toTimeStamp(yesterdatStart),
-            end  : toTimeStamp(yesterdayEnd)
+            begin: yesterdatStart,
+            end  : yesterdayEnd
         })).data.data.length;
 
         const stat: DailyOrderStatic = {
@@ -97,8 +99,8 @@ class OrdersApi {
         const todayStart = getDayTime(new Date(), 0, 'begin');
         const todayEnd = getDayTime(new Date(), 0, 'end');
         const todayOrders = (await GetApi("Orderlists/GetOrdersByTime", {
-            begin: toTimeStamp(todayStart),
-            end  : toTimeStamp(todayEnd)
+            begin: todayStart,
+            end  : todayEnd
         })).data.data;
         const breakfastOrders = todayOrders.filter(
             (order) => {
@@ -148,8 +150,8 @@ class OrdersApi {
     public getWeekBestSellerData: () => Promise<WeekBestSellerData> = async () => {
         
         const rawTopList = (await GetApi("Orderlists/GetDishOrderNum", {
-            begin: Number((new Date(getDayTime(new Date(), -7, 'begin')).getTime() / 1000).toFixed(0)),
-            end:   Number((new Date(getDayTime(new Date(), 0, 'end')).getTime() / 1000).toFixed(0))
+            begin: getDayTime(new Date(), -7, 'begin'),
+            end:   getDayTime(new Date(), 0, 'end')
         })).data.data;
         console.log(rawTopList);
         var top_list = rawTopList.map((d) => {
@@ -173,8 +175,8 @@ class OrdersApi {
             best.total = top_list[0].total_credit
             best.lunch = await Promise.all([-6, -5, -4, -3, -2, -1, 0].map(async (offset) => {
                 const r = ( await(GetApi("Orderlists/GetDishOrderNum", {
-                    begin: Number((new Date(getDayTime(new Date(), offset , 'begin')).getTime() / 1000).toFixed(0)),
-                    end:   Number((new Date(getDayTime(new Date(), offset , 'end')).getTime() / 1000).toFixed(0))
+                    begin: getDayTime(new Date(), offset , 'begin'),
+                    end:   getDayTime(new Date(), offset , 'end')
                 })) ).data.data;
                 const fr = r.filter((d) => d.name === top_list[0].name);
                 if (fr.length <= 0) 
@@ -195,7 +197,7 @@ class OrdersApi {
     }
 
     // OK
-    public getActiveVIPs: (start: number, end: number) => Promise<ActiveVIP[]> = async (start, end) => {
+    public getActiveVIPs: (start: string, end: string) => Promise<ActiveVIP[]> = async (start, end) => {
         const r = (await GetApi("Orderlists/GetVipOrdersByTime", {
             begin: start,
             end  : end

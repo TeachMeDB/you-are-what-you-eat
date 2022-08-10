@@ -19,14 +19,14 @@ class EnergyApi {
         // console.log(`thisWeekStart${thisWeekStart}`)
 
         const today = (await GetApi("Sensors/used", {
-            begin: Number((new Date(todayStart).getTime() / 1000).toFixed(0)),
-            end  : Number((new Date(todayEnd).getTime() / 1000).toFixed(0))
+            begin: todayStart,
+            end  : todayEnd
         })).data.data;
         // console.log(`today${JSON.stringify(today)}`)
 
         const week = (await GetApi("Sensors/used", {
-            begin: Number((new Date(thisWeekStart).getTime() / 1000).toFixed(0)),
-            end  : Number((new Date(todayEnd).getTime() / 1000).toFixed(0))
+            begin: thisWeekStart,
+            end  : todayEnd
         })).data.data;
         // console.log(`week${JSON.stringify(week)}`)
 
@@ -90,8 +90,8 @@ class EnergyApi {
         // }
         const weekOriConsumptionArray = await Promise.all([-6, -5, -4, -3, -2, -1, 0].map(async (offset) => {
             return (await GetApi("Sensors/used", {
-                    begin: Number((new Date(getDayTime(new Date(), offset , 'begin')).getTime() / 1000).toFixed(0)),
-                    end  : Number((new Date(getDayTime(new Date(), offset , 'end')).getTime() / 1000).toFixed(0))
+                    begin: getDayTime(new Date(), offset , 'begin'),
+                    end  : getDayTime(new Date(), offset , 'end')
                 })).data.data;
         }))
         console.log(weekOriConsumptionArray);
@@ -136,8 +136,8 @@ class EnergyApi {
         const ends   = getMonthsDateArray('end');
         const monthOriConsumptionArray = await Promise.all([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(async (idx) => {
             return (await GetApi("Sensors/used", {
-                    begin: Number((new Date(begins[idx]).getTime() / 1000).toFixed(0)),
-                    end  : Number((new Date(ends[idx]).getTime() / 1000).toFixed(0))
+                    begin: begins[idx],
+                    end  : ends[idx]
                 })).data.data;
         }));
         const waterConsumptionList = monthOriConsumptionArray.map((e) => e[2].consumption);
@@ -169,7 +169,7 @@ class EnergyApi {
     }
 
     // OK
-    public getOriginalSensorData: (start: number, end: number) => Promise<OriginalSensorData[]> = async (start, end) => {
+    public getOriginalSensorData: (start: string, end: string) => Promise<OriginalSensorData[]> = async (start, end) => {
         const r = (await GetApi("Sensors/rawdata", {
             begin: start,
             end  : end
@@ -201,8 +201,8 @@ class EnergyApi {
         const ends   = getMonthsDateArray('end');
         const monthOriConsumptionArray = await Promise.all([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(async (idx) => {
             return (await GetApi("Sensors/used", {
-                    begin: Number((new Date(begins[idx]).getTime() / 1000).toFixed(0)),
-                    end  : Number((new Date(ends[idx]).getTime() / 1000).toFixed(0))
+                    begin: begins[idx],
+                    end  : ends[idx]
                 })).data.data;
         }));
         const waterConsumptionList = monthOriConsumptionArray.map((e) => e[2].consumption);

@@ -9,11 +9,6 @@ export function getDayTime(begin_date: Date, offset: number, point: 'begin' | 'e
     return arr.join('-') + (point === 'begin' ? ' 00:00:00' : point === 'end' ? ' 23:59:59' : '');
 }
 
-export function toTimeStamp(dateStr: string): number {
-    var miliStamp = new Date(dateStr).getTime();
-    return Number((miliStamp / 1000).toFixed(0));
-}
-
 export function getMonthsDateArray(point: 'begin' | 'end'): string[] {
     var year = new Date().getFullYear();
     const leap = () => (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) ? 1 : 0;
