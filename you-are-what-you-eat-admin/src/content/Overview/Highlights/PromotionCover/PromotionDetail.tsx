@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import PropTypes from 'prop-types';
-import type { Promotion } from 'src/models/promotion';
 import {
   Box,
   Typography,
@@ -35,12 +34,34 @@ const TableWrapper = styled(Box)(
 `
 );
 
-interface PromotionBodyProps {
-  promotion: Promotion;
-}
-
-const PromotionBody: FC<PromotionBodyProps> = ({ promotion }) => {
+const PromotionBody: FC = () => {
   const { t }: { t: any } = useTranslation();
+
+  const promotion = {
+        id:          101,
+        name:        '疯狂星期四',
+        start:       new Date(),
+        end:         new Date(),
+        description: '疯狂的星期四',
+        dishes:      [
+            {
+                name:     '香辣鸡腿堡',
+                discount: 0.9,
+                price:    25,
+            },
+            {
+                name:     '奥尔良烤翅',
+                discount: 0.7,
+                price:    13,
+            },
+            {
+                name:     '热辣香骨鸡',
+                discount: 0.6,
+                price:    17,
+            },
+        ],
+        status:      'running'
+    }
 
   return (
     <Container maxWidth="lg">
