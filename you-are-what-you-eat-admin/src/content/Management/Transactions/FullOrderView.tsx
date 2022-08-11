@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { useTheme } from '@mui/material';
+import { Tooltip, useTheme } from '@mui/material';
 
 import {
   CryptoDishOrder,
@@ -110,6 +110,7 @@ export default function FullOrderView(props: DialogIDProps) {
 
   return (
     <div>
+      <Tooltip title="查看订单">
       <IconButton
         sx={{
           '&:hover': {
@@ -123,6 +124,7 @@ export default function FullOrderView(props: DialogIDProps) {
       >
         <RemoveRedEyeIcon fontSize="small" />
       </IconButton>
+      </Tooltip>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -133,7 +135,7 @@ export default function FullOrderView(props: DialogIDProps) {
           id="customized-dialog-title"
           onClose={handleClose}
         >
-          订单：{props.id}
+          订单：{props.id}     总金额：{props.cryptoOrder.total_price}
         </BootstrapDialogTitle>
         <Grid
           container

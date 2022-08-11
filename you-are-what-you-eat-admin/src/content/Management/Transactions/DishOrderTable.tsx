@@ -37,7 +37,7 @@ import {
   CryptoDishOrder,
   CryptoDishOrderStatus
 } from '@/models/crypto_dishOrder';
-import { CryptoOrderEdit, CryptoOrderStatus } from '@/models/crypto_order';
+import { CryptoOrder,CryptoOrderEdit, CryptoOrderStatus } from '@/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BulkActions from './BulkActions';
@@ -463,12 +463,14 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder,cryptoOrde
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        maxWidth={'sm'}
+        fullWidth
       >
-        <DialogTitle id="alert-dialog-title" variant='h4'>{'请确认'}</DialogTitle>
+        <DialogTitle id="alert-dialog-title" variant='h4'>{'确认该订单已支付？'}</DialogTitle>
         <Divider/>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            确认该订单已支付？
+            总金额为{cryptoOrder.total_price}元
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -486,6 +488,8 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder,cryptoOrde
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        maxWidth={'sm'}
+        fullWidth
       >
         <DialogTitle id="alert-dialog-title" variant='h4'>{'支付成功'}</DialogTitle>
         <Divider/>
@@ -506,6 +510,8 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder,cryptoOrde
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        maxWidth={'sm'}
+        fullWidth
       >
         <DialogTitle id="alert-dialog-title" variant='h4'>{'支付错误'}</DialogTitle>
         <Divider/>

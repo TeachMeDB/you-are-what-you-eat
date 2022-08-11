@@ -38,8 +38,8 @@ function TablePage() {
     try {
       const response = await queryTableApi.getTable();
 
-      //console.log("--response--");
-      //console.log(response);
+      console.log("--response--");
+      console.log(response);
 
       if (isMountedRef()) {
         setTableData(response);

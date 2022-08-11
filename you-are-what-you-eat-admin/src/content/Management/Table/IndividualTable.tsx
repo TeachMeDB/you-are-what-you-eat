@@ -12,6 +12,9 @@ import Typography from '@mui/material/Typography';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { useTheme } from '@mui/material';
+import FullOrderView from '../Transactions/FullOrderView';
+import { useEffect, useCallback } from 'react';
+import { useRefMounted } from 'src/hooks/useRefMounted';
 
 import {
   Container,
@@ -33,6 +36,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import { CryptoTable } from '@/models/crypto_table';
+import { CryptoOrder } from '@/models/crypto_order';
 import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -104,6 +108,7 @@ export default function IndividualTable(props: IndiTableProps) {
   const [openSuccessDialog, setOpenSuccessDialog] = React.useState(false);
   const [openErrorDialog, setOpenErrorDialog] = React.useState(false);
   const [inputNum, setInputNum] = useState<number>(1);
+  const [orderData, setOrderData] = useState<CryptoOrder>(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -150,30 +155,27 @@ export default function IndividualTable(props: IndiTableProps) {
       setOpenErrorDialog(true);
     }
 
-    /*fetch('http://106.14.212.200:8000/app/api/Table/PostTableStatus',{
-      method:'post',
-      body:JSON.stringify(confirmData),
-      headers:
-      {
-        'Content-Type':'application/json'
-      }
-    }).then((res)=>
-    {
-      console.log(res);
-      if(res.ok)
-      {
-        //ok
-        setOpenSuccessDialog(true);
-      }
-      else
-      {
-        //not ok
-        setOpenErrorDialog(true);
-      }
-    })*/
-
-    //console.log(confirmData);
   };
+
+  const isMountedRef = useRefMounted();
+  const getOrderData = useCallback(async () => {
+    try {
+      const response = await queryTableApi.getOrderOnTable(props.table_id);
+
+      //console.log("--response--");
+      //console.log(response);
+
+      if (isMountedRef()) {
+        setOrderData(response);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
+
+  useEffect(() => {
+    getOrderData();
+  }, [getOrderData]);
 
   const theme = useTheme();
 
@@ -207,6 +209,25 @@ export default function IndividualTable(props: IndiTableProps) {
               {'已有' + props.customer_number + '人使用'}
             </Button>
           )}
+          {
+            orderData?
+            <FullOrderView id={orderData.order_id} cryptoOrder={orderData}/>
+            :
+            <IconButton
+              sx={{
+                '&:hover': {
+                  background: theme.colors.primary.lighter
+                },
+                color: theme.palette.primary.main
+              }}
+              color="inherit"
+              size="small"
+              disabled
+            >
+              <RemoveRedEyeIcon fontSize="small" />
+            </IconButton>
+           
+          }
         </CardActions>
       </Card>
 

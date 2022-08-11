@@ -1,9 +1,9 @@
 import {
   CryptoTable,
   CryptoAllTable,
-  CryptoAutoAssignTable,
-  CryptoOrderOnTable
+  CryptoAutoAssignTable
 } from '@/models/crypto_table';
+import { CryptoOrder } from '@/models/crypto_order';
 
 import { GetApi, PostApi } from '@/utils/requests';
 
@@ -101,7 +101,7 @@ class QueryTableApi {
       await GetApi('Order/GetOrderByTable', {
         table: table
       })
-    ).data as CryptoOrderOnTable;
+    ).data as CryptoOrder;
   };
 }
 

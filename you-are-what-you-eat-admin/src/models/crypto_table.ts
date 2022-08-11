@@ -9,13 +9,14 @@ export interface CryptoTable {
   occupied: string;
 }
 
+/*
 export interface CryptoOrderOnTable{
   order_id:string;
   creation_time:string;
   table_id:number;
   order_status:CryptoOrderStatus;
   total_price:number;
-}
+}*/
 
 export interface CryptoSummary
 {
