@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {
   Tooltip,
   Divider,
+  Button,
   Box,
   FormControl,
   InputLabel,
@@ -30,6 +31,7 @@ import {
   CryptoDishOrder,
   CryptoDishOrderStatus
 } from '@/models/crypto_dishOrder';
+import { CryptoOrder, CryptoOrderStatus } from '@/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BulkActions from './BulkActions';
@@ -40,6 +42,7 @@ import FullOrderView from './FullOrderView';
 interface RecentOrdersTableProps {
   className?: string;
   cryptoDishOrder: CryptoDishOrder[];
+  cryptoOrder:CryptoOrder;
 }
 
 interface Filters {
@@ -216,7 +219,7 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
       {!selectedBulkActions && (
         <CardHeader
           action={
-            <Box width={500}>
+            <Box width={600}>
               <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
                 <TextField
                   id="outlined-basic"
@@ -240,6 +243,13 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
                     </MenuItem>
                   ))}
                 </Select>
+              </FormControl>
+              
+              <FormControl variant="outlined" sx={{ m: 1.25, minWidth: 60 }}>
+                
+                <Button variant="contained" size='large'>
+                    支付订单
+                </Button>
               </FormControl>
             </Box>
           }

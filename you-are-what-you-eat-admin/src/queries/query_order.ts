@@ -1,5 +1,5 @@
-import { CryptoFullOrder } from '@/models/crypto_order';
-import { GetApi } from 'src/utils/requests';
+import { CryptoFullOrder,CryptoOrder } from '@/models/crypto_order';
+import { GetApi,PostApi } from 'src/utils/requests';
 
 class QueryOrderApi {
   public getOrder: () => Promise<CryptoFullOrder> = async () => {
@@ -17,6 +17,11 @@ class QueryOrderApi {
     }
 
     //    return Promise.resolve(data);
+  };
+
+  public editOrder: (order: CryptoOrder) => Promise<string> = async (order) => {
+    const r = await PostApi('Order/PostOrder', order);
+    return r.statusText;
   };
 }
 

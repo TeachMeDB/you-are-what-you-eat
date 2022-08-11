@@ -16,6 +16,7 @@ import {
   CryptoDishOrderStatus,
   CryptoAllDishOrder
 } from '@/models/crypto_dishOrder';
+import { CryptoOrder } from '@/models/crypto_order';
 import { Grid } from '@mui/material';
 import DishOrderTable from './DishOrderTable';
 import { useState, useEffect, useCallback } from 'react';
@@ -41,6 +42,7 @@ export interface DialogTitleProps {
 
 export interface DialogIDProps {
   id: string;
+  cryptoOrder:CryptoOrder;
 }
 
 const BootstrapDialogTitle = (props: DialogTitleProps) => {
@@ -106,46 +108,6 @@ export default function FullOrderView(props: DialogIDProps) {
     );
   }
 
-  /*
-  const cryptoDishOrders: CryptoDishOrder[] = [
-    {
-        dish_order_id : "283nx8ewyfs",
-        order_id: props.id,
-        dish_id: "迎宾红茶",
-        final_payment: 8.10,
-        dish_status: '已完成'
-    },
-    {
-        dish_order_id : "283nx8ewyfd",
-        order_id: props.id,
-        dish_id: "迎宾红茶",
-        final_payment: 8.10,
-        dish_status: '制作中'
-    },
-    {
-        dish_order_id : "283nx8ewyfe",
-        order_id: props.id,
-        dish_id: "迎宾红茶",
-        final_payment: 8.10,
-        dish_status: '已完成'
-    },
-    {
-        dish_order_id : "283nx8ewyff",
-        order_id: props.id,
-        dish_id: "迎宾红茶",
-        final_payment: 8.10,
-        dish_status: '待处理'
-    },
-    {
-        dish_order_id : "283nx8ewyfg",
-        order_id: props.id,
-        dish_id: "迎宾红茶",
-        final_payment: 8.10,
-        dish_status: '已完成'
-    }
-  ];
-  */
-
   return (
     <div>
       <IconButton
@@ -181,7 +143,7 @@ export default function FullOrderView(props: DialogIDProps) {
           spacing={4}
         >
           <Grid item xs={12}>
-            <DishOrderTable cryptoDishOrder={dishOrderData.data} />
+            <DishOrderTable cryptoDishOrder={dishOrderData.data} cryptoOrder={props.cryptoOrder}/>
           </Grid>
         </Grid>
       </BootstrapDialog>

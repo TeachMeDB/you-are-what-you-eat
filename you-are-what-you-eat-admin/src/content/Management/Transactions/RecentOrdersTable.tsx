@@ -86,8 +86,9 @@ const applyFilters = (
     }
     */
 
-    if (filters.search && !cryptoOrder.order_id.includes(filters.search)) {
-      matches = false;
+    if(filters.search && !(cryptoOrder.order_id.includes(filters.search)))
+    {
+      matches=false;
     }
 
     return matches;
@@ -101,6 +102,7 @@ const applyPagination = (
 ): CryptoOrder[] => {
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
+
 
 const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
@@ -196,6 +198,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     setLimit(parseInt(event.target.value));
   };
 
+
   const filteredCryptoOrders = applyFilters(cryptoOrders, filters);
   const paginatedCryptoOrders = applyPagination(
     filteredCryptoOrders,
@@ -220,37 +223,37 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
         
       )*/}
       <CardHeader
-        action={
-          <Box width={400}>
-            <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
-              <TextField
-                id="outlined-basic"
-                label="搜索订单号"
-                variant="outlined"
-                onChange={handleSearchChange}
+          action={
+            <Box width={400}>
+            <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
+              <TextField 
+              id="outlined-basic" 
+              label="搜索订单号" 
+              variant="outlined" 
+              onChange={handleSearchChange}
               />
             </FormControl>
 
-            <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel>筛选</InputLabel>
-              <Select
-                value={filters.status || 'all'}
-                onChange={handleStatusChange}
-                label="Status"
-                autoWidth
-              >
-                {statusOptions.map((statusOption) => (
-                  <MenuItem key={statusOption.id} value={statusOption.id}>
-                    {statusOption.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
+                 <InputLabel >筛选</InputLabel>
+                 <Select
+                   value={filters.status || 'all'}
+                  onChange={handleStatusChange}
+                  label="Status"
+                  autoWidth
+                 >
+                  {statusOptions.map((statusOption) => (
+                     <MenuItem key={statusOption.id} value={statusOption.id}>
+                        {statusOption.name}
+                    </MenuItem>
+                  ))}
+                 </Select>                            
+            </FormControl>              
           </Box>
-        }
-        title="最近订单"
-      />
-
+          }
+          title="最近订单"
+        />
+        
       <Divider />
       <TableContainer>
         <Table>
@@ -293,7 +296,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       value={isCryptoOrderSelected}
                     />
                   </TableCell>
-
+                  
                   <TableCell align="left">
                     <Typography
                       variant="body1"
@@ -305,7 +308,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       {cryptoOrder.order_id}
                     </Typography>
                   </TableCell>
-
+                  
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -320,7 +323,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       {format(cryptoOrder.creation_time, 'MMMM dd yyyy')}
                     </Typography>*/}
                   </TableCell>
-
+                  
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -332,7 +335,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       {cryptoOrder.table_id}
                     </Typography>
                   </TableCell>
-
+                  
                   <TableCell align="right">
                     <Typography
                       variant="body1"
@@ -364,14 +367,14 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                     </Typography>
                   </TableCell>
                   */}
-
+                  
                   <TableCell align="right">
                     {getStatusLabel(cryptoOrder.order_status)}
                   </TableCell>
 
                   <TableCell align="right">
                     <Tooltip title="查看详情" arrow>
-                      <FullOrderView id={cryptoOrder.order_id} />
+                      <FullOrderView id={cryptoOrder.order_id} cryptoOrder={cryptoOrder}/>                                                       
                     </Tooltip>
 
                     {/*<Tooltip title="编辑" arrow>
@@ -388,7 +391,9 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>
                       </Tooltip>*/}
+                    
                   </TableCell>
+
                 </TableRow>
               );
             })}
@@ -406,7 +411,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
           rowsPerPageOptions={[5, 10, 25, 30]}
         />
       </Box>
-    </Card>
+    </Card>    
   );
 };
 
