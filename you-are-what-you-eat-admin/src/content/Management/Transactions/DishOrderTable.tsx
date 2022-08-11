@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { FC, ChangeEvent, useState } from 'react';
 import { format } from 'date-fns';
 import numeral from 'numeral';
@@ -25,22 +26,28 @@ import {
   useTheme,
   CardHeader
 } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
 
 import Label from '@/components/Label';
 import {
   CryptoDishOrder,
   CryptoDishOrderStatus
 } from '@/models/crypto_dishOrder';
-import { CryptoOrder, CryptoOrderStatus } from '@/models/crypto_order';
+import { CryptoOrderEdit, CryptoOrderStatus } from '@/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BulkActions from './BulkActions';
 import TextField from '@mui/material/TextField';
+import { queryOrderApi } from '@/queries/query_order';
 
 import FullOrderView from './FullOrderView';
 
+
 interface RecentOrdersTableProps {
-  className?: string;
   cryptoDishOrder: CryptoDishOrder[];
   cryptoOrder:CryptoOrder;
 }
@@ -106,7 +113,7 @@ const applyPagination = (
   return cryptoDishOrder.slice(page * limit, page * limit + limit);
 };
 
-const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
+const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder,cryptoOrder }) => {
   const [selectedCryptoDishOrders, setSelectedCryptoDishOrders] = useState<
     string[]
   >([]);
@@ -116,6 +123,44 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
   const [filters, setFilters] = useState<Filters>({
     status: null
   });
+
+  const [open, setOpen] = React.useState(false);
+  const [openSuccessDialog, setOpenSuccessDialog] = React.useState(false);
+  const [openErrorDialog, setOpenErrorDialog] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setOpenSuccessDialog(false);
+    setOpenErrorDialog(false);
+
+  };
+  const handleSuccessClose = () => {
+    setOpen(false);
+    setOpenSuccessDialog(false);
+    setOpenErrorDialog(false);
+
+    window.location.reload();
+  };
+  const handleConfirm = async() =>{
+    let sub:CryptoOrderEdit={
+      order_id:cryptoOrder.order_id,
+      creation_time:cryptoOrder.creation_time,
+      table_id:cryptoOrder.table_id,
+      order_status:"已支付"
+    }
+    try {
+      let res = await queryOrderApi.editOrder(sub);
+      console.log(res);
+      setOpenSuccessDialog(true);
+      //window.location.reload();
+    } catch (err) {
+      console.error(err);
+      setOpenErrorDialog(true);
+    }
+  }
 
   const statusOptions = [
     {
@@ -210,6 +255,7 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
   const theme = useTheme();
 
   return (
+    <div>
     <Card>
       {selectedBulkActions && (
         <Box flex={1} p={2}>
@@ -246,10 +292,16 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
               </FormControl>
               
               <FormControl variant="outlined" sx={{ m: 1.25, minWidth: 60 }}>
-                
-                <Button variant="contained" size='large'>
-                    支付订单
+                {cryptoOrder.order_status=="已支付"?
+                <Button variant="contained" size='large' disabled>
+                 订单已支付
                 </Button>
+                :
+                <Button variant="contained" size='large' onClick={handleClickOpen}>
+                  支付订单
+                </Button>
+                }
+                
               </FormControl>
             </Box>
           }
@@ -405,6 +457,71 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
         />
       </Box>
     </Card>
+
+    <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title" variant='h4'>{'请确认'}</DialogTitle>
+        <Divider/>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            确认该订单已支付？
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} autoFocus>
+            否
+          </Button>
+          <Button onClick={handleConfirm} autoFocus variant='contained'>
+            是
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+    <Dialog
+        open={openSuccessDialog}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title" variant='h4'>{'支付成功'}</DialogTitle>
+        <Divider/>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            该订单已支付
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleSuccessClose} autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={openErrorDialog}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title" variant='h4'>{'支付错误'}</DialogTitle>
+        <Divider/>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            修改支付状态失败
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+</div>
   );
 };
 
