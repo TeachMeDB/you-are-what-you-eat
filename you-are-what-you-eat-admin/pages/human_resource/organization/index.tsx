@@ -1,11 +1,29 @@
 import Head from 'next/head';
 import SidebarLayout from '@/layouts/SidebarLayout';
 
-import { Container, Tabs, Tab, Grid, Card, CardHeader, Divider, Typography, Button } from '@mui/material';
+import {
+  Container,
+  Tabs,
+  Tab,
+  Grid,
+  Card,
+  CardHeader,
+  Divider,
+  Typography,
+  Button
+} from '@mui/material';
 import Footer from '@/components/Footer';
 import { styled } from '@mui/material/styles';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import { useState, ChangeEvent, ReactChild, ReactFragment, ReactPortal, useCallback, useEffect } from 'react';
+import {
+  useState,
+  ChangeEvent,
+  ReactChild,
+  ReactFragment,
+  ReactPortal,
+  useCallback,
+  useEffect
+} from 'react';
 
 import ProfileCover from '@/content/HumanResource/Organization/Profile/ProfileCover';
 import QuickLink from '@/content/HumanResource/Organization/Profile/QuickLink';
@@ -21,8 +39,7 @@ import { humanResourceApi } from '@/queries/employee';
 import { scheduleApi } from '@/queries/schedule';
 import { endOfWeek, format, startOfWeek } from 'date-fns';
 import { ScheduleEntity } from '@/models/schedule';
-import Schedule  from '@/components/Schedule';
-
+import Schedule from '@/components/Schedule';
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
@@ -34,18 +51,28 @@ const TabsWrapper = styled(Tabs)(
 `
 );
 
-const init_id:string="1001";
+const init_id: string = '1001';
 
-
-function Organization( {user,employees,schedules} :{ user:EmployeeDetail,employees:EmployeeEntity[],schedules:ScheduleEntity[] }) {
-
+function Organization({
+  user,
+  employees,
+  schedules
+}: {
+  user: EmployeeDetail;
+  employees: EmployeeEntity[];
+  schedules: ScheduleEntity[];
+}) {
   const [currentTab, setCurrentTab] = useState<string>('SelfManagementTab');
 
-  const tabs = [
-    { value: 'SelfManagementTab', label: '个人档案管理' }].concat(user.occupation==='经理'? 
-    [{ value: 'EmployeeManagementTab', label: '员工信息管理' },
-    { value: 'SalaryManagementTab', label: '员工薪资管理' },
-    { value: 'PrizeManagementTab', label: '员工奖金管理' }]:[]);
+  const tabs = [{ value: 'SelfManagementTab', label: '个人档案管理' }].concat(
+    user.occupation === '经理'
+      ? [
+          { value: 'EmployeeManagementTab', label: '员工信息管理' },
+          { value: 'SalaryManagementTab', label: '员工薪资管理' },
+          { value: 'PrizeManagementTab', label: '员工奖金管理' }
+        ]
+      : []
+  );
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
@@ -65,88 +92,60 @@ function Organization( {user,employees,schedules} :{ user:EmployeeDetail,employe
           spacing={3}
         >
           <Grid item xs={12} md={8}>
-            <ProfileCover user={user}/>
+            <ProfileCover user={user} />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Summary  user={user}/>
+            <Summary user={user} />
           </Grid>
           <Grid item xs={12} md={8}>
-            <Stuff  user={user} employees={employees.filter((employee:EmployeeEntity)=>{
-            return employee.occupation===user.occupation;
-          })}/>
+            <Stuff
+              user={user}
+              employees={employees.filter((employee: EmployeeEntity) => {
+                return employee.occupation === user.occupation;
+              })}
+            />
           </Grid>
           <Grid item xs={12} md={4}>
-            <QuickLink  user={user}/>
+            <QuickLink user={user} />
           </Grid>
         </Grid>
-
       </Container>
 
       <Container maxWidth="lg">
-        <Grid
-          container
-          direction="row"
-          alignItems="stretch"
-          spacing={3}
-        >
+        <Grid container direction="row" alignItems="stretch" spacing={3}>
           <Grid item xs={12}></Grid>
-        
-        <Grid item xs={12}>
-          <Card>
 
-            <CardHeader title={
-              
-                <Grid container >
-                  <Grid item xs={10}>
-                  
-                  <Typography variant="h3">
-                  <EventAvailableIcon /> 
-
-                   个人本期排班表
-                
-                  </Typography>
-
+          <Grid item xs={12}>
+            <Card>
+              <CardHeader
+                title={
+                  <Grid container>
+                    <Grid item xs={10}>
+                      <Typography variant="h3">
+                        <EventAvailableIcon />
+                        个人本期排班表
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Button
+                        size="large"
+                        variant="contained"
+                        onClick={() => {
+                          //这里有个比较麻烦的签到
+                        }}
+                      >
+                        <CheckCircleIcon />
+                        今日签到
+                      </Button>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={2}>
-                  <Button size="large"
-                  variant='contained'
-                  onClick={()=>{
-
-
-
-
-                    //这里有个比较麻烦的签到
-
-
-                  }}>
-                    < CheckCircleIcon/>
-                    今日签到</Button>
-                    
-                  </Grid>
-
-                </Grid>
-                
-              
-              } />
-            <Divider />
-            <Schedule schedules={schedules}/>
-
-
+                }
+              />
+              <Divider />
+              <Schedule schedules={schedules} />
             </Card>
-            
-
+          </Grid>
         </Grid>
-
-          
-          
-
-
-        </Grid>
-
-        
-
-
-
       </Container>
 
       <Container maxWidth="lg">
@@ -173,10 +172,17 @@ function Organization( {user,employees,schedules} :{ user:EmployeeDetail,employe
             </TabsWrapper>
           </Grid>
           <Grid item xs={12}>
-            {currentTab === 'SelfManagementTab' && <SelfManagementTab  user={user}/>}
-            {user.occupation==='经理'&&currentTab === 'SalaryManagementTab' && <SalaryManagementTab/>}
-            {user.occupation==='经理'&&currentTab === 'PrizeManagementTab' && <PrizeManagementTab/>}
-            {user.occupation==='经理'&&currentTab === 'EmployeeManagementTab' && <EmployeeManagementTab/>}
+            {currentTab === 'SelfManagementTab' && (
+              <SelfManagementTab user={user} />
+            )}
+            {user.occupation === '经理' &&
+              currentTab === 'SalaryManagementTab' && <SalaryManagementTab />}
+            {user.occupation === '经理' &&
+              currentTab === 'PrizeManagementTab' && <PrizeManagementTab />}
+            {user.occupation === '经理' &&
+              currentTab === 'EmployeeManagementTab' && (
+                <EmployeeManagementTab />
+              )}
           </Grid>
         </Grid>
       </Container>
@@ -185,26 +191,27 @@ function Organization( {user,employees,schedules} :{ user:EmployeeDetail,employe
   );
 }
 
-Organization.getLayout = (page: boolean | ReactChild | ReactFragment | ReactPortal) => (
-  <SidebarLayout>{page}</SidebarLayout>
-);
+Organization.getLayout = (
+  page: boolean | ReactChild | ReactFragment | ReactPortal
+) => <SidebarLayout>{page}</SidebarLayout>;
 
 export default Organization;
 
-
-
 export async function getServerSideProps() {
-
   const user = await humanResourceApi.getEmployeeDetail(init_id);
 
   const employees = await humanResourceApi.getEmployees();
 
-  let week=Date.now();
+  let week = Date.now();
 
-  let start=startOfWeek(week);
-  let end=endOfWeek(week);
+  let start = startOfWeek(week);
+  let end = endOfWeek(week);
 
-  const schedules=await scheduleApi.getSchedule(format(start,"yyyy-MM-dd HH:mm:ss"),format(end,"yyyy-MM-dd HH:mm:ss"),user.id)
+  const schedules = await scheduleApi.getSchedule(
+    format(start, 'yyyy-MM-dd HH:mm:ss'),
+    format(end, 'yyyy-MM-dd HH:mm:ss'),
+    user.id
+  );
 
-  return { props: { user,employees,schedules } }
+  return { props: { user, employees, schedules } };
 }

@@ -34,8 +34,6 @@ function ApplicationsVIP() {
   );
 }
 
-ApplicationsVIP.getLayout = (page) => (
-  <SidebarLayout>{page}</SidebarLayout>
-);
+ApplicationsVIP.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
 
 export default ApplicationsVIP;

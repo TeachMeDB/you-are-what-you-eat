@@ -26,7 +26,10 @@ import {
 } from '@mui/material';
 
 import Label from '@/components/Label';
-import { CryptoDishOrder,CryptoDishOrderStatus } from '@/models/crypto_dishOrder';
+import {
+  CryptoDishOrder,
+  CryptoDishOrderStatus
+} from '@/models/crypto_dishOrder';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BulkActions from './BulkActions';
@@ -44,7 +47,9 @@ interface Filters {
   search?: string;
 }
 
-const getStatusLabel = (cryptoDishOrderStatus: CryptoDishOrderStatus): JSX.Element => {
+const getStatusLabel = (
+  cryptoDishOrderStatus: CryptoDishOrderStatus
+): JSX.Element => {
   const map = {
     待处理: {
       text: '待处理',
@@ -82,9 +87,8 @@ const applyFilters = (
     }
     */
 
-    if(filters.search && !(cryptoOrder.dish_order_id.includes(filters.search)))
-    {
-      matches=false;
+    if (filters.search && !cryptoOrder.dish_order_id.includes(filters.search)) {
+      matches = false;
     }
 
     return matches;
@@ -99,11 +103,10 @@ const applyPagination = (
   return cryptoDishOrder.slice(page * limit, page * limit + limit);
 };
 
-
 const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
-  const [selectedCryptoDishOrders, setSelectedCryptoDishOrders] = useState<string[]>(
-    []
-  );
+  const [selectedCryptoDishOrders, setSelectedCryptoDishOrders] = useState<
+    string[]
+  >([]);
   const selectedBulkActions = selectedCryptoDishOrders.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
@@ -190,7 +193,6 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
     setLimit(parseInt(event.target.value));
   };
 
-
   const filteredCryptoDishOrders = applyFilters(cryptoDishOrder, filters);
   const paginatedCryptoDishOrders = applyPagination(
     filteredCryptoDishOrders,
@@ -215,31 +217,31 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
         <CardHeader
           action={
             <Box width={500}>
-            <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
-              <TextField 
-              id="outlined-basic" 
-              label="搜索点菜号" 
-              variant="outlined" 
-              onChange={handleSearchChange}
-              />
-            </FormControl>
+              <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
+                <TextField
+                  id="outlined-basic"
+                  label="搜索点菜号"
+                  variant="outlined"
+                  onChange={handleSearchChange}
+                />
+              </FormControl>
 
-            <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
-                 <InputLabel >筛选</InputLabel>
-                 <Select
-                   value={filters.status || 'all'}
+              <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel>筛选</InputLabel>
+                <Select
+                  value={filters.status || 'all'}
                   onChange={handleStatusChange}
                   label="Status"
                   autoWidth
-                 >
+                >
                   {statusOptions.map((statusOption) => (
-                     <MenuItem key={statusOption.id} value={statusOption.id}>
-                        {statusOption.name}
+                    <MenuItem key={statusOption.id} value={statusOption.id}>
+                      {statusOption.name}
                     </MenuItem>
                   ))}
-                 </Select>                            
-            </FormControl>              
-          </Box>
+                </Select>
+              </FormControl>
+            </Box>
           }
           title="订单详情"
         />
@@ -267,9 +269,8 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
           </TableHead>
           <TableBody>
             {paginatedCryptoDishOrders.map((cryptoOrder) => {
-              const isCryptoDishOrderSelected = selectedCryptoDishOrders.includes(
-                cryptoOrder.order_id
-              );
+              const isCryptoDishOrderSelected =
+                selectedCryptoDishOrders.includes(cryptoOrder.order_id);
               return (
                 <TableRow
                   hover
@@ -281,12 +282,15 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
                       color="primary"
                       checked={isCryptoDishOrderSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoDishOrder(event, cryptoOrder.dish_order_id)
+                        handleSelectOneCryptoDishOrder(
+                          event,
+                          cryptoOrder.dish_order_id
+                        )
                       }
                       value={isCryptoDishOrderSelected}
                     />
                   </TableCell>
-                  
+
                   <TableCell align="left">
                     <Typography
                       variant="body1"
@@ -298,7 +302,7 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
                       {cryptoOrder.dish_order_id}
                     </Typography>
                   </TableCell>
-                  
+
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -313,7 +317,7 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
                       {format(cryptoOrder.creation_time, 'MMMM dd yyyy')}
                     </Typography>*/}
                   </TableCell>
-                  
+
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -337,7 +341,7 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
                       {cryptoOrder.dish_name}
                     </Typography>
                   </TableCell>
-                  
+
                   <TableCell align="right">
                     <Typography
                       variant="body1"
@@ -369,12 +373,10 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
                     </Typography>
                   </TableCell>
                   */}
-                  
+
                   <TableCell align="right">
                     {getStatusLabel(cryptoOrder.dish_status)}
                   </TableCell>
-
-                
                 </TableRow>
               );
             })}
@@ -392,7 +394,7 @@ const DishOrderTable: FC<RecentOrdersTableProps> = ({ cryptoDishOrder }) => {
           rowsPerPageOptions={[5, 10, 25, 30]}
         />
       </Box>
-    </Card>    
+    </Card>
   );
 };
 

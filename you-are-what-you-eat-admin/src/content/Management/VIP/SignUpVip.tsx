@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 
-import { CryptoVip,CryptoVipStatus } from '@/models/crypto_vip';
+import { CryptoVip, CryptoVipStatus } from '@/models/crypto_vip';
 import { Grid } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import DatePicker from '@mui/lab/DatePicker';
@@ -43,11 +43,11 @@ import {
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
-    padding: theme.spacing(2),
+    padding: theme.spacing(2)
   },
   '& .MuiDialogActions-root': {
-    padding: theme.spacing(1),
-  },
+    padding: theme.spacing(1)
+  }
 }));
 
 export interface DialogTitleProps {
@@ -56,12 +56,12 @@ export interface DialogTitleProps {
   onClose: () => void;
 }
 
-export interface DialogIDProps{
-    id: string;
+export interface DialogIDProps {
+  id: string;
 }
 
-export interface VipProps{
-  info:CryptoVip
+export interface VipProps {
+  info: CryptoVip;
 }
 
 type GenderType = '男' | '女';
@@ -77,8 +77,8 @@ const statusOptions = [
   }
 ];
 
-interface GenderFilter{
-  gender:GenderType;
+interface GenderFilter {
+  gender: GenderType;
 }
 
 const BootstrapDialogTitle = (props: DialogTitleProps) => {
@@ -95,7 +95,7 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
             position: 'absolute',
             right: 8,
             top: 8,
-            color: (theme) => theme.palette.grey[500],
+            color: (theme) => theme.palette.grey[500]
           }}
         >
           <CloseIcon />
@@ -139,22 +139,22 @@ export default function SignUpVip() {
 
     setValue_gender(value);
   };
-  const handleSubmitSignUp=()=>{
+  const handleSubmitSignUp = () => {
     console.log(value_user_name);
     console.log(value_birthday);
     console.log(value_gender);
-  }
+  };
 
   return (
     <div>
-        <Button
-          sx={{ mt: { xs: 2, md: 0 } }}
-          variant="contained"
-          startIcon={<AddTwoToneIcon fontSize="small" />}
-          onClick={handleClickOpen}
-        >
-          会员注册
-        </Button>
+      <Button
+        sx={{ mt: { xs: 2, md: 0 } }}
+        variant="contained"
+        startIcon={<AddTwoToneIcon fontSize="small" />}
+        onClick={handleClickOpen}
+      >
+        会员注册
+      </Button>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -171,8 +171,7 @@ export default function SignUpVip() {
           <Typography variant="subtitle2">
             {t('该自定义注册会员方式已过时，请使用首页Casdoor注册')}
           </Typography>
-          <Divider/>
-          
+          <Divider />
         </DialogTitle>
         {/*<Box
             component="form"
@@ -225,13 +224,13 @@ export default function SignUpVip() {
                         />
                       )}
                     />
-          </Box>*/}  
-          <Button
+          </Box>*/}
+        <Button
           startIcon={<AddTwoToneIcon fontSize="small" />}
           onClick={handleClose}
-          >
+        >
           好的
-        </Button>     
+        </Button>
       </BootstrapDialog>
     </div>
   );

@@ -23,14 +23,9 @@ function EnergySurplus() {
     getChart3Data();
   }, [getChart3Data]);
 
-  if (!chart3Data)
-    return null;
+  if (!chart3Data) return null;
 
-  return (
-    <>
-      {EnergySurplusUI(chart3Data)}
-    </>
-  );
+  return <>{EnergySurplusUI(chart3Data)}</>;
 }
 
 export default EnergySurplus;

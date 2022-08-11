@@ -36,15 +36,12 @@ function OrderOverviewContent() {
           <StatisticCard />
         </Grid>
         <Grid item xs={12}>
-        <Carousel
-          autoPlay={false}
-          animation={'slide'}
-          >
-          <OrderReport />
-        <BestSeller />
-        <DishSaleVolume />
-        <ActiveVIP />
-        </Carousel>
+          <Carousel autoPlay={false} animation={'slide'}>
+            <OrderReport />
+            <BestSeller />
+            <DishSaleVolume />
+            <ActiveVIP />
+          </Carousel>
         </Grid>
       </Grid>
       <Footer />

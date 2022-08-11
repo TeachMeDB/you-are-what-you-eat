@@ -20,9 +20,15 @@ import { useCallback, useEffect, useState } from 'react';
 import { humanResourceApi } from '@/queries/employee';
 import { EmployeeDetail, EmployeeUpload } from '@/models/employee';
 
-
-import { differenceInYears, format, formatDistance, formatRelative, parse, subDays } from 'date-fns'
-import { GenerateBase64} from '@/utils/image';
+import {
+  differenceInYears,
+  format,
+  formatDistance,
+  formatRelative,
+  parse,
+  subDays
+} from 'date-fns';
+import { GenerateBase64 } from '@/utils/image';
 import { Upload } from '@mui/icons-material';
 import { DesktopDatePicker } from '@mui/lab';
 import { handleClientScriptLoad } from 'next/script';
@@ -89,102 +95,74 @@ const CardCoverAction = styled(Box)(
 `
 );
 
-
-
-const ProfileCoverNew = ({ upload, setSelectedUpload }: { upload: EmployeeUpload, setSelectedUpload: (upload: EmployeeUpload) => void }) => {
-
+const ProfileCoverNew = ({
+  upload,
+  setSelectedUpload
+}: {
+  upload: EmployeeUpload;
+  setSelectedUpload: (upload: EmployeeUpload) => void;
+}) => {
   console.log(upload);
 
   const handleNameChange = (event) => {
-
     if (event.target.value) {
-
-
       let newUpload = { ...upload };
       newUpload.name = event.target.value;
 
       setSelectedUpload(newUpload);
-
     }
-
-  }
+  };
 
   const handleBirthdayChange = (value: Date) => {
-
     console.log(value);
 
     if (value) {
-
-
       let newUpload = { ...upload };
-      newUpload.birthday = format(value, "yyyy-MM-dd");
+      newUpload.birthday = format(value, 'yyyy-MM-dd');
       setSelectedUpload(newUpload);
-
     }
-
-  }
+  };
 
   const handleGenderChange = (event) => {
-
     if (event.target.value) {
-
-
       let newUpload = { ...upload };
       newUpload.gender = event.target.value;
 
-
       setSelectedUpload(newUpload);
-
     }
-
-  }
+  };
 
   const handleOccupationChange = (event) => {
-
     if (event.target.value) {
-
-
       let newUpload = { ...upload };
       newUpload.occupation = event.target.value;
 
-
       setSelectedUpload(newUpload);
-
     }
-
-  }
-
-
+  };
 
   return (
     <>
       <CardCover>
         <CardMedia image={upload.cover} />
         <CardCoverAction>
-          <Input accept="image/*" id="change-cover"
+          <Input
+            accept="image/*"
+            id="change-cover"
             type="file"
             onChange={(event) => {
-
               if (event.target.files.length > 0) {
                 let file = event.target.files[0];
 
                 GenerateBase64(file, (url: string) => {
-
-
-
                   let newUpload = { ...upload };
                   newUpload.cover = url;
 
-
                   setSelectedUpload(newUpload);
-
-
-
                 });
-
               }
-
-            }} />
+            }}
+          />
           <label htmlFor="change-cover">
             <Button
               startIcon={<UploadTwoToneIcon />}
@@ -205,25 +183,16 @@ const ProfileCoverNew = ({ upload, setSelectedUpload }: { upload: EmployeeUpload
             name="icon-button-file"
             type="file"
             onChange={(event) => {
-
-
               if (event.target.files.length > 0) {
                 let file = event.target.files[0];
 
                 GenerateBase64(file, (url: string) => {
-
-
                   let newUpload = { ...upload };
                   newUpload.avatar = url;
 
-
                   setSelectedUpload(newUpload);
-
                 });
-
               }
-
-
             }}
           />
           <label htmlFor="icon-button-file">
@@ -234,25 +203,18 @@ const ProfileCoverNew = ({ upload, setSelectedUpload }: { upload: EmployeeUpload
         </ButtonUploadWrapper>
       </AvatarWrapper>
       <Box py={2} pl={2} mb={3}>
-
         <Grid container spacing={3}>
           <Grid item xs={12}>
-
             <Divider />
-
-
           </Grid>
 
           <Grid item xs={12}>
-
             <Grid container>
-
               <Box
                 display={{ xs: 'block', md: 'flex' }}
                 alignItems="center"
                 justifyContent="space-between"
               >
-
                 <TextField
                   required
                   id="outlined-required"
@@ -261,14 +223,15 @@ const ProfileCoverNew = ({ upload, setSelectedUpload }: { upload: EmployeeUpload
                   onChange={handleNameChange}
                 />
 
-
                 <DesktopDatePicker
                   label="员工出生日期"
                   inputFormat="yyyy-MM-dd"
                   mask="____-__-__"
-                  value={parse(upload.birthday,"yyyy-MM-dd",Date.now())}
+                  value={parse(upload.birthday, 'yyyy-MM-dd', Date.now())}
                   onChange={handleBirthdayChange}
-                  renderInput={(params) => <TextField sx={{ mx: 1 }} {...params} />}
+                  renderInput={(params) => (
+                    <TextField sx={{ mx: 1 }} {...params} />
+                  )}
                 />
 
                 <TextField
@@ -288,32 +251,19 @@ const ProfileCoverNew = ({ upload, setSelectedUpload }: { upload: EmployeeUpload
                   id="outlined-disabled"
                   label="职位"
                 />
-
               </Box>
-
             </Grid>
           </Grid>
 
-        
-        <Grid item xs={12}>
-
-
-
-          <Divider />
-
-
-
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
         </Grid>
-
-        </Grid>
-
-
       </Box>
     </>
   );
 };
 
-ProfileCoverNew.propTypes = {
-};
+ProfileCoverNew.propTypes = {};
 
 export default ProfileCoverNew;

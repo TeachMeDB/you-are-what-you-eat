@@ -1,15 +1,14 @@
 export type CryptoOrderStatus = '已完成' | '待处理' | '已支付' | '制作中';
 
 export interface CryptoOrder {
-  order_id : string;
-  creation_time : string;
-  table_id : string;
+  order_id: string;
+  creation_time: string;
+  table_id: string;
   status: CryptoOrderStatus;
   total_price: number;
 }
 
-export interface CryptoSummary
-{
+export interface CryptoSummary {
   order_count: number;
   awaiting_count: number;
   awaiting_credit: number;
@@ -23,7 +22,7 @@ export interface CryptoSummary
   today_credit: number;
 }
 
-export interface CryptoFullOrder{
-  summary:CryptoSummary;
-  orders:CryptoOrder[];
+export interface CryptoFullOrder {
+  summary: CryptoSummary;
+  orders: CryptoOrder[];
 }

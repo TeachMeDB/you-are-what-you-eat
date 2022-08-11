@@ -10,32 +10,23 @@ import PageHeader from '@/content/Kitchen/Order/PageHeader';
 import CheckList from '@/content/Kitchen/Order/CheckList';
 import CurOrder from '@/content/Kitchen/Order/CurOrder';
 
-
 function mealInfo() {
-    return (
-        <>
-            <Head>
-                <title>菜品信息</title>
-            </Head>
-            <PageTitleWrapper>
-                <PageHeader />
-            </PageTitleWrapper>
+  return (
+    <>
+      <Head>
+        <title>菜品信息</title>
+      </Head>
+      <PageTitleWrapper>
+        <PageHeader />
+      </PageTitleWrapper>
 
-            <Container maxWidth="lg">
-
-                <CurOrder />
-
-            </Container>
-
-
-
-        </>
-    )
+      <Container maxWidth="lg">
+        <CurOrder />
+      </Container>
+    </>
+  );
 }
 
-mealInfo.getLayout = (page) => (
-    <SidebarLayout>{page}</SidebarLayout>
-);
-
+mealInfo.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
 
 export default mealInfo;

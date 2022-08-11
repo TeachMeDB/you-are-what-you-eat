@@ -83,55 +83,51 @@ function ActiveVIPData(data: ActiveVIP[]) {
                   }}
                   secondaryAction={
                     <>
-                    <Tooltip
-                    title={vip.order_num}
-                    >
-                    <Button
-                      size="small"
-                      variant="text"
-                      color="secondary"
-                      sx={{
-                        alignSelf: 'center',
-                        padding: `${theme.spacing(0.5, 1.6, 0.5, 1.2)}`,
-                        backgroundColor: `${theme.colors.secondary.lighter}`,
-                        textTransform: 'uppercase',
-                        fontSize: `${theme.typography.pxToRem(11)}`,
-                        '&:hover': {
-                          backgroundColor: `${theme.colors.secondary.main}`,
-                          color: `${theme.palette.getContrastText(
-                            theme.colors.secondary.main
-                          )}`
-                        }
-                      }}
-                    >
-                      {t('最近订单数')}
-                    </Button>
-                    </Tooltip>
-                    <Tooltip
-                    title={vip.order_credit}
-                    >
-                    <Button
-                    size="small"
-                    variant="text"
-                    color="secondary"
-                    sx={{
-                      alignSelf: 'center',
-                      padding: `${theme.spacing(0.5, 1.6, 0.5, 1.2)}`,
-                      backgroundColor: `${theme.colors.secondary.lighter}`,
-                      textTransform: 'uppercase',
-                      fontSize: `${theme.typography.pxToRem(11)}`,
-                      '&:hover': {
-                        backgroundColor: `${theme.colors.secondary.main}`,
-                        color: `${theme.palette.getContrastText(
-                          theme.colors.secondary.main
-                        )}`
-                      }
-                    }}
-                  >
-                    {t('最近消费金额')}
-                  </Button>
-                  </Tooltip>
-                  </>
+                      <Tooltip title={vip.order_num}>
+                        <Button
+                          size="small"
+                          variant="text"
+                          color="secondary"
+                          sx={{
+                            alignSelf: 'center',
+                            padding: `${theme.spacing(0.5, 1.6, 0.5, 1.2)}`,
+                            backgroundColor: `${theme.colors.secondary.lighter}`,
+                            textTransform: 'uppercase',
+                            fontSize: `${theme.typography.pxToRem(11)}`,
+                            '&:hover': {
+                              backgroundColor: `${theme.colors.secondary.main}`,
+                              color: `${theme.palette.getContrastText(
+                                theme.colors.secondary.main
+                              )}`
+                            }
+                          }}
+                        >
+                          {t('最近订单数')}
+                        </Button>
+                      </Tooltip>
+                      <Tooltip title={vip.order_credit}>
+                        <Button
+                          size="small"
+                          variant="text"
+                          color="secondary"
+                          sx={{
+                            alignSelf: 'center',
+                            padding: `${theme.spacing(0.5, 1.6, 0.5, 1.2)}`,
+                            backgroundColor: `${theme.colors.secondary.lighter}`,
+                            textTransform: 'uppercase',
+                            fontSize: `${theme.typography.pxToRem(11)}`,
+                            '&:hover': {
+                              backgroundColor: `${theme.colors.secondary.main}`,
+                              color: `${theme.palette.getContrastText(
+                                theme.colors.secondary.main
+                              )}`
+                            }
+                          }}
+                        >
+                          {t('最近消费金额')}
+                        </Button>
+                      </Tooltip>
+                    </>
                   }
                 >
                   <ListItemAvatar

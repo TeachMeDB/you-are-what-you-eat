@@ -1,6 +1,6 @@
 export interface MealInfo {
-    id: string,
-    DishName: string,
-    Price: number,
-    Description: string
+  id: string;
+  DishName: string;
+  Price: number;
+  Description: string;
 }

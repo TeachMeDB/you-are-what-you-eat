@@ -62,9 +62,9 @@ function BestSeller() {
         order_num: 105,
         total_cred: 1050,
         increase: 0.1
-      },
+      }
     ]
-  }
+  };
 
   const Box2Options: ApexOptions = {
     chart: {
@@ -179,7 +179,7 @@ function BestSeller() {
               {`￥${data.total}`}
             </Typography>
             <Box display="flex" alignItems="center">
-              <Text flex color={data.increase > 0 ? "success" : "error"}>
+              <Text flex color={data.increase > 0 ? 'success' : 'error'}>
                 <ArrowUpwardTwoToneIcon fontSize="small" />
               </Text>
               <Typography
@@ -188,7 +188,9 @@ function BestSeller() {
                 }}
                 variant="subtitle2"
               >
-                <Text color={data.increase > 0 ? "success" : "error"}>{`相比上周变化${data.increase * 100}%`}</Text>
+                <Text
+                  color={data.increase > 0 ? 'success' : 'error'}
+                >{`相比上周变化${data.increase * 100}%`}</Text>
               </Typography>
             </Box>
           </Box>

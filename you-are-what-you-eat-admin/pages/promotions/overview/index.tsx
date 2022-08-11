@@ -10,8 +10,8 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 
 import { Grid } from '@mui/material';
 import { useRefMounted } from 'src/hooks/useRefMounted';
-import type { Promotion } from 'src/models/promotion'
-import { promotionsApi } from 'src/queries/promotions'
+import type { Promotion } from 'src/models/promotion';
+import { promotionsApi } from 'src/queries/promotions';
 import Results from 'src/content/Promotions/Overview/Results';
 
 function PromotionCard() {
@@ -40,12 +40,9 @@ function PromotionCard() {
   var readyNumber = 0;
 
   promotions.forEach((promotion) => {
-    if (promotion.status === 'completed')
-      completedNumber += 1;
-    else if (promotion.status === 'ready')
-      readyNumber += 1;
-    else
-      runningNumber += 1;
+    if (promotion.status === 'completed') completedNumber += 1;
+    else if (promotion.status === 'ready') readyNumber += 1;
+    else runningNumber += 1;
   });
 
   return (
@@ -53,9 +50,7 @@ function PromotionCard() {
       <Head>
         <title>促销活动管理</title>
       </Head>
-      <PageTitleWrapper>
-        {PageHeader(refresh, setRefresh)}
-      </PageTitleWrapper>
+      <PageTitleWrapper>{PageHeader(refresh, setRefresh)}</PageTitleWrapper>
 
       <Grid
         sx={{ px: 4 }}
@@ -77,8 +72,6 @@ function PromotionCard() {
   );
 }
 
-PromotionCard.getLayout = (page) => (
-    <SidebarLayout>{page}</SidebarLayout>
-);
+PromotionCard.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
 
 export default PromotionCard;

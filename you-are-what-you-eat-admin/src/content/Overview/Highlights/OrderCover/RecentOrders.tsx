@@ -54,10 +54,7 @@ const getStatusLabel = (orderStatus: OrderStatus): JSX.Element => {
   return <Label color={color}>{text}</Label>;
 };
 
-const applyFilters = (
-  orders: Order[],
-  filters: Filters
-): Order[] => {
+const applyFilters = (orders: Order[], filters: Filters): Order[] => {
   return orders.filter((order) => {
     let matches = true;
 
@@ -128,12 +125,10 @@ const RecentOrdersTable: FC = () => {
       status: 'running' as OrderStatus,
       price: 100,
       discount_price: 0
-    },
-  ]
+    }
+  ];
 
-  const [selectedOrders, setselectedOrders] = useState<string[]>(
-    []
-  );
+  const [selectedOrders, setselectedOrders] = useState<string[]>([]);
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [filters, setFilters] = useState<Filters>({
@@ -176,9 +171,7 @@ const RecentOrdersTable: FC = () => {
     event: ChangeEvent<HTMLInputElement>
   ): void => {
     setselectedOrders(
-      event.target.checked
-        ? orders.map((order) => order.id)
-        : []
+      event.target.checked ? orders.map((order) => order.id) : []
     );
   };
 
@@ -187,10 +180,7 @@ const RecentOrdersTable: FC = () => {
     cryptoOrderId: string
   ): void => {
     if (!selectedOrders.includes(cryptoOrderId)) {
-      setselectedOrders((prevSelected) => [
-        ...prevSelected,
-        cryptoOrderId
-      ]);
+      setselectedOrders((prevSelected) => [...prevSelected, cryptoOrderId]);
     } else {
       setselectedOrders((prevSelected) =>
         prevSelected.filter((id) => id !== cryptoOrderId)
@@ -213,15 +203,13 @@ const RecentOrdersTable: FC = () => {
     limit
   );
   const selectedSomeCryptoOrders =
-    selectedOrders.length > 0 &&
-    selectedOrders.length < orders.length;
-  const selectedAllCryptoOrders =
-    selectedOrders.length === orders.length;
+    selectedOrders.length > 0 && selectedOrders.length < orders.length;
+  const selectedAllCryptoOrders = selectedOrders.length === orders.length;
   const theme = useTheme();
 
   return (
     <Card>
-      {(
+      {
         <CardHeader
           action={
             <Box width={150}>
@@ -244,7 +232,7 @@ const RecentOrdersTable: FC = () => {
           }
           title={t('全部订单')}
         />
-      )}
+      }
       <Divider />
       <TableContainer>
         <Table>
@@ -268,15 +256,9 @@ const RecentOrdersTable: FC = () => {
           </TableHead>
           <TableBody>
             {paginatedCryptoOrders.map((order) => {
-              const isCryptoOrderSelected = selectedOrders.includes(
-                order.id
-              );
+              const isCryptoOrderSelected = selectedOrders.includes(order.id);
               return (
-                <TableRow
-                  hover
-                  key={order.id}
-                  selected={isCryptoOrderSelected}
-                >
+                <TableRow hover key={order.id} selected={isCryptoOrderSelected}>
                   <TableCell padding="checkbox">
                     <Checkbox
                       color="primary"
@@ -314,7 +296,7 @@ const RecentOrdersTable: FC = () => {
                       {format(order.creation_time, 'HH:mm:ss')}
                     </Typography>
                   </TableCell>
-                  
+
                   {/*桌号栏*/}
                   <TableCell>
                     <Typography

@@ -22,7 +22,7 @@ import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
 import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone';
 
 import { DishOrderStat } from '@/models/order';
-import { join } from '@/utils/array'
+import { join } from '@/utils/array';
 
 const TableWrapper = styled(Table)(
   ({ theme }) => `
@@ -114,7 +114,7 @@ const TableHeadWrapper = styled(TableHead)(
   `
 );
 
-function DishSaleVolume( dishes: DishOrderStat[] ) {
+function DishSaleVolume(dishes: DishOrderStat[]) {
   const { t }: { t: any } = useTranslation();
   const theme = useTheme();
 
@@ -159,72 +159,75 @@ function DishSaleVolume( dishes: DishOrderStat[] ) {
               </TableRow>
             </TableHeadWrapper>
             <TableBody>
-
               {dishes.map((dish) => {
-                return (<><TableRow hover>
-                  <TableCell>
-                    <Box>
-                      <Link href="#" variant="h4" noWrap>
-                        {dish.name}
-                      </Link>
-                      <Typography variant="subtitle1" noWrap>
-                        {dish.id}
-                      </Typography>
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    <div>
-                      <Typography variant="h4" noWrap>
-                        ￥{dish.total_credit}
-                      </Typography>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div>
-                      <Typography variant="h4" noWrap>
-                        ￥{dish.price}
-                      </Typography>
-                    </div>
-                  </TableCell>
-                  <TableCell align="center">
-                    <div>
-                      <Tooltip title={join(dish.tags, '; ')}>
-                        <LabelWarning>
-                          {dish.tags.length !== 0 ? dish.tags[0] : ''}
-                        </LabelWarning>
-                      </Tooltip>
-                    </div>
-                  </TableCell>
-                  <TableCell align="right">
-                    <div>
-                      <Typography
-                        sx={{
-                          display: 'flex',
-                          justifyContent: 'flex-end',
-                          alignItems: 'center'
-                        }}
-                        color="text.secondary"
-                      >
-                        <Typography
-                          sx={{
-                            pr: 0.5
-                          }}
-                          component="span"
-                          variant="h4"
-                          color="text.primary"
-                        >
-                          {`${dish.order_times} 份`}
-                        </Typography>
-                        <ArrowUpwardTwoToneIcon
-                          sx={{
-                            opacity: 0.6
-                          }}
-                        />
-                      </Typography>
-                    </div>
-                  </TableCell>
-                </TableRow>
-                <TableRowDivider /></>)
+                return (
+                  <>
+                    <TableRow hover>
+                      <TableCell>
+                        <Box>
+                          <Link href="#" variant="h4" noWrap>
+                            {dish.name}
+                          </Link>
+                          <Typography variant="subtitle1" noWrap>
+                            {dish.id}
+                          </Typography>
+                        </Box>
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <Typography variant="h4" noWrap>
+                            ￥{dish.total_credit}
+                          </Typography>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <Typography variant="h4" noWrap>
+                            ￥{dish.price}
+                          </Typography>
+                        </div>
+                      </TableCell>
+                      <TableCell align="center">
+                        <div>
+                          <Tooltip title={join(dish.tags, '; ')}>
+                            <LabelWarning>
+                              {dish.tags.length !== 0 ? dish.tags[0] : ''}
+                            </LabelWarning>
+                          </Tooltip>
+                        </div>
+                      </TableCell>
+                      <TableCell align="right">
+                        <div>
+                          <Typography
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'flex-end',
+                              alignItems: 'center'
+                            }}
+                            color="text.secondary"
+                          >
+                            <Typography
+                              sx={{
+                                pr: 0.5
+                              }}
+                              component="span"
+                              variant="h4"
+                              color="text.primary"
+                            >
+                              {`${dish.order_times} 份`}
+                            </Typography>
+                            <ArrowUpwardTwoToneIcon
+                              sx={{
+                                opacity: 0.6
+                              }}
+                            />
+                          </Typography>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                    <TableRowDivider />
+                  </>
+                );
               })}
             </TableBody>
           </TableWrapper>

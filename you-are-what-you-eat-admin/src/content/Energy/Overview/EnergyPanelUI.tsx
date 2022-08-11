@@ -1,47 +1,48 @@
 import {
-    Grid,
-    Box,
-    Card,
-    Typography,
-    IconButton,
-    Button,
-    styled,
-    useTheme,
-    Tooltip
-  } from '@mui/material';
-  
-  import { useTranslation } from 'react-i18next';
-  import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
-  import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
-  import { buildStyles } from 'react-circular-progressbar';
-  import type { EnergyPanelData } from '@/models/energy';
-  
-  const DotLegend = styled('span')(
-    ({ theme }) => `
+  Grid,
+  Box,
+  Card,
+  Typography,
+  IconButton,
+  Button,
+  styled,
+  useTheme,
+  Tooltip
+} from '@mui/material';
+
+import { useTranslation } from 'react-i18next';
+import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
+import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
+import { buildStyles } from 'react-circular-progressbar';
+import type { EnergyPanelData } from '@/models/energy';
+
+const DotLegend = styled('span')(
+  ({ theme }) => `
         border-radius: 22px;
         width: 10px;
         height: 10px;
         display: inline-block;
         margin-right: ${theme.spacing(0.5)};
     `
-  );
-  
-  const CardActions = styled(Box)(
-    ({ theme }) => `
+);
+
+const CardActions = styled(Box)(
+  ({ theme }) => `
       position: absolute;
       right: ${theme.spacing(2)};
       top: ${theme.spacing(2)};
       z-index: 7;
     `
-  );
-  
-  function EnergyPanelUI(edata: EnergyPanelData[]) {
-    const { t }: { t: any } = useTranslation();
-    const theme = useTheme();
-  
-    return (
-      <Grid container spacing={4}>
-        {edata.map((data => (<Grid item xs={12} md={4}>
+);
+
+function EnergyPanelUI(edata: EnergyPanelData[]) {
+  const { t }: { t: any } = useTranslation();
+  const theme = useTheme();
+
+  return (
+    <Grid container spacing={4}>
+      {edata.map((data) => (
+        <Grid item xs={12} md={4}>
           <Card
             sx={{
               position: 'relative'
@@ -77,7 +78,9 @@ import {
                   strokeLinecap: 'round'
                 })}
                 strokeWidth={9}
-                value={data.weekly === 0 ? 100 : data.daily / data.weekly * 100}
+                value={
+                  data.weekly === 0 ? 100 : (data.daily / data.weekly) * 100
+                }
               >
                 <Typography
                   color="primary"
@@ -86,7 +89,11 @@ import {
                   }}
                   variant="h1"
                 >
-                  {`${data.weekly === 0 ? 100 : (data.daily / data.weekly * 100).toFixed(2)}%`}
+                  {`${
+                    data.weekly === 0
+                      ? 100
+                      : ((data.daily / data.weekly) * 100).toFixed(2)
+                  }%`}
                 </Typography>
               </CircularProgressbarWithChildren>
             </Box>
@@ -145,32 +152,32 @@ import {
               <Tooltip
                 title={`今日用量：${data.daily}` + `，本周用量：${data.weekly}`}
               >
-              <Button
-                fullWidth
-                variant="text"
-                color="secondary"
-                sx={{
-                  backgroundColor: `${theme.colors.secondary.lighter}`,
-                  py: 1,
-                  fontSize: `${theme.typography.pxToRem(13)}`,
-                  textTransform: 'uppercase',
-                  '&:hover': {
-                    backgroundColor: `${theme.colors.secondary.main}`,
-                    color: `${theme.palette.getContrastText(
-                      theme.colors.secondary.main
-                    )}`
-                  }
-                }}
-              >
-                {t('当前用量')}
-              </Button>
+                <Button
+                  fullWidth
+                  variant="text"
+                  color="secondary"
+                  sx={{
+                    backgroundColor: `${theme.colors.secondary.lighter}`,
+                    py: 1,
+                    fontSize: `${theme.typography.pxToRem(13)}`,
+                    textTransform: 'uppercase',
+                    '&:hover': {
+                      backgroundColor: `${theme.colors.secondary.main}`,
+                      color: `${theme.palette.getContrastText(
+                        theme.colors.secondary.main
+                      )}`
+                    }
+                  }}
+                >
+                  {t('当前用量')}
+                </Button>
               </Tooltip>
             </Box>
           </Card>
-        </Grid>)))}
-      </Grid>
-    );
-  }
-  
-  export default EnergyPanelUI;
-  
+        </Grid>
+      ))}
+    </Grid>
+  );
+}
+
+export default EnergyPanelUI;

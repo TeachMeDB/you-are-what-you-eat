@@ -1,10 +1,10 @@
 interface dish {
-    DishName: string,
-    Dishstate: string
+  DishName: string;
+  Dishstate: string;
 }
 
 export interface CurOrder {
-    OrderId: string,
-    OrderStatus: string,
-    Dish: dish[]
+  OrderId: string;
+  OrderStatus: string;
+  Dish: dish[];
 }

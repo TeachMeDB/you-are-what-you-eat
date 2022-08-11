@@ -1,101 +1,112 @@
-import {frontendURL} from "./config"
-import {authorizationURL} from "./config"
+import { frontendURL } from './config';
+import { authorizationURL } from './config';
 
 export interface CasdoorSdkConfig {
-    serverUrl: string, // your Casdoor server URL, e.g., "https://door.casbin.com" for the official demo site
-    clientId: string, // the Client ID of your Casdoor application, e.g., "014ae4bd048734ca2dea"
-    appName: string, // the name of your Casdoor application, e.g., "app-casnode"
-    organizationName: string // the name of the Casdoor organization connected with your Casdoor application, e.g., "casbin"
-    redirectPath?: string // the path of the redirect URL for your Casdoor application, will be "/callback" if not provided
+  serverUrl: string; // your Casdoor server URL, e.g., "https://door.casbin.com" for the official demo site
+  clientId: string; // the Client ID of your Casdoor application, e.g., "014ae4bd048734ca2dea"
+  appName: string; // the name of your Casdoor application, e.g., "app-casnode"
+  organizationName: string; // the name of the Casdoor organization connected with your Casdoor application, e.g., "casbin"
+  redirectPath?: string; // the path of the redirect URL for your Casdoor application, will be "/callback" if not provided
 }
 
 // reference: https://github.com/casdoor/casdoor-go-sdk/blob/90fcd5646ec63d733472c5e7ce526f3447f99f1f/auth/jwt.go#L19-L32
 export interface Account {
-    organization: string,
-    username: string,
-    type: string,
-    name: string,
-    avatar: string,
-    email: string,
-    phone: string,
-    affiliation: string,
-    tag: string,
-    language: string,
-    score: number,
-    isAdmin: boolean,
-    accessToken: string
+  organization: string;
+  username: string;
+  type: string;
+  name: string;
+  avatar: string;
+  email: string;
+  phone: string;
+  affiliation: string;
+  tag: string;
+  language: string;
+  score: number;
+  isAdmin: boolean;
+  accessToken: string;
 }
 
-
-
-
-const frontend:string=frontendURL;
-
-
+const frontend: string = frontendURL;
 
 class CasdoorSdk {
-    private config: CasdoorSdkConfig
+  private config: CasdoorSdkConfig;
 
-    constructor(config: CasdoorSdkConfig) {
-        this.config = config
-        if (config.redirectPath === undefined || config.redirectPath === null) {
-            this.config.redirectPath = "/callback";
-        }
+  constructor(config: CasdoorSdkConfig) {
+    this.config = config;
+    if (config.redirectPath === undefined || config.redirectPath === null) {
+      this.config.redirectPath = '/callback';
     }
+  }
 
-    public getSignupUrl(redirectUrl:string=frontend,enablePassword: boolean = true): string {
-        if (enablePassword) {
-            //localStorage.setItem("signinUrl", this.getSigninUrl(redirectUrl));
-            return `${this.config.serverUrl.trim()}/signup/${this.config.appName}`;
-        } else {
-            return this.getSigninUrl(redirectUrl).replace("/login/oauth/authorize", "/signup/oauth/authorize");
-        }
+  public getSignupUrl(
+    redirectUrl: string = frontend,
+    enablePassword: boolean = true
+  ): string {
+    if (enablePassword) {
+      //localStorage.setItem("signinUrl", this.getSigninUrl(redirectUrl));
+      return `${this.config.serverUrl.trim()}/signup/${this.config.appName}`;
+    } else {
+      return this.getSigninUrl(redirectUrl).replace(
+        '/login/oauth/authorize',
+        '/signup/oauth/authorize'
+      );
     }
+  }
 
-    public getSigninUrl(redirectUrl:string=frontend): string {
+  public getSigninUrl(redirectUrl: string = frontend): string {
+    const redirectUri = `${redirectUrl}${this.config.redirectPath}`;
+    const scope = 'read';
+    const state = this.config.appName;
+    return `${this.config.serverUrl.trim()}/login/oauth/authorize?client_id=${
+      this.config.clientId
+    }&response_type=token&redirect_uri=${encodeURIComponent(
+      redirectUri
+    )}&scope=${scope}&state=${state}`;
+  }
 
-        const redirectUri = `${redirectUrl}${this.config.redirectPath}`;
-        const scope = "read";
-        const state = this.config.appName;
-        return `${this.config.serverUrl.trim()}/login/oauth/authorize?client_id=${this.config.clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}&state=${state}`;
+  public getUserProfileUrl(userName: string, account: Account): string {
+    let param = '';
+    if (account !== undefined && account !== null) {
+      param = `?access_token=${account.accessToken}`;
     }
+    return `${this.config.serverUrl.trim()}/users/${
+      this.config.organizationName
+    }/${userName}${param}`;
+  }
 
-    public getUserProfileUrl(userName: string, account: Account): string {
-        let param = "";
-        if (account !== undefined && account !== null) {
-            param = `?access_token=${account.accessToken}`;
-        }
-        return `${this.config.serverUrl.trim()}/users/${this.config.organizationName}/${userName}${param}`;
+  public getMyProfileUrl(account: Account): string {
+    let param = '';
+    if (account !== undefined && account !== null) {
+      param = `?access_token=${account.accessToken}`;
     }
+    return `${this.config.serverUrl.trim()}/account${param}`;
+  }
 
-    public getMyProfileUrl(account: Account): string {
-        let param = "";
-        if (account !== undefined && account !== null) {
-            param = `?access_token=${account.accessToken}`;
-        }
-        return `${this.config.serverUrl.trim()}/account${param}`;
-    }
-
-    public signin(redirectUrl:string=frontend,serverUrl: string=this.config.serverUrl): Promise<Response> {
-        const params = new URLSearchParams(redirectUrl);
-        return fetch(`${serverUrl}/api/signin?code=${params.get("code")}&state=${params.get("state")}`, {
-            method: "POST",
-            credentials: "include",
-        }).then(res => res.json());
-    }
+  public signin(
+    redirectUrl: string = frontend,
+    serverUrl: string = this.config.serverUrl
+  ): Promise<Response> {
+    const params = new URLSearchParams(redirectUrl);
+    return fetch(
+      `${serverUrl}/api/signin?code=${params.get('code')}&state=${params.get(
+        'state'
+      )}`,
+      {
+        method: 'POST',
+        credentials: 'include'
+      }
+    ).then((res) => res.json());
+  }
 }
 
+const sdkConfig: CasdoorSdkConfig = {
+  serverUrl: authorizationURL,
+  clientId: '82737aac8ec89315c220',
+  appName: 'application_dbks',
+  organizationName: 'organization_dbks',
+  redirectPath: '/callback'
+};
 
-const sdkConfig: CasdoorSdkConfig =({
-    serverUrl: authorizationURL,
-    clientId: "82737aac8ec89315c220",
-    appName: "application_dbks",
-    organizationName: "organization_dbks",
-    redirectPath: "/callback",
-  });
-  
-  
-const authorization:CasdoorSdk = new CasdoorSdk(sdkConfig);
-
+const authorization: CasdoorSdk = new CasdoorSdk(sdkConfig);
 
 export default authorization;

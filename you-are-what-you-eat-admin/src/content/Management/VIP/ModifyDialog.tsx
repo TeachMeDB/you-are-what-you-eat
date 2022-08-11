@@ -11,13 +11,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import {Divider, useTheme} from '@mui/material';
+import { Divider, useTheme } from '@mui/material';
 
-import { CryptoVip,CryptoVipStatus } from '@/models/crypto_vip';
+import { CryptoVip, CryptoVipStatus } from '@/models/crypto_vip';
 import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import {Select,MenuItem,InputLabel} from '@mui/material';
+import { Select, MenuItem, InputLabel } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -35,7 +35,7 @@ import {
   lighten,
   useMediaQuery,
   TableFooter,
-  FormControl,
+  FormControl
 } from '@mui/material';
 import { FC, ChangeEvent, useState } from 'react';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
@@ -44,11 +44,11 @@ import { Refresh } from '@mui/icons-material';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
-    padding: theme.spacing(2),
+    padding: theme.spacing(2)
   },
   '& .MuiDialogActions-root': {
-    padding: theme.spacing(1),
-  },
+    padding: theme.spacing(1)
+  }
 }));
 
 export interface DialogTitleProps {
@@ -57,12 +57,12 @@ export interface DialogTitleProps {
   onClose: () => void;
 }
 
-export interface DialogIDProps{
-    id: string;
+export interface DialogIDProps {
+  id: string;
 }
 
-export interface VipProps{
-  info:CryptoVip
+export interface VipProps {
+  info: CryptoVip;
 }
 
 const statusOptions = [
@@ -94,7 +94,7 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
             position: 'absolute',
             right: 8,
             top: 8,
-            color: (theme) => theme.palette.grey[500],
+            color: (theme) => theme.palette.grey[500]
           }}
         >
           <CloseIcon />
@@ -134,11 +134,10 @@ export default function ModifyDialog(props: VipProps) {
   const { t }: { t: any } = useTranslation();
 
   const [optimized_vip, setValue_optimized_vip] = useState<CryptoVip>(null);
-  const [birthday,setBirthday]=useState<string>(null);
-  const [gender,setGender]=useState<string>(null);
-  const [balance,setBalance]=useState<number>(null);
-  const [credit,setCredit]=useState<number>(null);
-  
+  const [birthday, setBirthday] = useState<string>(null);
+  const [gender, setGender] = useState<string>(null);
+  const [balance, setBalance] = useState<number>(null);
+  const [credit, setCredit] = useState<number>(null);
 
   const handleSetGender = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
@@ -180,65 +179,59 @@ export default function ModifyDialog(props: VipProps) {
     setCredit(value);
   };
 
-  const handleSubmitEdit = async() =>
-  {
-      console.log("edit confirm");
-        //  检查数据
+  const handleSubmitEdit = async () => {
+    console.log('edit confirm');
+    //  检查数据
 
-      let submit:CryptoVip={
-        user_name: props.info.user_name,
-        gender: gender,
-        birthday: birthday,
-        balance: balance,
-        credit: credit,
-        status: props.info.status
-      }
+    let submit: CryptoVip = {
+      user_name: props.info.user_name,
+      gender: gender,
+      birthday: birthday,
+      balance: balance,
+      credit: credit,
+      status: props.info.status
+    };
 
-      try {
-        let res= await queryVipApi.editVip(submit)
-        console.log(res);
-        setOpenSuccessDialog(true);
-        //window.location.reload();
-      } 
-      catch (err) {
-        console.error(err);
-        setOpenErrorDialog(true);
-      }
-  }
+    try {
+      let res = await queryVipApi.editVip(submit);
+      console.log(res);
+      setOpenSuccessDialog(true);
+      //window.location.reload();
+    } catch (err) {
+      console.error(err);
+      setOpenErrorDialog(true);
+    }
+  };
 
-  const resetOptimization=()=>{
+  const resetOptimization = () => {
     setValue_optimized_vip(props.info);
     setBirthday(props.info.birthday);
     setGender(props.info.gender);
     setBalance(props.info.balance);
     setCredit(props.info.credit);
-  }
+  };
 
-  if(!optimized_vip)
-  {
+  if (!optimized_vip) {
     resetOptimization();
     console.log(optimized_vip);
     return;
   }
-  
 
   return (
     <div>
-        <IconButton
-            sx={{
-                '&:hover': {
-                    background: theme.colors.primary.lighter
-                          },
-                    color: theme.palette.primary.main
-                }}
-            color="inherit"
-            size="small"
-            onClick={handleClickOpen}
-                >
-            <EditTwoToneIcon fontSize="small" />
-        </IconButton>
-
-
+      <IconButton
+        sx={{
+          '&:hover': {
+            background: theme.colors.primary.lighter
+          },
+          color: theme.palette.primary.main
+        }}
+        color="inherit"
+        size="small"
+        onClick={handleClickOpen}
+      >
+        <EditTwoToneIcon fontSize="small" />
+      </IconButton>
 
       <BootstrapDialog
         onClose={handleClose}
@@ -253,21 +246,18 @@ export default function ModifyDialog(props: VipProps) {
           <Typography variant="h4" gutterBottom>
             {t(props.info.user_name)}
           </Typography>
-          <Typography variant="subtitle2">
-            {t('修改该会员信息')}
-          </Typography>
-          <Divider/>
-          
+          <Typography variant="subtitle2">{t('修改该会员信息')}</Typography>
+          <Divider />
         </DialogTitle>
         <Box
-            component="form"
-            sx={{
-            '& .MuiTextField-root': { m: 2, width: '30ch' },
-               }}
-            noValidate
-            autoComplete="off"
-           >           
-            <FormControl sx={{ m: 2, width: '30ch' }}>
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { m: 2, width: '30ch' }
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <FormControl sx={{ m: 2, width: '30ch' }}>
             <InputLabel>性别</InputLabel>
             <Select
               defaultValue={gender}
@@ -276,214 +266,196 @@ export default function ModifyDialog(props: VipProps) {
               label="性别"
               fullWidth
               required
-
             >
               {statusOptions.map((statusOption) => (
                 <MenuItem key={statusOption.id} value={statusOption.id}>
                   {statusOption.name}
                 </MenuItem>
               ))}
-            </Select> 
-            </FormControl>
+            </Select>
+          </FormControl>
 
-            <FormControl sx={{ m: 2, width: '30ch' }}>
-                <DialogContentText>
-                  修改该会员性别，当前性别为:{props.info.gender}
-                </DialogContentText>
-            </FormControl>
-            
-          </Box>  
-          <Box
+          <FormControl sx={{ m: 2, width: '30ch' }}>
+            <DialogContentText>
+              修改该会员性别，当前性别为:{props.info.gender}
+            </DialogContentText>
+          </FormControl>
+        </Box>
+        <Box
           component="form"
           sx={{
-          '& .MuiTextField-root': { m: 2, width: '30ch' },
-             }}
-          noValidate
-          autoComplete="off">
-          
-
-              <DatePicker
-                value={birthday}
-                onChange={(newValue) => {
-                  setBirthday(newValue);
-                }}
-                label="出生日期"
-                renderInput={(params) => (
-                  <TextField
-                    value={birthday}
-                    fullWidth
-                    placeholder={t('出生日期')}
-                    {...params}
-                  />
-                )}
-              />
-
-            <FormControl sx={{ m: 2, width: '30ch' }}>
-                <DialogContentText>
-                  修改该会员生日，当前为:{props.info.birthday}
-                </DialogContentText>
-            </FormControl>
-
-          </Box>
-
-          <Box
-          component="form"
-          sx={{
-          '& .MuiTextField-root': { m: 2, width: '30ch' },
-             }}
-          noValidate
-          autoComplete="off">
-          
-
-          {
-              balance>=0?
-            <TextField
-             required
-             fullWidth
-              id="outlined-required"
-              label="余额"
-              type="number"
-             defaultValue={balance.toString()}
-             onChange={handleBalanceInputChange}         
-             /> 
-             :
-             <TextField
-             required
-             fullWidth
-              id="outlined-required"
-              label="余额"
-              type="number"
-             defaultValue={balance.toString()}  
-             onChange={handleBalanceInputChange}
-             error
-             helperText="非法余额"         
-             /> 
-            }
-
-            <FormControl sx={{ m: 2, width: '30ch' }}>
-                <DialogContentText>
-                  修改该会员余额，当前余额为:{props.info.balance}                  
-                </DialogContentText>
-                <DialogContentText>
-                  仅接受非负值
-                </DialogContentText>
-                
-            </FormControl>
-
-          </Box>
-
-          <Box
-          component="form"
-          sx={{
-          '& .MuiTextField-root': { m: 2, width: '30ch' },
-             }}
-          noValidate
-          autoComplete="off">
-          
-
-          {
-              credit>=0?
-            <TextField
-             required
-             fullWidth
-              id="outlined-required"
-              label="积分"
-              type="number"
-             defaultValue={credit.toString()}  
-             onChange={handleCreditInputChange}         
-             /> 
-             :
-             <TextField
-             required
-             fullWidth
-              id="outlined-required"
-              label="积分"
-              type="number"
-             defaultValue={credit.toString()}  
-             onChange={handleCreditInputChange}
-             error
-             helperText="非法积分"         
-             /> 
-            }
-
-            <FormControl sx={{ m: 2, width: '30ch' }}>
-                <DialogContentText>
-                  修改该会员积分，当前积分为:{props.info.credit}
-                </DialogContentText>
-                <DialogContentText>
-                  仅接受非负值
-                </DialogContentText>
-            </FormControl>
-          </Box>
-
-          {balance>=0 && credit>=0?
-          <Button
-          startIcon={<AddTwoToneIcon fontSize="small" />}
-          onClick={()=>{
-            handleSubmitEdit();
-            window.location.reload();
+            '& .MuiTextField-root': { m: 2, width: '30ch' }
           }}
-          >
-          确认修改
-        </Button>
-        :
-        <Button
-          startIcon={<AddTwoToneIcon fontSize="small" />}
-          //onClick={handleSubmitEdit}
-          disabled          
-          >
-          请检查数据
-        </Button>
-        }     
-      </BootstrapDialog>  
+          noValidate
+          autoComplete="off"
+        >
+          <DatePicker
+            value={birthday}
+            onChange={(newValue) => {
+              setBirthday(newValue);
+            }}
+            label="出生日期"
+            renderInput={(params) => (
+              <TextField
+                value={birthday}
+                fullWidth
+                placeholder={t('出生日期')}
+                {...params}
+              />
+            )}
+          />
 
-                  <Dialog
-                    open={openSuccessDialog}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <DialogTitle id="alert-dialog-title">
-                      {"修改成功"}
-                    </DialogTitle>
-                    <DialogContent>
-                      <DialogContentText id="alert-dialog-description">
-                        该会员信息已修改
-                      </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={handleSuccessClose} autoFocus>
-                        OK
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
+          <FormControl sx={{ m: 2, width: '30ch' }}>
+            <DialogContentText>
+              修改该会员生日，当前为:{props.info.birthday}
+            </DialogContentText>
+          </FormControl>
+        </Box>
 
-                  <Dialog
-                    open={openErrorDialog}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <DialogTitle id="alert-dialog-title">
-                      {"修改错误"}
-                    </DialogTitle>
-                    <DialogContent>
-                      <DialogContentText id="alert-dialog-description">
-                        修改失败
-                      </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={handleClose} autoFocus>
-                        OK
-                      </Button>
-                    </DialogActions>
-                  </Dialog>   
+        <Box
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { m: 2, width: '30ch' }
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          {balance >= 0 ? (
+            <TextField
+              required
+              fullWidth
+              id="outlined-required"
+              label="余额"
+              type="number"
+              defaultValue={balance.toString()}
+              onChange={handleBalanceInputChange}
+            />
+          ) : (
+            <TextField
+              required
+              fullWidth
+              id="outlined-required"
+              label="余额"
+              type="number"
+              defaultValue={balance.toString()}
+              onChange={handleBalanceInputChange}
+              error
+              helperText="非法余额"
+            />
+          )}
+
+          <FormControl sx={{ m: 2, width: '30ch' }}>
+            <DialogContentText>
+              修改该会员余额，当前余额为:{props.info.balance}
+            </DialogContentText>
+            <DialogContentText>仅接受非负值</DialogContentText>
+          </FormControl>
+        </Box>
+
+        <Box
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { m: 2, width: '30ch' }
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          {credit >= 0 ? (
+            <TextField
+              required
+              fullWidth
+              id="outlined-required"
+              label="积分"
+              type="number"
+              defaultValue={credit.toString()}
+              onChange={handleCreditInputChange}
+            />
+          ) : (
+            <TextField
+              required
+              fullWidth
+              id="outlined-required"
+              label="积分"
+              type="number"
+              defaultValue={credit.toString()}
+              onChange={handleCreditInputChange}
+              error
+              helperText="非法积分"
+            />
+          )}
+
+          <FormControl sx={{ m: 2, width: '30ch' }}>
+            <DialogContentText>
+              修改该会员积分，当前积分为:{props.info.credit}
+            </DialogContentText>
+            <DialogContentText>仅接受非负值</DialogContentText>
+          </FormControl>
+        </Box>
+
+        {balance >= 0 && credit >= 0 ? (
+          <Button
+            startIcon={<AddTwoToneIcon fontSize="small" />}
+            onClick={() => {
+              handleSubmitEdit();
+              window.location.reload();
+            }}
+          >
+            确认修改
+          </Button>
+        ) : (
+          <Button
+            startIcon={<AddTwoToneIcon fontSize="small" />}
+            //onClick={handleSubmitEdit}
+            disabled
+          >
+            请检查数据
+          </Button>
+        )}
+      </BootstrapDialog>
+
+      <Dialog
+        open={openSuccessDialog}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'修改成功'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            该会员信息已修改
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleSuccessClose} autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={openErrorDialog}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'修改错误'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            修改失败
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
 
-
-      {/*  
+{
+  /*  
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -643,4 +615,5 @@ export default function ModifyDialog(props: VipProps) {
             </form>
           )}
         </Formik>
-      </Dialog>*/} 
+      </Dialog>*/
+}

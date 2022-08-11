@@ -21,7 +21,7 @@ import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone';
 import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
 import BestSeller from 'src/content/Overview/Highlights/OrderCover/BestSeller';
 import RecentOrders from 'src/content/Overview/Highlights/OrderCover/RecentOrders';
-import PromotionDetail from 'src/content/Overview/Highlights/PromotionCover/PromotionDetail'
+import PromotionDetail from 'src/content/Overview/Highlights/PromotionCover/PromotionDetail';
 import VipSummary from './VIPCover/VIPSummary';
 import EnergyChart from 'src/content/Overview/Highlights/EnergyCover/EnergyChart';
 import TableSummary from './TableCover/TableSummary';
@@ -50,7 +50,7 @@ import TableSummary from './TableCover/TableSummary';
 //             </Button>
 
 //         </div>
-    
+
 //   )
 
 // }
@@ -270,94 +270,48 @@ function Highlights() {
                 fontWeight="normal"
               >
                 {t(
-                  "人如其食使用遵循 Google Material Design 的 MUI 这一 React UI 设计框架，提供轻盈、易用、符合直觉的餐厅管理服务。"
+                  '人如其食使用遵循 Google Material Design 的 MUI 这一 React UI 设计框架，提供轻盈、易用、符合直觉的餐厅管理服务。'
                 )}
               </TypographySubHeading>
             </Grid>
             <Grid item xs={12} md={6}>
-              <LayoutImgButton
-                target="_blank"
-                rel="noopener"
-                href="#"
-              >
+              <LayoutImgButton target="_blank" rel="noopener" href="#">
                 <Typography variant="h4">{t('订单管理')}</Typography>
-                <img
-                  src="/static/cover/order.png"
-                  alt="OrderOverview"
-                />
+                <img src="/static/cover/order.png" alt="OrderOverview" />
               </LayoutImgButton>
             </Grid>
             <Grid item xs={12} md={6}>
-              <LayoutImgButton
-                target="_blank"
-                rel="noopener"
-                href="#"
-              >
+              <LayoutImgButton target="_blank" rel="noopener" href="#">
                 <Typography variant="h4">{t('会员管理')}</Typography>
-                <img
-                  src="/static/cover/VIP.png"
-                  alt="VIPManagement"
-                />
+                <img src="/static/cover/VIP.png" alt="VIPManagement" />
               </LayoutImgButton>
             </Grid>
             <Grid item xs={12} md={6}>
-              <LayoutImgButton
-                target="_blank"
-                rel="noopener"
-                href="#"
-              >
+              <LayoutImgButton target="_blank" rel="noopener" href="#">
                 <Typography variant="h4">{t('促销活动')}</Typography>
-                <img
-                  src="/static/cover/promotion.png"
-                  alt="AddPromotion"
-                />
+                <img src="/static/cover/promotion.png" alt="AddPromotion" />
               </LayoutImgButton>
             </Grid>
             <Grid item xs={12} md={6}>
-              <LayoutImgButton
-                target="_blank"
-                rel="noopener"
-                href="#"
-              >
+              <LayoutImgButton target="_blank" rel="noopener" href="#">
                 <Typography variant="h4">{t('场地管理')}</Typography>
-                <img
-                  src="/static/cover/table.png"
-                  alt="TableManagement"
-                />
+                <img src="/static/cover/table.png" alt="TableManagement" />
               </LayoutImgButton>
             </Grid>
             <Grid item xs={12} md={6}>
-              <LayoutImgButton
-                target="_blank"
-                rel="noopener"
-                href="#"
-              >
+              <LayoutImgButton target="_blank" rel="noopener" href="#">
                 <Typography variant="h4">{t('资产保修')}</Typography>
-                <img
-                  src="/static/cover/map.png"
-                  alt="Collapsed Sidebar"
-                />
+                <img src="/static/cover/map.png" alt="Collapsed Sidebar" />
               </LayoutImgButton>
             </Grid>
             <Grid item xs={12} md={6}>
-              <LayoutImgButton
-                target="_blank"
-                rel="noopener"
-                href="#"
-              >
+              <LayoutImgButton target="_blank" rel="noopener" href="#">
                 <Typography variant="h4">{t('员工管理')}</Typography>
-                <img
-                  src="/static/cover/schedule.png"
-                  alt="Schedule"
-                />
+                <img src="/static/cover/schedule.png" alt="Schedule" />
               </LayoutImgButton>
             </Grid>
             <Grid item xs={12} md={6}>
-              <LayoutImgButton
-                target="_blank"
-                rel="noopener"
-                href="#"
-              >
+              <LayoutImgButton target="_blank" rel="noopener" href="#">
                 <Typography variant="h4">{t('实时控制')}</Typography>
                 <img
                   src="/static/cover/currentOrder.png"
@@ -545,8 +499,7 @@ function Highlights() {
                     'translate(0px, 20px) perspective(5200px) rotate(90deg) rotateY(-45deg) rotateZ(-45deg)',
                   transformStyle: 'preserve-3d'
                 }}
-              >
-              </Box>
+              ></Box>
               <Box
                 sx={{
                   position: 'absolute',
@@ -607,9 +560,7 @@ function Highlights() {
                 color="text.secondary"
                 fontWeight="normal"
               >
-                {t(
-                  '使用人如其食，体验现代、高效、自动化的餐厅后台管理'
-                )}
+                {t('使用人如其食，体验现代、高效、自动化的餐厅后台管理')}
               </TypographySubHeading>
             </Box>
           </Grid>
@@ -885,9 +836,7 @@ function Highlights() {
                 color="text.secondary"
                 fontWeight="normal"
               >
-                {t(
-                  '客户、经理、员工'
-                )}
+                {t('客户、经理、员工')}
               </TypographySubHeading>
               <Typography
                 variant="subtitle1"
@@ -1058,10 +1007,10 @@ function Highlights() {
                 >
                   <Card>
                     <CardActionArea>
-                    <CardMedia 
-                      component={"img"}
-                      image={"/static/cover/energyRawData.png"}
-                      alt="Management Section 1"
+                      <CardMedia
+                        component={'img'}
+                        image={'/static/cover/energyRawData.png'}
+                        alt="Management Section 1"
                       />
                     </CardActionArea>
                   </Card>
@@ -1084,10 +1033,10 @@ function Highlights() {
                 >
                   <Card>
                     <CardActionArea>
-                    <CardMedia 
-                      component={"img"}
-                      image={"/static/cover/energyRawData.png"}
-                      alt="Management Section 2"
+                      <CardMedia
+                        component={'img'}
+                        image={'/static/cover/energyRawData.png'}
+                        alt="Management Section 2"
                       />
                     </CardActionArea>
                   </Card>
@@ -1110,10 +1059,10 @@ function Highlights() {
                 >
                   <Card>
                     <CardActionArea>
-                    <CardMedia 
-                      component={"img"}
-                      image={"/static/cover/energyRawData.png"}
-                      alt="Management Section 3"
+                      <CardMedia
+                        component={'img'}
+                        image={'/static/cover/energyRawData.png'}
+                        alt="Management Section 3"
                       />
                     </CardActionArea>
                   </Card>
@@ -1184,9 +1133,7 @@ function Highlights() {
             color="text.secondary"
             fontWeight="normal"
           >
-            {t(
-              '体验轻快的管理'
-            )}
+            {t('体验轻快的管理')}
           </TypographyH2>
 
           <Button
@@ -1234,18 +1181,14 @@ function Highlights() {
                     pl: { xs: 0, md: 3 }
                   }}
                 >
-                  <Typography variant="h3">
-                   {t('技术支持')}
-                  </Typography>
+                  <Typography variant="h3">{t('技术支持')}</Typography>
                   <Typography
                     sx={{
                       pt: 1
                     }}
                     variant="subtitle2"
                   >
-                    {t(
-                      '来点啥来点啥来点啥来点啥'
-                    )}
+                    {t('来点啥来点啥来点啥来点啥')}
                   </Typography>
                 </Box>
               </Box>
@@ -1285,18 +1228,14 @@ function Highlights() {
                     pl: { xs: 0, md: 3 }
                   }}
                 >
-                  <Typography variant="h3">
-                   {t('联系我们')}
-                  </Typography>
+                  <Typography variant="h3">{t('联系我们')}</Typography>
                   <Typography
                     sx={{
                       pt: 1
                     }}
                     variant="subtitle2"
                   >
-                    {t(
-                      '联系方式联系方式联系方式'
-                    )}
+                    {t('联系方式联系方式联系方式')}
                   </Typography>
                 </Box>
               </Box>

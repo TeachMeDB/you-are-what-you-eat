@@ -9,9 +9,13 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import {useTheme} from '@mui/material';
+import { useTheme } from '@mui/material';
 
-import { CryptoDishOrder,CryptoDishOrderStatus,CryptoAllDishOrder } from '@/models/crypto_dishOrder';
+import {
+  CryptoDishOrder,
+  CryptoDishOrderStatus,
+  CryptoAllDishOrder
+} from '@/models/crypto_dishOrder';
 import { Grid } from '@mui/material';
 import DishOrderTable from './DishOrderTable';
 import { useState, useEffect, useCallback } from 'react';
@@ -22,11 +26,11 @@ import Stack from '@mui/material/Stack';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
-    padding: theme.spacing(2),
+    padding: theme.spacing(2)
   },
   '& .MuiDialogActions-root': {
-    padding: theme.spacing(1),
-  },
+    padding: theme.spacing(1)
+  }
 }));
 
 export interface DialogTitleProps {
@@ -35,8 +39,8 @@ export interface DialogTitleProps {
   onClose: () => void;
 }
 
-export interface DialogIDProps{
-    id: string;
+export interface DialogIDProps {
+  id: string;
 }
 
 const BootstrapDialogTitle = (props: DialogTitleProps) => {
@@ -53,7 +57,7 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
             position: 'absolute',
             right: 8,
             top: 8,
-            color: (theme) => theme.palette.grey[500],
+            color: (theme) => theme.palette.grey[500]
           }}
         >
           <CloseIcon />
@@ -80,7 +84,7 @@ export default function FullOrderView(props: DialogIDProps) {
 
   const getDishOrderData = useCallback(async () => {
     try {
-      const response = await queryDishOrderApi.getDishOrder(props.id)
+      const response = await queryDishOrderApi.getDishOrder(props.id);
 
       if (isMountedRef()) {
         setDishOrderData(response);
@@ -94,15 +98,13 @@ export default function FullOrderView(props: DialogIDProps) {
     getDishOrderData();
   }, [getDishOrderData]);
 
-  if (!dishOrderData)
-  {
+  if (!dishOrderData) {
     return (
-    <Stack spacing={1}>
-      <Skeleton animation="wave" variant="text"/>
-    </Stack>
+      <Stack spacing={1}>
+        <Skeleton animation="wave" variant="text" />
+      </Stack>
     );
   }
-    
 
   /*
   const cryptoDishOrders: CryptoDishOrder[] = [
@@ -146,26 +148,29 @@ export default function FullOrderView(props: DialogIDProps) {
 
   return (
     <div>
-        <IconButton
-            sx={{
-                '&:hover': {
-                    background: theme.colors.primary.lighter
-                          },
-                    color: theme.palette.primary.main
-                }}
-            color="inherit"
-            size="small"
-            onClick={handleClickOpen}
-                >
-            <RemoveRedEyeIcon fontSize="small" />
-        </IconButton>
+      <IconButton
+        sx={{
+          '&:hover': {
+            background: theme.colors.primary.lighter
+          },
+          color: theme.palette.primary.main
+        }}
+        color="inherit"
+        size="small"
+        onClick={handleClickOpen}
+      >
+        <RemoveRedEyeIcon fontSize="small" />
+      </IconButton>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
-        maxWidth={"md"}
+        maxWidth={'md'}
       >
-        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <BootstrapDialogTitle
+          id="customized-dialog-title"
+          onClose={handleClose}
+        >
           订单：{props.id}
         </BootstrapDialogTitle>
         <Grid
@@ -176,9 +181,9 @@ export default function FullOrderView(props: DialogIDProps) {
           spacing={4}
         >
           <Grid item xs={12}>
-            <DishOrderTable cryptoDishOrder={dishOrderData.data}/>
+            <DishOrderTable cryptoDishOrder={dishOrderData.data} />
           </Grid>
-        </Grid> 
+        </Grid>
       </BootstrapDialog>
     </div>
   );

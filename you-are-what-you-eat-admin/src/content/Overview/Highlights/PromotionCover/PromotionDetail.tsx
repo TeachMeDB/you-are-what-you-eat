@@ -38,30 +38,30 @@ const PromotionBody: FC = () => {
   const { t }: { t: any } = useTranslation();
 
   const promotion = {
-        id:          101,
-        name:        '疯狂星期四',
-        start:       new Date(),
-        end:         new Date(),
-        description: '疯狂的星期四',
-        dishes:      [
-            {
-                name:     '香辣鸡腿堡',
-                discount: 0.9,
-                price:    25,
-            },
-            {
-                name:     '奥尔良烤翅',
-                discount: 0.7,
-                price:    13,
-            },
-            {
-                name:     '热辣香骨鸡',
-                discount: 0.6,
-                price:    17,
-            },
-        ],
-        status:      'running'
-    }
+    id: 101,
+    name: '疯狂星期四',
+    start: new Date(),
+    end: new Date(),
+    description: '疯狂的星期四',
+    dishes: [
+      {
+        name: '香辣鸡腿堡',
+        discount: 0.9,
+        price: 25
+      },
+      {
+        name: '奥尔良烤翅',
+        discount: 0.7,
+        price: 13
+      },
+      {
+        name: '热辣香骨鸡',
+        discount: 0.6,
+        price: 17
+      }
+    ],
+    status: 'running'
+  };
 
   return (
     <Container maxWidth="lg">
@@ -134,7 +134,6 @@ const PromotionBody: FC = () => {
                 {promotion.description}
               </Typography>
             </BoxWrapper>
-            
           </Grid>
         </Grid>
 
@@ -156,17 +155,14 @@ const PromotionBody: FC = () => {
                       <Typography noWrap>{dish.name}</Typography>
                     </TableCell>
                     <TableCell>{`${dish.discount * 100}%`}</TableCell>
-                    <TableCell>
-                      ￥{dish.price.toFixed(2)}
-                    </TableCell>
+                    <TableCell>￥{dish.price.toFixed(2)}</TableCell>
                     <TableCell>
                       ￥{(dish.price * (1 - dish.discount)).toFixed(2)}
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
-              <TableFooter>
-              </TableFooter>
+              <TableFooter></TableFooter>
             </Table>
           </TableContainer>
         </TableWrapper>
@@ -174,7 +170,11 @@ const PromotionBody: FC = () => {
           {t('当前状态')}
         </Typography>
         <Typography variant="body2">
-          {promotion.status === 'completed' ? '已结束' : promotion.status === 'running' ? '进行中' : '未开始'}
+          {promotion.status === 'completed'
+            ? '已结束'
+            : promotion.status === 'running'
+            ? '进行中'
+            : '未开始'}
         </Typography>
       </Card>
     </Container>

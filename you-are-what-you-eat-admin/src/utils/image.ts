@@ -1,26 +1,19 @@
+export const GenerateBase64 = (file: Blob, callback: (url: string) => void) => {
+  let r = new FileReader();
 
-export const GenerateBase64=(file:Blob,callback:(url:string)=>void)=>{
+  r.onload = function () {
+    let str = r.result.toString();
 
-    let r = new FileReader();
+    callback(str);
+  };
 
+  r.readAsDataURL(file);
+};
 
-    r.onload = function(){
+export const Base64ToData = (str: string) => {
+  if (str.includes(';base64,')) {
+    str = str.slice(str.indexOf(';base64,') + 8);
+  }
 
-        let str=r.result.toString();
-
-        callback(str);
-    }
-
-    r.readAsDataURL(file);
-
-}
-
-
-export const Base64ToData=(str:string)=>{
-
-    if(str.includes(";base64,")){
-        str=str.slice(str.indexOf(";base64,")+8);
-    }
-
-    return str;
-}
+  return str;
+};

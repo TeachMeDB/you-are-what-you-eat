@@ -13,7 +13,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Typography,
+  Typography
 } from '@mui/material';
 import { IngredientRecordInfo } from '@/models/ingredient_record_info';
 import { EmployeeInfo } from '@/models/employee_info';
@@ -39,8 +39,15 @@ interface IngredientRecordInfoTableProps {
 //   `,
 // );
 
-const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) => {
-  const { ingredientRecordInfoes = [], ingredients = [], employees = [], setIngredientRecordInfoes } = props;
+const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (
+  props
+) => {
+  const {
+    ingredientRecordInfoes = [],
+    ingredients = [],
+    employees = [],
+    setIngredientRecordInfoes
+  } = props;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   // const [list, setList] = useState(ingredientRecordInfoes);
@@ -113,7 +120,7 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
   // const theme = useTheme();
   return (
     <Card>
-      {(
+      {
         <CardHeader
           // action={
           //   <FormControl variant="outlined" fullWidth>
@@ -143,13 +150,12 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
           // }
           title="资产管理记录"
         />
-      )}
+      }
       <Divider />
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-
               <TableCell>记录编号</TableCell>
               <TableCell>原料名称</TableCell>
               <TableCell>购买日期</TableCell>
@@ -164,10 +170,7 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
           <TableBody>
             {data.map((ingredientRecordInfo) => {
               return (
-                <TableRow
-                  hover
-                  key={`${ingredientRecordInfo.record_id}`}
-                >
+                <TableRow hover key={`${ingredientRecordInfo.record_id}`}>
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -376,11 +379,11 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
 };
 
 RecentIngredientRecordTable.propTypes = {
-  ingredientRecordInfoes: PropTypes.array.isRequired,
+  ingredientRecordInfoes: PropTypes.array.isRequired
 };
 
 RecentIngredientRecordTable.defaultProps = {
-  ingredientRecordInfoes: [],
+  ingredientRecordInfoes: []
 };
 
 export default RecentIngredientRecordTable;
