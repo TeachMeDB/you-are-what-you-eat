@@ -13,6 +13,7 @@ export interface MealInfoUpload {
     id: number;
     price: number;
     tags: string[];
+
 }
 
 export interface MealInfoAdd {
@@ -22,4 +23,5 @@ export interface MealInfoAdd {
     picture: string;
     price: number;
     tags: string[];
+    video: string;
 }

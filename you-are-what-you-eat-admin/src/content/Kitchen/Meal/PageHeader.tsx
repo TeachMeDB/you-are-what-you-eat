@@ -42,7 +42,8 @@ let m: MealInfoAdd = {
     price: 123,
     description: '123',
     tags: [""],
-    picture: null
+    picture: null,
+    video: ""
 }
 
 const Input = styled('input')({
@@ -95,7 +96,10 @@ function PageHeader() {
     }
     const tagsInputChange = (e) => {
         m.tags = e.target.value.split(" ");
-        console.log(m.tags);
+
+    }
+    const viedoInputChange = (e) => {
+        m.video = e.target.value;
     }
     const Src = "//player.bilibili.com/player.html?bvid=BV1bL4y1N7iX&high_quality=1&danmaku=0";
 
@@ -177,8 +181,9 @@ function PageHeader() {
                             label="视频链接"
                             fullWidth
                             variant="standard"
-                            onChange={tagsInputChange}
+                            onChange={viedoInputChange}
                         />
+
                         <Grid item xs={12}>
                             <Box m={2}>
                                 <Box pb={1} mb={1}>
@@ -211,7 +216,7 @@ function PageHeader() {
                                 </CardCover>
                             </ Box>
                         </Grid>
-                        <iframe src={Src} allowfullscreen="allowfullscreen" width="100%" height="270px" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
+
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>退出</Button>

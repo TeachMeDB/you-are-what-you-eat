@@ -65,11 +65,14 @@ function CurOrderSummary() {
 
   const isMountedRef = useRefMounted();
   const [CurOrders, setCurOrders] = useState<CurOrder[]>([]);
+  const [AllFinishedDishes, setAllFinishedDishes] = useState<number>(0);
   const getAllData = useCallback(async () => {
     try {
       let CurOrders = await curOrderApi.getCurOrder();
+      let a = countAllFinishedDishes();
       if (isMountedRef()) {
         setCurOrders(CurOrders);
+        setAllFinishedDishes(a);
       }
     } catch (err) {
       console.error(err);
@@ -80,7 +83,7 @@ function CurOrderSummary() {
     getAllData();
   }, [getAllData]);
   let AllDishes = 0;
-  let AllFinishedDishes = 0;
+
   const countAllDishes = () => {
     let i = 0;
     CurOrders.map((item) => {
@@ -99,7 +102,7 @@ function CurOrderSummary() {
     return i;
   }
   AllDishes = countAllDishes();
-  AllFinishedDishes = countAllFinishedDishes();
+
   console.log(AllFinishedDishes);
   const theme = useTheme();
 

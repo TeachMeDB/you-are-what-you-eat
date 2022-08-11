@@ -3,26 +3,15 @@ import CurOrderSummary from "./CurOrderSummary";
 import { Grid } from '@mui/material';
 import { CurOrder } from "@/models/cur_order";
 
-
+import { FC, ChangeEvent, useState, useEffect, useCallback } from 'react'
 export default function CurOrders() {
+
+    const [test, SetTest] = useState<number>(0);
 
     return (
 
         <>
-            <Grid
-                container
-                direction="row"
-                justifyContent="center"
-                alignItems="stretch"
-                spacing={4}
-            >
-                <Grid item xs={12}>
-                    <CurOrderSummary />
-                </Grid>
-                <Grid item xs={12}>
-                    <CurOrderTable />
-                </Grid>
-            </Grid>
+            <CurOrderTable />
         </>
 
 
