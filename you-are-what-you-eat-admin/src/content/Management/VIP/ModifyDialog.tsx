@@ -219,6 +219,7 @@ export default function ModifyDialog(props: VipProps) {
 
   return (
     <div>
+      <Tooltip title="编辑">
       <IconButton
         sx={{
           '&:hover': {
@@ -232,6 +233,7 @@ export default function ModifyDialog(props: VipProps) {
       >
         <EditTwoToneIcon fontSize="small" />
       </IconButton>
+      </Tooltip>
 
       <BootstrapDialog
         onClose={handleClose}
