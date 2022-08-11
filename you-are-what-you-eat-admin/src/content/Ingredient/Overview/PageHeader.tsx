@@ -34,15 +34,18 @@ function PageHeader(props) {
   } = props;
   const [open, setOpen] = React.useState(false);
   const [formValue, setFormValue] = useState(
-    { ingr_id: '0', ingr_name: '', ingr_type: '', ingr_description: '' });
-  const [ingredientRecordFormValue, setIngredientRecordFormValue] = useState({
-    employee_id: '',
-    ingr_id: '',
-    ingredientRecord_type: '',
-    ingredientRecord_date: new Date(),
-    ingredientRecord_reason: '',
-    ingredientRecord_cost: '',
-  });
+    { ingr_id: 0, ingr_name: '', ingr_type: '', ingr_description: '' });
+  const defaultIngredientRecordValue = {
+    record_id: 0,
+    ingr_id: 0,
+    purchasing_date: null,
+    measure_unit: '',
+    shelf_life: '0',
+    produced_date: null,
+    price: '',
+    director_id: 0,
+  };
+  const [ingredientRecordFormValue, setIngredientRecordFormValue] = useState(defaultIngredientRecordValue);
   console.log(employees, ' <-- ingredientRecordFormValue');
 
   const handleClickOpen = () => {
@@ -52,28 +55,26 @@ function PageHeader(props) {
     setOpen(false);
   };
   const handleSubmit = async () => {
-    console.log(formValue, ' <-- formValue');
-    const { ingr_id, ...params } = formValue;
-
-    await queryIngredientApi.addIngredient({ ...params, ingr_id: parseInt(ingr_id, 10) });
+    await queryIngredientApi.addIngredient(formValue);
     const data = await queryIngredientApi.getIngredientList('');
     setIngredientInfoes(data);
     setOpen(false);
   };
   const handleSubmitIngredientRecordForm = async () => {
     console.log(ingredientRecordFormValue, ' <-- ingredientRecordFormValue');
-    const { ingredientRecord_date, ...params } = ingredientRecordFormValue;
+    const { purchasing_date, produced_date, ...params } = ingredientRecordFormValue;
     await queryIngredientRecordApi.addIngredientRecord({
       ...params,
-      ingredientRecord_date: format(ingredientRecord_date, 'yyyy-MM-dd'),
+      purchasing_date: format(purchasing_date, 'yyyy-MM-dd'),
+      produced_date: format(produced_date, 'yyyy-MM-dd'),
     });
     const data = await queryIngredientRecordApi.getIngredientRecordList();
     setIngredientRecordInfoes(data);
     setOpen(false);
+    setIngredientRecordFormValue(defaultIngredientRecordValue);
   };
 
   const handleFormChange = (field, e) => {
-    console.log(e, ' <-- e');
     setFormValue({ ...formValue, [field]: e.target.value });
   };
 
@@ -81,8 +82,8 @@ function PageHeader(props) {
     setIngredientRecordFormValue({ ...ingredientRecordFormValue, [field]: e.target.value });
   };
 
-  const handleDateChange = (e) => {
-    setIngredientRecordFormValue({ ...ingredientRecordFormValue, ingredientRecord_date: e });
+  const handleIngredientRecordFormDateChange = (field, e) => {
+    setIngredientRecordFormValue({ ...ingredientRecordFormValue, [field]: e });
   };
 
   const tabs = [
@@ -132,6 +133,7 @@ function PageHeader(props) {
                   margin="dense"
                   id="ingr_id"
                   label="耗材编号"
+                  type="number"
                   fullWidth
                   variant="standard"
                   value={formValue.ingr_id}
@@ -178,35 +180,25 @@ function PageHeader(props) {
             <Dialog open={open} onClose={handleClose}>
               <DialogTitle>耗材管理记录</DialogTitle>
               <DialogContent>
-                <InputLabel id="employee_id">耗材管理员</InputLabel>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="record_id"
+                  label="记录编号"
+                  fullWidth
+                  variant="standard"
+                  value={ingredientRecordFormValue.record_id}
+                  onChange={(e) => handleIngredientRecordFormChange('record_id', e)}
+                  style={{ minWidth: '400px' }}
+                />
+                <InputLabel id="employee_id">耗材</InputLabel>
                 <Select
                   autoFocus
                   labelId="employee_id"
                   margin="dense"
                   id="employee_id"
-                  label="耗材管理员"
-                  placeholder="耗材管理员"
-                  fullWidth
-                  variant="standard"
-                  value={ingredientRecordFormValue.employee_id}
-                  onChange={(e) => handleIngredientRecordFormChange('employee_id', e)}
-                >
-                  {
-                    employees.map((employee) =>
-                      <MenuItem
-                        key={employee.employee_id}
-                        value={employee.employee_id}
-                      >{employee.employee_name}</MenuItem>)
-                  }
-                </Select>
-                <InputLabel id="ingr_id">耗材类型</InputLabel>
-                <Select
-                  autoFocus
-                  labelId="ingr_id"
-                  margin="dense"
-                  id="ingr_id"
-                  label="耗材类型"
-                  placeholder="耗材类型"
+                  label="耗材"
+                  placeholder="耗材"
                   fullWidth
                   variant="standard"
                   value={ingredientRecordFormValue.ingr_id}
@@ -217,50 +209,62 @@ function PageHeader(props) {
                       <MenuItem
                         key={item.ingr_id}
                         value={item.ingr_id}
-                      >{item.ingredients_type}</MenuItem>)
+                      >{item.ingr_name}</MenuItem>)
                   }
                 </Select>
                 <TextField
                   autoFocus
                   margin="dense"
-                  id="ingredientRecord_type"
-                  label="耗材管理类型"
+                  id="measure_unit"
+                  label="原料的计量单位"
                   fullWidth
                   variant="standard"
-                  value={ingredientRecordFormValue.ingredientRecord_type}
-                  onChange={(e) => handleIngredientRecordFormChange('ingredientRecord_type', e)}
-                />
-
-                {/*<TextField*/}
-                {/*  autoFocus*/}
-                {/*  margin="dense"*/}
-                {/*  id="ingredientRecord_date"*/}
-                {/*  label="耗材管理日期"*/}
-                {/*  fullWidth*/}
-                {/*  variant="standard"*/}
-                {/*  value={ingredientRecordFormValue.ingredientRecord_date}*/}
-                {/*  onChange={(e) => handleIngredientRecordFormChange('ingredientRecord_date', e)}*/}
-                {/*/>*/}
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="ingredientRecord_reason"
-                  label="耗材管理原因"
-                  fullWidth
-                  variant="standard"
-                  value={ingredientRecordFormValue.ingredientRecord_reason}
-                  onChange={(e) => handleIngredientRecordFormChange('ingredientRecord_reason', e)}
+                  value={ingredientRecordFormValue.measure_unit}
+                  onChange={(e) => handleIngredientRecordFormChange('measure_unit', e)}
                 />
                 <TextField
                   autoFocus
                   margin="dense"
-                  id="ingredientRecord_cost"
-                  label="耗材管理耗费金额"
+                  id="shelf_life"
+                  type="number"
+                  label="保质期(天)"
                   fullWidth
                   variant="standard"
-                  value={ingredientRecordFormValue.ingredientRecord_cost}
-                  onChange={(e) => handleIngredientRecordFormChange('ingredientRecord_cost', e)}
+                  value={ingredientRecordFormValue.shelf_life}
+                  onChange={(e) => handleIngredientRecordFormChange('shelf_life', e)}
                 />
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="price"
+                  label="价格"
+                  type="number"
+                  fullWidth
+                  variant="standard"
+                  value={ingredientRecordFormValue.price}
+                  onChange={(e) => handleIngredientRecordFormChange('price', e)}
+                />
+                <InputLabel id="employee_id">负责人</InputLabel>
+                <Select
+                  autoFocus
+                  labelId="employee_id"
+                  margin="dense"
+                  id="employee_id"
+                  label="负责人"
+                  placeholder="负责人"
+                  fullWidth
+                  variant="standard"
+                  value={ingredientRecordFormValue.director_id}
+                  onChange={(e) => handleIngredientRecordFormChange('director_id', e)}
+                >
+                  {
+                    employees.map((employee) =>
+                      <MenuItem
+                        key={employee.employee_id}
+                        value={employee.employee_id}
+                      >{employee.employee_name}</MenuItem>)
+                  }
+                </Select>
                 <Box
                   sx={{
                     marginTop: '16px',
@@ -268,10 +272,24 @@ function PageHeader(props) {
                 >
                   <DesktopDatePicker
                     autoFocus
-                    label="耗材管理日期"
+                    label="购买日期"
                     inputFormat="yyyy-MM-dd"
-                    value={ingredientRecordFormValue.ingredientRecord_date}
-                    onChange={(e) => handleDateChange(e)}
+                    value={ingredientRecordFormValue.purchasing_date}
+                    onChange={(e) => handleIngredientRecordFormDateChange('purchasing_date', e)}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </Box>
+                <Box
+                  sx={{
+                    marginTop: '16px',
+                  }}
+                >
+                  <DesktopDatePicker
+                    autoFocus
+                    label="生产日期"
+                    inputFormat="yyyy-MM-dd"
+                    value={ingredientRecordFormValue.produced_date}
+                    onChange={(e) => handleIngredientRecordFormDateChange('produced_date', e)}
                     renderInput={(params) => <TextField {...params} />}
                   />
                 </Box>
