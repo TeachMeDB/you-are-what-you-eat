@@ -210,6 +210,8 @@ const MealInfoTable = () => {
 
     var Search: string;
 
+    let bv = "BV1e5411L7gR";
+    let src = "//player.bilibili.com/player.html?bvid=" + bv + "&high_quality=1&danmaku=0";
 
     const handleSearchChange = (e) => {
         newM = [];
@@ -446,11 +448,9 @@ const MealInfoTable = () => {
                                             </Tooltip>
                                             <Dialog open={detailOpen} onClose={handleDetailClose} fullWidth={true}>
                                                 <DialogTitle>菜品具体信息</DialogTitle>
+
                                                 <DialogContent>
-                                                    <iframe src="//player.bilibili.com/player.html?bvid=BV1bL4y1N7iX&high_quality=1&danmaku=0" allowfullscreen="allowfullscreen" width="100%" height="270px" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
-
-
-
+                                                    <iframe src={src} allowfullscreen="allowfullscreen" width="100%" height="270px" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
                                                     <Grid item xs={12}>
                                                         <Box m={2}>
                                                             <Box pb={1} mb={1}>
