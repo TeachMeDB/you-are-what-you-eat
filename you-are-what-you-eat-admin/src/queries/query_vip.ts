@@ -1,4 +1,4 @@
-import { CryptoVip, CryptoAllVip } from '@/models/crypto_vip';
+import { CryptoVip, CryptoAllVip , CryptoCreateVip } from '@/models/crypto_vip';
 
 import { GetApi, PostApi } from '@/utils/requests';
 
@@ -109,6 +109,12 @@ class QueryVipApi {
 
   public editVip: (vip: CryptoVip) => Promise<string> = async (vip) => {
     const r = await PostApi('VIP/PostUpdateVIP', vip);
+    return r.statusText;
+  };
+
+  public createVip: (vip: CryptoCreateVip) => Promise<string> = async (vip) => {
+    //api还没有准备好
+    const r = await PostApi('XXXXXX', vip);
     return r.statusText;
   };
 }

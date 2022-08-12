@@ -15,6 +15,12 @@ export interface CryptoVip {
   credit: number;
 }
 
+export interface CryptoCreateVip {
+  user_name: string;
+  birthday: string;
+  gender: string;
+}
+
 export interface Serie {
   name: string;
   data: number[];
