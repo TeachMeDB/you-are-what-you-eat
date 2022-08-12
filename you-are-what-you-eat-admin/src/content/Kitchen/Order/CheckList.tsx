@@ -172,8 +172,10 @@ export default function CheckList(curOrder: CurOrder) {
                         <Grid xs={6}>
 
                             <Button
+
                                 size="large"
                                 variant="contained"
+                                color="success"
                                 onClick={() => {
 
                                     const conduct3 = async () => {

@@ -38,10 +38,46 @@ import DialogContent from '@mui/material/DialogContent';
 
 import DialogTitle from '@mui/material/DialogTitle';
 
-
+import DetailsIcon from '@mui/icons-material/Details';
 import { mealInfoApi } from '@/queries/meal';
-
+import StarRateIcon from '@mui/icons-material/StarRate';
 import { useRefMounted } from '@/hooks/useRefMounted';
+import {
+
+    Grid,
+
+    CardMedia,
+
+
+
+} from '@mui/material';
+const Input = styled('input')({
+    display: 'none'
+});
+
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
+
+import { GenerateBase64 } from '@/utils/image';
+
+import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone'
+
+import { useTranslation } from 'react-i18next';
+const CardCover = styled(Card)(
+    ({ theme }) => `
+      position: relative;
+  
+      .MuiCardMedia-root {
+        height: ${theme.spacing(26)};
+      }
+  `
+);
+const CardCoverAction = styled(Box)(
+    ({ theme }) => `
+      position: absolute;
+      right: ${theme.spacing(2)};
+      bottom: ${theme.spacing(2)};
+  `
+);
 
 
 
@@ -76,7 +112,14 @@ const OutlinedInputWrapper = styled(OutlinedInput)(
 
 
 
+const getPriceStyles = () => {
+    let styles = {
+        color: "blue",
+        fontSize: "24px",
 
+    }
+    return styles;
+}
 
 const ButtonSearch = styled(Button)(
     ({ theme }) => `
@@ -88,8 +131,10 @@ const ButtonSearch = styled(Button)(
 
 const MealInfoTable = () => {
 
+    const [fullWidth] = React.useState(true);
+    const [maxWidth] = React.useState('xs');
 
-
+    const { t }: { t: any } = useTranslation();
     const nameInputChange = (e) => {
         m.dis_name = (e.target.value);
     }
@@ -146,6 +191,16 @@ const MealInfoTable = () => {
 
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const [detailOpen, setdetailOpen] = React.useState(false);
+    const handleClickDetailOpen = () => {
+        setdetailOpen(true);
+
+    };
+
+    const handleDetailClose = () => {
+        setdetailOpen(false);
     };
 
     const paginatedPromotions = applyPagination(MealInfoes, page, limit);
@@ -369,29 +424,80 @@ const MealInfoTable = () => {
                                                     }}
                                                     color="inherit"
                                                     size="small"
-                                                    onClick={() => {
-
-
-                                                        const conduct = async () => {
-                                                            let d = mealInfo.id;
-                                                            console.log(mealInfo.id);
-                                                            return mealInfoApi.delMeal(d);
-                                                        }
-
-                                                        conduct().then((value) => {
-
-                                                            alert("成功：" + value);
-
-                                                        }).catch((value) => {
-
-                                                            alert("失败：" + value);
-                                                        });
-
-                                                    }} href="javascript:location.reload(true)"
+                                                    href="javascript:location.reload(true)"
                                                 >
                                                     <DeleteTwoToneIcon fontSize="small" />
                                                 </IconButton>
                                             </Tooltip>
+                                            <Tooltip title="查看详情" arrow>
+                                                <IconButton
+                                                    sx={{
+                                                        '&:hover': { background: theme.colors.error.lighter },
+                                                        color: theme.palette.primary.dark
+                                                    }}
+                                                    color="inherit"
+                                                    size="small"
+                                                    onClick={() => {
+                                                        handleClickDetailOpen();
+                                                    }}
+                                                >
+                                                    <DetailsIcon fontSize="small" />
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Dialog open={detailOpen} onClose={handleDetailClose} fullWidth={true}>
+                                                <DialogTitle>菜品具体信息</DialogTitle>
+                                                <DialogContent>
+                                                    <iframe src="//player.bilibili.com/player.html?bvid=BV1bL4y1N7iX&high_quality=1&danmaku=0" allowfullscreen="allowfullscreen" width="100%" height="270px" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
+
+
+
+                                                    <Grid item xs={12}>
+                                                        <Box m={2}>
+                                                            <Box pb={1} mb={1}>
+                                                                <b>{t('活动封面图')}:</b>
+                                                            </Box>
+                                                            <CardCover>
+                                                                <CardMedia image={null} />
+
+                                                            </CardCover>
+                                                        </ Box>
+                                                    </Grid>
+                                                    <Card sx={{ minWidth: 75, m: 1 }} variant="outlined">
+                                                        <div style={{ padding: '0 27px' }}>
+                                                            <Grid container spacing={2}>
+                                                                <Grid item xs={9}>
+                                                                    <h2>{mealInfo.dis_name}</h2>
+                                                                </Grid>
+                                                                <Grid item xs={1}>
+                                                                    <StarRateIcon sx={{ mt: 2.2, color: "blue", }} />
+                                                                </Grid>
+                                                                <Grid item xs={2}>
+                                                                    <h2 style={{ fontWeight: '500', color: "blue" }}>{2}</h2>
+                                                                </Grid>
+
+
+                                                            </Grid>
+                                                            <Divider />
+                                                            <div>
+                                                                <p style={{ fontSize: "18px" }}>{mealInfo.description}</p>
+                                                            </div>
+                                                            <Grid container spacing={2}>
+                                                                <Grid item xs={7}>
+                                                                    <div>
+                                                                        <p style={getPriceStyles()}>¥ {mealInfo.price} / 份</p>
+                                                                    </div>
+                                                                </Grid>
+                                                            </Grid>
+
+
+                                                        </div>
+                                                    </Card>
+
+
+
+                                                </DialogContent>
+
+                                            </Dialog>
                                         </TableCell>
                                     </TableRow>
                                 );
