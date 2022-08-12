@@ -8,6 +8,8 @@ export interface Dish {
     dish_name: string;
     dish_order_id: string;
     status: string;
+    remark: string;
+
 }
 export interface DishStatusUpload {
     dish_order_id: string,

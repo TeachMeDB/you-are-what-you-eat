@@ -97,7 +97,7 @@ export default function CheckList(curOrder: CurOrder) {
                         {
                             curOrder.dish.map((item) =>
                                 <ListItem divider>
-                                    <ListItemText id={item.dish_name} primary={item.dish_name + "    备注：xxxxxxxxx"} />
+                                    <ListItemText id={item.dish_name} primary={item.dish_name + "----备注:" + item.remark} />
                                     <Switch
                                         defaultChecked={check(item)}
                                         {...label}
