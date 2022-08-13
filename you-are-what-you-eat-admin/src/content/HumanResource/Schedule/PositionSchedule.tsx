@@ -1,4 +1,12 @@
-import { Box, lighten, Card, CardHeader, Divider, styled, Typography } from '@mui/material';
+import {
+  Box,
+  lighten,
+  Card,
+  CardHeader,
+  Divider,
+  styled,
+  Typography
+} from '@mui/material';
 
 import Schedule from '@/components/Schedule';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
@@ -9,7 +17,6 @@ import { scheduleApi } from '@/queries/schedule';
 import { endOfWeek, format, startOfWeek } from 'date-fns';
 import ScheduleDelete from '@/components/ScheduleDelete';
 
-
 const RootWrapper = styled(Box)(
   ({ theme }) => `
         padding: ${theme.spacing(0.5)};
@@ -17,27 +24,33 @@ const RootWrapper = styled(Box)(
   `
 );
 
-
-
-function PositionSchedule({place,occupation,week}:{place:string,occupation:string,week:Date}) {
-
-
+function PositionSchedule({
+  place,
+  occupation,
+  week
+}: {
+  place: string;
+  occupation: string;
+  week: Date;
+}) {
   const isMountedRef = useRefMounted();
   const [schedules, setSchedules] = useState<ScheduleEntity[]>([]);
 
   const getAllData = useCallback(async () => {
+    let weekStart = startOfWeek(week);
+    let weekEnd = endOfWeek(week);
 
-    
-
-    let weekStart=startOfWeek(week);
-    let weekEnd=endOfWeek(week);
-
-    console.log("this is asking a whole schedule:")
-    console.log(place,occupation,weekStart,weekEnd)
+    console.log('this is asking a whole schedule:');
+    console.log(place, occupation, weekStart, weekEnd);
 
     try {
-
-      let schedules = await scheduleApi.getSchedule(format(weekStart,"yyyy-MM-dd HH:mm:ss"),format(weekEnd,"yyyy-MM-dd HH:mm:ss"),null,place,occupation);
+      let schedules = await scheduleApi.getSchedule(
+        format(weekStart, 'yyyy-MM-dd HH:mm:ss'),
+        format(weekEnd, 'yyyy-MM-dd HH:mm:ss'),
+        null,
+        place,
+        occupation
+      );
 
       if (isMountedRef()) {
         setSchedules(schedules);
@@ -49,20 +62,21 @@ function PositionSchedule({place,occupation,week}:{place:string,occupation:strin
 
   useEffect(() => {
     getAllData();
-  }, [week,place,occupation,getAllData]);
-
+  }, [week, place, occupation, getAllData]);
 
   return (
     <RootWrapper>
       <Card>
-
-        <CardHeader title={<Typography variant="h3"><EventAvailableIcon />  选中排班表</Typography>} />
+        <CardHeader
+          title={
+            <Typography variant="h3">
+              <EventAvailableIcon /> 选中排班表
+            </Typography>
+          }
+        />
         <Divider />
-        <ScheduleDelete schedules={schedules}/>
-
-
+        <ScheduleDelete schedules={schedules} />
       </Card>
-
     </RootWrapper>
   );
 }

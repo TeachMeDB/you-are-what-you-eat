@@ -1,130 +1,125 @@
-import { CryptoVip,CryptoAllVip } from "@/models/crypto_vip";
+import { CryptoVip, CryptoAllVip , CryptoCreateVip } from '@/models/crypto_vip';
 
-import {GetApi,PostApi} from "@/utils/requests"
+import { GetApi, PostApi } from '@/utils/requests';
 
 class QueryVipApi {
-    public getVip: () => Promise<CryptoAllVip> = async () => {        
-        try {
-          //const r = await (await fetch('http://106.14.212.200:8000/app/api/VIP/GetAllVIPInfo')).text();
-          //console.log(JSON.parse(r));
-          //console.log(data);
-          //let rawData: CryptoAllVip =JSON.parse(r) as CryptoAllVip;
-          const rawData = (await GetApi("VIP/GetAllVIPInfo",)).data;
-          //console.log("rawData");
-          //console.log(rawData);
-          rawData.summary.options=
-          {
-            chart: {
-              type: 'bar',
-              height: 350,
-              stacked: true,
-              toolbar: {
-                show: true
-              },
-              zoom: {
-                enabled: true
-              }
-            },
-            responsive: 
-            [{
-              breakpoint: 480,
-              options: {
-                legend: {
-                  position: 'bottom',
-                  offsetX: -10,
-                  offsetY: 0
-                }
-              }
-            }],
-            plotOptions: 
-            {
-              bar: {
-                horizontal: false,
-                borderRadius: 10
-              },
-            },
-            xaxis: 
-            {
-              type: 'text',
-              categories: rawData.summary.options.xaxis.categories,
-            },
-            legend: 
-            {
-              position: 'right',
-              offsetY: 40
-            },
-            fill: 
-            {
-              opacity: 1
-            }    
+  public getVip: () => Promise<CryptoAllVip> = async () => {
+    try {
+      //const r = await (await fetch('http://106.14.212.200:8000/app/api/VIP/GetAllVIPInfo')).text();
+      //console.log(JSON.parse(r));
+      //console.log(data);
+      //let rawData: CryptoAllVip =JSON.parse(r) as CryptoAllVip;
+      const rawData = (await GetApi('VIP/GetAllVIPInfo')).data;
+      //console.log("rawData");
+      //console.log(rawData);
+      rawData.summary.options = {
+        chart: {
+          type: 'bar',
+          height: 350,
+          stacked: true,
+          toolbar: {
+            show: true
+          },
+          zoom: {
+            enabled: true
           }
-
-          rawData.summary2.options=
+        },
+        responsive: [
           {
-            chart: {
-              type: 'bar',
-              height: 350,
-              stacked: true,
-              toolbar: {
-                show: true
-              },
-              zoom: {
-                enabled: true
+            breakpoint: 480,
+            options: {
+              legend: {
+                position: 'bottom',
+                offsetX: -10,
+                offsetY: 0
               }
-            },
-            responsive: 
-            [{
-              breakpoint: 480,
-              options: {
-                legend: {
-                  position: 'bottom',
-                  offsetX: -10,
-                  offsetY: 0
-                }
-              }
-            }],
-            plotOptions: 
-            {
-              bar: {
-                horizontal: false,
-                borderRadius: 10
-              },
-            },
-            xaxis: 
-            {
-              type: 'text',
-              categories: rawData.summary2.options.xaxis.categories,
-            },
-            legend: 
-            {
-              position: 'right',
-              offsetY: 40
-            },
-            fill: 
-            {
-              opacity: 1
-            }    
+            }
           }
+        ],
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            borderRadius: 10
+          }
+        },
+        xaxis: {
+          type: 'text',
+          categories: rawData.summary.options.xaxis.categories
+        },
+        legend: {
+          position: 'right',
+          offsetY: 40
+        },
+        fill: {
+          opacity: 1
+        }
+      };
 
-          return rawData;
-      } 
-      catch(err) {
-          console.log(err);
-          return null;
-      }
+      rawData.summary2.options = {
+        chart: {
+          type: 'bar',
+          height: 350,
+          stacked: true,
+          toolbar: {
+            show: true
+          },
+          zoom: {
+            enabled: true
+          }
+        },
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              legend: {
+                position: 'bottom',
+                offsetX: -10,
+                offsetY: 0
+              }
+            }
+          }
+        ],
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            borderRadius: 10
+          }
+        },
+        xaxis: {
+          type: 'text',
+          categories: rawData.summary2.options.xaxis.categories
+        },
+        legend: {
+          position: 'right',
+          offsetY: 40
+        },
+        fill: {
+          opacity: 1
+        }
+      };
 
-      //  return Promise.resolve(data); 
+      return rawData;
+    } catch (err) {
+      console.log(err);
+      return null;
     }
 
-    public editVip: (vip: CryptoVip) => Promise<string> = async (vip) => {
-      const r = (await (PostApi("VIP/PostUpdateVIP", vip)));
-      return r.statusText;
-  }
+    //  return Promise.resolve(data);
+  };
 
+  public editVip: (vip: CryptoVip) => Promise<string> = async (vip) => {
+    const r = await PostApi('VIP/PostUpdateVIP', vip);
+    return r.statusText;
+  };
+
+  public createVip: (vip: CryptoCreateVip) => Promise<string> = async (vip) => {
+    //api还没有准备好
+    const r = await PostApi('XXXXXX', vip);
+    return r.statusText;
+  };
 }
 
 export const queryVipApi = new QueryVipApi();
-
 
 /*
         const data:CryptoAllVip = 

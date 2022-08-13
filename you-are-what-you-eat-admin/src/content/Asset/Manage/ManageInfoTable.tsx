@@ -13,7 +13,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Typography,
+  Typography
 } from '@mui/material';
 import { ManageInfo } from '@/models/manage_info';
 import { EmployeeInfo } from '@/models/employee_info';
@@ -40,7 +40,8 @@ interface ManageInfoTableProps {
 // );
 
 const RecentManageTable: FC<ManageInfoTableProps> = (props) => {
-  const { manageInfoes = [] /*assets = [], employees = [], setManageInfoes*/ } = props;
+  const { manageInfoes = [] /*assets = [], employees = [], setManageInfoes*/ } =
+    props;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   // const [list, setList] = useState(manageInfoes);
@@ -113,7 +114,7 @@ const RecentManageTable: FC<ManageInfoTableProps> = (props) => {
   // const theme = useTheme();
   return (
     <Card>
-      {(
+      {
         <CardHeader
           // action={
           //   <FormControl variant="outlined" fullWidth>
@@ -143,13 +144,12 @@ const RecentManageTable: FC<ManageInfoTableProps> = (props) => {
           // }
           title="资产管理记录"
         />
-      )}
+      }
       <Divider />
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-
               <TableCell>资产管理员</TableCell>
               <TableCell>资产类型</TableCell>
               <TableCell>资产管理类型</TableCell>
@@ -187,7 +187,6 @@ const RecentManageTable: FC<ManageInfoTableProps> = (props) => {
                     >
                       {manageInfo.assets_type}
                     </Typography>
-
                   </TableCell>
                   <TableCell>
                     <Typography
@@ -353,11 +352,11 @@ const RecentManageTable: FC<ManageInfoTableProps> = (props) => {
 };
 
 RecentManageTable.propTypes = {
-  manageInfoes: PropTypes.array.isRequired,
+  manageInfoes: PropTypes.array.isRequired
 };
 
 RecentManageTable.defaultProps = {
-  manageInfoes: [],
+  manageInfoes: []
 };
 
 export default RecentManageTable;

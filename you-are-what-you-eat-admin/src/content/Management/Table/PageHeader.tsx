@@ -3,7 +3,6 @@ import { Typography, Button, Grid } from '@mui/material';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import AssignSeat from './AssignSeat';
 
-
 function PageHeader() {
   const user = {
     name: 'Catherine Pike',
@@ -19,11 +18,7 @@ function PageHeader() {
           {user.name}, 餐厅的场地状态如下
         </Typography>
       </Grid>
-      <Grid item>
-        {
-        <AssignSeat/>
-        }
-      </Grid>
+      <Grid item>{<AssignSeat />}</Grid>
     </Grid>
   );
 }

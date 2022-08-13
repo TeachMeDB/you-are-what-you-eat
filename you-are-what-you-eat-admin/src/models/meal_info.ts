@@ -1,4 +1,5 @@
 export interface MealInfo {
+
     description: string;
     dis_name: string;
     id: string;
@@ -25,3 +26,4 @@ export interface MealInfoAdd {
     tags: string[];
     video: string;
 }
+

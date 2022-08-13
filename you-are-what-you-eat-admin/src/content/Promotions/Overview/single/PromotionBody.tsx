@@ -113,7 +113,6 @@ const PromotionBody: FC<PromotionBodyProps> = ({ promotion }) => {
                 {promotion.description}
               </Typography>
             </BoxWrapper>
-            
           </Grid>
         </Grid>
 
@@ -135,17 +134,14 @@ const PromotionBody: FC<PromotionBodyProps> = ({ promotion }) => {
                       <Typography noWrap>{dish.name}</Typography>
                     </TableCell>
                     <TableCell>{`${dish.discount * 100}%`}</TableCell>
-                    <TableCell>
-                      ￥{dish.price.toFixed(2)}
-                    </TableCell>
+                    <TableCell>￥{dish.price.toFixed(2)}</TableCell>
                     <TableCell>
                       ￥{(dish.price * (1 - dish.discount)).toFixed(2)}
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
-              <TableFooter>
-              </TableFooter>
+              <TableFooter></TableFooter>
             </Table>
           </TableContainer>
         </TableWrapper>
@@ -153,41 +149,12 @@ const PromotionBody: FC<PromotionBodyProps> = ({ promotion }) => {
           {t('当前状态')}
         </Typography>
         <Typography variant="body2">
-          {promotion.status === 'completed' ? '已结束' : promotion.status === 'running' ? '进行中' : '未开始'}
+          {promotion.status === 'completed'
+            ? '已结束'
+            : promotion.status === 'running'
+            ? '进行中'
+            : '未开始'}
         </Typography>
-        {/* <Tooltip
-          placement="top"
-          arrow
-          title="This functionality will be added in a future release!"
-        >
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            mt={4}
-          >
-            <Button
-              disabled
-              variant="contained"
-              sx={{
-                mx: 2
-              }}
-              startIcon={<DownloadTwoToneIcon />}
-            >
-              {t('Download PDF')}
-            </Button>
-            <Button
-              disabled
-              variant="outlined"
-              sx={{
-                mx: 2
-              }}
-              startIcon={<PictureAsPdfTwoToneIcon />}
-            >
-              {t('Preview PDF')}
-            </Button>
-          </Box>
-        </Tooltip> */}
       </Card>
     </Container>
   );

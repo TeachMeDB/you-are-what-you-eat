@@ -59,13 +59,10 @@ const ListItemAvatarWrapper = styled(ListItemAvatar)(
 `
 );
 
-
-
-//function OrderSummary(cryptoSummary: CryptoSummary) 
-const OrderSummarySkeleton = () =>
-{
+//function OrderSummary(cryptoSummary: CryptoSummary)
+const OrderSummarySkeleton = () => {
   const theme = useTheme();
-  
+
   const chartOptions: ApexOptions = {
     chart: {
       background: 'transparent',
@@ -133,12 +130,7 @@ const OrderSummarySkeleton = () =>
     }
   };
 
-  const chartSeries = [
-    (0.25), 
-  (0.25), 
-  (0.25), 
-  (0.25)
-];
+  const chartSeries = [0.25, 0.25, 0.25, 0.25];
 
   return (
     <Card>
@@ -155,7 +147,7 @@ const OrderSummarySkeleton = () =>
             </Typography>
             <Box>
               <Typography variant="h1" gutterBottom>
-                <Skeleton animation="wave" variant="text"/>
+                <Skeleton animation="wave" variant="text" />
               </Typography>
               <Box
                 display="flex"
@@ -173,7 +165,9 @@ const OrderSummarySkeleton = () =>
                   <TrendingUp fontSize="large" />
                 </AvatarSuccess>
                 <Box>
-                  <Typography variant="h4"><Skeleton animation="wave" variant="text"/></Typography>
+                  <Typography variant="h4">
+                    <Skeleton animation="wave" variant="text" />
+                  </Typography>
                   <Typography variant="subtitle2" noWrap>
                     今天
                   </Typography>
@@ -226,45 +220,45 @@ const OrderSummarySkeleton = () =>
                 >
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                       <Brightness1Icon fontSize="large" color="error"/>
+                      <Brightness1Icon fontSize="large" color="error" />
                     </ListItemAvatarWrapper>
-                    <Skeleton animation="wave" variant="text"/>
+                    <Skeleton animation="wave" variant="text" />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        <Skeleton animation="wave" variant="text"/>
+                        <Skeleton animation="wave" variant="text" />
                       </Typography>
                     </Box>
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                      <Brightness1Icon fontSize="large" color="warning"/>
+                      <Brightness1Icon fontSize="large" color="warning" />
                     </ListItemAvatarWrapper>
-                      <Skeleton animation="wave" variant="text"/>
+                    <Skeleton animation="wave" variant="text" />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        <Skeleton animation="wave" variant="text"/>
+                        <Skeleton animation="wave" variant="text" />
                       </Typography>
                     </Box>
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                      <Brightness1Icon fontSize="large" color="success"/>
+                      <Brightness1Icon fontSize="large" color="success" />
                     </ListItemAvatarWrapper>
-                      <Skeleton animation="wave" variant="text"/>
+                    <Skeleton animation="wave" variant="text" />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        <Skeleton animation="wave" variant="text"/>
+                        <Skeleton animation="wave" variant="text" />
                       </Typography>
                     </Box>
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                      <Brightness1Icon fontSize="large" color="primary"/>
+                      <Brightness1Icon fontSize="large" color="primary" />
                     </ListItemAvatarWrapper>
-                      <Skeleton animation="wave" variant="text"/>
+                    <Skeleton animation="wave" variant="text" />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        <Skeleton animation="wave" variant="text"/>
+                        <Skeleton animation="wave" variant="text" />
                       </Typography>
                     </Box>
                   </ListItem>
@@ -276,6 +270,6 @@ const OrderSummarySkeleton = () =>
       </Grid>
     </Card>
   );
-}
+};
 
 export default OrderSummarySkeleton;
