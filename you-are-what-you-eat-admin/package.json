@@ -1,15 +1,4 @@
 {
-
-  "productName": "人如其食智慧餐厅服务管理系统",
-  "license": "MIT",
-  "main": "main/index.js",
-  "build": {
-    "asar": true,
-    "files": [
-      "main",
-      "out"
-    ]
-  },
   "name": "you-are-what-you-eat-admin",
   "version": "1.0.0",
   "title": "人如其食",
@@ -64,7 +53,6 @@
     "i18next-browser-languagedetector": "6.1.4",
     "jsonwebtoken": "8.5.1",
     "next": "12.1.6",
-    "next-electron-server": "latest",
     "next-i18next": "11.0.0",
     "next-images": "1.8.4",
     "notistack": "2.0.5",
@@ -96,8 +84,6 @@
     "yup": "0.32.11"
   },
   "scripts": {
-    "electron-dev": "concurrently -k \"next dev\" \"electron .\"",
-    "electron-build": "next build && next export && electron-builder --dir",
     "dev": "next",
     "build": "next build",
     "start": "next start",
@@ -107,9 +93,6 @@
     "format": "prettier --write \"./**/*.{ts,tsx,js,jsx,json}\" --config ./.prettierrc"
   },
   "devDependencies": {
-    "concurrently": "^7.3.0",
-    "electron": "^20.0.1",
-    "electron-builder": "^23.3.3",
     "eslint": "8.17.0",
     "eslint-config-next": "12.1.6",
     "eslint-config-prettier": "8.5.0",
@@ -117,8 +100,4 @@
     "next-transpile-modules": "9.0.0",
     "prettier": "2.6.2"
   }
-
 }
-
-
-
