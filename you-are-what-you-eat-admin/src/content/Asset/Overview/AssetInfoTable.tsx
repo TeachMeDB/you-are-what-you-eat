@@ -61,6 +61,8 @@ const ButtonSearch = styled(Button)(
   `,
 );
 
+const defaultRepairFormValue = { assetsId: '', name: '', phone: '', longitude: '', latitude: '' };
+
 const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, setAssetInfoes }) => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
@@ -70,8 +72,7 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
   const [open, setOpen] = React.useState(false);
   const [repairOpen, setRepairOpen] = useState(false);
   const [repair, setRepair] = useState<Repair[]>([]);
-  const [repairFormValue, setRepairFormValue] = useState(
-    { name: '', phone: '', longitude: '', latitude: '' });
+  const [repairFormValue, setRepairFormValue] = useState(defaultRepairFormValue);
   const [repairFormVisible, setRepairFormVisible] = useState(false);
 
   const handlePageChange = (_event: any, newPage: number): void => {
@@ -94,6 +95,7 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
   const handleOpenRepair = (assetInfo) => {
     setRepairOpen(true);
     setRepair(assetInfo.repair || []);
+    setRepairFormValue({ ...defaultRepairFormValue, assetsId: assetInfo.assets_id });
   };
 
   const handleClose = () => {
@@ -144,7 +146,7 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
       ...repair,
       { ...repairFormValue, longitude: parseFloat(longitude), latitude: parseFloat(latitude) },
     ]);
-    setRepairFormValue({ name: '', phone: '', longitude: '', latitude: '' });
+    setRepairFormValue(defaultRepairFormValue);
     const data = await queryAssetApi.getAssetList(keyword);
     setAssetInfoes(data);
   };
