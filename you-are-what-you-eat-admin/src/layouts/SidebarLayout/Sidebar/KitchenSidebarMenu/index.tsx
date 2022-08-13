@@ -179,7 +179,7 @@ const SubMenuWrapper = styled(Box)(
 `
 );
 
-function SidebarMenu() {
+function KitchenSidebarMenu() {
   const { closeSidebar } = useContext(SidebarContext);
   const router = useRouter();
   const currentRoute = router.pathname;
@@ -848,4 +848,4 @@ function SidebarMenu() {
   );
 }
 
-export default SidebarMenu;
+export default KitchenSidebarMenu;
