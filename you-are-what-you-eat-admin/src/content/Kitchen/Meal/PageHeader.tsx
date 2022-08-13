@@ -73,29 +73,6 @@ const CardCoverAction = styled(Box)(
 
 
 function PageHeader() {
-  const [open, setOpen] = React.useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleVerified = () => {
-    console.log(m);
-    setOpen(false);
-  };
-  const idInputChange = (e) => {
-    m.id = e.target.value;
-  };
-  const nameInputChange = (e) => {
-    m.DishName = e.target.value;
-  };
-  const priceInputChange = (e) => {
-    m.Price = Number(e.target.value);
-  };
-  const descriptionInputChange = (e) => {
-    m.Description = e.target.value;
-  };
 
 
   const { t }: { t: any } = useTranslation();

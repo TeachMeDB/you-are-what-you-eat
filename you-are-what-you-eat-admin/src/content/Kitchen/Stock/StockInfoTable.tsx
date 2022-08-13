@@ -126,7 +126,7 @@ const StockInfoesTable = () => {
   const theme = useTheme();
 
 
-  const theme = useTheme();
+
   const paginatedPromotions = applyPagination(StockInfoes, page, limit);
 
   var Search: string;
