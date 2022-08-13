@@ -20,14 +20,12 @@ function OrderDetailView({ orderId }: { orderId }) {
   const isMountedRef = useRefMounted();
 
   console.log('order id: ', orderId.orderId);
-
+  
   const [orderDetail, setOrderDetail] = useState<OrderDetail | null>(null);
 
   const getOrderDetail = useCallback(async () => {
     try {
-      const response = await ordersApi.getOrderDetail(
-        orderId.orderId as string
-      );
+      const response = await ordersApi.getOrderDetail(orderId.orderId as string);
 
       if (isMountedRef()) {
         setOrderDetail(response);
@@ -71,12 +69,14 @@ function OrderDetailView({ orderId }: { orderId }) {
   );
 }
 
-OrderDetailView.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+OrderDetailView.getLayout = (page) => (
+    <SidebarLayout>{page}</SidebarLayout>
+);
 
 export async function getServerSideProps(context) {
   const orderId = context.query;
 
-  return { props: { orderId } };
+  return { props: { orderId } }
 }
 
 export default OrderDetailView;

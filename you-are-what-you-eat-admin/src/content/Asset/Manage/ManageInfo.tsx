@@ -12,20 +12,10 @@ interface ManageInfoProps {
   setManageInfoes: any;
 }
 
-function AllManageInfo({
-  list = [],
-  assets = [],
-  employees = [],
-  setManageInfoes
-}: ManageInfoProps) {
+function AllManageInfo({ list = [], assets = [], employees = [], setManageInfoes }: ManageInfoProps) {
   return (
     <Card>
-      <ManageInfoTable
-        manageInfoes={list}
-        setManageInfoes={setManageInfoes}
-        assets={assets}
-        employees={employees}
-      />
+      <ManageInfoTable manageInfoes={list} setManageInfoes={setManageInfoes} assets={assets} employees={employees} />
     </Card>
   );
 }

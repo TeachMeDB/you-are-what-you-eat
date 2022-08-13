@@ -28,15 +28,15 @@ import {
 } from '@mui/material';
 
 import Label from '@/components/Label';
-import { CryptoTable, CryptoTableStatus } from '@/models/crypto_table';
+import { CryptoTable,CryptoTableStatus } from '@/models/crypto_table';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BulkActions from './BulkActions';
 import TextField from '@mui/material/TextField';
 
-import ModifyDialog from './ModifyDialog';
-import SignUpVip from './AssignSeat';
-import IndividualTable from './IndividualTable';
+import ModifyDialog from './ModifyDialog'
+import SignUpVip from './AssignSeat'
+import IndividualTable from './IndividualTable'
 
 interface VIPListTableProps {
   className?: string;
@@ -65,11 +65,9 @@ const applyFilters = (
     }
     */
 
-    if (
-      filters.search &&
-      !cryptoOrder.table_capacity.toString().includes(filters.search.toString())
-    ) {
-      matches = false;
+    if(filters.search && !(cryptoOrder.table_capacity.toString().includes(filters.search.toString())))
+    {
+      matches=false;
     }
 
     return matches;
@@ -85,7 +83,9 @@ const applyPagination = (
 };
 
 const VIPListTable: FC<VIPListTableProps> = ({ cryptoTable }) => {
-  const [selectedCryptoTable, setSelectedCryptoTable] = useState<string[]>([]);
+  const [selectedCryptoTable, setSelectedCryptoTable] = useState<string[]>(
+    []
+  );
   const selectedBulkActions = selectedCryptoTable.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(24);
@@ -193,30 +193,30 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoTable }) => {
         <CardHeader
           action={
             <Box width={400}>
-              <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
-                <TextField
-                  id="outlined-basic"
-                  label="搜索人数"
-                  variant="outlined"
-                  onChange={handleSearchChange}
+              <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
+                <TextField 
+                id="outlined-basic" 
+                label="搜索人数" 
+                variant="outlined"
+                onChange={handleSearchChange} 
                 />
               </FormControl>
 
-              <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel>筛选</InputLabel>
-                <Select
-                  value={filters.status || 'all'}
-                  onChange={handleStatusChange}
-                  label="Status"
-                  autoWidth
-                >
-                  {statusOptions.map((statusOption) => (
-                    <MenuItem key={statusOption.id} value={statusOption.id}>
-                      {statusOption.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
+                   <InputLabel >筛选</InputLabel>
+                   <Select
+                     value={filters.status || 'all'}
+                    onChange={handleStatusChange}
+                    label="Status"
+                    autoWidth
+                   >
+                    {statusOptions.map((statusOption) => (
+                       <MenuItem key={statusOption.id} value={statusOption.id}>
+                          {statusOption.name}
+                      </MenuItem>
+                    ))}
+                   </Select>                            
+              </FormControl>              
             </Box>
           }
           title="餐桌"
@@ -224,24 +224,24 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoTable }) => {
       )}
       <Divider />
 
-      <Box p={2}>
-        <Grid container spacing={1}>
-          {paginatedCryptoTable.map((cryptoOrder) => {
-            const isCryptoTableelected = selectedCryptoTable.includes(
-              cryptoOrder.table_id.toString()
-            );
-            return (
-              <Grid item xs={2}>
-                <IndividualTable
+      <Box p={2}>    
+      <Grid container spacing={1}>
+      {paginatedCryptoTable.map((cryptoOrder) => {
+              const isCryptoTableelected = selectedCryptoTable.includes(
+                cryptoOrder.table_id.toString()
+              );
+              return (
+                <Grid item xs={2}>
+                  <IndividualTable 
                   table_id={cryptoOrder.table_id}
                   customer_number={cryptoOrder.customer_number}
                   table_capacity={cryptoOrder.table_capacity}
                   occupied={cryptoOrder.occupied}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
+                  />
+                </Grid>
+              );
+            })}
+      </Grid>
       </Box>
 
       <Box p={2}>

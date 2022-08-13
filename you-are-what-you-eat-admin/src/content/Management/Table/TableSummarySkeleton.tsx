@@ -23,6 +23,7 @@ import { CryptoSummary } from '@/models/crypto_table';
 import { FC, ChangeEvent, useState } from 'react';
 import Skeleton from '@mui/material/Skeleton';
 
+
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.success.main};
@@ -64,10 +65,12 @@ interface TableSummaryProps {
   cryptoSummary: CryptoSummary;
 }
 
-//function TableSummary(cryptoSummary: CryptoSummary)
-const TableSummarySkeleton = () => {
-  const theme = useTheme();
 
+//function TableSummary(cryptoSummary: CryptoSummary) 
+const TableSummarySkeleton = () =>
+{
+  const theme = useTheme();
+  
   const chartOptions: ApexOptions = {
     chart: {
       background: 'transparent',
@@ -135,7 +138,10 @@ const TableSummarySkeleton = () => {
     }
   };
 
-  const chartSeries = [0.5, 0.5];
+  const chartSeries = [
+    (0.5), 
+  (0.5)
+];
 
   return (
     <Card>
@@ -170,10 +176,7 @@ const TableSummarySkeleton = () => {
                   <TrendingUp fontSize="large" />
                 </AvatarSuccess>
                 <Box>
-                  <Typography variant="h4">
-                    {' '}
-                    <Skeleton animation="wave" variant="text" />{' '}
-                  </Typography>
+                  <Typography variant="h4"> <Skeleton animation="wave" variant="text" /> </Typography>
                   <Typography variant="subtitle2" noWrap>
                     今日接待
                   </Typography>
@@ -226,26 +229,26 @@ const TableSummarySkeleton = () => {
                 >
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                      <Brightness1Icon fontSize="large" color="primary" />
+                       <Brightness1Icon fontSize="large" color="primary"/>
                     </ListItemAvatarWrapper>
                     <Skeleton animation="wave" variant="text" />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        <Skeleton animation="wave" variant="text" />
+                      <Skeleton animation="wave" variant="text" />
                       </Typography>
                     </Box>
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                      <Brightness1Icon fontSize="large" color="warning" />
+                      <Brightness1Icon fontSize="large" color="warning"/>
                     </ListItemAvatarWrapper>
                     <Skeleton animation="wave" variant="text" />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        <Skeleton animation="wave" variant="text" />
+                      <Skeleton animation="wave" variant="text" />
                       </Typography>
                     </Box>
-                  </ListItem>
+                  </ListItem>         
                 </List>
               </Grid>
             </Grid>
@@ -254,6 +257,6 @@ const TableSummarySkeleton = () => {
       </Grid>
     </Card>
   );
-};
+}
 
 export default TableSummarySkeleton;

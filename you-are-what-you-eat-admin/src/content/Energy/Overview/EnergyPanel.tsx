@@ -24,7 +24,11 @@ function EnergyPanel() {
     getEnergyPanelData();
   }, [getEnergyPanelData]);
 
-  return <>{EnergyPanelUI(energyPanelData)}</>;
+  return (
+    <>
+      {EnergyPanelUI(energyPanelData)}
+    </>
+  );
 }
 
 export default EnergyPanel;

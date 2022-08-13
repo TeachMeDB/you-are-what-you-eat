@@ -379,11 +379,9 @@ function SidebarMenu() {
                 <NextLink href="/management/VIP" passHref>
                   <Button
                     className={
-
                       currentRoute === '/management/VIP'
                         ? 'active'
                         : ''
-
                     }
                     disableRipple
                     component="a"
@@ -398,7 +396,9 @@ function SidebarMenu() {
                 <NextLink href="/management/Table" passHref>
                   <Button
                     className={
-                      currentRoute === '/management/Table' ? 'active' : ''
+                      currentRoute === '/management/Table'
+                        ? 'active'
+                        : ''
                     }
                     disableRipple
                     component="a"
@@ -427,9 +427,7 @@ function SidebarMenu() {
                 <NextLink href="/human_resource/organization" passHref>
                   <Button
                     className={
-                      currentRoute === '/human_resource/organization'
-                        ? 'active'
-                        : ''
+                      currentRoute === '/human_resource/organization' ? 'active' : ''
                     }
                     disableRipple
                     component="a"
@@ -444,7 +442,9 @@ function SidebarMenu() {
                 <NextLink href="/human_resource/schedule" passHref>
                   <Button
                     className={
-                      currentRoute === '/management/schedule' ? 'active' : ''
+                      currentRoute === '/management/schedule'
+                        ? 'active'
+                        : ''
                     }
                     disableRipple
                     component="a"
@@ -473,7 +473,9 @@ function SidebarMenu() {
                 <NextLink href="/kitchen/meal" passHref>
                   <Button
                     className={
-                      currentRoute === '//kitchen/meal' ? 'active' : ''
+                      currentRoute === '//kitchen/meal'
+                        ? 'active'
+                        : ''
                     }
                     disableRipple
                     component="a"
@@ -492,7 +494,9 @@ function SidebarMenu() {
                 <NextLink href="/kitchen/order" passHref>
                   <Button
                     className={
-                      currentRoute === '//kitchen/order' ? 'active' : ''
+                      currentRoute === '//kitchen/order'
+                        ? 'active'
+                        : ''
                     }
                     disableRipple
                     component="a"
@@ -511,7 +515,9 @@ function SidebarMenu() {
                 <NextLink href="/kitchen/stock" passHref>
                   <Button
                     className={
-                      currentRoute === '//kitchen/stock' ? 'active' : ''
+                      currentRoute === '//kitchen/stock'
+                        ? 'active'
+                        : ''
                     }
                     disableRipple
                     component="a"
@@ -539,7 +545,9 @@ function SidebarMenu() {
                 <NextLink href="/ingredient/overview" passHref>
                   <Button
                     className={
-                      currentRoute === '//ingredient/overview' ? 'active' : ''
+                      currentRoute === '//ingredient/overview'
+                        ? 'active'
+                        : ''
                     }
                     disableRipple
                     component="a"
@@ -567,7 +575,9 @@ function SidebarMenu() {
                 <NextLink href="/asset/overview" passHref>
                   <Button
                     className={
-                      currentRoute === '//asset/overview' ? 'active' : ''
+                      currentRoute === '//asset/overview'
+                        ? 'active'
+                        : ''
                     }
                     disableRipple
                     component="a"

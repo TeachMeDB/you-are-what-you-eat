@@ -12,20 +12,10 @@ interface IngredientRecordInfoProps {
   setIngredientRecordInfoes: any;
 }
 
-function AllIngredientRecordInfo({
-  list = [],
-  ingredients = [],
-  employees = [],
-  setIngredientRecordInfoes
-}: IngredientRecordInfoProps) {
+function AllIngredientRecordInfo({ list = [], ingredients = [], employees = [], setIngredientRecordInfoes }: IngredientRecordInfoProps) {
   return (
     <Card>
-      <IngredientRecordInfoTable
-        ingredientRecordInfoes={list}
-        setIngredientRecordInfoes={setIngredientRecordInfoes}
-        ingredients={ingredients}
-        employees={employees}
-      />
+      <IngredientRecordInfoTable ingredientRecordInfoes={list} setIngredientRecordInfoes={setIngredientRecordInfoes} ingredients={ingredients} employees={employees} />
     </Card>
   );
 }

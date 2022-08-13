@@ -1,14 +1,10 @@
-import {
-  CryptoOrder,
-  CryptoFullOrder,
-  CryptoSummary
-} from '@/models/crypto_order';
+import { CryptoOrder,CryptoFullOrder,CryptoSummary } from '@/models/crypto_order';
 import RecentOrdersTable from './RecentOrdersTable';
 import OrderSummary from '@/content/Dashboards/Crypto/OrderSummary';
 import { Grid } from '@mui/material';
 import { useState, useEffect, useCallback } from 'react';
 import { useRefMounted } from 'src/hooks/useRefMounted';
-import { queryOrderApi } from 'src/queries/query_order';
+import { queryOrderApi } from 'src/queries/query_order'
 import { Console } from 'console';
 import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
@@ -43,8 +39,8 @@ function RecentOrders() {
   //console.log(orderData);
   if (!orderData)
     return (
-      <>
-        <Grid
+    <>
+    <Grid
           container
           direction="row"
           justifyContent="center"
@@ -52,41 +48,42 @@ function RecentOrders() {
           spacing={4}
         >
           <Grid item xs={12}>
-            <OrderSummarySkeleton />
+            <OrderSummarySkeleton/>
           </Grid>
           <Grid item xs={12}>
-            <RecentOrdersTableSkeleton />
+            <RecentOrdersTableSkeleton/>
           </Grid>
-        </Grid>
-      </>
+        </Grid> 
+    </>
     );
 
-  return (
-    <>
-      <Grid
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={4}
-      >
-        <Grid item xs={12}>
-          <OrderSummary cryptoSummary={orderData.summary} />
-        </Grid>
-        <Grid item xs={12}>
-          <RecentOrdersTable cryptoOrders={orderData.orders} />
-        </Grid>
-        <Grid item xs={12}>
-          <CurOrder />
-        </Grid>
-      </Grid>
+  return (  
+    <>   
+    <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={4}
+        >
+          <Grid item xs={12}>
+            <OrderSummary cryptoSummary={orderData.summary}/>
+          </Grid>
+          <Grid item xs={12}>
+            <RecentOrdersTable cryptoOrders={orderData.orders}/>
+          </Grid>
+          <Grid item xs={12}>
+            <CurOrder />
+          </Grid>
+        </Grid> 
     </>
   );
 }
 
 export default RecentOrders;
 
-/*
+
+  /*
   const cryptoOrders: CryptoOrder[] = [
     {
       order_id : 'sidfh3f7sdh',

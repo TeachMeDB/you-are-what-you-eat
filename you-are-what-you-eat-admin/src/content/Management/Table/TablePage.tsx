@@ -1,8 +1,4 @@
-import {
-  CryptoTable,
-  CryptoSummary,
-  CryptoAllTable
-} from '@/models/crypto_table';
+import { CryptoTable,CryptoSummary,CryptoAllTable } from '@/models/crypto_table';
 import TableListTable from './TableListTable';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -11,7 +7,7 @@ import { queryTableApi } from '@/queries/query_table';
 
 import TableSummary from './TableSummary';
 import TableSummary2 from './TableSummary2';
-import {
+import { 
   Grid,
   Accordion,
   AccordionSummary,
@@ -25,11 +21,11 @@ import TableSummarySkeleton from './TableSummarySkeleton';
 import TableListTableSkeleton from './TableListTableSkeleton';
 
 function TablePage() {
+  
   const [expanded, setExpanded] = useState<string | false>(false);
-  const handleChange =
-    (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false);
-    };
+  const handleChange = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
+  }
 
   const isMountedRef = useRefMounted();
   const [tableData, setTableData] = useState<CryptoAllTable>(null);
@@ -38,8 +34,8 @@ function TablePage() {
     try {
       const response = await queryTableApi.getTable();
 
-      console.log("--response--");
-      console.log(response);
+      //console.log("--response--");
+      //console.log(response);
 
       if (isMountedRef()) {
         setTableData(response);
@@ -58,7 +54,7 @@ function TablePage() {
   if (!tableData)
     return (
       <>
-        <Grid
+      <Grid
           container
           direction="row"
           justifyContent="center"
@@ -66,55 +62,51 @@ function TablePage() {
           spacing={4}
         >
           <Grid item xs={12}>
-            <TableSummarySkeleton />
+            <TableSummarySkeleton/>
           </Grid>
           <Grid item xs={12}>
-            <Skeleton animation="wave" variant="text" />
+            <Skeleton animation="wave" variant="text" />                     
           </Grid>
 
           <Grid item xs={12}>
-            <TableListTableSkeleton />
+            <TableListTableSkeleton/>
           </Grid>
         </Grid>
       </>
-    );
+      );
 
-  return (
-    <>
-      <Grid
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={4}
-      >
-        <Grid item xs={12}>
-          <TableSummary cryptoSummary={tableData.summary} />
-        </Grid>
-        <Grid item xs={12}>
-          <Accordion
-            expanded={expanded === 'panel1'}
-            onChange={handleChange('panel1')}
+
+  return (  
+    <>   
+    <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={4}
+        >
+          <Grid item xs={12}>
+            <TableSummary cryptoSummary={tableData.summary}/>
+          </Grid>
+          <Grid item xs={12}>
+          <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')} >
+          <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
           >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography>
-                <b>按餐桌人数查看</b>
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <TableSummary2 cryptoSummary2={tableData.summary2} />
-            </AccordionDetails>
-          </Accordion>
-        </Grid>
+          <Typography><b>按餐桌人数查看</b></Typography>
+           </AccordionSummary>
+           <AccordionDetails>
+           <TableSummary2 cryptoSummary2={tableData.summary2}/>
+           </AccordionDetails>
+           </Accordion>            
+          </Grid>
 
-        <Grid item xs={12}>
-          <TableListTable cryptoTable={tableData.tables} />
-        </Grid>
-      </Grid>
+          <Grid item xs={12}>
+            <TableListTable cryptoTable={tableData.tables} />
+          </Grid>
+        </Grid> 
     </>
   );
 }

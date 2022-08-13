@@ -1,31 +1,32 @@
-import { CryptoFullOrder,CryptoOrderEdit } from '@/models/crypto_order';
-import { GetApi,PostApi } from 'src/utils/requests';
+import { CryptoFullOrder } from "@/models/crypto_order";
+import { GetApi } from 'src/utils/requests';
 
 class QueryOrderApi {
-  public getOrder: () => Promise<CryptoFullOrder> = async () => {
-    try {
-      //const r = await (await fetch('http://106.14.212.200:8000/app/api/Order/GetAllOrder')).text();
-      //console.log(JSON.parse(r));
-      //console.log(data);
-      //return JSON.parse(r) as CryptoFullOrder;
+    public getOrder: () => Promise<CryptoFullOrder> = async () => {
+        
+      
+      
+      try {
+        //const r = await (await fetch('http://106.14.212.200:8000/app/api/Order/GetAllOrder')).text();
+        //console.log(JSON.parse(r));
+        //console.log(data);
+        //return JSON.parse(r) as CryptoFullOrder;
 
-      const data = (await GetApi('Order/GetAllOrder')).data;
-      return data;
-    } catch (err) {
-      console.log(err);
-      return null;
+        const data = (await GetApi("Order/GetAllOrder",)).data;
+        return data;
+    } 
+    catch(err) {
+        console.log(err);
+        return null;
     }
 
-    //    return Promise.resolve(data);
-  };
+    //    return Promise.resolve(data); 
+    }
 
-  public editOrder: (order: CryptoOrderEdit) => Promise<string> = async (order) => {
-    const r = await PostApi('Order/PostOrder', order);
-    return r.statusText;
-  };
 }
 
 export const queryOrderApi = new QueryOrderApi();
+
 
 /*
 const data:CryptoFullOrder = 

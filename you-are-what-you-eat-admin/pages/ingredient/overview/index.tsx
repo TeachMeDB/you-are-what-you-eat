@@ -12,16 +12,11 @@ import { useState } from 'react';
 import AllIngredientInfoes from '@/content/Ingredient/Overview/IngredientInfo';
 import AllIngredientRecordInfo from '@/content/Ingredient/IngredientRecord/IngredientRecordInfo';
 
-function ingredientOverview({
-  ingredientList = [],
-  ingredientRecordList = [],
-  employees = []
-}) {
+function ingredientOverview({ ingredientList = [], ingredientRecordList = [], employees = [] }) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [ingredientInfoes, setIngredientInfoes] = useState(ingredientList);
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [ingredientRecordInfoes, setIngredientRecordInfoes] =
-    useState(ingredientRecordList);
+  const [ingredientRecordInfoes, setIngredientRecordInfoes] = useState(ingredientRecordList);
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [tab, setTab] = useState(1);
   return (
@@ -48,19 +43,19 @@ function ingredientOverview({
           spacing={3}
         >
           <Grid item xs={12}>
-            {tab === 1 ? (
-              <AllIngredientInfoes
-                list={ingredientInfoes || []}
-                setIngredientInfoes={setIngredientInfoes}
-              />
-            ) : (
-              <AllIngredientRecordInfo
-                list={ingredientRecordInfoes || []}
-                ingredients={ingredientInfoes || []}
-                employees={employees || []}
-                setIngredientRecordInfoes={setIngredientRecordInfoes}
-              />
-            )}
+            {
+              tab === 1
+                ? <AllIngredientInfoes
+                  list={ingredientInfoes || []}
+                  setIngredientInfoes={setIngredientInfoes}
+                />
+                : <AllIngredientRecordInfo
+                  list={ingredientRecordInfoes || []}
+                  ingredients={ingredientInfoes || []}
+                  employees={employees || []}
+                  setIngredientRecordInfoes={setIngredientRecordInfoes}
+                />
+            }
           </Grid>
         </Grid>
       </Container>
@@ -69,19 +64,20 @@ function ingredientOverview({
   );
 }
 
-ingredientOverview.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+ingredientOverview.getLayout = (page) => (
+  <SidebarLayout>{page}</SidebarLayout>
+);
 
 export async function getServerSideProps() {
   const ingredientList = await queryIngredientApi.getIngredientList('');
-  const ingredientRecordList =
-    await queryIngredientRecordApi.getIngredientRecordList();
+  const ingredientRecordList = await queryIngredientRecordApi.getIngredientRecordList();
   const employees = await queryEmployeeApi.getEmployeeList();
   return {
     props: {
-      ingredientList: ingredientList || [],
+      ingredientList: (ingredientList || []),
       ingredientRecordList: ingredientRecordList || [],
-      employees: employees || []
-    } // will be passed to the page component as props
+      employees: employees || [],
+    }, // will be passed to the page component as props
   };
 }
 

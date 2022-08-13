@@ -34,6 +34,7 @@ import TextField from '@mui/material/TextField';
 import Skeleton from '@mui/material/Skeleton';
 
 const RecentOrdersTableSkeleton = () => {
+
   return (
     <Card>
       {/*selectedBulkActions && (
@@ -45,21 +46,21 @@ const RecentOrdersTableSkeleton = () => {
         
       )*/}
       <CardHeader
-        action={
-          <Box width={400}>
-            <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
+          action={
+            <Box width={400}>
+            <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
               <Skeleton animation="wave" variant="text" />
             </FormControl>
 
-            <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel>筛选</InputLabel>
-              <Skeleton animation="wave" variant="text" />
-            </FormControl>
+            <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
+                 <InputLabel >筛选</InputLabel>
+                 <Skeleton animation="wave" variant="text" />                           
+            </FormControl>              
           </Box>
-        }
-        title="最近订单"
-      />
-
+          }
+          title="最近订单"
+        />
+        
       <Divider />
       <TableContainer>
         <Table>
@@ -81,8 +82,9 @@ const RecentOrdersTableSkeleton = () => {
       <Box p={2}>
         <Skeleton animation="wave" variant="text" />
       </Box>
-    </Card>
+    </Card>    
   );
 };
+
 
 export default RecentOrdersTableSkeleton;

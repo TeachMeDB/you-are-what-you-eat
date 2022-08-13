@@ -21,7 +21,7 @@ import {
   TableRow,
   Tooltip,
   Typography,
-  useTheme
+  useTheme,
 } from '@mui/material';
 
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
@@ -45,13 +45,13 @@ interface IngredientInfoTableProps {
 const OutlinedInputWrapper = styled(OutlinedInput)(
   ({ theme }) => `
       background-color: ${theme.colors.alpha.white[100]};
-  `
+  `,
 );
 
 const ButtonSearch = styled(Button)(
   ({ theme }) => `
       margin-right: -${theme.spacing(1)};
-  `
+  `,
 );
 
 const RecentIngredientTable: FC<IngredientInfoTableProps> = (props) => {
@@ -60,12 +60,8 @@ const RecentIngredientTable: FC<IngredientInfoTableProps> = (props) => {
   const [limit, setLimit] = useState<number>(5);
 
   const [keyword, setKeyword] = useState('');
-  const [formValue, setFormValue] = useState({
-    ingr_id: 0,
-    ingr_name: '',
-    ingr_type: '',
-    ingr_description: ''
-  });
+  const [formValue, setFormValue] = useState(
+    { ingr_id: 0, ingr_name: '', ingr_type: '', ingr_description: '' });
   const [open, setOpen] = React.useState(false);
 
   const handlePageChange = (_event: any, newPage: number): void => {
@@ -107,7 +103,7 @@ const RecentIngredientTable: FC<IngredientInfoTableProps> = (props) => {
 
   const handleDelete = async (id: string) => {
     await queryIngredientApi.deleteIngredient(id);
-    setIngredientInfoes(ingredientInfoes.filter((val) => val.ingr_id != id));
+    setIngredientInfoes(ingredientInfoes.filter(val => val.ingr_id != id));
   };
 
   const data = ingredientInfoes.slice(page * limit, page * limit + limit);
@@ -115,7 +111,7 @@ const RecentIngredientTable: FC<IngredientInfoTableProps> = (props) => {
   const theme = useTheme();
   return (
     <Card>
-      {
+      {(
         <CardHeader
           action={
             <FormControl variant="outlined" fullWidth>
@@ -133,6 +129,7 @@ const RecentIngredientTable: FC<IngredientInfoTableProps> = (props) => {
                     >
                       搜索
                     </ButtonSearch>
+
                   </InputAdornment>
                 }
                 startAdornment={
@@ -145,12 +142,13 @@ const RecentIngredientTable: FC<IngredientInfoTableProps> = (props) => {
           }
           title="耗材信息列表"
         />
-      }
+      )}
       <Divider />
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
+
               <TableCell>耗材编号</TableCell>
               <TableCell>耗材名称</TableCell>
               <TableCell>耗材类型</TableCell>
@@ -161,7 +159,10 @@ const RecentIngredientTable: FC<IngredientInfoTableProps> = (props) => {
           <TableBody>
             {data.map((ingredientInfo) => {
               return (
-                <TableRow hover key={ingredientInfo.ingr_id}>
+                <TableRow
+                  hover
+                  key={ingredientInfo.ingr_id}
+                >
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -172,6 +173,7 @@ const RecentIngredientTable: FC<IngredientInfoTableProps> = (props) => {
                     >
                       {ingredientInfo.ingr_id}
                     </Typography>
+
                   </TableCell>
                   <TableCell>
                     <Typography
@@ -194,6 +196,7 @@ const RecentIngredientTable: FC<IngredientInfoTableProps> = (props) => {
                     >
                       {ingredientInfo.ingr_type}
                     </Typography>
+
                   </TableCell>
                   <TableCell>
                     <Typography
@@ -204,21 +207,19 @@ const RecentIngredientTable: FC<IngredientInfoTableProps> = (props) => {
                       noWrap
                     >
                       {ingredientInfo.ingr_description}
+
                     </Typography>
+
                   </TableCell>
 
                   <TableCell>
-                    <Tooltip
-                      title="编辑"
-                      arrow
-                      onClick={() => handleClickOpen(ingredientInfo)}
-                    >
+                    <Tooltip title="编辑" arrow onClick={() => handleClickOpen(ingredientInfo)}>
                       <IconButton
                         sx={{
                           '&:hover': {
-                            background: theme.colors.primary.lighter
+                            background: theme.colors.primary.lighter,
                           },
-                          color: theme.palette.primary.main
+                          color: theme.palette.primary.main,
                         }}
                         color="inherit"
                         size="small"
@@ -267,9 +268,7 @@ const RecentIngredientTable: FC<IngredientInfoTableProps> = (props) => {
                           fullWidth
                           variant="standard"
                           value={formValue.ingr_description}
-                          onChange={(e) =>
-                            handleFormChange('ingr_description', e)
-                          }
+                          onChange={(e) => handleFormChange('ingr_description', e)}
                         />
                       </DialogContent>
                       <DialogActions>
@@ -281,7 +280,7 @@ const RecentIngredientTable: FC<IngredientInfoTableProps> = (props) => {
                       <IconButton
                         sx={{
                           '&:hover': { background: theme.colors.error.lighter },
-                          color: theme.palette.error.main
+                          color: theme.palette.error.main,
                         }}
                         color="inherit"
                         size="small"
@@ -313,11 +312,11 @@ const RecentIngredientTable: FC<IngredientInfoTableProps> = (props) => {
 };
 
 RecentIngredientTable.propTypes = {
-  ingredientInfoes: PropTypes.array.isRequired
+  ingredientInfoes: PropTypes.array.isRequired,
 };
 
 RecentIngredientTable.defaultProps = {
-  ingredientInfoes: []
+  ingredientInfoes: [],
 };
 
 export default RecentIngredientTable;

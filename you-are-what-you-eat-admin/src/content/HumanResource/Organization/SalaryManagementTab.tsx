@@ -1,10 +1,4 @@
-import {
-  useState,
-  MouseEvent,
-  ChangeEvent,
-  useCallback,
-  useEffect
-} from 'react';
+import { useState, MouseEvent, ChangeEvent, useCallback, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -22,28 +16,34 @@ import {
   TablePagination,
   TableRow,
   TableContainer,
-  TextField
+  TextField,
 } from '@mui/material';
+
+
 
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useRefMounted } from '@/hooks/useRefMounted';
-import { PayrollEntity, PayrollUpload, Salary } from '@/models/employee';
+import { PayrollEntity, Salary } from '@/models/employee';
 import { salaryApi } from '@/queries/salary';
-import { format } from 'date-fns';
-import { awardApi } from '@/queries/award';
+
+
+
 
 function SalaryManagementTab() {
+
+
   const isMountedRef = useRefMounted();
   const [payrolls, setPayrolls] = useState<PayrollEntity[]>([]);
-  const [levels, setLevels] = useState<Salary[]>([]);
+  const [levels,setLevels]=useState<Salary[]>([]);
 
   const getAllData = useCallback(async () => {
     try {
       let payrolls = await salaryApi.getPayroll();
 
-      let levels = await salaryApi.getSalary();
+      let levels=await salaryApi.getSalary();
+
 
       if (isMountedRef()) {
         setPayrolls(payrolls);
@@ -54,11 +54,13 @@ function SalaryManagementTab() {
     }
   }, [isMountedRef]);
 
+
+
   useEffect(() => {
     getAllData();
   }, [getAllData]);
 
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(2);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (
@@ -68,6 +70,7 @@ function SalaryManagementTab() {
     setPage(newPage);
   };
 
+
   const handleChangeRowsPerPage = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -75,17 +78,15 @@ function SalaryManagementTab() {
     setPage(0);
   };
 
-  const [upload, setUpload] = useState<PayrollUpload>({
-    id: '',
-    time: format(Date.now(), 'yyyy-MM-dd HH:mm-ss')
-  } as PayrollUpload);
 
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Box pb={2}>
           <Typography variant="h3">职位管理</Typography>
-          <Typography variant="subtitle2">餐厅员工职级如下所示</Typography>
+          <Typography variant="subtitle2">
+            餐厅员工职级如下所示
+          </Typography>
         </Box>
 
         <Card>
@@ -101,9 +102,8 @@ function SalaryManagementTab() {
               <TableHead>
                 <TableRow>
                   <TableCell>职位</TableCell>
-
-                  <TableCell>人数</TableCell>
                   <TableCell>薪资</TableCell>
+                  <TableCell>人数</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -118,9 +118,11 @@ function SalaryManagementTab() {
             </Table>
           </TableContainer>
         </Card>
+
       </Grid>
 
-      {/* <Grid item xs={12}>
+
+      <Grid item xs={12}>
         <Box pb={2}>
           <Typography variant="h3">添加新员工职位</Typography>
           <Typography variant="subtitle2">
@@ -163,15 +165,18 @@ function SalaryManagementTab() {
             </ListItem>
           </List>
         </Card>
-      </Grid> */}
+      </Grid>
 
       <Grid item xs={12}>
         <Box pb={2}>
           <Typography variant="h3">添加薪资发放记录</Typography>
-          <Typography variant="subtitle2">添加薪资发放记录</Typography>
+          <Typography variant="subtitle2">
+            添加薪资发放记录
+          </Typography>
         </Box>
         <Card>
           <List>
+
             <ListItem sx={{ p: 3 }}>
               <Box
                 component="form"
@@ -186,43 +191,19 @@ function SalaryManagementTab() {
                     required
                     id="id"
                     label="员工号"
-                    value={upload.id}
-                    onChange={(event) => {
-                      let upload = {
-                        id: event.target.value,
-                        time: format(Date.now(), 'yyyy-MM-dd HH:mm-ss')
-                      } as PayrollUpload;
-                      setUpload(upload);
-                    }}
                   />
                   <TextField
+                    key="gender"
                     disabled
                     id="outlined-disabled"
-                    value={format(Date.now(), 'yyyy-MM-dd HH:mm-ss')}
+                    defaultValue={new Date().toISOString()}
                   />
+                
                 </div>
               </Box>
               <Grid item xs={3} textAlign="end">
-                <Button
-                  variant="contained"
-                  size="large"
-                  onClick={() => {
-                    const conduct = async () => {
-                      return await salaryApi.postPayroll(upload);
-                    };
-
-                    conduct()
-                      .then((value) => {
-                        alert('添加成功：' + value);
-
-                        window.location.reload();
-                      })
-                      .catch((value) => {
-                        alert('添加失败：' + value);
-                      });
-                  }}
-                >
-                  <AddCircleIcon /> 确认添加
+                <Button variant="contained" size="large">
+                <AddCircleIcon/> 确认添加
                 </Button>
               </Grid>
             </ListItem>
@@ -230,10 +211,14 @@ function SalaryManagementTab() {
         </Card>
       </Grid>
 
+
+
       <Grid item xs={12}>
         <Box pb={2}>
           <Typography variant="h3">薪资发放记录</Typography>
-          <Typography variant="subtitle2">查薪资发放记录</Typography>
+          <Typography variant="subtitle2">
+            查薪资发放记录
+          </Typography>
         </Box>
 
         <Card>
@@ -256,24 +241,23 @@ function SalaryManagementTab() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {payrolls
-                  .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-                  .map((payroll) => (
-                    <TableRow key={payroll.id + payroll.time} hover>
-                      <TableCell>{payroll.id}</TableCell>
-                      <TableCell>{payroll.name}</TableCell>
-                      <TableCell>{payroll.occupation}</TableCell>
-                      <TableCell>{payroll.time}</TableCell>
-                      <TableCell>{payroll.amount}</TableCell>
-                    </TableRow>
-                  ))}
+                {payrolls.map((payroll) => (
+                  <TableRow key={payroll.id} hover>
+                    <TableCell>{payroll.id}</TableCell>
+                    <TableCell>{payroll.name}</TableCell>
+                    <TableCell>{payroll.occupation}</TableCell>
+                    <TableCell>{payroll.time}</TableCell>
+                    <TableCell>{payroll.amount}</TableCell>
+                    
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
           <Box p={2}>
             <TablePagination
               component="div"
-              count={payrolls.length}
+              count={100}
               page={page}
               onPageChange={handleChangePage}
               rowsPerPage={rowsPerPage}

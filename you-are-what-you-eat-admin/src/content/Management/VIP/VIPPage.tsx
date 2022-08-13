@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import { queryVipApi } from '@/queries/query_vip';
 import VipSummary from './VipSummary';
-import {
+import { 
   Grid,
   Accordion,
   AccordionSummary,
@@ -19,15 +19,13 @@ import VIPListTableSkeleton from './VIPListTableSkeleton';
 
 function VIPPage() {
   const [expanded, setExpanded] = useState<string | false>(false);
-  const handleChange =
-    (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false);
-    };
+  const handleChange = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
+  }
   const [expanded2, setExpanded2] = useState<string | false>(false);
-  const handleChange2 =
-    (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded2(isExpanded ? panel : false);
-    };
+  const handleChange2 = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded2(isExpanded ? panel : false);
+  }
 
   const isMountedRef = useRefMounted();
   const [vipData, setVipData] = useState<CryptoAllVip>(null);
@@ -56,7 +54,28 @@ function VIPPage() {
   if (!vipData)
     return (
       <>
-        <Grid
+      <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="stretch"
+            spacing={4}
+          >
+            <Grid item xs={12}>
+              <Skeleton animation="wave" variant="text" />
+              <Skeleton animation="wave" variant="text" />
+            </Grid>
+            <Grid item xs={12}>
+              <VIPListTableSkeleton/>
+            </Grid>
+          </Grid> 
+      </>
+      );
+
+
+  return (  
+    <>   
+    <Grid
           container
           direction="row"
           justifyContent="center"
@@ -64,74 +83,45 @@ function VIPPage() {
           spacing={4}
         >
           <Grid item xs={12}>
-            <Skeleton animation="wave" variant="text" />
-            <Skeleton animation="wave" variant="text" />
+          <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')} >
+          <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+          >
+          <Typography><b>查看积分统计</b></Typography>
+           </AccordionSummary>
+           <AccordionDetails>
+           <VipSummary cryptoSummary={vipData.summary}/>
+           </AccordionDetails>
+           </Accordion>   
+           
+           <Divider/>
+          
+          <Accordion expanded={expanded2 === 'panel1'} onChange={handleChange2('panel1')} >
+          <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+          >
+          <Typography><b>查看余额统计</b></Typography>
+           </AccordionSummary>
+           <AccordionDetails>
+           <VipSummary cryptoSummary={vipData.summary2}/>
+           </AccordionDetails>
+           </Accordion>            
           </Grid>
+
           <Grid item xs={12}>
-            <VIPListTableSkeleton />
+            <VIPListTable cryptoVip={vipData.vips} />
           </Grid>
-        </Grid>
-      </>
-    );
-
-  return (
-    <>
-      <Grid
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={4}
-      >
-        <Grid item xs={12}>
-          <Accordion
-            expanded={expanded === 'panel1'}
-            onChange={handleChange('panel1')}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography>
-                <b>查看积分统计</b>
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <VipSummary cryptoSummary={vipData.summary} />
-            </AccordionDetails>
-          </Accordion>
-
-          <Divider />
-
-          <Accordion
-            expanded={expanded2 === 'panel1'}
-            onChange={handleChange2('panel1')}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography>
-                <b>查看余额统计</b>
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <VipSummary cryptoSummary={vipData.summary2} />
-            </AccordionDetails>
-          </Accordion>
-        </Grid>
-
-        <Grid item xs={12}>
-          <VIPListTable cryptoVip={vipData.vips} />
-        </Grid>
-      </Grid>
+        </Grid> 
     </>
   );
 }
 
 export default VIPPage;
+
 
 /*
   const CryptoVip: CryptoVip[] = [

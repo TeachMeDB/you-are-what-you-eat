@@ -1,4 +1,11 @@
-import { Typography, Box, styled, Avatar, alpha, lighten } from '@mui/material';
+import {
+  Typography,
+  Box,
+  styled,
+  Avatar,
+  alpha,
+  lighten
+} from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import AccountBalanceTwoToneIcon from '@mui/icons-material/AccountBalanceTwoTone';
 

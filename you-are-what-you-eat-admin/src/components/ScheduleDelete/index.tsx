@@ -1,22 +1,10 @@
 import { ReactNode, useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  Slide,
-  styled,
-  Typography
-} from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Slide, styled, Typography } from '@mui/material';
 import { Container } from '@mui/system';
 
-import { People, ScheduleEntity } from '@/models/schedule';
-import { compareAsc, getDay } from 'date-fns';
+import {People, ScheduleEntity } from '@/models/schedule'
+import { compareAsc,getDay } from 'date-fns';
 
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -25,52 +13,18 @@ import { TransitionProps } from '@mui/material/transitions';
 import React from 'react';
 import { scheduleApi } from '@/queries/schedule';
 
-export const segs = [
-  's',
-  'sf',
-  'st',
-  'sff',
-  'e',
-  'ef',
-  'et',
-  'eff',
-  'n',
-  'nf',
-  'nt',
-  'nff',
-  'l'
-];
-export const times = [
-  '06:00:00',
-  '07:30:00',
-  '09:00:00',
-  '10:30:00',
-  '12:00:00',
-  '13:30:00',
-  '15:00:00',
-  '16:30:00',
-  '18:00:00',
-  '19:30:00',
-  '21:00:00',
-  '22:30:00',
-  '23:59:59'
-];
-export const days = [
-  'sunday',
-  'monday',
-  'tuesday',
-  'wednesday',
-  'thursday',
-  'friday',
-  'saturday'
-];
-export const colors = ['red', 'blue', 'purple', 'yellow', 'green'];
-export const date_times = times.map(
-  (value: string) => new Date('2001-01-01 ' + value)
-);
+
+export const segs=['s','sf','st','sff','e','ef','et','eff','n','nf','nt','nff','l'];
+export const times=['06:00:00','07:30:00','09:00:00','10:30:00','12:00:00','13:30:00','15:00:00','16:30:00','18:00:00','19:30:00','21:00:00','22:30:00','23:59:59']
+export const days=['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+export const colors=['red','blue','purple','yellow','green'];
+export const date_times=times.map((value:string)=>new Date("2001-01-01 "+value))
+
+
+
 
 const ScheduleForm = styled(Box)(
-  ({}) => `
+    ({ }) => `
     .schedule {
     margin:1rem .5rem;
     background-color: #fff;
@@ -277,291 +231,298 @@ const ScheduleForm = styled(Box)(
 `
 );
 
-function ScheduleDelete({
-  className,
-  children,
-  schedules
-}: {
-  className?: string;
-  children?: ReactNode;
-  schedules: ScheduleEntity[];
-}) {
-  const SegmentToTime = (segment: string) => {
-    for (let i = 0; i < segs.length; i++) {
-      if (segment === segs[i]) {
-        return times[i];
-      }
-    }
-  };
 
-  const FromTimeToSegment = (time: string) => {
-    let date_input: string[] = time.split(' ');
-    if (date_input.length == 2) {
-      time = date_input[1];
+function ScheduleDelete({ className,children,schedules }:{className?: string,children?: ReactNode,schedules:ScheduleEntity[]}){
+
+    const SegmentToTime=(segment:string)=>{
+
+        for(let i=0;i<segs.length;i++){
+            if(segment===segs[i]){
+                return times[i];
+            }
+        }
     }
 
-    const this_time = new Date('2001-01-01 ' + time);
 
-    if (compareAsc(this_time, date_times[0]) < 0) {
-      return segs[0];
+    const FromTimeToSegment=(time:string)=>{
+
+        let date_input:string[]=time.split(' ');
+        if(date_input.length==2){
+            time=date_input[1];
+        }
+
+        const this_time=new Date("2001-01-01 "+time)
+
+        if(compareAsc(this_time,date_times[0])<0){
+            return segs[0];
+        }
+
+        for(let i=0;i<segs.length-1;i++){
+            if(compareAsc(date_times[i],this_time)<=0 && compareAsc(this_time,date_times[i+1])<0){
+                return segs[i];
+            }
+        }
+
+        if(compareAsc(date_times[segs.length-1],this_time)<=0){
+            return segs[segs.length-1];
+        }
+
     }
 
-    for (let i = 0; i < segs.length - 1; i++) {
-      if (
-        compareAsc(date_times[i], this_time) <= 0 &&
-        compareAsc(this_time, date_times[i + 1]) < 0
-      ) {
-        return segs[i];
-      }
-    }
 
-    if (compareAsc(date_times[segs.length - 1], this_time) <= 0) {
-      return segs[segs.length - 1];
-    }
-  };
 
-  const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false);
 
-  const [openSchedule, setOpenSchedule] = useState<ScheduleEntity>(null);
+    const [openSchedule,setOpenSchedule]=useState<ScheduleEntity>(null);
 
-  const handleClickOpen = (schedule) => {
-    setOpenSchedule(schedule);
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setOpenSchedule(null);
-  };
-
-  const handleDelete = () => {
-    setOpen(false);
-
-    const conduct = async () => {
-      return scheduleApi.deleteSchedule(openSchedule.plan_id);
+    const handleClickOpen = (schedule) => {
+        setOpenSchedule(schedule);
+        setOpen(true);
     };
 
-    conduct()
-      .then((value) => {
-        alert('删除结果：' + value + '\n');
-        window.location.reload();
-      })
-      .catch((value) => {
-        alert('删除失败：' + value);
-      });
-  };
+    const handleClose = () => {
+        setOpen(false);
+        setOpenSchedule(null);
+    };
 
-  const ToTimeToSegment = (time: string) => {
-    let date_input: string[] = time.split(' ');
-    if (date_input.length == 2) {
-      time = date_input[1];
+    const handleDelete = () => {
+        setOpen(false);
+
+
+        const conduct=async ()=>{
+
+            return scheduleApi.deleteSchedule(openSchedule.plan_id);
+
+          }
+
+        conduct().then((value)=>{
+
+
+            alert("删除结果："+value+'\n');
+            window.location.reload();
+
+        }).catch((value)=>{
+
+        alert("删除失败："+value);
+        });
+
+
+        
+    };
+
+    const ToTimeToSegment=(time:string)=>{
+
+        let date_input:string[]=time.split(' ');
+        if(date_input.length==2){
+            time=date_input[1];
+        }
+
+        const this_time=new Date("2001-01-01 "+time)
+
+        if(compareAsc(this_time,date_times[0])<0){
+            return segs[0];
+        }
+
+        for(let i=0;i<segs.length-2;i++){
+            if(compareAsc(date_times[i],this_time)<0 && compareAsc(this_time,date_times[i+1])<=0){
+                return segs[i+1];
+            }
+        }
+
+        if(compareAsc(date_times[segs.length-1],this_time)<=0){
+            return segs[segs.length-1];
+        }
+
+    }
+    
+    const getRandom=()=>{
+        return Math.floor(Math.random()*100);
     }
 
-    const this_time = new Date('2001-01-01 ' + time);
+    const callback=(schedule:ScheduleEntity,index:number)=>{
 
-    if (compareAsc(this_time, date_times[0]) < 0) {
-      return segs[0];
-    }
+        let day:number=getDay(new Date(schedule.time_end));
 
-    for (let i = 0; i < segs.length - 2; i++) {
-      if (
-        compareAsc(date_times[i], this_time) < 0 &&
-        compareAsc(this_time, date_times[i + 1]) <= 0
+        return (<div key={schedule.plan_id} id={schedule.plan_id}
+            className={
+                "schedule-item schedule-"+days[day]+" "+
+                "time-from-"+FromTimeToSegment(schedule.time_start)+" "+
+                "time-to-"+ToTimeToSegment(schedule.time_end)+" "+ 
+                "bg-"+colors[(index+getRandom())%5]}>
+                    <Grid container direction="row">   
+
+                        <Grid item xs={12}>
+                            <Grid container direction="row">
+                                <Grid item xs={3}>
+                                    <PeopleOutlineIcon/>
+                                </Grid>
+                                <Grid item xs={9}>
+                                    <Button onClick={()=>{
+                                            handleClickOpen(schedule);
+                                        }}>
+                                            <DeleteOutlineIcon/>
+                                            删除
+                                    </Button>
+
+                                    
+                                </Grid>
+                                
+
+                                
+
+                            </Grid>
+                        </Grid>                 
+                        {
+                            schedule.peoples.map((people:People,idx:number)=>{
+                                return (
+                                <Grid item key={people.id} xs={12}>
+                                    <Typography variant='h5'>
+                                        {people.name}
+                                    </Typography>
+                                    
+                                </Grid>
+                                )
+                                
+                            })
+                        }
+                        <Grid item xs={12}>
+                        </Grid>
+
+                        <Grid item xs={12} alignContent="end">
+                            
+                        </Grid>
+                    </Grid>
+                </div>);
+    };
+
+
+
+    const Transition = React.forwardRef(function Transition(
+        props: TransitionProps & {
+          children: React.ReactElement<any, any>;
+        },
+        ref: React.Ref<unknown>,
       ) {
-        return segs[i + 1];
-      }
-    }
+        return <Slide direction="up" ref={ref} {...props} />;
+      });
 
-    if (compareAsc(date_times[segs.length - 1], this_time) <= 0) {
-      return segs[segs.length - 1];
-    }
-  };
-
-  const getRandom = () => {
-    return Math.floor(Math.random() * 100);
-  };
-
-  const callback = (schedule: ScheduleEntity, index: number) => {
-    let day: number = getDay(new Date(schedule.time_end));
 
     return (
-      <div
-        key={schedule.plan_id}
-        id={schedule.plan_id}
-        className={
-          'schedule-item schedule-' +
-          days[day] +
-          ' ' +
-          'time-from-' +
-          FromTimeToSegment(schedule.time_start) +
-          ' ' +
-          'time-to-' +
-          ToTimeToSegment(schedule.time_end) +
-          ' ' +
-          'bg-' +
-          colors[(index + getRandom()) % 5]
-        }
-      >
-        <Grid container direction="row">
-          <Grid item xs={12}>
-            <Grid container direction="row">
-              <Grid item xs={3}>
-                <PeopleOutlineIcon />
-              </Grid>
-              <Grid item xs={9}>
-                <Button
-                  onClick={() => {
-                    handleClickOpen(schedule);
-                  }}
-                >
-                  <DeleteOutlineIcon />
-                  删除
-                </Button>
-              </Grid>
-            </Grid>
-          </Grid>
-          {schedule.peoples.map((people: People, idx: number) => {
-            return (
-              <Grid item key={people.id} xs={12}>
-                <Typography variant="h5">{people.name}</Typography>
-              </Grid>
-            );
-          })}
-          <Grid item xs={12}></Grid>
+        <ScheduleForm>
+            {
+                (openSchedule)&&(
+                    <Dialog
+                open={open}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleClose}
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogTitle>{"删除排班"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                        确认要删除 {openSchedule.occupation} 上从 {openSchedule.time_end} 到 {openSchedule.time_end} 位于 {openSchedule.place} 位置的排班吗？
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleClose}>关闭</Button>
+                <Button onClick={handleDelete}>删除</Button>
+                </DialogActions>
+            </Dialog>
+                )
 
-          <Grid item xs={12} alignContent="end"></Grid>
-        </Grid>
-      </div>
-    );
-  };
+            }
 
-  const Transition = React.forwardRef(function Transition(
-    props: TransitionProps & {
-      children: React.ReactElement<any, any>;
-    },
-    ref: React.Ref<unknown>
-  ) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
+            <div className="schedule">
+                <div className="schedule_header">
+                    <span className="dl">时间</span>
+                    <span className="ds">班</span></div>
+                {/* <!-- week--> */}
+                <div className="schedule_header schedule-sunday">
+                    <span className="dl">星期日</span>
+                    <span className="ds">日</span>
+                </div>
+                <div className="schedule_header schedule-monday">
+                    <span className="dl">星期一</span>
+                    <span className="ds">一</span></div>
+                <div className="schedule_header schedule-tuesday">
+                    <span className="dl">星期二</span>
+                    <span className="ds">二</span></div>
+                <div className="schedule_header schedule-wednesday">
+                    <span className="dl">星期三</span>
+                    <span className="ds">三</span></div>
+                <div className="schedule_header schedule-thursday">
+                    <span className="dl">星期四</span>
+                    <span className="ds">四</span></div>
+                <div className="schedule_header schedule-friday">
+                    <span className="dl">星期五</span>
+                    <span className="ds">五</span></div>
+                <div className="schedule_header schedule-saturday">
+                    <span className="dl">星期六</span>
+                    <span className="ds">六</span></div>
 
-  return (
-    <ScheduleForm>
-      {openSchedule && (
-        <Dialog
-          open={open}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={handleClose}
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogTitle>{'删除排班'}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              确认要删除 {openSchedule.occupation} 上从 {openSchedule.time_end}{' '}
-              到 {openSchedule.time_end} 位于 {openSchedule.place}{' '}
-              位置的排班吗？
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>关闭</Button>
-            <Button onClick={handleDelete}>删除</Button>
-          </DialogActions>
-        </Dialog>
-      )}
+                {/* <!-- Time--> */}
+                <div className="schedule_time time-from-s">06:00-07:30</div>
+                <div className="schedule_time time-from-sf">07:30-09:00</div>
+                <div className="schedule_time time-from-st">09:00-10:30</div>
+                <div className="schedule_time time-from-sff">10:30-12:00</div>
 
-      <div className="schedule">
-        <div className="schedule_header">
-          <span className="dl">时间</span>
-          <span className="ds">班</span>
-        </div>
-        {/* <!-- week--> */}
-        <div className="schedule_header schedule-sunday">
-          <span className="dl">星期日</span>
-          <span className="ds">日</span>
-        </div>
-        <div className="schedule_header schedule-monday">
-          <span className="dl">星期一</span>
-          <span className="ds">一</span>
-        </div>
-        <div className="schedule_header schedule-tuesday">
-          <span className="dl">星期二</span>
-          <span className="ds">二</span>
-        </div>
-        <div className="schedule_header schedule-wednesday">
-          <span className="dl">星期三</span>
-          <span className="ds">三</span>
-        </div>
-        <div className="schedule_header schedule-thursday">
-          <span className="dl">星期四</span>
-          <span className="ds">四</span>
-        </div>
-        <div className="schedule_header schedule-friday">
-          <span className="dl">星期五</span>
-          <span className="ds">五</span>
-        </div>
-        <div className="schedule_header schedule-saturday">
-          <span className="dl">星期六</span>
-          <span className="ds">六</span>
-        </div>
+                <div className="schedule_time time-from-e">12:00-13:30</div>
+                <div className="schedule_time time-from-ef">13:30-15:00</div>
+                <div className="schedule_time time-from-et">15:00-16:30</div>
+                <div className="schedule_time time-from-eff">16:30-18:00</div>
 
-        {/* <!-- Time--> */}
-        <div className="schedule_time time-from-s">06:00-07:30</div>
-        <div className="schedule_time time-from-sf">07:30-09:00</div>
-        <div className="schedule_time time-from-st">09:00-10:30</div>
-        <div className="schedule_time time-from-sff">10:30-12:00</div>
+                <div className="schedule_time time-from-n">18:00-19:30</div>
+                <div className="schedule_time time-from-nf">19:30-21:00</div>
+                <div className="schedule_time time-from-nt">21:00-22:30</div>
+                <div className="schedule_time time-from-nff">22:30-23:59</div>
 
-        <div className="schedule_time time-from-e">12:00-13:30</div>
-        <div className="schedule_time time-from-ef">13:30-15:00</div>
-        <div className="schedule_time time-from-et">15:00-16:30</div>
-        <div className="schedule_time time-from-eff">16:30-18:00</div>
 
-        <div className="schedule_time time-from-n">18:00-19:30</div>
-        <div className="schedule_time time-from-nf">19:30-21:00</div>
-        <div className="schedule_time time-from-nt">21:00-22:30</div>
-        <div className="schedule_time time-from-nff">22:30-23:59</div>
+                {/* <!--  Grid Rows--> */}
+                <div className="grid time-from-s time-to-sf schedule-row-from-sunday schedule-row-to-saturday"></div>
+                <div className="grid time-from-sf time-to-st schedule-row-from-sunday schedule-row-to-saturday"></div>
+                <div className="grid time-from-st time-to-sff schedule-row-from-sunday schedule-row-to-saturday"></div>
 
-        {/* <!--  Grid Rows--> */}
-        <div className="grid time-from-s time-to-sf schedule-row-from-sunday schedule-row-to-saturday"></div>
-        <div className="grid time-from-sf time-to-st schedule-row-from-sunday schedule-row-to-saturday"></div>
-        <div className="grid time-from-st time-to-sff schedule-row-from-sunday schedule-row-to-saturday"></div>
+                <div className="grid time-from-sff time-to-e schedule-row-from-sunday schedule-row-to-saturday"></div>
+                <div className="grid time-from-e time-to-ef schedule-row-from-sunday schedule-row-to-saturday"></div>
+                <div className="grid time-from-ef time-to-et schedule-row-from-sunday schedule-row-to-saturday"></div>
+                <div className="grid time-from-et time-to-eff schedule-row-from-sunday schedule-row-to-saturday"></div>
 
-        <div className="grid time-from-sff time-to-e schedule-row-from-sunday schedule-row-to-saturday"></div>
-        <div className="grid time-from-e time-to-ef schedule-row-from-sunday schedule-row-to-saturday"></div>
-        <div className="grid time-from-ef time-to-et schedule-row-from-sunday schedule-row-to-saturday"></div>
-        <div className="grid time-from-et time-to-eff schedule-row-from-sunday schedule-row-to-saturday"></div>
+                <div className="grid time-from-eff time-to-n schedule-row-from-sunday schedule-row-to-saturday"></div>
+                <div className="grid time-from-n time-to-nf schedule-row-from-sunday schedule-row-to-saturday"></div>
+                <div className="grid time-from-nf time-to-nt schedule-row-from-sunday schedule-row-to-saturday"></div>
+                <div className="grid time-from-nt time-to-nff schedule-row-from-sunday schedule-row-to-saturday"></div>
+                <div className="grid grid-last time-from-nff time-to-nff schedule-row-from-sunday schedule-row-to-saturday"></div>
+                {/* <!--   ./Grid Rows--> */}
 
-        <div className="grid time-from-eff time-to-n schedule-row-from-sunday schedule-row-to-saturday"></div>
-        <div className="grid time-from-n time-to-nf schedule-row-from-sunday schedule-row-to-saturday"></div>
-        <div className="grid time-from-nf time-to-nt schedule-row-from-sunday schedule-row-to-saturday"></div>
-        <div className="grid time-from-nt time-to-nff schedule-row-from-sunday schedule-row-to-saturday"></div>
-        <div className="grid grid-last time-from-nff time-to-nff schedule-row-from-sunday schedule-row-to-saturday"></div>
-        {/* <!--   ./Grid Rows--> */}
+                <div className="grid schedule-sunday time-from-s time-to-nff"></div>
+                <div className="grid grid-last schedule-sunday time-from-nff time-to-nff"></div>
+                <div className="grid schedule-monday time-from-s time-to-nff"></div>
+                <div className="grid grid-last schedule-monday time-from-nff time-to-nff"></div>
 
-        <div className="grid schedule-sunday time-from-s time-to-nff"></div>
-        <div className="grid grid-last schedule-sunday time-from-nff time-to-nff"></div>
-        <div className="grid schedule-monday time-from-s time-to-nff"></div>
-        <div className="grid grid-last schedule-monday time-from-nff time-to-nff"></div>
+                <div className="grid schedule-tuesday time-from-s time-to-nff"></div>
+                <div className="grid grid-last schedule-tuesday time-from-nff time-to-nff"></div>
 
-        <div className="grid schedule-tuesday time-from-s time-to-nff"></div>
-        <div className="grid grid-last schedule-tuesday time-from-nff time-to-nff"></div>
+                <div className="grid schedule-wednesday time-from-s time-to-nff"></div>
+                <div className="grid grid-last schedule-wednesday time-from-nff time-to-nff"></div>
 
-        <div className="grid schedule-wednesday time-from-s time-to-nff"></div>
-        <div className="grid grid-last schedule-wednesday time-from-nff time-to-nff"></div>
+                <div className="grid schedule-thursday time-from-s time-to-nff"></div>
+                <div className="grid grid-last schedule-thursday time-from-nff time-to-nff"></div>
 
-        <div className="grid schedule-thursday time-from-s time-to-nff"></div>
-        <div className="grid grid-last schedule-thursday time-from-nff time-to-nff"></div>
+                <div className="grid schedule-friday time-from-s time-to-nff"></div>
+                <div className="grid grid-last schedule-friday time-from-nff time-to-nff"></div>
 
-        <div className="grid schedule-friday time-from-s time-to-nff"></div>
-        <div className="grid grid-last schedule-friday time-from-nff time-to-nff"></div>
+                <div className="grid schedule-saturday time-from-s time-to-nff"></div>
+                <div className="grid grid-last schedule-saturday time-from-nff time-to-nff"></div>
 
-        <div className="grid schedule-saturday time-from-s time-to-nff"></div>
-        <div className="grid grid-last schedule-saturday time-from-nff time-to-nff"></div>
 
-        {/* <!-- Schedule Items -->  */}
+                {/* <!-- Schedule Items -->  */}
 
-        {schedules.map(callback)}
+                {
+                    schedules.map(callback)
+                }
 
-        {/* <div className="schedule-item schedule-sunday time-from-sf time-to-sff bg-red">Event for sunday</div>
+                {/* <div className="schedule-item schedule-sunday time-from-sf time-to-sff bg-red">Event for sunday</div>
 
                 <div className="schedule-item schedule-sunday time-from-st time-to-eff bg-blue">Event for sunday2</div>
                 <div className="schedule-item schedule-sunday time-from-nt time-to-nff bg-yellow">Event x S</div>
@@ -579,14 +540,15 @@ function ScheduleDelete({
                 
                 <div className="schedule-item schedule-saturday time-from-n time-to-l bg-red">Event for saturday</div> */}
 
-        <Container maxWidth="lg">{children}</Container>
-      </div>
-    </ScheduleForm>
-  );
-}
+                <Container maxWidth="lg">{children}</Container>
+            </div>
+        </ScheduleForm>
+
+    );
+};
 
 ScheduleDelete.propTypes = {
-  children: PropTypes.node
+    children: PropTypes.node
 };
 
 export default ScheduleDelete;

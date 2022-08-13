@@ -1,14 +1,25 @@
-import { Box, Card, Container, Button, styled } from '@mui/material';
+import {
+  Typography,
+  Box,
+  Card,
+  Container,
+  Button,
+  styled
+} from '@mui/material';
 import type { ReactElement } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
 
 import Link from 'src/components/Link';
 import Head from 'next/head';
-import { useTranslation } from 'react-i18next';
+
 import Logo from 'src/components/LogoSign';
 import Hero from 'src/content/Overview/Hero';
-import Highlights from 'src/content/Overview/Highlights';
-import Footer from 'src/components/Footer';
+
+import useRouter from 'next/router';
+
+
+import authorization from '@/utils/authorization';
+
 
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
@@ -29,9 +40,39 @@ const OverviewWrapper = styled(Box)(
 `
 );
 
-function Overview() {
-  const { t }: { t: any } = useTranslation();
 
+
+
+
+function Casdoor(){
+
+  return (
+        <div>
+
+          <Button
+            component={Link}
+            href={authorization.getSigninUrl()}
+            variant="contained"
+            sx={{ ml: 2 }}
+          >
+            点击跳转Casdoor登陆
+            </Button>
+            <Button
+            component={Link}
+            href={authorization.getSignupUrl()}
+            variant="contained"
+            sx={{ ml: 2 }}
+          >
+            点击跳转Casdoor注册
+            </Button>
+
+        </div>
+    
+  )
+
+}
+
+function Overview() {
   return (
     <OverviewWrapper>
       <Head>
@@ -51,20 +92,34 @@ function Overview() {
               <Box>
                 <Button
                   component={Link}
-                  href="/dashboards/reports"
+                  href="/dashboards/crypto"
                   variant="contained"
                   sx={{ ml: 2 }}
                 >
-                  {t('Live Preview')}
+                  Live Preview
                 </Button>
               </Box>
             </Box>
           </Box>
         </Container>
       </HeaderWrapper>
+
+
+        <Casdoor/>
+
       <Hero />
-      <Highlights />
-      <Footer />
+      <Container maxWidth="lg" sx={{ mt: 8 }}>
+        <Typography textAlign="center" variant="subtitle1">
+          Crafted by{' '}
+          <Link
+            href="https://bloomui.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            BloomUI.com
+          </Link>
+        </Typography>
+      </Container>
     </OverviewWrapper>
   );
 }

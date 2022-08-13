@@ -37,7 +37,7 @@ import type { SelectableDish, SelectedDish } from '@/models/promotion';
 import { useTranslation } from 'react-i18next';
 import Label from 'src/components/Label';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import { join } from '@/utils/array';
+import { join } from '@/utils/array'
 
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -72,9 +72,9 @@ const ButtonError = styled(Button)(
 );
 
 interface ResultsProps {
-  selectableDishes: SelectableDish[];
-  parentSelectedDishes: SelectedDish[];
-  setParentSelectedDishes: Dispatch<SetStateAction<SelectedDish[]>>;
+  selectableDishes: SelectableDish[],
+  parentSelectedDishes: SelectedDish[],
+  setParentSelectedDishes: Dispatch<SetStateAction<SelectedDish[]>>
 }
 
 interface Filters {
@@ -89,11 +89,13 @@ const Transition = forwardRef(function Transition(
 });
 
 const getDishLabel = (tag?: string): JSX.Element => {
-  return tag ? (
-    <Label color="primary">
+  return (
+    tag ? (
+    <Label color='primary'>
       <b>{tag}</b>
     </Label>
-  ) : null;
+  ) : null 
+  );
 };
 
 const applyFilters = (
@@ -143,11 +145,11 @@ const applyPagination = (
   return dishes.slice(page * limit, page * limit + limit);
 };
 
-const SelectDishTable: FC<ResultsProps> = ({
-  selectableDishes,
-  parentSelectedDishes,
-  setParentSelectedDishes
-}) => {
+const SelectDishTable: FC<ResultsProps> = ({ 
+    selectableDishes,
+    parentSelectedDishes,
+    setParentSelectedDishes
+ }) => {
   const [selectedItems, setSelectedItems] = useState<string[]>(
     parentSelectedDishes.map((dish) => dish.name)
   );
@@ -164,9 +166,10 @@ const SelectDishTable: FC<ResultsProps> = ({
   const statusOptions: string[] = ['全部'];
   selectableDishes.forEach((d) => {
     d.tags.forEach((t) => {
-      if (!statusOptions.includes(t)) statusOptions.push(t);
-    });
-  });
+      if(!statusOptions.includes(t))
+        statusOptions.push(t);
+    })
+  })
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>): void => {
     event.persist();
@@ -200,10 +203,7 @@ const SelectDishTable: FC<ResultsProps> = ({
     if (!selectedItems.includes(dishName)) {
       setSelectedItems((prevSelected) => [...prevSelected, dishName]);
       const price = selectableDishes.find((d) => d.name === dishName).price;
-      setParentSelectedDishes((prevSelect) => [
-        ...prevSelect,
-        { name: dishName, discount: 0.9, price: price }
-      ]);
+      setParentSelectedDishes((prevSelect) => [...prevSelect, { name:dishName, discount: 0.9, price: price }]);
     } else {
       setSelectedItems((prevSelected) =>
         prevSelected.filter((name) => name !== dishName)
@@ -302,7 +302,7 @@ const SelectDishTable: FC<ResultsProps> = ({
             indeterminate={selectedSomeDishes}
             onChange={handleSelectAllDishes}
           />
-          {
+          {(
             <Box
               flex={1}
               p={2}
@@ -314,8 +314,7 @@ const SelectDishTable: FC<ResultsProps> = ({
                 <Typography component="span" variant="subtitle1">
                   {t('已显示')}:
                 </Typography>{' '}
-                <b>{paginatedDishes.length}</b>
-                个可选菜品（已经参与其他活动的菜品将被过滤）
+                <b>{paginatedDishes.length}</b>个可选菜品（已经参与其他活动的菜品将被过滤）
               </Box>
               <TablePagination
                 component="div"
@@ -327,7 +326,7 @@ const SelectDishTable: FC<ResultsProps> = ({
                 rowsPerPageOptions={[5, 10, 15]}
               />
             </Box>
-          }
+          )}
         </Box>
         <Divider />
 
@@ -356,9 +355,15 @@ const SelectDishTable: FC<ResultsProps> = ({
                 </TableHead>
                 <TableBody>
                   {paginatedDishes.map((dish) => {
-                    const isDishSelected = selectedItems.includes(dish.name);
+                    const isDishSelected = selectedItems.includes(
+                      dish.name
+                    );
                     return (
-                      <TableRow hover key={dish.name} selected={isDishSelected}>
+                      <TableRow
+                        hover
+                        key={dish.name}
+                        selected={isDishSelected}
+                      >
                         <TableCell>
                           <Box display="flex" alignItems="center">
                             <Checkbox
@@ -376,16 +381,18 @@ const SelectDishTable: FC<ResultsProps> = ({
                           </Box>
                         </TableCell>
                         <TableCell>
-                          <Typography noWrap>{dish.price}</Typography>
+                          <Typography noWrap>
+                            {dish.price}
+                          </Typography>
                         </TableCell>
                         <TableCell>
-                          <Tooltip title={join(dish.tags, '; ')}>
-                            <Typography noWrap>
-                              {dish.tags.length > 0
-                                ? getDishLabel(dish.tags[0])
-                                : ''}
-                            </Typography>
-                          </Tooltip>
+                        <Tooltip
+                          title={join(dish.tags, '; ')}
+                        >
+                          <Typography noWrap>
+                            {dish.tags.length > 0 ? getDishLabel(dish.tags[0]) : ''}
+                          </Typography>
+                        </Tooltip>
                         </TableCell>
                       </TableRow>
                     );
@@ -486,7 +493,7 @@ SelectDishTable.propTypes = {
 };
 
 SelectDishTable.defaultProps = {
-  selectableDishes: []
+    selectableDishes: []
 };
 
 export default SelectDishTable;

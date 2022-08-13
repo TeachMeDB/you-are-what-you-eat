@@ -5,20 +5,19 @@ import { Card } from '@mui/material';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import type { WeekBestSellerData } from '@/models/order';
 import BestSellerData from './BestSellerData';
-import { ordersApi } from '@/queries/orders';
+import { ordersApi } from '@/queries/orders'
 
 function BestSellerCard() {
   const isMountedRef = useRefMounted();
-  const [weekBestSellerData, setWeekBestSellerData] =
-    useState<WeekBestSellerData>({
-      best_seller: '',
-      total: 0,
-      increase: 0,
-      breakfast: [],
-      lunch: [],
-      dinner: [],
-      top_list: []
-    });
+  const [weekBestSellerData, setWeekBestSellerData] = useState<WeekBestSellerData>({
+    best_seller: '',
+    total: 0,
+    increase: 0,
+    breakfast: [],
+    lunch: [],
+    dinner: [],
+    top_list: []
+});
 
   const getOrdersInTimePeriod = useCallback(async () => {
     try {
@@ -36,7 +35,11 @@ function BestSellerCard() {
     getOrdersInTimePeriod();
   }, [getOrdersInTimePeriod]);
 
-  return <Card>{BestSellerData(weekBestSellerData)}</Card>;
+  return (
+    <Card>
+      {BestSellerData(weekBestSellerData)}
+    </Card>
+  );
 }
 
 export default BestSellerCard;

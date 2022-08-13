@@ -11,10 +11,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import { useTheme } from '@mui/material';
-import FullOrderView from '../Transactions/FullOrderView';
-import { useEffect, useCallback } from 'react';
-import { useRefMounted } from 'src/hooks/useRefMounted';
+import {useTheme} from '@mui/material';
+
 
 import {
   Container,
@@ -36,7 +34,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import { CryptoTable } from '@/models/crypto_table';
-import { CryptoOrder } from '@/models/crypto_order';
 import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -45,11 +42,11 @@ import { queryTableApi } from '@/queries/query_table';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
   '& .MuiDialogActions-root': {
-    padding: theme.spacing(1)
-  }
+    padding: theme.spacing(1),
+  },
 }));
 
 export interface DialogTitleProps {
@@ -58,8 +55,8 @@ export interface DialogTitleProps {
   onClose: () => void;
 }
 
-export interface DialogIDProps {
-  id: string;
+export interface DialogIDProps{
+    id: string;
 }
 
 const BootstrapDialogTitle = (props: DialogTitleProps) => {
@@ -76,7 +73,7 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
             position: 'absolute',
             right: 8,
             top: 8,
-            color: (theme) => theme.palette.grey[500]
+            color: (theme) => theme.palette.grey[500],
           }}
         >
           <CloseIcon />
@@ -86,14 +83,15 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
   );
 };
 
-export interface IndiTableProps {
-  table_id: number;
-  customer_number: number;
-  table_capacity: number;
-  occupied: string;
+export interface IndiTableProps
+{
+  table_id:number;
+  customer_number:number;
+  table_capacity:number;
+  occupied:string;
 }
 
-export default function IndividualTable(props: IndiTableProps) {
+export default function IndividualTable(props:IndiTableProps) {
   /*const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -108,7 +106,6 @@ export default function IndividualTable(props: IndiTableProps) {
   const [openSuccessDialog, setOpenSuccessDialog] = React.useState(false);
   const [openErrorDialog, setOpenErrorDialog] = React.useState(false);
   const [inputNum, setInputNum] = useState<number>(1);
-  const [orderData, setOrderData] = useState<CryptoOrder>(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -136,200 +133,201 @@ export default function IndividualTable(props: IndiTableProps) {
     setInputNum(parseInt(value));
   };
 
-  const handleAssignConfirm = async () => {
-    console.log('assign confirm');
+  const handleAssignConfirm = async() =>
+  {
+    console.log("assign confirm");
 
-    let confirmData: CryptoTable = {
-      table_id: props.table_id,
-      customer_number: inputNum,
-      table_capacity: props.table_capacity,
-      occupied: '是'
-    };
-
-    try {
-      let res = await queryTableApi.setTable(confirmData);
-      console.log(res);
-      setOpenSuccessDialog(true);
-    } catch (err) {
-      console.error(err);
-      setOpenErrorDialog(true);
-    }
-
-  };
-
-  const isMountedRef = useRefMounted();
-  const getOrderData = useCallback(async () => {
-    try {
-      const response = await queryTableApi.getOrderOnTable(props.table_id);
-
-      //console.log("--response--");
-      //console.log(response);
-
-      if (isMountedRef()) {
-        setOrderData(response);
+      let confirmData:CryptoTable=
+      {
+        table_id:props.table_id,
+        customer_number:inputNum,
+        table_capacity:props.table_capacity,
+        occupied:"是"
       }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [isMountedRef]);
 
-  useEffect(() => {
-    getOrderData();
-  }, [getOrderData]);
+      try {
+        let res= await queryTableApi.setTable(confirmData);
+        console.log(res);
+        setOpenSuccessDialog(true);
+      } 
+      catch (err) {
+        console.error(err);
+        setOpenErrorDialog(true);
+      }
+
+      
+    
+
+    /*fetch('http://106.14.212.200:8000/app/api/Table/PostTableStatus',{
+      method:'post',
+      body:JSON.stringify(confirmData),
+      headers:
+      {
+        'Content-Type':'application/json'
+      }
+    }).then((res)=>
+    {
+      console.log(res);
+      if(res.ok)
+      {
+        //ok
+        setOpenSuccessDialog(true);
+      }
+      else
+      {
+        //not ok
+        setOpenErrorDialog(true);
+      }
+    })*/
+
+    
+    //console.log(confirmData);
+  }
 
   const theme = useTheme();
 
   return (
     <div>
-      <Card sx={{ maxWidth: 345 }}>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {'餐桌' + props.table_id.toString()}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {props.table_capacity.toString() + '人座'}
-          </Typography>
-          <Divider />
-          <Typography variant="body2" color="text.secondary">
-            {props.occupied}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          {props.occupied == '空闲' ? (
-            <Button size="small" onClick={handleClickOpen}>
-              安排
-            </Button>
-          ) : (
-            <Button
-              size="small"
-              color="error"
-              //disabled
-              //onClick={handleClickOpen}
-            >
-              {'已有' + props.customer_number + '人使用'}
-            </Button>
-          )}
-          {
-            orderData?
-            <FullOrderView id={orderData.order_id} cryptoOrder={orderData}/>
-            :
-            <IconButton
-              sx={{
-                '&:hover': {
-                  background: theme.colors.primary.lighter
-                },
-                color: theme.palette.primary.main
-              }}
-              color="inherit"
-              size="small"
-              disabled
-            >
-              <RemoveRedEyeIcon fontSize="small" />
-            </IconButton>
-           
-          }
-        </CardActions>
-      </Card>
+                <Card sx={{ maxWidth: 345 }}>
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {"餐桌"+props.table_id.toString()}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {props.table_capacity.toString()+"人座"}
+                    </Typography>
+                    <Divider/>
+                    <Typography variant="body2" color="text.secondary">
+                      {props.occupied}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                      {props.occupied=="空闲" ?
+                        <Button 
+                    size="small"
+                    onClick={handleClickOpen}                    
+                    >安排</Button>
+                    :                    
+                    <Button 
+                    size="small"
+                    color='error'
+                    //disabled    
+                    //onClick={handleClickOpen}                  
+                    >{"已有"+props.customer_number+"人使用"}</Button>
+                      }
+                    
+                  </CardActions>
+                </Card>
 
-      <BootstrapDialog
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={open}
-      >
-        <BootstrapDialogTitle
-          id="customized-dialog-title"
-          onClose={handleClose}
-        >
-          安排座位: {props.table_id}
-        </BootstrapDialogTitle>
-        <Box
-          component="form"
-          sx={{
-            '& .MuiTextField-root': { m: 2, width: '30ch' }
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          {inputNum > 0 ? (
-            <TextField
-              required
-              fullWidth
-              id="outlined-required"
-              label="人数"
-              type="number"
-              defaultValue="1"
-              onChange={handleInputChange}
-            />
-          ) : (
-            <TextField
-              required
-              fullWidth
-              id="outlined-required"
-              label="人数"
-              type="number"
-              defaultValue="1"
-              onChange={handleInputChange}
-              error
-              helperText="非法人数"
-            />
-          )}
-        </Box>
-        {inputNum > 0 ? (
-          <Button
-            startIcon={<AddTwoToneIcon fontSize="small" />}
-            onClick={handleAssignConfirm}
-          >
-            确认安排
-          </Button>
-        ) : (
-          <Button startIcon={<AddTwoToneIcon fontSize="small" />} disabled>
-            确认安排
-          </Button>
-        )}
-      </BootstrapDialog>
+                  <BootstrapDialog
+                    onClose={handleClose}
+                    aria-labelledby="customized-dialog-title"
+                    open={open}
+                  >
+                    <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+                    安排座位: {props.table_id}
+                    </BootstrapDialogTitle>
+                    <Box
+                        component="form"
+                        sx={{
+                        '& .MuiTextField-root': { m: 2, width: '30ch' },
+                          }}
+                        noValidate
+                        autoComplete="off"
+                      >
+                        {
+                          inputNum>0?
+                        <TextField
+                        required
+                        fullWidth
+                          id="outlined-required"
+                          label="人数"
+                          type="number"
+                        defaultValue='1'  
+                        onChange={handleInputChange}         
+                        /> 
+                        :
+                        <TextField
+                        required
+                        fullWidth
+                          id="outlined-required"
+                          label="人数"
+                          type="number"
+                        defaultValue='1'  
+                        onChange={handleInputChange}
+                        error
+                        helperText="非法人数"         
+                        /> 
+                        }
+                                              
+                      </Box>
+                      {inputNum>0?  
+                      <Button
+                      startIcon={<AddTwoToneIcon fontSize="small" />}  
+                      onClick={handleAssignConfirm}        
+                      >
+                      确认安排
+                    </Button>
+                    :
+                    <Button
+                    startIcon={<AddTwoToneIcon fontSize="small" />}
+                    disabled          
+                    >
+                    确认安排
+                  </Button> 
+                    
+                  }   
+                  </BootstrapDialog>
+                
+                  <Dialog
+                    open={openSuccessDialog}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle id="alert-dialog-title">
+                      {"安排成功"}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        安排该顾客至座位: {props.table_id}
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleSuccessClose} autoFocus>
+                        OK
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
 
-      <Dialog
-        open={openSuccessDialog}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{'安排成功'}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            安排该顾客至座位: {props.table_id}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleSuccessClose} autoFocus>
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
+                  <Dialog
+                    open={openErrorDialog}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle id="alert-dialog-title">
+                      {"安排错误"}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        安排失败
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClose} autoFocus>
+                        OK
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                </div>
 
-      <Dialog
-        open={openErrorDialog}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{'安排错误'}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            安排失败
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} autoFocus>
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+                
+
   );
 }
 
-/* 
+    /* 
   <div>
         <Button
           sx={{ mt: { xs: 2, md: 0 } }}

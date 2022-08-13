@@ -1,10 +1,4 @@
-import {
-  useState,
-  MouseEvent,
-  ChangeEvent,
-  useCallback,
-  useEffect
-} from 'react';
+import { useState, MouseEvent, ChangeEvent, useCallback, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -37,18 +31,11 @@ import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import DetailEmployeePopup from './EmployeeManagement/DetailEmployeePopup';
-import {
-  defaultUser,
-  EmployeeDetail,
-  EmployeeEntity,
-  EmployeeUpload,
-  Salary
-} from '@/models/employee';
+import { EmployeeDetail, EmployeeEntity, Salary } from '@/models/employee';
 import { humanResourceApi } from '@/queries/employee';
 import { salaryApi } from '@/queries/salary';
 import { useRefMounted } from '@/hooks/useRefMounted';
-import ProfileCoverUpdate from './Profile/ProfileCoverUpdate';
-import ProfileCoverNew from './Profile/ProfileCoverNew';
+
 
 const Input = styled('input')({
   display: 'none'
@@ -114,16 +101,22 @@ const CardCoverAction = styled(Box)(
 `
 );
 
+
+
 function EmployeeManagementTab() {
+
+
+
   const isMountedRef = useRefMounted();
   const [employees, setEmployees] = useState<EmployeeEntity[]>([]);
-  const [levels, setLevels] = useState<Salary[]>([]);
+  const [levels,setLevels]=useState<Salary[]>([]);
 
   const getAllData = useCallback(async () => {
     try {
       let employees = await humanResourceApi.getEmployees();
 
-      let levels = await salaryApi.getSalary();
+      let levels=await salaryApi.getSalary();
+
 
       if (isMountedRef()) {
         setEmployees(employees);
@@ -134,17 +127,22 @@ function EmployeeManagementTab() {
     }
   }, [isMountedRef]);
 
+
+
   useEffect(() => {
     getAllData();
   }, [getAllData]);
 
+
+
   const theme = useTheme();
 
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(2);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+
   const [value, setValue] = useState<Date | null>(
-    new Date('2014-08-18 21:11:54')
+    new Date('2014-08-18 21:11:54'),
   );
 
   const handleChange = (newValue: Date | null) => {
@@ -165,22 +163,14 @@ function EmployeeManagementTab() {
     setPage(0);
   };
 
-  const [upload, setUpload] = useState<EmployeeUpload>({
-    id: null,
-    name: '',
-    gender: '',
-    occupation: '',
-    cover: 'http://dummyimage.com/800x300',
-    avatar: 'http://dummyimage.com/150x150',
-    birthday: '2001-01-01'
-  } as EmployeeUpload);
-
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Box pb={2}>
           <Typography variant="h3">餐厅员工级别表</Typography>
-          <Typography variant="subtitle2">餐厅员工职级如下所示</Typography>
+          <Typography variant="subtitle2">
+            餐厅员工职级如下所示
+          </Typography>
         </Box>
 
         <Card>
@@ -196,9 +186,8 @@ function EmployeeManagementTab() {
               <TableHead>
                 <TableRow>
                   <TableCell>职位</TableCell>
-
-                  <TableCell>人数</TableCell>
                   <TableCell>薪资</TableCell>
+                  <TableCell>人数</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -213,77 +202,146 @@ function EmployeeManagementTab() {
             </Table>
           </TableContainer>
         </Card>
+
       </Grid>
+
 
       <Grid item xs={12}>
         <Box pb={2}>
           <Typography variant="h3">添加新员工</Typography>
-          <Typography variant="subtitle2">添加员工</Typography>
+          <Typography variant="subtitle2">
+            添加员工
+          </Typography>
         </Box>
         <Card>
           <List>
+
             <ListItem sx={{ p: 3 }}>
-              <Grid container>
-                <Grid item xs={12}>
-                  <ProfileCoverNew
-                    upload={upload}
-                    setSelectedUpload={(uploaded: EmployeeUpload) => {
-                      setUpload(uploaded);
-                    }}
+              <Box
+                component="form"
+                sx={{
+                  '& .MuiTextField-root': { m: 1, width: '20ch' }
+                }}
+                noValidate
+                autoComplete="off"
+              >
+                <div>
+                  <TextField
+                    key="name"
+                    required
+                    id="outlined-required"
+                    label="姓名"
                   />
-                </Grid>
-                <Grid item xs={12}>
-                  <Button
-                    size="large"
-                    variant="contained"
-                    fullWidth={true}
-                    disabled={
-                      !upload.name ||
-                      upload.name === '' ||
-                      !upload.gender ||
-                      upload.gender === '' ||
-                      !upload.occupation ||
-                      upload.occupation === '' ||
-                      !upload.birthday ||
-                      upload.birthday === '' ||
-                      !upload.avatar ||
-                      upload.avatar === '' ||
-                      !upload.cover ||
-                      upload.cover === ''
-                    }
-                    onClick={() => {
-                      console.log(upload);
-
-                      const conduct = async () => {
-                        return await humanResourceApi.postEmployee({
-                          id: null,
-
-                          name: upload.name,
-                          gender: upload.gender,
-                          birthday: upload.birthday,
-                          occupation: upload.occupation,
-
-                          cover: upload.cover,
-                          avatar: upload.avatar
-                        } as EmployeeUpload);
-                      };
-
-                      conduct()
-                        .then((value) => {
-                          alert('添加成功：' + value);
-
-                          //这里应该跳到鉴权那边设置登陆密码之类的
-                        })
-                        .catch((value) => {
-                          alert('添加失败：' + value);
-                        });
-                    }}
-                  >
-                    <UploadTwoToneIcon />
-                    提交新员工
-                  </Button>
-                </Grid>
+                  <TextField
+                    key="gender"
+                    required
+                    id="outlined-disabled"
+                    label="性别"
+                  />
+                  <TextField
+                    key="occupation"
+                    required
+                    id="outlined-disabled"
+                    label="职位"
+                  />
+                  <TextField
+                    required
+                    id="outlined-password-input"
+                    label="密码"
+                    type="password"
+                    autoComplete="current-password"
+                  />
+                </div>
+              </Box>
+              <Grid item xs={3} textAlign="end">
+                <Button variant="contained" size="large">
+                <PersonAddAltIcon/>确认添加
+                </Button>
               </Grid>
+            </ListItem>
+            
+            <Divider component="li" />
+            <ListItem sx={{ p: 2 }}>
+
+              <Box
+                component="form"
+                noValidate
+                autoComplete="off"
+              >
+                <Grid container direction="row">
+                  <Grid item xs={4}>
+                    <Typography variant='h3'> 封面：</Typography>
+                    <CardCover>
+
+                      <CardMedia image="" />
+                      <CardCoverAction>
+                        <Input accept="image/*" id="change-cover" multiple type="file"/>
+                        <label htmlFor="change-cover">
+                          <Button
+                            startIcon={<UploadTwoToneIcon />}
+                            variant="contained"
+                            component="span"
+                          >
+                            更改封面
+                          </Button>
+                        </label>
+                      </CardCoverAction>
+                    </CardCover>
+
+                  </Grid>
+
+                  <Grid item xs={1}>
+
+                  </Grid>
+
+                  <Grid item xs={4}>
+
+                    <Typography variant='h3'> 头像：</Typography>
+                    <AvatarWrapper>
+
+                      <Avatar variant="rounded" alt="" src="" />
+                      <ButtonUploadWrapper>
+                        <Input
+                          accept="image/*"
+                          id="icon-button-file"
+                          name="icon-button-file"
+                          type="file"
+                        />
+                        <label htmlFor="icon-button-file">
+                          <IconButton component="span" color="primary">
+                            <UploadTwoToneIcon />
+                          </IconButton>
+                        </label>
+                      </ButtonUploadWrapper>
+                    </AvatarWrapper>
+
+                    
+
+                  </Grid>
+
+                  <Grid item xs={3}>
+
+                  <Typography variant='h3'> 生日 ：</Typography>
+
+                  <AvatarWrapper>
+
+                  <DesktopDatePicker
+                      label="生日"
+                      inputFormat="yyyy-MM-dd"
+                      value={value}
+                      onChange={handleChange}
+                      renderInput={(params) => <TextField {...params} />}
+                      
+                    />
+
+                  </AvatarWrapper>
+
+
+                  </Grid>
+
+                </Grid>
+
+              </Box>
             </ListItem>
           </List>
         </Card>
@@ -291,7 +349,9 @@ function EmployeeManagementTab() {
       <Grid item xs={12}>
         <Box pb={2}>
           <Typography variant="h3">全体员工</Typography>
-          <Typography variant="subtitle2">管理员工信息</Typography>
+          <Typography variant="subtitle2">
+            管理员工信息
+          </Typography>
         </Box>
 
         <Card>
@@ -318,63 +378,66 @@ function EmployeeManagementTab() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {employees
-                  .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-                  .map((employee) => (
-                    <TableRow key={employee.id} hover>
-                      <TableCell>{employee.id}</TableCell>
-                      <TableCell>
-                        <Avatar src={employee.avatar} />
-                      </TableCell>
-                      <TableCell>{employee.name}</TableCell>
-                      <TableCell>{employee.gender}</TableCell>
-                      <TableCell>{employee.occupation}</TableCell>
-                      <TableCell>{employee.attendance_rate}</TableCell>
-                      <TableCell>{employee.award_times}</TableCell>
-                      <TableCell align="right">
-                        <Tooltip placement="top" title="Delete" arrow>
-                          <IconButton
-                            sx={{
-                              '&:hover': {
-                                background: theme.colors.error.lighter
-                              },
-                              color: theme.palette.error.main
-                            }}
-                            color="inherit"
-                            size="small"
-                            onClick={() => {
-                              const conduct = async () => {
-                                return humanResourceApi.deleteEmployee(
-                                  employee.id
-                                );
-                              };
+                {employees.map((employee) => (
+                  <TableRow key={employee.id} hover>
+                    <TableCell>{employee.id}</TableCell>
+                    <TableCell>
+                      <Avatar src={employee.avatar} />
+                    </TableCell>
+                    <TableCell>{employee.name}</TableCell>
+                    <TableCell>{employee.gender}</TableCell>
+                    <TableCell>{employee.occupation}</TableCell>
+                    <TableCell>{employee.attendance_rate}</TableCell>
+                    <TableCell>{employee.award_times}</TableCell>
+                    <TableCell align="right">
+                      <Tooltip placement="top" title="Delete" arrow>
+                        <IconButton
+                          sx={{
+                            '&:hover': {
+                              background: theme.colors.error.lighter
+                            },
+                            color: theme.palette.error.main
+                          }}
+                          color="inherit"
+                          size="small"
+                          onClick={()=>{
 
-                              conduct()
-                                .then((value) => {
-                                  alert('删除结果：' + value + '\n');
-                                  window.location.reload();
-                                })
-                                .catch((value) => {
-                                  alert('删除失败：' + value);
-                                });
-                            }}
-                          >
-                            <DeleteTwoToneIcon fontSize="small" />
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
-                      <TableCell align="right">
-                        <DetailEmployeePopup userId={employee.id} />
-                      </TableCell>
-                    </TableRow>
-                  ))}
+
+                              const conduct=async ()=>{
+
+                                return humanResourceApi.deleteEmployee(employee.id);
+
+                              }
+
+                            conduct().then((value)=>{
+
+                                alert("删除结果："+value+'\n');
+                                window.location.reload();
+
+                            }).catch((value)=>{
+
+                            alert("删除失败："+value);
+                            });
+
+                          }}
+                        >
+                          <DeleteTwoToneIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                    <TableCell align="right">
+                      <DetailEmployeePopup userId={employee.id}/>
+                    </TableCell>
+
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
           <Box p={2}>
             <TablePagination
               component="div"
-              count={employees.length}
+              count={100}
               page={page}
               onPageChange={handleChangePage}
               rowsPerPage={rowsPerPage}
@@ -389,10 +452,14 @@ function EmployeeManagementTab() {
 
 export default EmployeeManagementTab;
 
+
+
+
 export async function getServerSideProps() {
+
   const employees = await humanResourceApi.getEmployees();
 
-  const levels = await salaryApi.getSalary();
+  const levels=await salaryApi.getSalary();
 
-  return { props: { employees: employees, levels: levels } };
+  return { props: { employees:employees,levels:levels } }
 }

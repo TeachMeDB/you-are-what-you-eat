@@ -374,7 +374,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
 
                   <TableCell align="right">
                     <Tooltip title="查看详情" arrow>
-                      <FullOrderView id={cryptoOrder.order_id} cryptoOrder={cryptoOrder}/>                                                       
+                      <FullOrderView id={cryptoOrder.order_id}/>                                                       
                     </Tooltip>
 
                     {/*<Tooltip title="编辑" arrow>

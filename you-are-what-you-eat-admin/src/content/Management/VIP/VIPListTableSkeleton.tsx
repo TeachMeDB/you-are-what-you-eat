@@ -26,17 +26,20 @@ import {
 } from '@mui/material';
 
 import Label from '@/components/Label';
-import { CryptoVip, CryptoVipStatus } from '@/models/crypto_vip';
+import { CryptoVip,CryptoVipStatus } from '@/models/crypto_vip';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BulkActions from './BulkActions';
 import TextField from '@mui/material/TextField';
 
-import ModifyDialog from './ModifyDialog';
-import SignUpVip from './SignUpVip';
+import ModifyDialog from './ModifyDialog'
+import SignUpVip from './SignUpVip'
 import Skeleton from '@mui/material/Skeleton';
 
+
+
 const VIPListTableSkeleton = () => {
+
   const theme = useTheme();
 
   return (
@@ -50,21 +53,21 @@ const VIPListTableSkeleton = () => {
         
       )*/}
       <CardHeader
-        action={
-          <Box width={400}>
-            <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
-              <Skeleton animation="wave" variant="text" />
-            </FormControl>
+          action={
+            <Box width={400}>
+              <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
+                <Skeleton animation="wave" variant="text" />
+              </FormControl>
 
-            <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel>筛选</InputLabel>
-              <Skeleton animation="wave" variant="text" />
-            </FormControl>
-          </Box>
-        }
-        title="会员"
-      />
-
+              <FormControl variant="outlined"  sx={{ m: 1, minWidth: 120 }}>
+                   <InputLabel >筛选</InputLabel>
+                    <Skeleton animation="wave" variant="text" />                          
+              </FormControl>              
+            </Box>
+          }
+          title="会员"
+        />
+        
       <Divider />
       <TableContainer>
         <Table>

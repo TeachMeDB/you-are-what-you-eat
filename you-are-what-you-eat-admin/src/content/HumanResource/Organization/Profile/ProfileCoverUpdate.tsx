@@ -7,9 +7,7 @@ import {
   CardMedia,
   Button,
   IconButton,
-  Grid,
-  TextField,
-  Divider
+  Grid
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -20,18 +18,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { humanResourceApi } from '@/queries/employee';
 import { EmployeeDetail, EmployeeUpload } from '@/models/employee';
 
-import {
-  differenceInYears,
-  format,
-  formatDistance,
-  formatRelative,
-  parse,
-  subDays
-} from 'date-fns';
+
+import { differenceInYears, format, formatDistance, formatRelative, subDays } from 'date-fns'
 import { GenerateBase64 } from '@/utils/image';
-import { Upload } from '@mui/icons-material';
-import { DesktopDatePicker } from '@mui/lab';
-import { handleClientScriptLoad } from 'next/script';
 
 const Input = styled('input')({
   display: 'none'
@@ -95,63 +84,24 @@ const CardCoverAction = styled(Box)(
 `
 );
 
-const ProfileCoverUpdate = ({
-  upload,
-  setSelectedUpload
-}: {
-  upload: EmployeeUpload;
-  setSelectedUpload: (upload: EmployeeUpload) => void;
-}) => {
-  console.log(upload);
 
-  const handleNameChange = (event) => {
-    if (event.target.value) {
-      let newUpload = { ...upload };
-      newUpload.name = event.target.value;
 
-      setSelectedUpload(newUpload);
-    }
-  };
+const ProfileCoverUpdate = ({user}:{user:EmployeeDetail}) => {
 
-  const handleBirthdayChange = (value: Date) => {
-    console.log(value);
 
-    if (value) {
-      let newUpload = { ...upload };
-      newUpload.birthday = format(value, 'yyyy-MM-dd');
-      setSelectedUpload(newUpload);
-    }
-  };
-
-  const handleGenderChange = (event) => {
-    if (event.target.value) {
-      let newUpload = { ...upload };
-      newUpload.gender = event.target.value;
-
-      setSelectedUpload(newUpload);
-    }
-  };
-
-  const handleOccupationChange = (event) => {
-    if (event.target.value) {
-      let newUpload = { ...upload };
-      newUpload.occupation = event.target.value;
-
-      setSelectedUpload(newUpload);
-    }
-  };
+  const [upload,setUpload]=useState({...user,avater:user.avatar} as EmployeeUpload)
 
   return (
     <>
       <Box display="flex" mb={3}>
         <Tooltip arrow placement="top" title="个人信息">
           <IconButton color="primary" sx={{ p: 2, mr: 2 }}>
-            <BadgeIcon />
+            <BadgeIcon/>
           </IconButton>
         </Tooltip>
         <Box>
           <Typography variant="h3" component="h3" gutterBottom>
-            员工信息 ：{upload.id}
+            员工信息 ：{user.id}
           </Typography>
           <Typography variant="subtitle2">
             员工个人信息、常用人事信息、数据统计、管理界面
@@ -161,22 +111,29 @@ const ProfileCoverUpdate = ({
       <CardCover>
         <CardMedia image={upload.cover} />
         <CardCoverAction>
-          <Input
-            accept="image/*"
-            id="change-cover"
-            type="file"
-            onChange={(event) => {
-              if (event.target.files.length > 0) {
-                let file = event.target.files[0];
+          <Input accept="image/*" id="change-cover"
+          multiple 
+          type="file" 
+          onChange={(event)=>{
 
-                GenerateBase64(file, (url: string) => {
-                  let newUpload = { ...upload };
-                  newUpload.cover = url;
-                  setSelectedUpload(newUpload);
-                });
-              }
-            }}
-          />
+            if(event.target.files.length>0){
+              let file=event.target.files[0];
+
+              GenerateBase64(file,(url:string)=>{
+
+                
+
+                let newUpload=upload;
+                newUpload.cover=url;
+
+                setUpload(newUpload);
+
+
+              });
+
+            }
+
+          }}/>
           <label htmlFor="change-cover">
             <Button
               startIcon={<UploadTwoToneIcon />}
@@ -189,24 +146,32 @@ const ProfileCoverUpdate = ({
         </CardCoverAction>
       </CardCover>
       <AvatarWrapper>
-        <Avatar variant="rounded" alt={upload.name} src={upload.avatar} />
+        <Avatar variant="rounded" alt={upload.name} src={upload.avater} />
         <ButtonUploadWrapper>
           <Input
             accept="image/*"
             id="icon-button-file"
             name="icon-button-file"
             type="file"
-            onChange={(event) => {
-              if (event.target.files.length > 0) {
-                let file = event.target.files[0];
+            onChange={(event)=>{
 
-                GenerateBase64(file, (url: string) => {
-                  let newUpload = { ...upload };
-                  newUpload.avatar = url;
+              
+            if(event.target.files.length>0){
+              let file=event.target.files[0];
 
-                  setSelectedUpload(newUpload);
-                });
-              }
+              GenerateBase64(file,(url:string)=>{
+
+
+                let newUpload=upload;
+                newUpload.avater=url;
+
+                setUpload(newUpload);
+
+              });
+
+            }
+  
+  
             }}
           />
           <label htmlFor="icon-button-file">
@@ -217,82 +182,46 @@ const ProfileCoverUpdate = ({
         </ButtonUploadWrapper>
       </AvatarWrapper>
       <Box py={2} pl={2} mb={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
+        <Typography gutterBottom variant="h4">
+          {user.name}
+        </Typography>
 
-          <Grid item xs={12}>
-            <Grid container>
-              <Box
-                display={{ xs: 'block', md: 'flex' }}
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <TextField
-                  required
-                  id="outlined-required"
-                  label="姓名"
-                  value={upload.name}
-                  onChange={handleNameChange}
-                />
+        <Typography variant="subtitle2">
 
-                <DesktopDatePicker
-                  label="员工出生日期"
-                  inputFormat="yyyy-MM-dd"
-                  mask="____-__-__"
-                  value={parse(upload.birthday, 'yyyy-MM-dd', Date.now())}
-                  onChange={handleBirthdayChange}
-                  renderInput={(params) => (
-                    <TextField sx={{ mx: 1 }} {...params} />
-                  )}
-                />
-              </Box>
-            </Grid>
-          </Grid>
+            这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话
+            等完了我找个每日一句贴上去
+        </Typography>
+        <Typography sx={{ py: 2 }} variant="subtitle2" color="text.primary">
+          员工出生日期 ： {user.birthday} | 年龄 ： {differenceInYears(Date.now(),Date.parse(user.birthday))}岁
+        </Typography>
 
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
+        <Grid>
 
-          <Grid item xs={12}>
-            <Grid container>
-              <Box
-                display={{ xs: 'block', md: 'flex' }}
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <TextField
-                  size="small"
-                  variant="outlined"
-                  value={upload.gender}
-                  required
-                  id="outlined-disabled"
-                  label="性别"
-                  onChange={handleGenderChange}
-                />
-                <TextField
-                  size="small"
-                  sx={{ mx: 1 }}
-                  variant="outlined"
-                  required
-                  value={upload.occupation}
-                  onChange={handleOccupationChange}
-                  id="outlined-disabled"
-                  label="职位"
-                />
-              </Box>
-            </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
+          <Box
+            display={{ xs: 'block', md: 'flex' }}
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Box>
+            <Button size="small" variant="contained">
+                职位：{user.occupation}
+              </Button>
+              
+              <Button size="small" sx={{ mx: 1 }} variant="outlined">
+              性别：{user.gender}
+              </Button>
+              
+            </Box>
+          </Box>
+
         </Grid>
+        
       </Box>
     </>
   );
 };
 
-ProfileCoverUpdate.propTypes = {};
+ProfileCoverUpdate.propTypes = {
+};
 
 export default ProfileCoverUpdate;

@@ -10,19 +10,11 @@ interface AssetInfoProps {
   setAssetInfoes: any;
 }
 
-function AllAssetInfoes({
-  list = [],
-  employees = [],
-  setAssetInfoes
-}: AssetInfoProps) {
+function AllAssetInfoes({ list = [], employees = [], setAssetInfoes }: AssetInfoProps) {
   console.log(list, ' <-- list');
   return (
     <Card>
-      <AssetInfoTable
-        assetInfoes={list}
-        setAssetInfoes={setAssetInfoes}
-        employees={employees}
-      />
+      <AssetInfoTable assetInfoes={list} setAssetInfoes={setAssetInfoes} employees={employees} />
     </Card>
   );
 }

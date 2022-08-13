@@ -63,10 +63,12 @@ interface TableSummaryProps {
   cryptoSummary: CryptoSummary;
 }
 
-//function TableSummary(cryptoSummary: CryptoSummary)
-const TableSummary: FC<TableSummaryProps> = ({ cryptoSummary }) => {
-  const theme = useTheme();
 
+//function TableSummary(cryptoSummary: CryptoSummary) 
+const TableSummary: FC<TableSummaryProps> = ({ cryptoSummary }) =>
+{
+  const theme = useTheme();
+  
   const chartOptions: ApexOptions = {
     chart: {
       background: 'transparent',
@@ -135,9 +137,9 @@ const TableSummary: FC<TableSummaryProps> = ({ cryptoSummary }) => {
   };
 
   const chartSeries = [
-    cryptoSummary.available_count / cryptoSummary.total_count,
-    cryptoSummary.occupied_count / cryptoSummary.total_count
-  ];
+    (cryptoSummary.available_count/cryptoSummary.total_count), 
+  (cryptoSummary.occupied_count/cryptoSummary.total_count)
+];
 
   return (
     <Card>
@@ -172,9 +174,7 @@ const TableSummary: FC<TableSummaryProps> = ({ cryptoSummary }) => {
                   <TrendingUp fontSize="large" />
                 </AvatarSuccess>
                 <Box>
-                  <Typography variant="h4">
-                    + {cryptoSummary.today_customer}名顾客
-                  </Typography>
+                  <Typography variant="h4">+ {cryptoSummary.today_customer}名顾客</Typography>
                   <Typography variant="subtitle2" noWrap>
                     今日接待
                   </Typography>
@@ -227,7 +227,7 @@ const TableSummary: FC<TableSummaryProps> = ({ cryptoSummary }) => {
                 >
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                      <Brightness1Icon fontSize="large" color="primary" />
+                       <Brightness1Icon fontSize="large" color="primary"/>
                     </ListItemAvatarWrapper>
                     <ListItemText
                       primary="空闲"
@@ -240,20 +240,13 @@ const TableSummary: FC<TableSummaryProps> = ({ cryptoSummary }) => {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        {Number(
-                          (cryptoSummary.available_count /
-                            cryptoSummary.total_count) *
-                            100
-                        )
-                          .toFixed(1)
-                          .toString()}
-                        %
+                       {Number(cryptoSummary.available_count/cryptoSummary.total_count*100).toFixed(1).toString()}%
                       </Typography>
                     </Box>
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                      <Brightness1Icon fontSize="large" color="warning" />
+                      <Brightness1Icon fontSize="large" color="warning"/>
                     </ListItemAvatarWrapper>
                     <ListItemText
                       primary="占用"
@@ -266,17 +259,10 @@ const TableSummary: FC<TableSummaryProps> = ({ cryptoSummary }) => {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        {Number(
-                          (cryptoSummary.occupied_count /
-                            cryptoSummary.total_count) *
-                            100
-                        )
-                          .toFixed(1)
-                          .toString()}
-                        %
+                      {Number(cryptoSummary.occupied_count/cryptoSummary.total_count*100).toFixed(1).toString()}%
                       </Typography>
                     </Box>
-                  </ListItem>
+                  </ListItem>         
                 </List>
               </Grid>
             </Grid>
@@ -285,6 +271,6 @@ const TableSummary: FC<TableSummaryProps> = ({ cryptoSummary }) => {
       </Grid>
     </Card>
   );
-};
+}
 
 export default TableSummary;

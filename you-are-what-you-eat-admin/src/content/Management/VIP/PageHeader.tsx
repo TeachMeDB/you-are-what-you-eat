@@ -3,6 +3,7 @@ import { Typography, Button, Grid } from '@mui/material';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import SignUpVip from './SignUpVip';
 
+
 function PageHeader() {
   const user = {
     name: 'Catherine Pike',
@@ -18,7 +19,11 @@ function PageHeader() {
           {user.name}, 您所能管理的会员如下
         </Typography>
       </Grid>
-      <Grid item>{<SignUpVip />}</Grid>
+      <Grid item>
+        {
+        <SignUpVip/>
+        }
+      </Grid>
     </Grid>
   );
 }

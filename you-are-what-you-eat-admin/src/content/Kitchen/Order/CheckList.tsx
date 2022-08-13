@@ -3,7 +3,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
-
 import { CurOrder, Dish } from '@/models/cur_order';
 import { Card, CardHeader, Divider, CardContent, Box } from '@mui/material';
 import {
@@ -34,7 +33,6 @@ let b: OrderStatusUpload = {
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
-
 const LinearProgressWrapper = styled(LinearProgress)(
     ({ theme }) => `
           flex-grow: 1;
@@ -52,7 +50,6 @@ const LinearProgressWrapper = styled(LinearProgress)(
 );
 
 export default function CheckList(curOrder: CurOrder) {
-
 
     const CountFinished = () => {
         var i = 0;
@@ -219,4 +216,3 @@ export default function CheckList(curOrder: CurOrder) {
     }
 
 }
-

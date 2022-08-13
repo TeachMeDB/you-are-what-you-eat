@@ -34,13 +34,13 @@ const DotReady = styled('span')(
 `
 );
 
-function Statistics(water: number, power: number, gas: number) {
+function Statistics( water: number, power: number, gas: number ) {
   const { t }: { t: any } = useTranslation();
 
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={4}>
-        <Card
+      <Card
           sx={{
             height: '100%',
             px: 3,
@@ -64,7 +64,9 @@ function Statistics(water: number, power: number, gas: number) {
               <DotRunning />
               {t('水表')}
             </Typography>
-            <Typography variant="h3">{water}</Typography>
+            <Typography variant="h3">
+              {water}
+            </Typography>
           </Box>
         </Card>
       </Grid>
@@ -93,7 +95,9 @@ function Statistics(water: number, power: number, gas: number) {
               <DotReady />
               {t('电表')}
             </Typography>
-            <Typography variant="h3">{power}</Typography>
+            <Typography variant="h3">
+              {power}
+            </Typography>
           </Box>
         </Card>
       </Grid>
@@ -122,7 +126,9 @@ function Statistics(water: number, power: number, gas: number) {
               <DotCompleted />
               {t('燃气')}
             </Typography>
-            <Typography variant="h3">{gas}</Typography>
+            <Typography variant="h3">
+              {gas}
+            </Typography>
           </Box>
         </Card>
       </Grid>

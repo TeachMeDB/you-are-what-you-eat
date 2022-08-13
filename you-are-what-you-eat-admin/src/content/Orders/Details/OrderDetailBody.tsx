@@ -164,8 +164,12 @@ const OrderDetailBody: FC<OrderDetailBody> = ({ detail }) => {
                       <Typography noWrap>{dish.dish_name}</Typography>
                     </TableCell>
                     <TableCell>{dish.dish_status}</TableCell>
-                    <TableCell>￥{dish.ori_price}</TableCell>
-                    <TableCell>￥{dish.final_payment}</TableCell>
+                    <TableCell>
+                      ￥{dish.ori_price}
+                    </TableCell>
+                    <TableCell>
+                      ￥{dish.final_payment}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -193,8 +197,14 @@ const OrderDetailBody: FC<OrderDetailBody> = ({ detail }) => {
         <Typography variant="subtitle2" gutterBottom>
           {t('备注：')}
         </Typography>
-        <Typography variant="body2">{''}</Typography>
-        <Tooltip placement="top" arrow title="此功能将在后续版本中发布">
+        <Typography variant="body2">
+          {''}
+        </Typography>
+        <Tooltip
+          placement="top"
+          arrow
+          title="此功能将在后续版本中发布"
+        >
           <Box
             display="flex"
             alignItems="center"

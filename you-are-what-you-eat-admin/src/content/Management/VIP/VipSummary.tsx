@@ -19,31 +19,29 @@ import { FC, ChangeEvent, useState } from 'react';
 //import ReactApexChart from 'react-apexcharts';
 import { Chart } from 'src/components/Chart';
 
+
 interface VipSummaryProps {
   className?: string;
   cryptoSummary: CryptoSummary;
 }
 
-//function VipSummary(cryptoSummary: CryptoSummary)
-const VipSummary: FC<VipSummaryProps> = ({ cryptoSummary }) => {
+
+//function VipSummary(cryptoSummary: CryptoSummary) 
+const VipSummary: FC<VipSummaryProps> = ({ cryptoSummary }) =>
+{
   const theme = useTheme();
 
-  if (!cryptoSummary) {
+  if(!cryptoSummary)
+  {
     return;
   }
 
   return (
     <Card>
-      <Chart
-        notMerge={true}
-        options={cryptoSummary.options}
-        series={cryptoSummary.series}
-        type="bar"
-        height={350}
-      />
+      <Chart  notMerge={true} options={cryptoSummary.options} series={cryptoSummary.series} type="bar" height={350} />
     </Card>
   );
-};
+}
 
 export default VipSummary;
 

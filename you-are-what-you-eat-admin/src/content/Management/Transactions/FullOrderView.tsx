@@ -9,14 +9,9 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { Tooltip, useTheme } from '@mui/material';
+import {useTheme} from '@mui/material';
 
-import {
-  CryptoDishOrder,
-  CryptoDishOrderStatus,
-  CryptoAllDishOrder
-} from '@/models/crypto_dishOrder';
-import { CryptoOrder } from '@/models/crypto_order';
+import { CryptoDishOrder,CryptoDishOrderStatus,CryptoAllDishOrder } from '@/models/crypto_dishOrder';
 import { Grid } from '@mui/material';
 import DishOrderTable from './DishOrderTable';
 import { useState, useEffect, useCallback } from 'react';
@@ -27,11 +22,11 @@ import Stack from '@mui/material/Stack';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
   '& .MuiDialogActions-root': {
-    padding: theme.spacing(1)
-  }
+    padding: theme.spacing(1),
+  },
 }));
 
 export interface DialogTitleProps {
@@ -40,9 +35,8 @@ export interface DialogTitleProps {
   onClose: () => void;
 }
 
-export interface DialogIDProps {
-  id: string;
-  cryptoOrder:CryptoOrder;
+export interface DialogIDProps{
+    id: string;
 }
 
 const BootstrapDialogTitle = (props: DialogTitleProps) => {
@@ -59,7 +53,7 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
             position: 'absolute',
             right: 8,
             top: 8,
-            color: (theme) => theme.palette.grey[500]
+            color: (theme) => theme.palette.grey[500],
           }}
         >
           <CloseIcon />
@@ -86,7 +80,7 @@ export default function FullOrderView(props: DialogIDProps) {
 
   const getDishOrderData = useCallback(async () => {
     try {
-      const response = await queryDishOrderApi.getDishOrder(props.id);
+      const response = await queryDishOrderApi.getDishOrder(props.id)
 
       if (isMountedRef()) {
         setDishOrderData(response);
@@ -100,42 +94,79 @@ export default function FullOrderView(props: DialogIDProps) {
     getDishOrderData();
   }, [getDishOrderData]);
 
-  if (!dishOrderData) {
+  if (!dishOrderData)
+  {
     return (
-      <Stack spacing={1}>
-        <Skeleton animation="wave" variant="text" />
-      </Stack>
+    <Stack spacing={1}>
+      <Skeleton animation="wave" variant="text"/>
+    </Stack>
     );
   }
+    
+
+  /*
+  const cryptoDishOrders: CryptoDishOrder[] = [
+    {
+        dish_order_id : "283nx8ewyfs",
+        order_id: props.id,
+        dish_id: "迎宾红茶",
+        final_payment: 8.10,
+        dish_status: '已完成'
+    },
+    {
+        dish_order_id : "283nx8ewyfd",
+        order_id: props.id,
+        dish_id: "迎宾红茶",
+        final_payment: 8.10,
+        dish_status: '制作中'
+    },
+    {
+        dish_order_id : "283nx8ewyfe",
+        order_id: props.id,
+        dish_id: "迎宾红茶",
+        final_payment: 8.10,
+        dish_status: '已完成'
+    },
+    {
+        dish_order_id : "283nx8ewyff",
+        order_id: props.id,
+        dish_id: "迎宾红茶",
+        final_payment: 8.10,
+        dish_status: '待处理'
+    },
+    {
+        dish_order_id : "283nx8ewyfg",
+        order_id: props.id,
+        dish_id: "迎宾红茶",
+        final_payment: 8.10,
+        dish_status: '已完成'
+    }
+  ];
+  */
 
   return (
     <div>
-      <Tooltip title="查看订单">
-      <IconButton
-        sx={{
-          '&:hover': {
-            background: theme.colors.primary.lighter
-          },
-          color: theme.palette.primary.main
-        }}
-        color="inherit"
-        size="small"
-        onClick={handleClickOpen}
-      >
-        <RemoveRedEyeIcon fontSize="small" />
-      </IconButton>
-      </Tooltip>
+        <IconButton
+            sx={{
+                '&:hover': {
+                    background: theme.colors.primary.lighter
+                          },
+                    color: theme.palette.primary.main
+                }}
+            color="inherit"
+            size="small"
+            onClick={handleClickOpen}
+                >
+            <RemoveRedEyeIcon fontSize="small" />
+        </IconButton>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
-        maxWidth={'md'}
+        maxWidth={"md"}
       >
-        <BootstrapDialogTitle
-          id="customized-dialog-title"
-          onClose={handleClose}
-        >
-          订单：{props.id}     总金额：{props.cryptoOrder.total_price}
+        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+          订单：{props.id}
         </BootstrapDialogTitle>
         <Grid
           container
@@ -145,9 +176,9 @@ export default function FullOrderView(props: DialogIDProps) {
           spacing={4}
         >
           <Grid item xs={12}>
-            <DishOrderTable cryptoDishOrder={dishOrderData.data} cryptoOrder={props.cryptoOrder}/>
+            <DishOrderTable cryptoDishOrder={dishOrderData.data}/>
           </Grid>
-        </Grid>
+        </Grid> 
       </BootstrapDialog>
     </div>
   );

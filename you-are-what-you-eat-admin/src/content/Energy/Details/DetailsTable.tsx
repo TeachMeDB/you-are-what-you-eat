@@ -60,11 +60,11 @@ const ButtonError = styled(Button)(
 );
 
 interface ResultsProps {
-  logs: Log[];
-  type: string;
-  id: string;
-  model: string;
-  location: string;
+  logs: Log[],
+  type: string,
+  id: string,
+  model: string,
+  location: string
 }
 
 const Transition = forwardRef(function Transition(
@@ -74,7 +74,12 @@ const Transition = forwardRef(function Transition(
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-const applyPagination = (logs: Log[], page: number, limit: number): Log[] => {
+
+const applyPagination = (
+  logs: Log[],
+  page: number,
+  limit: number
+): Log[] => {
   return logs.slice(page * limit, page * limit + limit);
 };
 
@@ -85,6 +90,7 @@ const Results: FC<ResultsProps> = ({ logs, type, id, model, location }) => {
 
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
+
 
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage);
@@ -105,6 +111,7 @@ const Results: FC<ResultsProps> = ({ logs, type, id, model, location }) => {
 
   const handleDeleteCompleted = () => {
     setOpenConfirmDelete(false);
+
   };
 
   return (
@@ -128,13 +135,13 @@ const Results: FC<ResultsProps> = ({ logs, type, id, model, location }) => {
                 <Typography component="span" variant="subtitle1">
                   {t('传感器')}:
                 </Typography>{' '}
-                <b>{t(`${id}`)}</b>
+                 <b>{t(`${id}`)}</b>
               </Box>
               <Box>
                 <Typography component="span" variant="subtitle1">
                   {t('位置')}:
                 </Typography>{' '}
-                <b>{t(`${location}`)}</b>
+                 <b>{t(`${location}`)}</b>
               </Box>
               <TablePagination
                 component="div"
@@ -168,10 +175,10 @@ const Results: FC<ResultsProps> = ({ logs, type, id, model, location }) => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center">{t('id')}</TableCell>
-                    <TableCell align="center">{t('类型')}</TableCell>
-                    <TableCell align="center">{t('型号')}</TableCell>
-                    <TableCell align="center">{t('时间')}</TableCell>
+                    <TableCell align='center'>{t('id')}</TableCell>
+                    <TableCell align='center'>{t('类型')}</TableCell>
+                    <TableCell align='center'>{t('型号')}</TableCell>
+                    <TableCell align='center'>{t('时间')}</TableCell>
                     <TableCell align="center">{t('数值')}</TableCell>
                   </TableRow>
                 </TableHead>
@@ -186,23 +193,32 @@ const Results: FC<ResultsProps> = ({ logs, type, id, model, location }) => {
                         key={log.time}
                         selected={isPromotionSelected}
                       >
-                        <TableCell align="center">
-                          <Box pl={1}>
-                            <Typography noWrap variant="subtitle2">
-                              {id}
+                        <TableCell align='center'>
+                            <Box pl={1}>
+                              <Typography noWrap variant="subtitle2">
+                                {id}
+                              </Typography>
+                            </Box>
+
+                        </TableCell>
+                        <TableCell align='center'>
+                          <Typography noWrap>
+                            {type}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align='center'>
+                            <Typography variant="h5">
+                              {model}
                             </Typography>
-                          </Box>
+                        </TableCell>
+                        <TableCell align='center'>
+                          <Typography noWrap>
+                            {log.time}
+                          </Typography>
                         </TableCell>
                         <TableCell align="center">
-                          <Typography noWrap>{type}</Typography>
+                          {log.value}
                         </TableCell>
-                        <TableCell align="center">
-                          <Typography variant="h5">{model}</Typography>
-                        </TableCell>
-                        <TableCell align="center">
-                          <Typography noWrap>{log.time}</Typography>
-                        </TableCell>
-                        <TableCell align="center">{log.value}</TableCell>
                       </TableRow>
                     );
                   })}

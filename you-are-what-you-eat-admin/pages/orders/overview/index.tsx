@@ -15,6 +15,8 @@ function DashboardExpenses() {
   );
 }
 
-DashboardExpenses.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+DashboardExpenses.getLayout = (page) => (
+    <SidebarLayout>{page}</SidebarLayout>
+);
 
 export default DashboardExpenses;

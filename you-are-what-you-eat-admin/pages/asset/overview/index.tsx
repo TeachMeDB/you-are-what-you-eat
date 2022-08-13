@@ -44,20 +44,20 @@ function assetOverview({ list = [], manageList = [], employees = [] }) {
           spacing={3}
         >
           <Grid item xs={12}>
-            {tab === 1 ? (
-              <AllAssetInfoes
-                list={assetInfoes || []}
-                employees={employees || []}
-                setAssetInfoes={setAssetInfoes}
-              />
-            ) : (
-              <AllManageInfo
-                list={manageInfoes || []}
-                assets={assetInfoes || []}
-                employees={employees || []}
-                setManageInfoes={setManageInfoes}
-              />
-            )}
+            {
+              tab === 1
+                ? <AllAssetInfoes
+                  list={assetInfoes || []}
+                  employees={employees || []}
+                  setAssetInfoes={setAssetInfoes}
+                />
+                : <AllManageInfo
+                  list={manageInfoes || []}
+                  assets={assetInfoes || []}
+                  employees={employees || []}
+                  setManageInfoes={setManageInfoes}
+                />
+            }
           </Grid>
         </Grid>
       </Container>
@@ -66,7 +66,9 @@ function assetOverview({ list = [], manageList = [], employees = [] }) {
   );
 }
 
-assetOverview.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+assetOverview.getLayout = (page) => (
+  <SidebarLayout>{page}</SidebarLayout>
+);
 
 export async function getServerSideProps() {
   const assetInfoes = await queryAssetApi.getAssetList('');
@@ -76,8 +78,8 @@ export async function getServerSideProps() {
     props: {
       list: assetInfoes || [],
       manageList: manageList || [],
-      employees: employees || []
-    } // will be passed to the page component as props
+      employees: employees || [],
+    }, // will be passed to the page component as props
   };
 }
 

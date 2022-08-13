@@ -7,9 +7,7 @@ import { energyApi } from 'src/queries/energy';
 
 function EnergyPanel() {
   const isMountedRef = useRefMounted();
-  const [yearEnergyData, setYearEnergyData] = useState<
-    YearlyEnergyDataSortedByType[]
-  >([]);
+  const [yearEnergyData, setYearEnergyData] = useState<YearlyEnergyDataSortedByType[]>([]);
 
   const getYearData = useCallback(async () => {
     try {
@@ -27,9 +25,14 @@ function EnergyPanel() {
     getYearData();
   }, [getYearData]);
 
-  if (yearEnergyData.length < 3) return null;
+  if (yearEnergyData.length < 3)
+    return null;
 
-  return <Card>{EnergyTypesOverviewUI(yearEnergyData)}</Card>;
+  return (
+    <Card>
+      {EnergyTypesOverviewUI(yearEnergyData)}
+    </Card>
+  );
 }
 
 export default EnergyPanel;

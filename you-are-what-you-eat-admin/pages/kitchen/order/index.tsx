@@ -3,17 +3,15 @@ import SidebarLayout from '@/layouts/SidebarLayout';
 import CurOrders from "@/content/Kitchen/Order/CurOrder";
 function curOrder() {
 
-
-  return (
-    <CurOrders />
-  )
+    return (
+        <CurOrders />
+    )
 }
 
 curOrder.getLayout = (page) => (
-  <SidebarLayout>{page}</SidebarLayout>
+    <SidebarLayout>{page}</SidebarLayout>
 );
 
 
 export default curOrder;
-
 

@@ -34,7 +34,7 @@ import Link from 'src/components/Link';
 
 import { TransitionProps } from '@mui/material/transitions';
 import CloseIcon from '@mui/icons-material/Close';
-import type { Promotion, PromotionStatus } from 'src/models/promotion';
+import type { Promotion, PromotionStatus } from 'src/models/promotion'
 import { useTranslation } from 'react-i18next';
 import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone';
 import Label from 'src/components/Label';
@@ -54,10 +54,11 @@ const DialogWrapper = styled(Dialog)(
 const formatDate = (date: Date) => {
   try {
     return format(date, 'MMMM dd yyyy');
-  } catch {
-    return '';
   }
-};
+  catch {
+    return ''
+  }
+}
 
 const AvatarError = styled(Avatar)(
   ({ theme }) => `
@@ -98,9 +99,7 @@ const Transition = forwardRef(function Transition(
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-const getPromotionStatusLabel = (
-  promotionStatus: PromotionStatus
-): JSX.Element => {
+const getPromotionStatusLabel = (promotionStatus: PromotionStatus): JSX.Element => {
   const map = {
     ready: {
       text: '未开始',
@@ -257,36 +256,35 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
   const selectedAllPromotions = selectedItems.length === promotions.length;
 
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
-  const [deletePromotionId, setDeletePromotionId] = useState('');
+  const [deletePromotionId, setDeletePromotionId] = useState("");
 
-  const handleConfirmDelete = (promotion_id?: string) => {
+  const handleConfirmDelete = (promotion_id? :string) => {
     setOpenConfirmDelete(true);
     setDeletePromotionId(promotion_id);
   };
 
   const closeConfirmDelete = () => {
     setOpenConfirmDelete(false);
-    setDeletePromotionId('');
+    setDeletePromotionId("");
   };
 
   const handleDeleteCompleted = () => {
-    promotionsApi
-      .deletePromotionById(deletePromotionId)
+    promotionsApi.deletePromotionById(deletePromotionId)
       .then((value) => {
-        alert('删除成功' + value);
+        alert("删除成功" + value);
       })
       .catch((value) => {
-        alert('删除失败' + value);
-      });
+        alert("删除失败" + value);
+      })
 
     // try {
-
-    // }
+      
+    // } 
     // catch(err) {
     //   alert("删除失败" + err);
     // }
     setOpenConfirmDelete(false);
-    setDeletePromotionId('');
+    setDeletePromotionId("");
   };
 
   return (
@@ -344,7 +342,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
             indeterminate={selectedSomePromotions}
             onChange={handleSelectAllPromotions}
           />
-          {
+          {(
             <Box
               flex={1}
               p={2}
@@ -368,7 +366,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                 rowsPerPageOptions={[5, 10, 15]}
               />
             </Box>
-          }
+          )}
         </Box>
         <Divider />
 
@@ -382,7 +380,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
             color="text.secondary"
             align="center"
           >
-            {t('当前找不到任何促销活动')}
+            {t("当前找不到任何促销活动")}
           </Typography>
         ) : (
           <>
@@ -429,7 +427,10 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                             {formatDate(promotion.start)}
                           </Typography>
                           <Typography noWrap variant="subtitle1">
-                            {t('截止至')} <b>{formatDate(promotion.end)}</b>
+                            {t('截止至')}{' '}
+                            <b>
+                              {formatDate(promotion.end)}
+                            </b>
                           </Typography>
                         </TableCell>
                         <TableCell>
@@ -458,9 +459,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
                             <Tooltip title={t('删除活动')} arrow>
                               <IconButton
                                 disabled={promotion.status === 'running'}
-                                onClick={() =>
-                                  handleConfirmDelete(promotion.id)
-                                }
+                                onClick={() => handleConfirmDelete(promotion.id)}
                                 color="primary"
                               >
                                 <DeleteTwoToneIcon fontSize="small" />
@@ -530,7 +529,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
             color="text.secondary"
             variant="h4"
           >
-            {t('此操作是不可逆的')}
+            {t("此操作是不可逆的")}
           </Typography>
 
           <Box>
@@ -545,10 +544,7 @@ const Results: FC<ResultsProps> = ({ promotions }) => {
               {t('再想想')}
             </Button>
             <ButtonError
-              onClick={() => {
-                handleDeleteCompleted();
-                window.location.reload();
-              }}
+              onClick={() => {handleDeleteCompleted(); window.location.reload();}}
               size="large"
               sx={{
                 mx: 1,

@@ -63,10 +63,12 @@ interface OrderSummaryProps {
   cryptoSummary: CryptoSummary;
 }
 
-//function OrderSummary(cryptoSummary: CryptoSummary)
-const OrderSummary: FC<OrderSummaryProps> = ({ cryptoSummary }) => {
-  const theme = useTheme();
 
+//function OrderSummary(cryptoSummary: CryptoSummary) 
+const OrderSummary: FC<OrderSummaryProps> = ({ cryptoSummary }) =>
+{
+  const theme = useTheme();
+  
   const chartOptions: ApexOptions = {
     chart: {
       background: 'transparent',
@@ -135,11 +137,11 @@ const OrderSummary: FC<OrderSummaryProps> = ({ cryptoSummary }) => {
   };
 
   const chartSeries = [
-    cryptoSummary.awaiting_count / cryptoSummary.order_count,
-    cryptoSummary.processing_count / cryptoSummary.order_count,
-    cryptoSummary.completed_count / cryptoSummary.order_count,
-    cryptoSummary.payed_count / cryptoSummary.order_count
-  ];
+    (cryptoSummary.awaiting_count/cryptoSummary.order_count), 
+  (cryptoSummary.processing_count/cryptoSummary.order_count), 
+  (cryptoSummary.completed_count/cryptoSummary.order_count), 
+  (cryptoSummary.payed_count/cryptoSummary.order_count)
+];
 
   return (
     <Card>
@@ -174,9 +176,7 @@ const OrderSummary: FC<OrderSummaryProps> = ({ cryptoSummary }) => {
                   <TrendingUp fontSize="large" />
                 </AvatarSuccess>
                 <Box>
-                  <Typography variant="h4">
-                    + ￥{Number(cryptoSummary.today_credit).toFixed(2)}
-                  </Typography>
+                  <Typography variant="h4">+ ￥{Number(cryptoSummary.today_credit).toFixed(2)}</Typography>
                   <Typography variant="subtitle2" noWrap>
                     今天
                   </Typography>
@@ -229,17 +229,12 @@ const OrderSummary: FC<OrderSummaryProps> = ({ cryptoSummary }) => {
                 >
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                      <Brightness1Icon fontSize="large" color="error" />
+                       <Brightness1Icon fontSize="large" color="error"/>
                     </ListItemAvatarWrapper>
                     <ListItemText
                       primary="待处理"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary={
-                        '￥' +
-                        Number(cryptoSummary.awaiting_credit)
-                          .toFixed(2)
-                          .toString()
-                      }
+                      secondary={"￥"+Number(cryptoSummary.awaiting_credit).toFixed(2).toString()}
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -247,30 +242,18 @@ const OrderSummary: FC<OrderSummaryProps> = ({ cryptoSummary }) => {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        {Number(
-                          (cryptoSummary.awaiting_count /
-                            cryptoSummary.order_count) *
-                            100
-                        )
-                          .toFixed(1)
-                          .toString()}
-                        %
+                       {Number(cryptoSummary.awaiting_count/cryptoSummary.order_count*100).toFixed(1).toString()}%
                       </Typography>
                     </Box>
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                      <Brightness1Icon fontSize="large" color="warning" />
+                      <Brightness1Icon fontSize="large" color="warning"/>
                     </ListItemAvatarWrapper>
                     <ListItemText
                       primary="制作中"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary={
-                        '￥' +
-                        Number(cryptoSummary.processing_credit)
-                          .toFixed(2)
-                          .toString()
-                      }
+                      secondary={"￥"+Number(cryptoSummary.processing_credit).toFixed(2).toString()}
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -278,30 +261,18 @@ const OrderSummary: FC<OrderSummaryProps> = ({ cryptoSummary }) => {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        {Number(
-                          (cryptoSummary.processing_count /
-                            cryptoSummary.order_count) *
-                            100
-                        )
-                          .toFixed(1)
-                          .toString()}
-                        %
+                      {Number(cryptoSummary.processing_count/cryptoSummary.order_count*100).toFixed(1).toString()}%
                       </Typography>
                     </Box>
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                      <Brightness1Icon fontSize="large" color="success" />
+                      <Brightness1Icon fontSize="large" color="success"/>
                     </ListItemAvatarWrapper>
                     <ListItemText
                       primary="已完成"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary={
-                        '￥' +
-                        Number(cryptoSummary.completed_credit)
-                          .toFixed(2)
-                          .toString()
-                      }
+                      secondary={"￥"+Number(cryptoSummary.completed_credit).toFixed(2).toString()}
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -309,28 +280,18 @@ const OrderSummary: FC<OrderSummaryProps> = ({ cryptoSummary }) => {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        {Number(
-                          (cryptoSummary.completed_count /
-                            cryptoSummary.order_count) *
-                            100
-                        )
-                          .toFixed(1)
-                          .toString()}
-                        %
+                      {Number(cryptoSummary.completed_count/cryptoSummary.order_count*100).toFixed(1).toString()}%
                       </Typography>
                     </Box>
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatarWrapper>
-                      <Brightness1Icon fontSize="large" color="primary" />
+                      <Brightness1Icon fontSize="large" color="primary"/>
                     </ListItemAvatarWrapper>
                     <ListItemText
                       primary="已支付"
                       primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary={
-                        '￥' +
-                        Number(cryptoSummary.payed_credit).toFixed(2).toString()
-                      }
+                      secondary={"￥"+Number(cryptoSummary.payed_credit).toFixed(2).toString()}
                       secondaryTypographyProps={{
                         variant: 'subtitle2',
                         noWrap: true
@@ -338,14 +299,7 @@ const OrderSummary: FC<OrderSummaryProps> = ({ cryptoSummary }) => {
                     />
                     <Box>
                       <Typography align="right" variant="h4" noWrap>
-                        {Number(
-                          (cryptoSummary.payed_count /
-                            cryptoSummary.order_count) *
-                            100
-                        )
-                          .toFixed(1)
-                          .toString()}
-                        %
+                      {Number(cryptoSummary.payed_count/cryptoSummary.order_count*100).toFixed(1).toString()}%
                       </Typography>
                     </Box>
                   </ListItem>
@@ -357,6 +311,6 @@ const OrderSummary: FC<OrderSummaryProps> = ({ cryptoSummary }) => {
       </Grid>
     </Card>
   );
-};
+}
 
 export default OrderSummary;

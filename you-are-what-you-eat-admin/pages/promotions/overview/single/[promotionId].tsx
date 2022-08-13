@@ -23,15 +23,13 @@ function SinglePromotionView() {
   const router = useRouter();
 
   const { promotionId } = router.query;
-  console.log('promotionid:', promotionId);
+  console.log('promotionid:' ,promotionId);
 
   const [promotion, setPrmotion] = useState<Promotion | null>(null);
 
   const getPromotion = useCallback(async () => {
     try {
-      const response = await promotionsApi.getPromotionById(
-        promotionId as string
-      );
+      const response = await promotionsApi.getPromotionById(promotionId as string);
 
       if (isMountedRef()) {
         setPrmotion(response);
@@ -75,6 +73,8 @@ function SinglePromotionView() {
   );
 }
 
-SinglePromotionView.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+SinglePromotionView.getLayout = (page) => (
+    <SidebarLayout>{page}</SidebarLayout>
+);
 
 export default SinglePromotionView;

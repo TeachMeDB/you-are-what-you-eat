@@ -12,40 +12,38 @@ import AllStockInfoes from '@/content/Kitchen/Stock/StockInfo';
 function stockInfo() {
 
 
+    return (
+        <>
 
-  return (
-    <>
-
-      <Head>
-        <title>库存信息</title>
-      </Head>
-      <PageTitleWrapper>
-        <StockPageHeader />
-      </PageTitleWrapper>
-      <Container maxWidth="lg">
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          spacing={3}
-        >
-          <Grid item xs={12}>
-            <AllStockInfoes />
-          </Grid>
-        </Grid>
-      </Container>
-      <Footer />
-    </>
-  )
-
+            <Head>
+                <title>库存信息</title>
+            </Head>
+            <PageTitleWrapper>
+                <StockPageHeader />
+            </PageTitleWrapper>
+            <Container maxWidth="lg">
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="stretch"
+                    spacing={3}
+                >
+                    <Grid item xs={12}>
+                        <AllStockInfoes />
+                    </Grid>
+                </Grid>
+            </Container>
+            <Footer />
+        </>
+    )
 }
 
-stockInfo.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
-
+stockInfo.getLayout = (page) => (
+    <SidebarLayout>{page}</SidebarLayout>
+);
 
 
 export default stockInfo;
-
 
 

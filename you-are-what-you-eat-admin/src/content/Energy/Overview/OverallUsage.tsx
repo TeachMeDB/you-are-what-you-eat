@@ -25,9 +25,14 @@ function OverallUsage() {
     getOverallUsage();
   }, [getOverallUsage]);
 
-  if (!overallUsage) return null;
+  if (!overallUsage)
+    return null;
 
-  return <Card>{OverallUsageUI(overallUsage)}</Card>;
+  return (
+    <Card>
+      {OverallUsageUI(overallUsage)}
+    </Card>
+  );
 }
 
 export default OverallUsage;

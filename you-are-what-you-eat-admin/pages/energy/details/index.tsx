@@ -10,11 +10,10 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 
 import { Grid } from '@mui/material';
 import { useRefMounted } from 'src/hooks/useRefMounted';
-import type { OriginalSensorData } from 'src/models/energy';
-import { energyApi } from 'src/queries/energy';
+import type { OriginalSensorData } from 'src/models/energy'
+import { energyApi } from 'src/queries/energy'
 import Results from '@/content/Energy/Details/DetailsTable';
-import { count } from 'src/utils/array';
-import { format } from 'date-fns';
+import { count } from 'src/utils/array'
 
 function SensorDataCards() {
   const isMountedRef = useRefMounted();
@@ -23,8 +22,8 @@ function SensorDataCards() {
   const getOriginalData = useCallback(async () => {
     try {
       const response = await energyApi.getOriginalSensorData(
-        '1970-01-01 00:00:00',
-        format(new Date(), 'yyyy-MM-dd HH:mm:ss')
+        0,
+        Number((new Date().getTime() / 1000).toFixed(0))
       );
 
       if (isMountedRef()) {
@@ -40,8 +39,8 @@ function SensorDataCards() {
   }, [getOriginalData]);
 
   var water = count(originalData, (e) => e.sensor_type === '水表:Ton');
-  var power = count(originalData, (e) => e.sensor_type === '电表:KwH');
-  var gas = count(originalData, (e) => e.sensor_type === '气表:m^3');
+  var power = count(originalData, (e) => e.sensor_type === '电表:KwH');;
+  var gas = count(originalData, (e) => e.sensor_type === '气表:m^3');;
 
   return (
     <>
@@ -65,14 +64,14 @@ function SensorDataCards() {
         </Grid>
         {originalData.map((data) => (
           <Grid key={data.sensor_id} item xs={12}>
-            <Results
-              logs={data.logs}
-              type={data.sensor_type}
-              id={data.sensor_id}
-              model={data.sensor_model}
-              location={data.sensor_location}
-            />
-          </Grid>
+          <Results 
+            logs={data.logs} 
+            type={data.sensor_type} 
+            id={data.sensor_id}
+            model={data.sensor_model}
+            location={data.sensor_location}
+          />
+        </Grid>
         ))}
       </Grid>
       <Footer />
@@ -80,6 +79,8 @@ function SensorDataCards() {
   );
 }
 
-SensorDataCards.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+SensorDataCards.getLayout = (page) => (
+    <SidebarLayout>{page}</SidebarLayout>
+);
 
 export default SensorDataCards;

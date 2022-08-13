@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import type { DailyOrderStatic } from '@/models/order';
 import StatisticCardData from './StatisticCardData';
-import { ordersApi } from '@/queries/orders';
+import { ordersApi } from '@/queries/orders'
 
 function RecentOrdersList() {
   const isMountedRef = useRefMounted();
@@ -25,9 +25,14 @@ function RecentOrdersList() {
     getOrdersInTimePeriod();
   }, [getOrdersInTimePeriod]);
 
-  if (!statisticData) return null;
+  if (!statisticData)
+    return null;
 
-  return <>{StatisticCardData(statisticData)}</>;
+  return (
+    <>
+      {StatisticCardData(statisticData)}
+    </>
+  );
 }
 
 export default RecentOrdersList;

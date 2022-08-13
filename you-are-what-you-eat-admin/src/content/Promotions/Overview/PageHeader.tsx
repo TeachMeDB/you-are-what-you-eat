@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { wait } from 'src/utils/wait';
-import SelectDishTable from 'src/content/Promotions/Overview/SelectDishTable';
+import SelectDishTable from 'src/content/Promotions/Overview/SelectDishTable'
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import { getDayTime } from '@/utils/date';
 import { Dispatch, SetStateAction } from 'react';
@@ -37,7 +37,7 @@ import {
 } from '@mui/material';
 import DatePicker from '@mui/lab/DatePicker';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
+import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone'
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import { SelectableDish, SelectedDish } from '@/models/promotion';
 import { promotionsApi } from '@/queries/promotions';
@@ -77,31 +77,27 @@ const IconButtonError = styled(IconButton)(
 `
 );
 
-function PageHeader(
-  refresh?: boolean,
-  setRefresh?: Dispatch<SetStateAction<boolean>>
-) {
+function PageHeader(refresh?: boolean, setRefresh?: Dispatch<SetStateAction<boolean>>) {
   const isMountedRef = useRefMounted();
   const { t }: { t: any } = useTranslation();
   const [open, setOpen] = useState(false);
   const [selectDishDialogOpen, setSelectDishDialogOpen] = useState(false);
-  const [selectableDishes, setSelectableDishes] = useState<SelectableDish[]>(
-    []
-  );
+  const [selectableDishes, setSelectableDishes] = useState<SelectableDish[]>([]);
   const [selectedDishes, setSelectedDishes] = useState<SelectedDish[]>([]);
   const [newPromotionCover, setNewPromotionCover] = useState<string>('');
 
-  const getSelectableDishes = useCallback(async () => {
+  const getSelectableDishes = useCallback(async() => {
     try {
       const response = await promotionsApi.getSelectableDishes();
-      if (isMountedRef()) setSelectableDishes(response);
-    } catch (err) {
-      console.log(err);
+      if (isMountedRef())
+        setSelectableDishes(response)
+    } catch(err) {
+      console.log(err)
     }
-  }, [isMountedRef]);
+  }, [isMountedRef])
 
   useEffect(() => {
-    getSelectableDishes();
+    getSelectableDishes()
   }, [getSelectableDishes]);
 
   // const { enqueueSnackbar } = useSnackbar();
@@ -110,9 +106,7 @@ function PageHeader(
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [value, setValue] = useState<Date | null>(new Date());
-  const [value1, setValue1] = useState<Date | null>(
-    new Date(getDayTime(new Date(), 1, ''))
-  );
+  const [value1, setValue1] = useState<Date | null>(new Date(getDayTime(new Date(), 1, '')));
 
   const handleCreatePromotionOpen = () => {
     setOpen(true);
@@ -124,12 +118,15 @@ function PageHeader(
   };
 
   const handleCreatePromotionSuccess = (title?: string, desc?: string) => {
-    if (title) console.log(title);
-    if (desc) console.log(desc);
-    else console.log('err');
+    if (title)
+      console.log(title);
+    if (desc)
+      console.log(desc);
+    else
+      console.log('err');
     console.log(value, value1);
 
-    alert(`新的活动创建成功`);
+    alert(`新的活动创建成功`)
 
     setSelectedDishes([]);
     setValue(new Date());
@@ -138,7 +135,7 @@ function PageHeader(
     setNewPromotionCover('');
     // 刷新父组件，显示新的
     if (setRefresh && refresh) {
-      setRefresh(!refresh);
+      setRefresh(!refresh)
     }
     window.parent.location.reload();
   };
@@ -150,7 +147,9 @@ function PageHeader(
           <Typography variant="h3" component="h3" gutterBottom>
             {t('促销活动')}
           </Typography>
-          <Typography variant="subtitle2">{t('全部促销活动')}</Typography>
+          <Typography variant="subtitle2">
+            {t('全部促销活动')}
+          </Typography>
         </Grid>
         <Grid item>
           <Button
@@ -165,6 +164,9 @@ function PageHeader(
           </Button>
         </Grid>
       </Grid>
+
+
+
 
       {/*创建促销弹窗 */}
       <Dialog
@@ -192,7 +194,9 @@ function PageHeader(
             submit: null
           }}
           validationSchema={Yup.object().shape({
-            title: Yup.string().max(255).required(t('活动名是必填的'))
+            title: Yup.string()
+              .max(255)
+              .required(t('活动名是必填的')),
           })}
           onSubmit={async (
             _values,
@@ -200,19 +204,16 @@ function PageHeader(
           ) => {
             const param = {
               description: `${_values.title}: ${_values.desc}`,
-              start: getDayTime(value, 0, 'begin'),
-              end: getDayTime(value1, 0, 'end'),
+              start: getDayTime(value, 0, "begin"),
+              end: getDayTime(value1, 0, "end"),
               dishes: selectedDishes.map((d) => {
                 return {
                   discount: d.discount,
                   name: d.name
-                };
+                }
               }),
-              cover:
-                newPromotionCover === ''
-                  ? null
-                  : newPromotionCover.split('base64,')[1]
-            };
+              cover: newPromotionCover === '' ? null : newPromotionCover.split('base64,')[1]
+            }
             try {
               await wait(1000);
               await promotionsApi.postNewPromotion(param);
@@ -220,7 +221,8 @@ function PageHeader(
               setStatus({ success: true });
               setSubmitting(false);
               handleCreatePromotionSuccess();
-            } catch (err) {
+            } 
+            catch (err) {
               console.error(err);
               alert(`创建失败: ${JSON.stringify(param)} \n错误：${err}`);
               setStatus({ success: false });
@@ -318,38 +320,35 @@ function PageHeader(
                   </Grid>
                   <Grid item xs={12}>
                     <Box m={2}>
-                      <Box pb={1} mb={1}>
-                        <b>{t('活动封面图')}:</b>
-                      </Box>
-                      <CardCover>
-                        <CardMedia image={newPromotionCover} />
-                        <CardCoverAction>
-                          <Input
-                            accept="image/*"
-                            id="change-cover"
-                            multiple
-                            type="file"
-                            onChange={(event) => {
-                              if (event.target.files.length > 0) {
-                                let file = event.target.files[0];
-                                GenerateBase64(file, (url: string) => {
-                                  setNewPromotionCover(url);
-                                });
-                              }
-                            }}
-                          />
-                          <label htmlFor="change-cover">
-                            <Button
-                              startIcon={<UploadTwoToneIcon />}
-                              variant="contained"
-                              component="span"
-                            >
-                              上传活动封面
-                            </Button>
-                          </label>
-                        </CardCoverAction>
-                      </CardCover>
+                    <Box pb={1} mb={1}>
+                      <b>{t('活动封面图')}:</b>
                     </Box>
+                    <CardCover>
+                      <CardMedia image={newPromotionCover} />
+                      <CardCoverAction>
+                        <Input accept="image/*" id="change-cover"
+                        multiple 
+                        type="file" 
+                        onChange={(event)=>{
+                          if(event.target.files.length>0){
+                            let file=event.target.files[0];
+                            GenerateBase64(file,(url:string)=>{
+                              setNewPromotionCover(url);
+                            });
+                          }
+                        }}/>
+                        <label htmlFor="change-cover">
+                          <Button
+                            startIcon={<UploadTwoToneIcon />}
+                            variant="contained"
+                            component="span"
+                          >
+                            上传活动封面
+                          </Button>
+                        </label>
+                      </CardCoverAction>
+                    </CardCover>  
+                    </ Box>
                   </Grid>
                 </Grid>
               </DialogContent>
@@ -372,29 +371,28 @@ function PageHeader(
                         </TableCell>
                         <TableCell>
                           <TextField
-                            id="outlined-select-currency"
-                            select
-                            label="折扣"
-                            value={`${dish.discount * 10}`}
-                            onChange={(e) => {
-                              var changeIdx = selectedDishes.findIndex(
-                                (d) => d.name === dish.name
-                              );
-                              var newDishes = [...selectedDishes];
-                              newDishes[changeIdx].discount =
-                                Number(e.target.value) / 10;
-                              setSelectedDishes(newDishes);
-                            }}
-                            helperText="在此处选择菜品的折扣幅度"
-                          >
-                            {[9, 8, 7, 6, 5, 4, 3, 2, 1].map((disc) => (
-                              <MenuItem key={disc} value={disc}>
-                                {disc}
-                              </MenuItem>
-                            ))}
-                          </TextField>
+                          id="outlined-select-currency"
+                          select
+                          label="折扣"
+                          value={`${dish.discount * 10}`}
+                          onChange={(e) => {
+                            var changeIdx = selectedDishes.findIndex((d) => d.name === dish.name);
+                            var newDishes = [...selectedDishes];
+                            newDishes[changeIdx].discount = Number(e.target.value) / 10;
+                            setSelectedDishes(newDishes);
+                          }}
+                          helperText="在此处选择菜品的折扣幅度"
+                        >
+                          {[9, 8, 7, 6, 5, 4, 3, 2, 1].map((disc) => (
+                            <MenuItem key={disc} value={disc}>
+                              {disc}
+                            </MenuItem>
+                          ))}
+                        </TextField>
                         </TableCell>
-                        <TableCell>￥{dish.price}</TableCell>
+                        <TableCell>
+                          ￥{dish.price}
+                        </TableCell>
                         <TableCell>
                           ￥{(dish.price * dish.discount).toFixed(2)}
                         </TableCell>
@@ -403,10 +401,8 @@ function PageHeader(
                             <IconButtonError
                               onClick={() => {
                                 setSelectedDishes(
-                                  selectedDishes.filter(
-                                    (d) => d.name !== dish.name
-                                  )
-                                );
+                                  selectedDishes.filter((d) => d.name !== dish.name)
+                                )
                               }}
                             >
                               <DeleteTwoToneIcon fontSize="small" />
@@ -452,7 +448,8 @@ function PageHeader(
                   p: 3
                 }}
               >
-                <Box></Box>
+                <Box>
+                </Box>
                 <Box>
                   <Button
                     fullWidth={mobile}
@@ -485,6 +482,8 @@ function PageHeader(
         </Formik>
       </Dialog>
 
+
+
       <Dialog
         fullWidth
         maxWidth="md"
@@ -503,37 +502,39 @@ function PageHeader(
             {t('选择参与促销活动的菜品')}
           </Typography>
         </DialogTitle>
-        {
-          <>
-            <Box sx={{ p: 1 }}>
-              <SelectDishTable
-                selectableDishes={selectableDishes}
-                parentSelectedDishes={selectedDishes}
-                setParentSelectedDishes={setSelectedDishes}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: { xs: 'block', sm: 'flex' },
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                p: 3
-              }}
-            >
-              <Box>
-                <Button
-                  fullWidth={mobile}
-                  type="submit"
-                  variant="contained"
-                  size="large"
-                  onClick={() => setSelectDishDialogOpen(false)}
-                >
-                  {t('确认选择')}
-                </Button>
+          {
+            <>
+              <Box
+                sx={{p:1}}
+              >
+                <SelectDishTable 
+                  selectableDishes={selectableDishes} 
+                  parentSelectedDishes={selectedDishes}
+                  setParentSelectedDishes={setSelectedDishes}
+                  />
               </Box>
-            </Box>
-          </>
-        }
+              <Box
+                sx={{
+                  display: { xs: 'block', sm: 'flex' },
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  p: 3
+                }}
+              >
+                <Box>
+                  <Button
+                    fullWidth={mobile}
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    onClick={() => setSelectDishDialogOpen(false)}
+                  >
+                    {t('确认选择')}
+                  </Button>
+                </Box>
+              </Box>
+              </>
+          }
       </Dialog>
     </>
   );

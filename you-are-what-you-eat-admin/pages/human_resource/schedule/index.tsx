@@ -3,13 +3,22 @@ import SidebarLayout from '@/layouts/SidebarLayout';
 
 import { Grid, Container, IconButton, Typography } from '@mui/material';
 
+
 import { useState } from 'react';
+
 
 import Scrollbar from '@/components/Scrollbar';
 
+
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 
-import { Box, styled, Divider, Drawer, useTheme } from '@mui/material';
+import {
+  Box,
+  styled,
+  Divider,
+  Drawer,
+  useTheme
+} from '@mui/material';
 
 import PositionSchedule from '@/content/HumanResource/Schedule/PositionSchedule';
 import ScheduleOperation from '@/content/HumanResource/Schedule/ScheduleOperation';
@@ -62,17 +71,22 @@ const DrawerWrapperMobile = styled(Drawer)(
 `
 );
 
+
+
 function ScheduleManagement() {
-  const [selectedStartTime, setSelectedStartTime] = useState('');
-  const [selectedEndTime, setSelectedEndTime] = useState('');
 
-  const [selectedPlace, setSelectedPlace] = useState('');
+  const [selectedStartTime,setSelectedStartTime]=useState("");
+  const [selectedEndTime,setSelectedEndTime]=useState("");
 
-  const [selectedOccupation, setSelectedOccupation] = useState('');
 
-  const [selectedWeek, setSelectedWeek] = useState(new Date(Date.now()));
+  const [selectedPlace,setSelectedPlace]=useState("");
 
-  const [selectedPeople, setSelectedPeople] = useState<Avaliable[]>([]);
+  const [selectedOccupation,setSelectedOccupation]=useState("");
+
+  const [selectedWeek,setSelectedWeek]=useState(new Date(Date.now()))
+
+  const [selectedPeople,setSelectedPeople]=useState<Avaliable[]>([]);
+
 
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -81,29 +95,17 @@ function ScheduleManagement() {
     setMobileOpen(!mobileOpen);
   };
 
-  const schedule = (
+  const schedule=(
     <ScheduleOperation
-      handleSelectStartTime={(x) => {
-        setSelectedStartTime(x);
-      }}
-      handleSelectEndTime={(x) => {
-        setSelectedEndTime(x);
-      }}
-      handleSelectWeek={(x) => {
-        setSelectedWeek(x);
-      }}
-      handleSelectOccupation={(x) => {
-        setSelectedOccupation(x);
-        console.log('changing occupaiton:', x);
-      }}
-      handleSelectPlace={(x) => {
-        setSelectedPlace(x);
-        console.log('changing place:', x);
-      }}
-      week={selectedWeek}
-      people={selectedPeople}
-    />
+            handleSelectStartTime={(x)=>{setSelectedStartTime(x)} }
+            handleSelectEndTime={(x)=>{setSelectedEndTime(x)} }
+            handleSelectWeek={(x)=>{setSelectedWeek(x)} }
+            handleSelectOccupation={(x)=>{setSelectedOccupation(x);console.log("changing occupaiton:",x)} }
+            handleSelectPlace={(x)=>{setSelectedPlace(x);console.log("changing place:",x)} }
+            week={selectedWeek}
+            people={selectedPeople}/>
   );
+
 
   return (
     <>
@@ -117,9 +119,12 @@ function ScheduleManagement() {
           justifyContent="center"
           alignItems="stretch"
           spacing={3}
-        ></Grid>
+        >
+        </Grid>
       </Container>
       <RootWrapper className="Mui-FixedWrapper">
+
+
         <DrawerWrapperMobile
           sx={{
             display: { lg: 'none', xs: 'inline-block' }
@@ -129,15 +134,20 @@ function ScheduleManagement() {
           open={mobileOpen}
           onClose={handleDrawerToggle}
         >
-          <Scrollbar>{schedule}</Scrollbar>
+          <Scrollbar>
+            {schedule}
+          </Scrollbar>
         </DrawerWrapperMobile>
+
 
         <Sidebar
           sx={{
             display: { xs: 'none', lg: 'inline-block' }
           }}
         >
+
           {schedule}
+            
         </Sidebar>
 
         <Grid
@@ -146,13 +156,15 @@ function ScheduleManagement() {
           alignItems="stretch"
           spacing={1}
           padding={1.5}
-        >
+          >
+
+
           <TopBar
             sx={{
               display: { xs: 'flex', lg: 'none' }
             }}
           >
-            <Typography variant="h4">排班选项</Typography>
+            <Typography variant='h4'>排班选项</Typography>
             <IconButtonToggle
               sx={{
                 display: { lg: 'none', xs: 'flex' },
@@ -162,42 +174,41 @@ function ScheduleManagement() {
               onClick={handleDrawerToggle}
               size="small"
             >
+
               <MenuTwoToneIcon />
             </IconButtonToggle>
           </TopBar>
 
-          <PositionSchedule
-            key={
-              selectedPlace + selectedOccupation + selectedWeek.toISOString()
-            }
+          <PositionSchedule 
+            key={selectedPlace+selectedOccupation+selectedWeek.toISOString()}
             place={selectedPlace}
-            occupation={selectedOccupation}
+            occupation={selectedOccupation} 
             week={selectedWeek}
-          />
+            />
+
 
           <Divider />
 
-          <AvailableEmployee
-            key={
-              selectedPlace +
-              selectedOccupation +
-              selectedStartTime +
-              selectedEndTime
-            }
-            startTime={selectedStartTime}
-            endTime={selectedEndTime}
-            place={selectedPlace}
-            occupation={selectedOccupation}
-            handleSelectPeople={(x) => {
-              setSelectedPeople(x);
-            }}
-          />
+
+          <AvailableEmployee 
+            key={selectedPlace+selectedOccupation+selectedStartTime+selectedEndTime}
+            startTime={selectedStartTime} 
+            endTime={selectedEndTime} 
+            place={selectedPlace} 
+            occupation={selectedOccupation} 
+            handleSelectPeople={(x)=>{setSelectedPeople(x)}}
+            />
+
         </Grid>
+
       </RootWrapper>
+
     </>
   );
 }
 
-ScheduleManagement.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+ScheduleManagement.getLayout = (page) => (
+  <SidebarLayout>{page}</SidebarLayout>
+);
 
 export default ScheduleManagement;
