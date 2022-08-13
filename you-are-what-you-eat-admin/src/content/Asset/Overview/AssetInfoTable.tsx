@@ -69,6 +69,10 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
     { assets_id: '', assets_type: '', assets_status: '', employee_id: 0 });
   const [open, setOpen] = React.useState(false);
   const [repairOpen, setRepairOpen] = useState(false);
+  const [repair, setRepair] = useState<Repair[]>([]);
+  const [repairFormValue, setRepairFormValue] = useState(
+    { name: '', phone: '', longitude: '', latitude: '' });
+  const [repairFormVisible, setRepairFormVisible] = useState(false);
 
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage);
@@ -88,8 +92,8 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
   };
 
   const handleOpenRepair = (assetInfo) => {
-    console.log(assetInfo, ' <-- assetInfo');
     setRepairOpen(true);
+    setRepair(assetInfo.repair || []);
   };
 
   const handleClose = () => {
@@ -99,7 +103,6 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
     setRepairOpen(false);
   };
   const handleSubmit = async () => {
-    console.log(formValue, ' <-- formValue');
     const {
       assets_id: assetsId = '',
       assets_type: assetsType = '',
@@ -119,7 +122,6 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
   };
 
   const handleFormChange = (field, e) => {
-    console.log(field, ' <-- field');
     setFormValue({ ...formValue, [field]: e.target.value });
   };
 
@@ -128,41 +130,61 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
     setAssetInfoes(assetInfoes.filter(val => val.assets_id != id));
   };
 
+  const handleRepairFormChange = (field: string, e) => {
+    setRepairFormValue({ ...repairFormValue, [field]: e.target.value });
+  };
+
+  const submitRepairForm = async () => {
+    const { latitude, longitude, name, phone } = repairFormValue;
+    if (!name || !phone || !latitude || !longitude) {
+      return;
+    }
+    await queryAssetApi.addAssetRepair(repairFormValue);
+    setRepair([
+      ...repair,
+      { ...repairFormValue, longitude: parseFloat(longitude), latitude: parseFloat(latitude) },
+    ]);
+    setRepairFormValue({ name: '', phone: '', longitude: '', latitude: '' });
+    const data = await queryAssetApi.getAssetList(keyword);
+    setAssetInfoes(data);
+  };
+
   const data = assetInfoes.slice(page * limit, page * limit + limit);
-    // .map(val => {
-    //   val.repair = [
-    //     {
-    //       name: '上海市嘉定区安亭镇曹安公路4800号',
-    //       phone: '13907589021',
-    //       longitude: 121.21792,
-    //       latitude: 31.28698,
-    //     },
-    //     {
-    //       name: '上海市嘉定区嘉松北路6130弄',
-    //       phone: '17809563528',
-    //       longitude: 121.22216,
-    //       latitude: 31.28826,
-    //     },
-    //     {
-    //       name: '上海市嘉定区雅丹路673号',
-    //       phone: '189086902367',
-    //       longitude: 121.19936,
-    //       latitude: 31.29346,
-    //     },
-    //     {
-    //       name: '上海市嘉定区绿苑路587号',
-    //       phone: '18200985623',
-    //       longitude: 121.21105,
-    //       latitude: 31.28032,
-    //     },
-    //   ];
-    //   return val;
-    // });
+  // .map(val => {
+  //   val.repair = [
+  //     {
+  //       name: '上海市嘉定区安亭镇曹安公路4800号',
+  //       phone: '13907589021',
+  //       longitude: 121.21792,
+  //       latitude: 31.28698,
+  //     },
+  //     {
+  //       name: '上海市嘉定区嘉松北路6130弄',
+  //       phone: '17809563528',
+  //       longitude: 121.22216,
+  //       latitude: 31.28826,
+  //     },
+  //     {
+  //       name: '上海市嘉定区雅丹路673号',
+  //       phone: '189086902367',
+  //       longitude: 121.19936,
+  //       latitude: 31.29346,
+  //     },
+  //     {
+  //       name: '上海市嘉定区绿苑路587号',
+  //       phone: '18200985623',
+  //       longitude: 121.21105,
+  //       latitude: 31.28032,
+  //     },
+  //   ];
+  //   return val;
+  // });
 
   const mapCenter = (points?: Repair[]) => {
-    if (!points) {
+    if (!points || points.length === 0) {
       return { longitude: 121.21000, latitude: 31.28698 };
     }
+    console.log(points, ' <-- points');
     return {
       longitude: points.reduce((prev, curr) => prev + curr.longitude, 0) / points.length,
       latitude: points.reduce((prev, curr) => prev + curr.latitude, 0) / points.length,
@@ -439,25 +461,91 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
                         {/*    </TableBody>*/}
                         {/*  </Table>*/}
                         {/*</TableContainer>*/}
-                        <div style={{ width: '500px', height: '400px' }}>
-                          <Map
-                            amapkey={'7f7527142abd6382ecc1950a2d568888'}
-                            version={'1.4.0'}
-                            plugins={['ToolBar']}
-                            center={mapCenter(assetInfo.repair)}
-                            zoom={14}
+                        <div style={{ height: '600px' }}>
+                          <div style={{ width: '540px', height: '400px' }}>
+                            <Map
+                              amapkey={'7f7527142abd6382ecc1950a2d568888'}
+                              version={'1.4.0'}
+                              plugins={['ToolBar']}
+                              center={mapCenter(repair)}
+                              zoom={12}
+                            >
+                              {
+                                (repair || []).map((val, i) =>
+                                  <Marker
+                                    key={val.name}
+                                    position={{ longitude: val.longitude, latitude: val.latitude }}
+                                    label={{ content: i + 1, offset: { x: 2, y: -25 } }}
+                                    title={`${val.name}\n联系方式： ${val.phone}`}
+                                  />,
+                                )
+                              }
+                            </Map>
+                          </div>
+                          <div
+                            style={{
+                              marginTop: '12px',
+                              display: 'flex',
+                              justifyContent: 'center',
+                            }}
                           >
-                            {
-                              (assetInfo.repair || []).map((val, i) =>
-                                <Marker
-                                  key={val.name}
-                                  position={{ longitude: val.longitude, latitude: val.latitude }}
-                                  label={{ content: i + 1, offset: { x: 2, y: -25 } }}
-                                  title={`${val.name}\n联系方式： ${val.phone}`}
-                                />,
-                              )
-                            }
-                          </Map>
+                            <Button
+                              variant="contained"
+                              onClick={() => setRepairFormVisible(true)}
+                            >添加维修点</Button>
+                          </div>
+                          {
+                            repairFormVisible &&
+                            <div style={{ marginTop: '12px', height: '200px' }}>
+                              <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                label="维修点地址"
+                                fullWidth
+                                variant="standard"
+                                value={repairFormValue.name}
+                                onChange={(e) => handleRepairFormChange('name', e)}
+                              />
+                              <TextField
+                                margin="dense"
+                                id="phone"
+                                label="联系方式"
+                                fullWidth
+                                variant="standard"
+                                onChange={(e) => handleRepairFormChange('phone', e)}
+                              />
+                              <TextField
+                                margin="dense"
+                                id="name"
+                                label="经度"
+                                fullWidth
+                                variant="standard"
+                                value={repairFormValue.longitude}
+                                onChange={(e) => handleRepairFormChange('longitude', e)}
+                              />
+                              <TextField
+                                margin="dense"
+                                id="name"
+                                label="维度"
+                                fullWidth
+                                variant="standard"
+                                value={repairFormValue.latitude}
+                                onChange={(e) => handleRepairFormChange('latitude', e)}
+                              />
+                              <div>提示：经纬度可通过<a
+                                href="https://jingweidu.bmcx.com/"
+                                target="_blank"
+                              >此链接</a>查询
+                              </div>
+                              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                <Button
+                                  variant="contained"
+                                  onClick={submitRepairForm}
+                                >提交</Button>
+                              </div>
+                            </div>
+                          }
                         </div>
                       </DialogContent>
                       <DialogActions>

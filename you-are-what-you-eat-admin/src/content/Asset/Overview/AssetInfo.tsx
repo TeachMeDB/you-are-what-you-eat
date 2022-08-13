@@ -11,7 +11,6 @@ interface AssetInfoProps {
 }
 
 function AllAssetInfoes({ list = [], employees = [], setAssetInfoes }: AssetInfoProps) {
-  console.log(list, ' <-- list');
   return (
     <Card>
       <AssetInfoTable assetInfoes={list} setAssetInfoes={setAssetInfoes} employees={employees} />
