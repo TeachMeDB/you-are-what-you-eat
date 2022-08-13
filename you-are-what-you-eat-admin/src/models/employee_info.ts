@@ -1,4 +1,4 @@
 export interface EmployeeInfo {
-  employee_id: number,
-  employee_name: string,
+  employee_id: number;
+  employee_name: string;
 }

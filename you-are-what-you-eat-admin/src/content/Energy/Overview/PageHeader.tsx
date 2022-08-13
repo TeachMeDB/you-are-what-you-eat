@@ -57,9 +57,7 @@ function PageHeader() {
             {t('能源管理')}
           </Typography>
           <Typography variant="subtitle2">
-            {t(
-              '查看餐厅能源使用概况和记录'
-            )}
+            {t('查看餐厅能源使用概况和记录')}
           </Typography>
         </Box>
       </Box>
@@ -82,8 +80,7 @@ function PageHeader() {
           justifyContent="space-around"
           alignItems="center"
           spacing={0}
-        >
-        </Stack>
+        ></Stack>
       </Card>
     </Box>
   );

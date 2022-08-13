@@ -4,9 +4,18 @@ export interface CryptoOrder {
   order_id : string;
   creation_time : string;
   table_id : string;
-  status: CryptoOrderStatus;
+  order_status: CryptoOrderStatus;
   total_price: number;
 }
+
+
+export interface CryptoOrderEdit {
+  order_id : string;
+  creation_time : string;
+  table_id : string;
+  order_status: CryptoOrderStatus;
+}
+
 
 export interface CryptoSummary
 {

@@ -4,7 +4,6 @@ import Schedule from '@/components/Schedule';
 
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 
-
 import PageviewIcon from '@mui/icons-material/Pageview';
 
 import * as React from 'react';
@@ -31,15 +30,18 @@ const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement;
   },
-  ref: React.Ref<unknown>,
+  ref: React.Ref<unknown>
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-
-
-
-export default function EmployeeSchedule({person,week}:{person:Avaliable,week:Date}) {
+export default function EmployeeSchedule({
+  person,
+  week
+}: {
+  person: Avaliable;
+  week: Date;
+}) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -56,21 +58,22 @@ export default function EmployeeSchedule({person,week}:{person:Avaliable,week:Da
 
   const [schedules, setSchedules] = React.useState<ScheduleEntity[]>([]);
 
-
   const getAllData = React.useCallback(async () => {
     try {
-
-
-      let weekStart=startOfWeek(week);
-      let weekEnd=endOfWeek(week);
+      let weekStart = startOfWeek(week);
+      let weekEnd = endOfWeek(week);
 
       let employees = await humanResourceApi.getEmployeeDetail(person.id);
 
-      let schedule = await scheduleApi.getSchedule(format(weekStart,"yyyy-MM-dd HH:mm:ss"),format(weekEnd,"yyyy-MM-dd HH:mm:ss"),person.id);
+      let schedule = await scheduleApi.getSchedule(
+        format(weekStart, 'yyyy-MM-dd HH:mm:ss'),
+        format(weekEnd, 'yyyy-MM-dd HH:mm:ss'),
+        person.id
+      );
 
       if (isMountedRef()) {
         setEmployee(employees);
-        
+
         setSchedules(schedule);
       }
     } catch (err) {
@@ -78,14 +81,14 @@ export default function EmployeeSchedule({person,week}:{person:Avaliable,week:Da
     }
   }, [isMountedRef]);
 
-
   return (
     <div>
       <Button
         variant="outlined"
         size="small"
-        startIcon={<PageviewIcon/>}
+        startIcon={<PageviewIcon />}
         onClick={handleClickOpen}
+        fullWidth={true}
       >
         查看日程
       </Button>
@@ -101,80 +104,73 @@ export default function EmployeeSchedule({person,week}:{person:Avaliable,week:Da
               color="inherit"
               onClick={handleClose}
               aria-label="close"
-              size='large'
+              size="large"
             >
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 4, flex: 1 }} variant="h2" component="div">
               员工详情时间表界面
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose} size="large">
-              保存
+            <Button
+              autoFocus
+              color="inherit"
+              onClick={handleClose}
+              size="large"
+            >
+              关闭
             </Button>
           </Toolbar>
         </AppBar>
         <Container sx={{ mt: 3 }} maxWidth="lg">
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          spacing={3}
-        >
-          <Grid item xs={12} md={8}>
-            <ProfileCover user={employee}/>
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="stretch"
+            spacing={3}
+          >
+            <Grid item xs={12} md={8}>
+              <ProfileCover user={employee} />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Summary user={employee} />
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={4}>
-            <Summary user={employee}/>
+        </Container>
+
+        <Container maxWidth="lg">
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="stretch"
+            spacing={3}
+          >
+            <Grid item></Grid>
           </Grid>
-        </Grid>
-      </Container>
 
-      <Container maxWidth="lg">
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          spacing={3}
-        >
-        
-        <Grid item ></Grid>
-          
+          <Card>
+            <CardHeader
+              title={
+                <Typography variant="h3">
+                  <EventAvailableIcon /> 当期排班表
+                </Typography>
+              }
+            />
+            <Divider />
+            <Schedule schedules={schedules} />
+          </Card>
 
-
-        </Grid>
-
-        <Card>
-
-        <CardHeader title={<Typography variant="h3"><EventAvailableIcon />  选中排班表</Typography>} />
-        <Divider />
-        <Schedule schedules={schedules}/>
-
-
-        </Card>
-
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          spacing={3}
-        >
-        
-        <Grid item ></Grid>
-          
-
-
-        </Grid>
-
-
-      </Container>
-
-
-      
-
-      
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="stretch"
+            spacing={3}
+          >
+            <Grid item></Grid>
+          </Grid>
+        </Container>
       </Dialog>
     </div>
   );

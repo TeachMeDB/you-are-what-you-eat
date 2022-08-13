@@ -18,8 +18,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { humanResourceApi } from '@/queries/employee';
 import { EmployeeDetail } from '@/models/employee';
 
-
-import { differenceInYears, format, formatDistance, formatRelative, subDays } from 'date-fns'
+import {
+  differenceInYears,
+  format,
+  formatDistance,
+  formatRelative,
+  subDays
+} from 'date-fns';
 
 const Input = styled('input')({
   display: 'none'
@@ -83,16 +88,13 @@ const CardCoverAction = styled(Box)(
 `
 );
 
-
-
-const ProfileCover = ({user}:{user:EmployeeDetail}) => {
-
+const ProfileCover = ({ user }: { user: EmployeeDetail }) => {
   return (
     <>
       <Box display="flex" mb={3}>
         <Tooltip arrow placement="top" title="个人信息">
           <IconButton color="primary" sx={{ p: 2, mr: 2 }}>
-            <BadgeIcon/>
+            <BadgeIcon />
           </IconButton>
         </Tooltip>
         <Box>
@@ -116,41 +118,36 @@ const ProfileCover = ({user}:{user:EmployeeDetail}) => {
         </Typography>
 
         <Typography variant="subtitle2">
-
-            这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话
-            等完了我找个每日一句贴上去
+          这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话
+          等完了我找个每日一句贴上去
         </Typography>
         <Typography sx={{ py: 2 }} variant="subtitle2" color="text.primary">
-          员工出生日期 ： {user.birthday} | 年龄 ： {differenceInYears(Date.now(),Date.parse(user.birthday))}岁
+          员工出生日期 ： {user.birthday} | 年龄 ：{' '}
+          {differenceInYears(Date.now(), Date.parse(user.birthday))}岁
         </Typography>
 
         <Grid>
-
           <Box
             display={{ xs: 'block', md: 'flex' }}
             alignItems="center"
             justifyContent="space-between"
           >
             <Box>
-            <Button size="small" variant="contained">
+              <Button size="small" variant="contained">
                 职位：{user.occupation}
               </Button>
-              
+
               <Button size="small" sx={{ mx: 1 }} variant="outlined">
-              性别：{user.gender}
+                性别：{user.gender}
               </Button>
-              
             </Box>
           </Box>
-
         </Grid>
-        
       </Box>
     </>
   );
 };
 
-ProfileCover.propTypes = {
-};
+ProfileCover.propTypes = {};
 
 export default ProfileCover;

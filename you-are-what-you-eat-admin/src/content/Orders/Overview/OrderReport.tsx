@@ -5,7 +5,7 @@ import { Card } from '@mui/material';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import type { OrderReport } from '@/models/order';
 import OrderReportData from './OrderReportData';
-import { ordersApi } from '@/queries/orders'
+import { ordersApi } from '@/queries/orders';
 
 function OrderReportCard() {
   const isMountedRef = useRefMounted();
@@ -16,7 +16,7 @@ function OrderReportCard() {
     lunch_turnover: 0,
     dinner_order_num: 0,
     dinner_turnover: 0
-});
+  });
 
   const getOrdersInTimePeriod = useCallback(async () => {
     try {
@@ -34,11 +34,7 @@ function OrderReportCard() {
     getOrdersInTimePeriod();
   }, [getOrdersInTimePeriod]);
 
-  return (
-    <Card>
-      {OrderReportData(orderReport)}
-    </Card>
-  );
+  return <Card>{OrderReportData(orderReport)}</Card>;
 }
 
 export default OrderReportCard;

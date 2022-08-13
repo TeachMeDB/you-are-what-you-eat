@@ -34,13 +34,13 @@ const DotReady = styled('span')(
 `
 );
 
-function Statistics( running: number, completed: number, ready: number ) {
+function Statistics(running: number, completed: number, ready: number) {
   const { t }: { t: any } = useTranslation();
 
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={4}>
-      <Card
+        <Card
           sx={{
             height: '100%',
             px: 3,
@@ -64,9 +64,7 @@ function Statistics( running: number, completed: number, ready: number ) {
               <DotRunning />
               {t('进行中')}
             </Typography>
-            <Typography variant="h3">
-              {running}
-            </Typography>
+            <Typography variant="h3">{running}</Typography>
           </Box>
         </Card>
       </Grid>
@@ -95,9 +93,7 @@ function Statistics( running: number, completed: number, ready: number ) {
               <DotReady />
               {t('未开始')}
             </Typography>
-            <Typography variant="h3">
-              {ready}
-            </Typography>
+            <Typography variant="h3">{ready}</Typography>
           </Box>
         </Card>
       </Grid>
@@ -126,9 +122,7 @@ function Statistics( running: number, completed: number, ready: number ) {
               <DotCompleted />
               {t('已结束')}
             </Typography>
-            <Typography variant="h3">
-              {completed}
-            </Typography>
+            <Typography variant="h3">{completed}</Typography>
           </Box>
         </Card>
       </Grid>
