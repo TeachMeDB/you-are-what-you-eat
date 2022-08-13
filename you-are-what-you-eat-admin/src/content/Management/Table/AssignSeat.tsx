@@ -14,7 +14,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import {useTheme} from '@mui/material';
 
-import { CryptoAutoAssignTable,CryptoTable } from '@/models/crypto_table';
+import { CryptoTable } from '@/models/crypto_table';
 import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
