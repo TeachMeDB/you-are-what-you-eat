@@ -250,7 +250,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
               <TableCell>用户名</TableCell>
               <TableCell>出生日期</TableCell>
               <TableCell>性别</TableCell>
-              <TableCell align="right">余额</TableCell>
+              {/*<TableCell align="right">余额</TableCell>*/}
               <TableCell align="right">积分</TableCell>
               <TableCell align="right">状态</TableCell>
               <TableCell align="right">操作</TableCell>
@@ -317,7 +317,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
                     </Typography>
                   </TableCell>
 
-                  <TableCell align="right">
+                  {/*<TableCell align="right">
                     <Typography
                       variant="body1"
                       fontWeight="bold"
@@ -327,7 +327,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
                     >
                       {Number(cryptoOrder.balance).toFixed(2)}
                     </Typography>
-                  </TableCell>
+                  </TableCell>*/}
 
                   <TableCell align="right">
                     <Typography
