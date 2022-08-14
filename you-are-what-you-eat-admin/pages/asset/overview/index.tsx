@@ -17,9 +17,6 @@ function assetOverview({ list = [], manageList = [], employees = [] }) {
   const [assetInfoes, setAssetInfoes] = useState(list);
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [manageInfoes, setManageInfoes] = useState(manageList);
-  // console.log(assetInfoes, ' <-- assetInfoes');
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [tab, setTab] = useState(1);
   return (
     <>
       <Head>
@@ -31,8 +28,7 @@ function assetOverview({ list = [], manageList = [], employees = [] }) {
           assets={assetInfoes}
           setAssetInfoes={setAssetInfoes}
           setManageInfoes={setManageInfoes}
-          currentTab={tab}
-          handleTabsChange={setTab}
+          currentTab={1}
         />
       </PageTitleWrapper>
       <Container maxWidth="lg">
@@ -44,20 +40,38 @@ function assetOverview({ list = [], manageList = [], employees = [] }) {
           spacing={3}
         >
           <Grid item xs={12}>
-            {
-              tab === 1
-                ? <AllAssetInfoes
-                  list={assetInfoes || []}
-                  employees={employees || []}
-                  setAssetInfoes={setAssetInfoes}
-                />
-                : <AllManageInfo
-                  list={manageInfoes || []}
-                  assets={assetInfoes || []}
-                  employees={employees || []}
-                  setManageInfoes={setManageInfoes}
-                />
-            }
+            <AllAssetInfoes
+              list={assetInfoes || []}
+              employees={employees || []}
+              setAssetInfoes={setAssetInfoes}
+            />
+          </Grid>
+        </Grid>
+      </Container>
+      <PageTitleWrapper>
+        <PageHeader
+          employees={employees}
+          assets={assetInfoes}
+          setAssetInfoes={setAssetInfoes}
+          setManageInfoes={setManageInfoes}
+          currentTab={2}
+        />
+      </PageTitleWrapper>
+      <Container maxWidth="lg">
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={3}
+        >
+          <Grid item xs={12}>
+            <AllManageInfo
+              list={manageInfoes || []}
+              assets={assetInfoes || []}
+              employees={employees || []}
+              setManageInfoes={setManageInfoes}
+            />
           </Grid>
         </Grid>
       </Container>

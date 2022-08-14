@@ -1,4 +1,4 @@
-import { Button, Grid, InputLabel, MenuItem, Select, Tab, Tabs, Typography } from '@mui/material';
+import { Button, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import * as React from 'react';
@@ -12,28 +12,18 @@ import DialogContent from '@mui/material/DialogContent';
 
 import DialogTitle from '@mui/material/DialogTitle';
 import { queryAssetApi } from '@/queries/query_asset';
-import { styled } from '@mui/material/styles';
 import { queryManageApi } from '@/queries/query_manage';
 import { DesktopDatePicker } from '@mui/lab';
 import { Box } from '@mui/system';
 
-const TabsWrapper = styled(Tabs)(
-  () => `
-    .MuiTabs-scrollableX {
-      overflow-x: auto !important;
-      margin-bottom: 12px;
-    }
-`,
-);
-
 function PageHeader(props) {
   const {
     employees = [], assets = [], currentTab = 1,
-    handleTabsChange, setAssetInfoes, setManageInfoes,
+    setAssetInfoes, setManageInfoes,
   } = props;
   const [open, setOpen] = React.useState(false);
-  const [formValue, setFormValue] = useState(
-    { assets_type: '', assets_status: '', employee_id: 0 });
+  const defaultFormValue = { assets_type: '', assets_status: '', employee_id: 0 };
+  const [formValue, setFormValue] = useState(defaultFormValue);
   const defaultManageValue = {
     employee_id: '',
     assets_id: '',
@@ -43,7 +33,6 @@ function PageHeader(props) {
     manage_cost: '',
   };
   const [manageFormValue, setManageFormValue] = useState(defaultManageValue);
-  console.log(employees, ' <-- manageFormValue');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -52,7 +41,6 @@ function PageHeader(props) {
     setOpen(false);
   };
   const handleSubmit = async () => {
-    console.log(formValue, ' <-- formValue');
     const {
       // assets_id: assetsId = '',
       assets_type: assetsType = '',
@@ -62,6 +50,7 @@ function PageHeader(props) {
     await queryAssetApi.addAsset({ assetsType, assetsStatus, employeeId });
     const data = await queryAssetApi.getAssetList('');
     setAssetInfoes(data);
+    setFormValue(defaultFormValue);
     setOpen(false);
   };
   const handleSubmitManageForm = async () => {
@@ -75,8 +64,7 @@ function PageHeader(props) {
   };
 
   const handleFormChange = (field, e) => {
-    console.log(e, ' <-- e');
-    setFormValue({ ...formValue, [field]: e });
+    setFormValue({ ...formValue, [field]: e.target.value });
   };
 
   const handleManageFormChange = (field, e) => {
@@ -89,7 +77,7 @@ function PageHeader(props) {
 
   const tabs = [
     { value: 1, label: '资产', description: '查看并编辑所有资产信息', addText: '新增资产' },
-    { value: 2, label: '资产管理', description: '查看并编辑所有资产管理记录', addText: '新增资产管理记录' },
+    { value: 2, label: '资产管理记录', description: '查看并编辑所有资产管理记录', addText: '新增资产管理记录' },
   ];
 
   const tab = tabs.find(item => item.value === currentTab);
@@ -98,19 +86,10 @@ function PageHeader(props) {
   return (
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
-        <TabsWrapper
-          onChange={(_, value) => handleTabsChange(value)}
-          value={currentTab}
-          variant="scrollable"
-          scrollButtons="auto"
-          textColor="primary"
-          indicatorColor="primary"
-        >
-          {tabs.map((tab) => (
-            <Tab key={tab.value} label={tab.label} value={tab.value} />
-          ))}
-        </TabsWrapper>
-        <Typography variant="subtitle2" style={{ marginTop: '12px' }}>
+        <Typography variant="h3" component="h3" gutterBottom>
+          {tab.label}
+        </Typography>
+        <Typography variant="subtitle2">
           {tab.description}
         </Typography>
       </Grid>

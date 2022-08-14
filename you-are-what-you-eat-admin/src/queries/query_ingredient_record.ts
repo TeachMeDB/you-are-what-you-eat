@@ -8,6 +8,7 @@ class QueryIngredientRecordApi {
       const r = await (await
           fetch(`http://106.14.212.200:8000/app/api/Ingredient/GetIngredientRecord?token=${token}`)
       ).text();
+      console.log(r, ' <-- r');
       const content = JSON.parse(r) || {};
       return (content.data || []) as IngredientRecordInfo[];
     } catch (err) {

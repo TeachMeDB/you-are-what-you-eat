@@ -1,7 +1,8 @@
-import { Typography, Button, Grid, Tabs, Tab, InputLabel, Select, MenuItem } from '@mui/material';
+import { Button, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import * as React from 'react';
+import { useState } from 'react';
 
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -9,32 +10,20 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 
 import DialogTitle from '@mui/material/DialogTitle';
-
-import { useState } from 'react';
 import { queryIngredientApi } from '@/queries/query_ingredient';
 import { queryIngredientRecordApi } from '@/queries/query_ingredient_record';
 import { format } from 'date-fns';
-import { styled } from '@mui/material/styles';
 import { Box } from '@mui/system';
 import { DesktopDatePicker } from '@mui/lab';
-
-const TabsWrapper = styled(Tabs)(
-  () => `
-    .MuiTabs-scrollableX {
-      overflow-x: auto !important;
-      margin-bottom: 12px;
-    }
-`,
-);
 
 function PageHeader(props) {
   const {
     employees = [], ingredients = [], currentTab = 1,
-    handleTabsChange, setIngredientInfoes, setIngredientRecordInfoes,
+    setIngredientInfoes, setIngredientRecordInfoes,
   } = props;
   const [open, setOpen] = React.useState(false);
-  const [formValue, setFormValue] = useState(
-    { ingr_id: 0, ingr_name: '', ingr_type: '', ingr_description: '' });
+  const defaultFormValue = { ingr_id: 0, ingr_name: '', ingr_type: '', ingr_description: '' };
+  const [formValue, setFormValue] = useState(defaultFormValue);
   const defaultIngredientRecordValue = {
     record_id: 0,
     ingr_id: 0,
@@ -59,9 +48,9 @@ function PageHeader(props) {
     const data = await queryIngredientApi.getIngredientList('');
     setIngredientInfoes(data);
     setOpen(false);
+    setFormValue(defaultFormValue);
   };
   const handleSubmitIngredientRecordForm = async () => {
-    console.log(ingredientRecordFormValue, ' <-- ingredientRecordFormValue');
     const { purchasing_date, produced_date, ...params } = ingredientRecordFormValue;
     await queryIngredientRecordApi.addIngredientRecord({
       ...params,
@@ -88,7 +77,7 @@ function PageHeader(props) {
 
   const tabs = [
     { value: 1, label: '耗材', description: '查看并编辑所有耗材信息', addText: '新增耗材' },
-    { value: 2, label: '耗材管理', description: '查看并编辑所有耗材管理记录', addText: '新增耗材管理记录' },
+    { value: 2, label: '耗材管理记录', description: '查看并编辑所有耗材管理记录', addText: '新增耗材管理记录' },
   ];
 
   const tab = tabs.find(item => item.value === currentTab);
@@ -96,19 +85,10 @@ function PageHeader(props) {
   return (
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
-        <TabsWrapper
-          onChange={(_, value) => handleTabsChange(value)}
-          value={currentTab}
-          variant="scrollable"
-          scrollButtons="auto"
-          textColor="primary"
-          indicatorColor="primary"
-        >
-          {tabs.map((tab) => (
-            <Tab key={tab.value} label={tab.label} value={tab.value} />
-          ))}
-        </TabsWrapper>
-        <Typography variant="subtitle2" style={{ marginTop: '12px' }}>
+        <Typography variant="h3" component="h3" gutterBottom>
+          {tab.label}
+        </Typography>
+        <Typography variant="subtitle2">
           {tab.description}
         </Typography>
       </Grid>
