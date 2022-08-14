@@ -1,32 +1,19 @@
-import Head from 'next/head';
+import CurOrders1 from "@/content/Kitchen/Order";
 import SidebarLayout from '@/layouts/SidebarLayout';
+import CurOrders from "@/content/Kitchen/Order/CurOrder";
+function curOrder() {
 
-import { Grid, Container, Card, Box } from '@mui/material';
-import Footer from '@/components/Footer';
 
-import PageTitleWrapper from '@/components/PageTitleWrapper';
-
-import PageHeader from '@/content/Kitchen/Order/PageHeader';
-import CheckList from '@/content/Kitchen/Order/CheckList';
-import CurOrder from '@/content/Kitchen/Order/CurOrder';
-
-function mealInfo() {
   return (
-    <>
-      <Head>
-        <title>菜品信息</title>
-      </Head>
-      <PageTitleWrapper>
-        <PageHeader />
-      </PageTitleWrapper>
-
-      <Container maxWidth="lg">
-        <CurOrder />
-      </Container>
-    </>
-  );
+    <CurOrders />
+  )
 }
 
-mealInfo.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+curOrder.getLayout = (page) => (
+  <SidebarLayout>{page}</SidebarLayout>
+);
 
-export default mealInfo;
+
+export default curOrder;
+
+
