@@ -4,6 +4,7 @@ import {
     MealInfoUpload,
     MealInfoAdd
 } from '@/models/meal_info'
+import { Base64ToData } from '@/utils/image';
 
 import { GetApi, PostApi, DeleteApi } from "@/utils/requests"
 
@@ -20,6 +21,8 @@ class MealInfoApi {
         }))).data as MealInfo[];
     }
     public addMeal = async (meal: MealInfoAdd) => {
+
+        meal.picture=Base64ToData(meal.picture);
         return (await (PostApi("/Dishes/AddDish", meal))).statusText as string
     }
 
