@@ -70,7 +70,12 @@ export default function CheckList(curOrder: CurOrder) {
 
     const [finished, setFinished] = useState<number>(f);
 
+    let c: boolean[] = [];
+    curOrder.dish.map(() => {
+        c.push(false);
+    })
 
+    const [checked, setChecked] = useState<boolean[]>(c);
 
 
 
@@ -102,22 +107,23 @@ export default function CheckList(curOrder: CurOrder) {
                     >
                         {
 
-                            curOrder.dish.map((item) => {
+                            curOrder.dish.map((item, index) => {
 
-
-                                const [checked, setChecked] = useState<boolean>(false);
                                 return (
                                     <ListItem divider>
                                         <ListItemText id={item.dish_name} primary={item.dish_name + "----备注:" + item.remark} />
                                         <Switch
                                             defaultChecked={check(item)}
-                                            disabled={checked}
+                                            disabled={checked[index]}
                                             {...label}
                                             inputProps={{
                                                 'aria-labelledby': item.dish_name,
                                             }}
                                             onChange={() => {
-                                                setChecked(true);
+                                                let a: boolean[] = [];
+                                                a = checked;
+                                                a[index] = true;
+                                                setChecked(a);
                                                 const conduct1 = async () => {
                                                     s.dish_order_id = item.dish_order_id;
                                                     s.dish_status = "已完成"
