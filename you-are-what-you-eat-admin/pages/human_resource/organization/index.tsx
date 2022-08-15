@@ -44,6 +44,7 @@ import Schedule from '@/components/Schedule';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import GlobalConfig from '@/utils/config';
 import { useRouter } from 'next/router';
+import { useRefMounted } from '@/hooks/useRefMounted';
 
 const TabsWrapper = styled(Tabs)(
   () => `
@@ -53,26 +54,14 @@ const TabsWrapper = styled(Tabs)(
 `
 );
 
-function Organization({
-  user,
-  employees,
-  schedules
-}: {
-  user: EmployeeDetail;
-  employees: EmployeeEntity[];
-  schedules: ScheduleEntity[];
-}) {
+function Organization() {
+  const isMountedRef = useRefMounted();
   const [currentTab, setCurrentTab] = useState<string>('SelfManagementTab');
 
-  const tabs = [{ value: 'SelfManagementTab', label: '个人档案管理' }].concat(
-    user.occupation === '经理'
-      ? [
-          { value: 'EmployeeManagementTab', label: '员工信息管理' },
-          { value: 'SalaryManagementTab', label: '员工薪资管理' },
-          { value: 'PrizeManagementTab', label: '员工奖金管理' }
-        ]
-      : []
-  );
+  const [tabs,setTabs]=useState(null);
+  const [user,setUser]=useState<EmployeeDetail>(null);
+  const [employees,setEmployees]=useState<EmployeeEntity[]>(null);
+  const [schedules,setSchedules]=useState<ScheduleEntity[]>(null);
 
   
 
@@ -82,6 +71,45 @@ function Organization({
 
 
   const router=useRouter();
+
+  const getAllData=useCallback(async ()=>{
+
+    let user_data = await humanResourceApi.getEmployeeDetail(null);
+
+    let employees_data = await humanResourceApi.getEmployees();
+
+    let week = Date.now();
+
+    let start = startOfWeek(week);
+    let end = endOfWeek(week);
+
+    let schedules_data = await scheduleApi.getSchedule(
+      format(start, 'yyyy-MM-dd HH:mm:ss'),
+      format(end, 'yyyy-MM-dd HH:mm:ss'),
+      user_data.id
+    );
+
+
+    setUser(user_data);
+
+    setEmployees(employees_data);
+
+    setSchedules(schedules_data);
+
+    setTabs([{ value: 'SelfManagementTab', label: '个人档案管理' }].concat(
+      user_data.occupation === '经理'
+        ? [
+            { value: 'EmployeeManagementTab', label: '员工信息管理' },
+            { value: 'SalaryManagementTab', label: '员工薪资管理' },
+            { value: 'PrizeManagementTab', label: '员工奖金管理' }
+          ]
+        : []
+    ));
+
+
+  },[isMountedRef])
+
+
 
   useEffect(()=>{
 
@@ -94,12 +122,15 @@ function Organization({
 
       GlobalConfig.setAccessToken(localStorage.getItem("token"));
 
+      getAllData();
+
     }
 
-  })
+  },[getAllData])
 
   return (
-    <>
+    (tabs&&user&&employees&&schedules)&&(<>
+
       <Head>
         <title> 组织管理</title>
       </Head>
@@ -207,7 +238,7 @@ function Organization({
         </Grid>
       </Container>
       <Footer />
-    </>
+    </>)
   );
 }
 
@@ -216,22 +247,3 @@ Organization.getLayout = (
 ) => <SidebarLayout>{page}</SidebarLayout>;
 
 export default Organization;
-
-export async function getServerSideProps() {
-  const user = await humanResourceApi.getEmployeeDetail(null,GlobalConfig.getAccessToken());
-
-  const employees = await humanResourceApi.getEmployees();
-
-  let week = Date.now();
-
-  let start = startOfWeek(week);
-  let end = endOfWeek(week);
-
-  const schedules = await scheduleApi.getSchedule(
-    format(start, 'yyyy-MM-dd HH:mm:ss'),
-    format(end, 'yyyy-MM-dd HH:mm:ss'),
-    user.id
-  );
-
-  return { props: { user, employees, schedules } };
-}

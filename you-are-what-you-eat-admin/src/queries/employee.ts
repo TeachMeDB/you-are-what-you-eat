@@ -13,11 +13,10 @@ class HumanResourceApi {
       .data as EmployeeEntity[];
   };
 
-  public getEmployeeDetail = async (id: string,token=null) => {
+  public getEmployeeDetail = async (id: string) => {
     return (
       await GetApi('Employee/GetOneEmployeeInfo', {
-        id: id,
-        token:token
+        id: id
       })
     ).data as EmployeeDetail;
   };

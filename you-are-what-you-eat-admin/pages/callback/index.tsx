@@ -17,7 +17,10 @@ function Callback(){
 
         let link=/#token=(.*)\?state=application_dbks&token_type=bearer/.exec(callback)[1]
 
+        localStorage.clear();
+
         localStorage.setItem("token",link);
+
 
         GlobalConfig.setAccessToken(link);
         
