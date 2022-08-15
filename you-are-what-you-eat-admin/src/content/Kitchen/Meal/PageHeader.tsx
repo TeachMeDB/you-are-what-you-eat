@@ -32,7 +32,8 @@ let m: MealInfoAdd = {
   description: '123',
   tags: [""],
   picture: null,
-  video: ""
+  video: "",
+  ingredient: [""]
 }
 
 const Input = styled('input')({
@@ -87,6 +88,10 @@ function PageHeader() {
   }
   const tagsInputChange = (e) => {
     m.tags = e.target.value.split(" ");
+
+  }
+  const ingInputChange = (e) => {
+    m.ingredient = e.target.value.split(" ");
 
   }
   const viedoInputChange = (e) => {
@@ -160,6 +165,15 @@ function PageHeader() {
               autoFocus
               margin="dense"
               id="name"
+              label="菜品需要的原料"
+              fullWidth
+              variant="standard"
+              onChange={ingInputChange}
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
               label="标签"
               fullWidth
               variant="standard"
@@ -178,7 +192,7 @@ function PageHeader() {
             <Grid item xs={12}>
               <Box m={2}>
                 <Box pb={1} mb={1}>
-                  <b>{t('活动封面图')}:</b>
+                  <b>{t('菜品图片')}:</b>
                 </Box>
                 <CardCover>
                   <CardMedia image={newPromotionCover} />
@@ -212,24 +226,23 @@ function PageHeader() {
           <DialogActions>
             <Button onClick={handleClose}>退出</Button>
             <Button onClick={() => {
-
-
               const conduct = async () => {
                 m.picture = newPromotionCover;
-                console.log(m.picture);
+                console.log(m.tags);
                 return mealInfoApi.addMeal(m);
               }
 
               conduct().then((value) => {
 
                 alert("增加成功：" + value);
+                window.location.reload();
 
               }).catch((value) => {
 
                 alert("增加失败：" + value);
               });
 
-            }} >确定</Button>
+            }}>确定</Button>
           </DialogActions>
         </Dialog>
       </Grid>
