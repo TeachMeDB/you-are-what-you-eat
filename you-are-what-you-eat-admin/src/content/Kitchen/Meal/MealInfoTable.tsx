@@ -69,7 +69,8 @@ let m: MealInfoUpload = {
   dis_name: '123',
   price: 123,
   description: '123',
-  tags: [""]
+  tags: [""],
+  ingredient: [""]
 
 }
 
@@ -132,6 +133,10 @@ const MealInfoTable = () => {
   const tagsInputChange = (e) => {
     m.tags = e.target.value.split(" ");
     console.log(m.tags);
+  }
+  const ingInputChange = (e) => {
+    m.ingredient = e.target.value.split(" ");
+
   }
 
   const isMountedRef = useRefMounted();
@@ -255,6 +260,7 @@ const MealInfoTable = () => {
               <TableCell>菜品名称</TableCell>
               <TableCell >价格</TableCell>
               <TableCell>菜品描述</TableCell>
+              <TableCell>菜品原料</TableCell>
               <TableCell>菜品标签</TableCell>
               <TableCell >操作</TableCell>
             </TableRow>
@@ -308,6 +314,19 @@ const MealInfoTable = () => {
                         noWrap
                       >
                         {mealInfo.description}
+
+                      </Typography>
+
+                    </TableCell>
+                    <TableCell >
+                      <Typography
+                        variant="body1"
+                        fontWeight="bold"
+                        color="text.primary"
+                        gutterBottom
+                        noWrap
+                      >
+                        {mealInfo.ingredient}
 
                       </Typography>
 
@@ -384,6 +403,15 @@ const MealInfoTable = () => {
                             variant="standard"
                             onChange={tagsInputChange}
                           />
+                          <TextField
+                            autoFocus
+                            margin="dense"
+                            id="tags"
+                            label="新的菜品需要的原料"
+                            fullWidth
+                            variant="standard"
+                            onChange={ingInputChange}
+                          />
                         </DialogContent>
                         <DialogActions>
                           <Button onClick={handleClose}>取消</Button>
@@ -454,14 +482,14 @@ const MealInfoTable = () => {
                         <DialogTitle>菜品具体信息</DialogTitle>
 
                         <DialogContent>
-                          <iframe src={src} allowfullscreen="allowfullscreen" width="100%" height="270px" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
+                          <iframe src={"//player.bilibili.com/player.html?bvid=" + idLook.video + "&high_quality=1&danmaku=0"} allowfullscreen="allowfullscreen" width="100%" height="270px" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
                           <Grid item xs={12}>
                             <Box m={2}>
                               <Box pb={1} mb={1}>
-                                <b>{t('活动封面图')}:</b>
+                                <b>{t('菜品封面图')}:</b>
                               </Box>
                               <CardCover>
-                                <CardMedia image={null} />
+                                <CardMedia image={idLook.picture} />
 
                               </CardCover>
                             </ Box>
@@ -485,6 +513,10 @@ const MealInfoTable = () => {
                               <div>
                                 <p style={{ fontSize: "18px" }}>{idLook.description}</p>
                               </div>
+                              <Divider />
+                              <div>
+                                <p style={{ fontSize: "18px" }}>原料： {idLook.ingredient}</p>
+                              </div>
                               <Grid container spacing={2}>
                                 <Grid item xs={7}>
                                   <div>
@@ -492,8 +524,6 @@ const MealInfoTable = () => {
                                   </div>
                                 </Grid>
                               </Grid>
-
-
                             </div>
                           </Card>
 

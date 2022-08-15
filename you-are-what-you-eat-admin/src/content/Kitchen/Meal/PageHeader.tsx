@@ -32,7 +32,8 @@ let m: MealInfoAdd = {
   description: '123',
   tags: [""],
   picture: null,
-  video: ""
+  video: "",
+  ingredient: [""]
 }
 
 const Input = styled('input')({
@@ -87,6 +88,10 @@ function PageHeader() {
   }
   const tagsInputChange = (e) => {
     m.tags = e.target.value.split(" ");
+
+  }
+  const ingInputChange = (e) => {
+    m.ingredient = e.target.value.split(" ");
 
   }
   const viedoInputChange = (e) => {
@@ -155,6 +160,15 @@ function PageHeader() {
               fullWidth
               variant="standard"
               onChange={descriptionInputChange}
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="菜品需要的原料"
+              fullWidth
+              variant="standard"
+              onChange={ingInputChange}
             />
             <TextField
               autoFocus
