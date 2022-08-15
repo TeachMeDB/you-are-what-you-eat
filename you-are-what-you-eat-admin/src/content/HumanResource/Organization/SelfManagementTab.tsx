@@ -22,7 +22,7 @@ import WarningIcon from '@mui/icons-material/Warning';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { humanResourceApi } from '@/queries/employee';
 import { EmployeeDetail } from '@/models/employee';
-import { frontendURL } from '@/utils/config';
+import GlobalConfig from '@/utils/config';
 import DetailEmployeePopup from './EmployeeManagement/DetailEmployeePopup';
 import DetailEmployeeUpdate from './EmployeeManagement/DetailEmployeeUpdate';
 
@@ -94,7 +94,7 @@ function SelfManagementTab({ user }: { user: EmployeeDetail }) {
               conduct()
                 .then((value) => {
                   alert('删除结果：' + value + '\n');
-                  window.location.replace(frontendURL);
+                  window.location.replace(GlobalConfig.getFrontendURL());
                 })
                 .catch((value) => {
                   alert('删除失败：' + value);

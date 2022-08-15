@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-import { backendURL, access_token } from './config';
+import GlobalConfig from './config';
 
 export const GetApi = async (url: string, params?: {}) => {
   return axios.get(url, {
-    baseURL: backendURL,
+    baseURL: GlobalConfig.getBackendURL(),
     params: {
       ...params,
-      token: access_token
+      token: GlobalConfig.getAccessToken()
     }
   });
 };
@@ -17,20 +17,20 @@ export const PostApi = async (url: string, body: {}) => {
     url,
     {
       ...body,
-      token: access_token
+      token: GlobalConfig.getAccessToken()
     },
     {
-      baseURL: backendURL
+      baseURL: GlobalConfig.getBackendURL()
     }
   );
 };
 
 export async function DeleteApi(url: string, params?: {}) {
   return axios.delete(url, {
-    baseURL: backendURL,
+    baseURL: GlobalConfig.getBackendURL(),
     params: {
       ...params,
-      token: access_token
+      token: GlobalConfig.getAccessToken()
     }
   });
 }

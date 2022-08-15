@@ -1,5 +1,4 @@
-import { frontendURL } from './config';
-import { authorizationURL } from './config';
+import GlobalConfig from './config';
 
 export interface CasdoorSdkConfig {
   serverUrl: string; // your Casdoor server URL, e.g., "https://door.casbin.com" for the official demo site
@@ -26,7 +25,6 @@ export interface Account {
   accessToken: string;
 }
 
-const frontend: string = frontendURL;
 
 class CasdoorSdk {
   private config: CasdoorSdkConfig;
@@ -39,7 +37,7 @@ class CasdoorSdk {
   }
 
   public getSignupUrl(
-    redirectUrl: string = frontend,
+    redirectUrl: string = GlobalConfig.getFrontendURL(),
     enablePassword: boolean = true
   ): string {
     if (enablePassword) {
@@ -53,7 +51,7 @@ class CasdoorSdk {
     }
   }
 
-  public getSigninUrl(redirectUrl: string = frontend): string {
+  public getSigninUrl(redirectUrl: string = GlobalConfig.getFrontendURL()): string {
     const redirectUri = `${redirectUrl}${this.config.redirectPath}`;
     const scope = 'read';
     const state = this.config.appName;
@@ -83,7 +81,7 @@ class CasdoorSdk {
   }
 
   public signin(
-    redirectUrl: string = frontend,
+    redirectUrl: string = GlobalConfig.getFrontendURL(),
     serverUrl: string = this.config.serverUrl
   ): Promise<Response> {
     const params = new URLSearchParams(redirectUrl);
@@ -100,7 +98,7 @@ class CasdoorSdk {
 }
 
 const sdkConfig: CasdoorSdkConfig = {
-  serverUrl: authorizationURL,
+  serverUrl: GlobalConfig.getAuthorizationURL(),
   clientId: '82737aac8ec89315c220',
   appName: 'application_dbks',
   organizationName: 'organization_dbks',

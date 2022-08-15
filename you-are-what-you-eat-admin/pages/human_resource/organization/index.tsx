@@ -42,6 +42,8 @@ import { ScheduleEntity } from '@/models/schedule';
 import Schedule from '@/components/Schedule';
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import GlobalConfig from '@/utils/config';
+import { useRouter } from 'next/router';
 
 const TabsWrapper = styled(Tabs)(
   () => `
@@ -50,8 +52,6 @@ const TabsWrapper = styled(Tabs)(
     }
 `
 );
-
-const init_id: string = '1001';
 
 function Organization({
   user,
@@ -74,9 +74,29 @@ function Organization({
       : []
   );
 
+  
+
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
   };
+
+
+  const router=useRouter();
+
+  useEffect(()=>{
+
+    if(localStorage.getItem("token")===null){
+
+      router.replace('/')
+
+    }
+    else{
+
+      GlobalConfig.setAccessToken(localStorage.getItem("token"));
+
+    }
+
+  })
 
   return (
     <>
@@ -198,7 +218,7 @@ Organization.getLayout = (
 export default Organization;
 
 export async function getServerSideProps() {
-  const user = await humanResourceApi.getEmployeeDetail(init_id);
+  const user = await humanResourceApi.getEmployeeDetail(null,GlobalConfig.getAccessToken());
 
   const employees = await humanResourceApi.getEmployees();
 
