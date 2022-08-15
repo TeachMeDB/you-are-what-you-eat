@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
+import { getDesc } from '@/utils/array';
 
 const BoxWrapper = styled(Box)(
   ({ theme }) => `
@@ -110,7 +111,7 @@ const PromotionBody: FC<PromotionBodyProps> = ({ promotion }) => {
             </BoxWrapper>
             <BoxWrapper textAlign="left" mt={1} p={1}>
               <Typography component="span" variant="h4">
-                {promotion.description}
+                {getDesc(promotion.description)}
               </Typography>
             </BoxWrapper>
           </Grid>

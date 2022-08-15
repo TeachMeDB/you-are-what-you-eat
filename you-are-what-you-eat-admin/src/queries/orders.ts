@@ -25,7 +25,7 @@ class OrdersApi {
         end: end
       })
     ).data.orders;
-    const orders = r.map((item) => {
+    var orders: Order[] = (r.map((item) => {
       return {
         id: item.order_id,
         creation_time: new Date(item.creation_time),
@@ -39,7 +39,8 @@ class OrdersApi {
         price: item.final_payment,
         discount_price: item.discount_price
       };
-    });
+    }));
+    orders.sort((o1, o2) => (o1.creation_time < o2.creation_time) ? 1 : -1);
 
     return Promise.resolve(orders);
   };
@@ -77,14 +78,12 @@ class OrdersApi {
     const yesterdatStart = getDayTime(new Date(), -1, 'begin');
     const yesterdayEnd = getDayTime(new Date(), -1, 'end');
 
-    console.log(111);
     const todayOrders = (
       await GetApi('Orderlists/GetOrdersByTime', {
         begin: getDayTime(new Date(), 0, 'begin'),
         end: getDayTime(new Date(), 0, 'end')
       })
     ).data.summary;
-    console.log(222);
     const yesterdayOrders = (
       await GetApi('Orderlists/GetOrdersByTime', {
         begin: yesterdatStart,
@@ -125,11 +124,17 @@ class OrdersApi {
         begin: todayStart,
         end: todayEnd
       })
-    ).data.data;
+    ).data.orders;
+
+    console.log('tdo', todayOrders)
+
     const breakfastOrders = todayOrders.filter((order) => {
       var h = new Date(order.creation_time).getHours();
       return h < 10;
     });
+
+    console.log('lalala' ,breakfastOrders);
+
     var breakTnv: number = 0;
     breakfastOrders.forEach((b) => {
       breakTnv += b.final_payment;
