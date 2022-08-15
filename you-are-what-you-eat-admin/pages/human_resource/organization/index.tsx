@@ -131,7 +131,7 @@ function Organization() {
   },[getAllData])
 
   return (
-    (tabs&&user&&employees&&schedules)&&(<>
+    (tabs&&user&&employees&&schedules)&&(<div key={user.id}>
 
       <Head>
         <title> 组织管理</title>
@@ -240,7 +240,7 @@ function Organization() {
         </Grid>
       </Container>
       <Footer />
-    </>)
+    </div>)
   );
 }
 
