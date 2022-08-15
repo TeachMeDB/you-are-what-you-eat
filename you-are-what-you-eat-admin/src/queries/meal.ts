@@ -6,7 +6,7 @@ import {
 } from '@/models/meal_info'
 import { Base64ToData } from '@/utils/image';
 
-import { Base64ToData } from '@/utils/image';
+
 import { GetApi, PostApi, DeleteApi } from "@/utils/requests"
 
 
