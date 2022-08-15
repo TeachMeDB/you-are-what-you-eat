@@ -23,7 +23,7 @@ let n: StockInfo = {
 
 function StockPageHeader() {
 
-
+  const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -33,10 +33,7 @@ function StockPageHeader() {
   };
 
 
-  const handleClose = () => {
-    setOpen(false);
-    console.log(n);
-  };
+
 
   const handleAmountChange = (e) => {
     n.amount = parseInt(e.target.value);

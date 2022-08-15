@@ -318,7 +318,12 @@ function EmployeeManagementTab() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {employees
+                {employees.sort((a,b)=>{
+                if(a.id===b.id){
+                  return 0;
+                }
+                return a.id<b.id? -1:1;
+              })
                   .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                   .map((employee) => (
                     <TableRow key={employee.id} hover>

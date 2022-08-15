@@ -7,21 +7,7 @@ import {
   Box,
   Typography,
   TextField,
-  CircularProgress,
   Button,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  TableContainer,
-  Tooltip,
-  IconButton,
-  lighten,
-  useTheme,
-  useMediaQuery,
-  TableFooter,
-  MenuItem,
   Card,
   CardMedia
 } from '@mui/material';
@@ -32,7 +18,7 @@ import * as React from 'react';
 import { GenerateBase64 } from '@/utils/image';
 
 import DialogActions from '@mui/material/DialogActions';
-import { MealInfoUpload, MealInfoAdd } from '@/models/meal_info';
+import { MealInfoAdd } from '@/models/meal_info';
 import { mealInfoApi } from '@/queries/meal';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone'
 
@@ -73,29 +59,6 @@ const CardCoverAction = styled(Box)(
 
 
 function PageHeader() {
-  const [open, setOpen] = React.useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleVerified = () => {
-    console.log(m);
-    setOpen(false);
-  };
-  const idInputChange = (e) => {
-    m.id = e.target.value;
-  };
-  const nameInputChange = (e) => {
-    m.DishName = e.target.value;
-  };
-  const priceInputChange = (e) => {
-    m.Price = Number(e.target.value);
-  };
-  const descriptionInputChange = (e) => {
-    m.Description = e.target.value;
-  };
 
 
   const { t }: { t: any } = useTranslation();
@@ -129,7 +92,7 @@ function PageHeader() {
   const viedoInputChange = (e) => {
     m.video = e.target.value;
   }
-  const Src = "//player.bilibili.com/player.html?bvid=BV1bL4y1N7iX&high_quality=1&danmaku=0";
+
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
@@ -275,7 +238,7 @@ function PageHeader() {
 
     </Grid>
   );
-、
+
 }
 
 export default PageHeader;

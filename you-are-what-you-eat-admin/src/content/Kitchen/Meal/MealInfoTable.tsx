@@ -43,23 +43,11 @@ import { mealInfoApi } from '@/queries/meal';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import { useRefMounted } from '@/hooks/useRefMounted';
 import {
-
   Grid,
-
   CardMedia,
-
-
-
 } from '@mui/material';
-const Input = styled('input')({
-  display: 'none'
-});
 
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 
-import { GenerateBase64 } from '@/utils/image';
-
-import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone'
 
 import { useTranslation } from 'react-i18next';
 const CardCover = styled(Card)(
@@ -71,13 +59,7 @@ const CardCover = styled(Card)(
       }
   `
 );
-const CardCoverAction = styled(Box)(
-  ({ theme }) => `
-      position: absolute;
-      right: ${theme.spacing(2)};
-      bottom: ${theme.spacing(2)};
-  `
-);
+
 
 
 
@@ -135,8 +117,7 @@ const ButtonSearch = styled(Button)(
 
 const MealInfoTable = () => {
 
-  const [fullWidth] = React.useState(true);
-  const [maxWidth] = React.useState('xs');
+
 
   const { t }: { t: any } = useTranslation();
   const nameInputChange = (e) => {
@@ -433,6 +414,21 @@ const MealInfoTable = () => {
                           color="inherit"
                           size="small"
                           href="javascript:location.reload(true)"
+                          onClick={() => {
+                            const conduct = async () => {
+
+
+                              return mealInfoApi.delMeal(
+                                mealInfo.id)
+                            }
+                            conduct().then((value) => {
+                              alert("删除成功：" + value);
+                              window.location.reload();
+                            }).catch((value) => {
+
+                              alert("删除失败：" + value);
+                            });
+                          }}
                         >
                           <DeleteTwoToneIcon fontSize="small" />
                         </IconButton>

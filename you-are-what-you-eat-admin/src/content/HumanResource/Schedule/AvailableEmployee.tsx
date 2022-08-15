@@ -136,7 +136,12 @@ function AvailableEmployee({
               startTime != '' &&
               endTime != '' &&
               availables.length > 0 &&
-              availables.map((stuff: Avaliable) => {
+              availables.sort((a,b)=>{
+                if(a.id===b.id){
+                  return 0;
+                }
+                return a.id<b.id? -1:1;
+              }).slice(page*rowsPerPage,(page+1)*rowsPerPage).map((stuff: Avaliable) => {
                 return (
                   <Grid key={stuff.id} item xs={12} sm={6} lg={4}>
                     <Box p={1.5} display="flex" alignItems="flex-start">

@@ -124,8 +124,9 @@ export default function CheckList(curOrder: CurOrder) {
                                                 );
                                             }
                                             setFinished(finished + 1);
+                                            console.log("finished");
+                                            console.log(finished / curOrder.dish.length);
                                             conduct1().then((value) => {
-
                                                 alert("成功：" + value);
                                             }).catch((value) => {
 
@@ -133,7 +134,7 @@ export default function CheckList(curOrder: CurOrder) {
                                             });
                                             console.log("完成没？");
                                             console.log(countUnFinished(curOrder));
-                                            if (countUnFinished(curOrder) == 1) {
+                                            if (finished + 1 == curOrder.dish.length) {
                                                 conduct2().then((value) => {
 
                                                     alert("该订单已完成：" + value);

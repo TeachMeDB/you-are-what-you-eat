@@ -247,9 +247,13 @@ function ScheduleOperation({
   const [place, setPlace] = useState('');
 
   const handlePlaceChange = (event: { target: { value: string } }) => {
-    console.log(event.target.value);
     setPlace(event.target.value);
     handleSelectPlace(event.target.value);
+  };
+
+  const handlePlaceChangeSelect = (event) => {
+    setPlace(event.target.textContent);
+    handleSelectPlace(event.target.textContent);
   };
 
   const [occupation, setOccupation] = useState('');
@@ -312,6 +316,7 @@ function ScheduleOperation({
                 )}
               getOptionLabel={(value) => (value ? value : '')}
               value={place}
+              onChange={handlePlaceChangeSelect}
               renderInput={(params) => (
                 <TextField
                   {...params}
