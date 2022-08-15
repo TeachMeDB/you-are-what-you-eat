@@ -122,6 +122,8 @@ function Organization() {
 
       GlobalConfig.setAccessToken(localStorage.getItem("token"));
 
+      GlobalConfig.setFrontendURL(window.location.host)
+
       getAllData();
 
     }

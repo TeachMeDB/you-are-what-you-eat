@@ -1,3 +1,5 @@
+import authorization from '@/utils/authorization';
+import GlobalConfig from '@/utils/config';
 import {
   Box,
   Button,
@@ -6,6 +8,7 @@ import {
   Typography,
   styled
 } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import Link from 'src/components/Link';
 
@@ -96,6 +99,10 @@ const NextJsAvatar = styled(Box)(
 );
 
 function Hero() {
+
+  const router=useRouter();
+
+
   return (
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
       <Grid
@@ -118,12 +125,34 @@ function Hero() {
             你和你的餐厅一样现代。
           </TypographyH2>
           <Button
-            component={Link}
-            href="/dashboards/crypto"
             size="large"
             variant="contained"
+            onClick={()=>{
+
+
+              if(localStorage.getItem("token")){
+
+                GlobalConfig.setFrontendURL(window.location.host)
+                GlobalConfig.setAccessToken(localStorage.getItem("token"));
+
+                router.replace("/human_resource/organization");
+
+              }
+              else{
+
+                GlobalConfig.setFrontendURL(window.location.host);
+
+                window.location.replace(authorization.getSigninUrl(GlobalConfig.getFrontendURL()));
+
+              }
+
+
+
+
+
+            }}
           >
-            Browse Live Preview
+              进入界面
           </Button>
           <Button
             sx={{ ml: 2 }}
@@ -134,7 +163,7 @@ function Hero() {
             size="large"
             variant="text"
           >
-            Key Features
+            奇怪的按钮
           </Button>
           <Grid container spacing={3} mt={5}>
             <Grid item md={4}>

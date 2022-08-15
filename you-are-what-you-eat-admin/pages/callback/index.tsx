@@ -21,7 +21,6 @@ function Callback(){
 
         localStorage.setItem("token",link);
 
-
         GlobalConfig.setAccessToken(link);
         
 
