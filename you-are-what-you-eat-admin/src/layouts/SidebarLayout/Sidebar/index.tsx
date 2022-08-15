@@ -14,7 +14,7 @@ import {
   darken
 } from '@mui/material';
 
-import SidebarMenu from './SidebarMenu';
+import KitchenSidebarMenu from './KitchenSidebarMenu';
 import Logo from 'src/components/LogoSign';
 
 const SidebarWrapper = styled(Box)(
@@ -71,7 +71,7 @@ function Sidebar() {
               background: theme.colors.alpha.trueWhite[10]
             }}
           />
-          <SidebarMenu />
+          <KitchenSidebarMenu />
         </Scrollbar>
         <Divider
           sx={{
@@ -128,7 +128,7 @@ function Sidebar() {
                 background: theme.colors.alpha.trueWhite[10]
               }}
             />
-            <SidebarMenu />
+            <KitchenSidebarMenu />
           </Scrollbar>
         </SidebarWrapper>
       </Drawer>

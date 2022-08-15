@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FC, ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, useEffect, useCallback } from 'react';
 
 import PropTypes from 'prop-types';
 import {
@@ -27,7 +27,7 @@ import {
 } from '@mui/material';
 
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import { StockInfo } from '@/models/stock_info';
+import { StockInfo, SurplusUpload } from '@/models/stock_info';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import TextField from '@mui/material/TextField';
@@ -37,10 +37,24 @@ import DialogContent from '@mui/material/DialogContent';
 
 import DialogTitle from '@mui/material/DialogTitle';
 
-interface StockInfoTableProps {
-  className?: string;
-  stockInfoes: StockInfo[];
-}
+
+import { stockInfoApi } from '@/queries/stock';
+import { useRefMounted } from '@/hooks/useRefMounted';
+
+const applyPagination = (
+  stockInfoes: StockInfo[],
+  page: number,
+  limit: number
+): StockInfo[] => {
+  return stockInfoes.slice(page * limit, page * limit + limit);
+};
+
+
+
+
+
+
+
 
 const OutlinedInputWrapper = styled(OutlinedInput)(
   ({ theme }) => `
@@ -54,15 +68,50 @@ const ButtonSearch = styled(Button)(
   `
 );
 
-const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
+
+
+
+const StockInfoesTable = () => {
+
+
+
+
+  const isMountedRef = useRefMounted();
+  const [StockInfoes, setStockInfoes] = useState<StockInfo[]>([]);
+  const [SearchStockInfoes, setSearchStockInfoes] = useState<StockInfo[]>([]);
+
+  const getAllData = useCallback(async () => {
+    try {
+
+      let stockInfoes = await stockInfoApi.getStockInfo();
+      if (isMountedRef()) {
+        setStockInfoes(stockInfoes);
+        setSearchStockInfoes(stockInfoes);
+      }
+    } catch (err) {
+      alert(err);
+    }
+  }, [isMountedRef]);
+
+  useEffect(() => {
+    getAllData();
+  }, [getAllData]);
+
+
+
+
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
+  const [idChange, setidChange] = useState<string>('');
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage);
+
   };
+
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setLimit(parseInt(event.target.value));
   };
+
 
   const [open, setOpen] = React.useState(false);
 
@@ -76,20 +125,50 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
 
   const theme = useTheme();
 
+
+
+  const paginatedPromotions = applyPagination(StockInfoes, page, limit);
+
+  var Search: string;
+
+  let newM: StockInfo[] = [];
+  const handleSearchChange = (e) => {
+    newM = [];
+    Search = e.target.value;
+    SearchStockInfoes.map((item) => {
+      if (item.ing_name.indexOf(Search) != -1)
+        newM.push(item);
+    })
+  }
+  const handleSearchClick = () => {
+    setStockInfoes(newM);
+  }
+  let s: SurplusUpload = {
+    record_id: "",
+    surplus: 0
+  };
+  const surplusChange = (e) => {
+    s.surplus = parseInt(e.target.value);
+
+  }
+  console.log(StockInfoes);
   return (
     <Card>
-      {
+      {(
+
         <CardHeader
           action={
             <FormControl variant="outlined" fullWidth>
               <OutlinedInputWrapper
+                onChange={handleSearchChange}
                 type="text"
                 placeholder="输入原料名称"
                 endAdornment={
                   <InputAdornment position="end">
-                    <ButtonSearch variant="contained" size="small">
+                    <ButtonSearch variant="contained" size="small" onClick={handleSearchClick} >
                       搜索
                     </ButtonSearch>
+
                   </InputAdornment>
                 }
                 startAdornment={
@@ -102,24 +181,28 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
           }
           title="菜品信息列表"
         />
-      }
+      )}
       <Divider />
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
+
               <TableCell>采购编号</TableCell>
               <TableCell>原料名称</TableCell>
-              <TableCell>日期</TableCell>
+              <TableCell >日期</TableCell>
               <TableCell>采购量</TableCell>
-              <TableCell>剩余量</TableCell>
-              <TableCell>操作</TableCell>
+              <TableCell >剩余量</TableCell>
+              <TableCell >操作</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {stockInfoes.map((stockInfo) => {
+
+            {paginatedPromotions.map((stockInfo) => {
               return (
-                <TableRow hover key={stockInfo.id}>
+                <TableRow
+                  hover
+                >
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -128,7 +211,7 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
                       gutterBottom
                       noWrap
                     >
-                      {stockInfo.id}
+                      {stockInfo.record_id}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -139,7 +222,7 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
                       gutterBottom
                       noWrap
                     >
-                      {stockInfo.IngName}
+                      {stockInfo.ing_name}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -150,10 +233,11 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
                       gutterBottom
                       noWrap
                     >
-                      {stockInfo.Date}
+                      {stockInfo.date}
                     </Typography>
+
                   </TableCell>
-                  <TableCell>
+                  <TableCell >
                     <Typography
                       variant="body1"
                       fontWeight="bold"
@@ -162,9 +246,11 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
                       noWrap
                     >
                       {stockInfo.amount}
+
                     </Typography>
+
                   </TableCell>
-                  <TableCell>
+                  <TableCell >
                     <Typography
                       variant="body1"
                       fontWeight="bold"
@@ -172,12 +258,18 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
                       gutterBottom
                       noWrap
                     >
-                      {stockInfo.surplus}
+                      {(stockInfo.surplus)}
+
                     </Typography>
+
                   </TableCell>
 
-                  <TableCell>
-                    <Tooltip title="编辑" arrow onClick={handleClickOpen}>
+                  <TableCell >
+                    <Tooltip title="编辑" arrow onClick={() => {
+
+                      setidChange(stockInfo.record_id);
+                      setOpen(true);
+                    }}>
                       <IconButton
                         sx={{
                           '&:hover': {
@@ -194,28 +286,68 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
                     <Dialog open={open} onClose={handleClose}>
                       <DialogTitle>剩余量编辑</DialogTitle>
                       <DialogContent>
+
                         <TextField
+                          onChange={surplusChange}
                           autoFocus
                           margin="dense"
                           id="id"
-                          label="剩余量"
+                          label="剩余"
                           fullWidth
                           variant="standard"
                         />
+
                       </DialogContent>
                       <DialogActions>
                         <Button onClick={handleClose}>退出</Button>
-                        <Button onClick={handleClose}>确定</Button>
+                        <Button onClick={() => {
+
+                          const conduct = async () => {
+                            s.record_id = idChange;
+                            return stockInfoApi.updateStock(
+                              s
+                            );
+                          }
+
+                          conduct().then((value) => {
+
+                            alert("修改成功：" + value);
+
+                          }).catch((value) => {
+
+                            alert("修改失败：" + value);
+                          });
+                          setOpen(false);
+                          window.location.reload();
+
+                        }} >确定</Button>
                       </DialogActions>
                     </Dialog>
-                    <Tooltip title="删除" arrow>
+                    <Tooltip title="删除" arrow >
                       <IconButton
+                        onClick={() => {
+                          const conduct = async () => {
+                            console.log(stockInfoApi);
+                            console.log(stockInfo.record_id);
+
+                            return stockInfoApi.delStock(
+                              parseInt(stockInfo.record_id))
+                          }
+                          conduct().then((value) => {
+                            alert("成功：" + value);
+                            window.location.reload();
+                          }).catch((value) => {
+
+                            alert("失败：" + value);
+                          });
+                        }}
                         sx={{
                           '&:hover': { background: theme.colors.error.lighter },
                           color: theme.palette.error.main
                         }}
                         color="inherit"
                         size="small"
+
                       >
                         <DeleteTwoToneIcon fontSize="small" />
                       </IconButton>
@@ -230,7 +362,7 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
       <Box p={2}>
         <TablePagination
           component="div"
-          count={stockInfoes.length}
+          count={StockInfoes.length}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}
@@ -240,6 +372,7 @@ const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
       </Box>
     </Card>
   );
+
 };
 
 StockInfoesTable.propTypes = {

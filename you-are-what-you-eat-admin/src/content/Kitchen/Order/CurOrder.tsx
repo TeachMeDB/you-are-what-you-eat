@@ -1,82 +1,21 @@
-import CurOrderTable from './CurOrderTable';
 
-const curOrders = [
-  {
-    OrderId: '001',
-    OrderStatus: '未完成',
-    Dish: [
-      {
-        DishName: '水煮包菜',
-        Dishstate: '未完成'
-      },
-      {
-        DishName: '水煮西葫芦',
-        Dishstate: '未完成'
-      }
-    ]
-  },
-  {
-    OrderId: '002',
-    OrderStatus: '未完成',
-    Dish: [
-      {
-        DishName: '清蒸白菜',
-        Dishstate: '未完成'
-      },
-      {
-        DishName: '猪肉刺身',
-        Dishstate: '未完成'
-      }
-    ]
-  },
-  {
-    OrderId: '003',
-    OrderStatus: '未完成',
-    Dish: [
-      {
-        DishName: '清蒸白菜',
-        Dishstate: '未完成'
-      },
-      {
-        DishName: '猪肉刺身',
-        Dishstate: '未完成'
-      }
-    ]
-  },
-  {
-    OrderId: '003',
-    OrderStatus: '未完成',
-    Dish: [
-      {
-        DishName: '清蒸白菜',
-        Dishstate: '未完成'
-      },
-      {
-        DishName: '猪肉刺身',
-        Dishstate: '未完成'
-      }
-    ]
-  },
-  {
-    OrderId: '003',
-    OrderStatus: '未完成',
-    Dish: [
-      {
-        DishName: '清蒸白菜',
-        Dishstate: '未完成'
-      },
-      {
-        DishName: '猪肉刺身',
-        Dishstate: '未完成'
-      }
-    ]
-  }
-];
+import CurOrderTable from "./CurOrderTable";
+import CurOrderSummary from "./CurOrderSummary";
+import { Grid } from '@mui/material';
+import { CurOrder } from "@/models/cur_order";
 
-export default function CurOrder() {
+import { FC, ChangeEvent, useState, useEffect, useCallback } from 'react'
+export default function CurOrders() {
+
+  const [test, SetTest] = useState<number>(0);
+
   return (
-    <div>
-      <CurOrderTable CurOrders={curOrders} />
-    </div>
-  );
+
+    <>
+      <CurOrderTable />
+    </>
+
+
+  )
+
 }

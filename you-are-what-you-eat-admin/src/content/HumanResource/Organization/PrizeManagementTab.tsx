@@ -56,7 +56,7 @@ import { humanResourceApi } from '@/queries/employee';
 import { salaryApi } from '@/queries/salary';
 import { awardApi } from '@/queries/award';
 import { ApprovalRounded } from '@mui/icons-material';
-import { format } from 'date-fns';
+import { compareAsc, compareDesc, format, parse } from 'date-fns';
 
 function PrizeManagementTab() {
   const theme = useTheme();
@@ -358,7 +358,9 @@ function PrizeManagementTab() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {prizes
+                {prizes.sort((a,b)=>{
+                return compareDesc(parse(a.time,"yyyy-MM-dd HH:mm:ss",Date.now()),parse(b.time,"yyyy-MM-dd HH:mm:ss",Date.now()));
+              })
                   .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                   .map((prize) => (
                     <TableRow key={prize.id + prize.time} hover>

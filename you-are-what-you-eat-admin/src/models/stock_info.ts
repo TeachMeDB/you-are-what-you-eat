@@ -1,7 +1,14 @@
 export interface StockInfo {
-  id: string;
-  IngName: string;
-  Date: string;
+
   amount: number;
+  date: string;
+  ing_name: string;
+  record_id: string;
   surplus: number;
 }
+
+export interface SurplusUpload {
+  record_id: string;
+  surplus: number;
+}
+

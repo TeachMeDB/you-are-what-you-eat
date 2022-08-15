@@ -112,7 +112,12 @@ function Stuff({
       <Divider />
       <Box p={2}>
         <Grid container spacing={0}>
-          {employees
+          {employees.sort((a,b)=>{
+                if(a.id===b.id){
+                  return 0;
+                }
+                return a.id<b.id? -1:1;
+              })
             .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
             .map((stuff: EmployeeEntity) => (
               <Grid key={stuff.id} item xs={12} sm={6} lg={4}>

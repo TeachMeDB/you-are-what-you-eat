@@ -33,6 +33,10 @@ import WorkspacePremiumTwoToneIcon from '@mui/icons-material/WorkspacePremiumTwo
 import CameraFrontTwoToneIcon from '@mui/icons-material/CameraFrontTwoTone';
 import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
 
+import LunchDiningIcon from '@mui/icons-material/LunchDining';
+import SoupKitchenIcon from '@mui/icons-material/SoupKitchen';
+import Battery60Icon from '@mui/icons-material/Battery60';
+
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
   .MuiList-root {
@@ -148,9 +152,9 @@ const SubMenuWrapper = styled(Box)(
                 background: ${theme.colors.alpha.trueWhite[100]};
                 opacity: 0;
                 transition: ${theme.transitions.create([
-                  'transform',
-                  'opacity'
-                ])};
+    'transform',
+    'opacity'
+  ])};
                 width: 6px;
                 height: 6px;
                 transform: scale(0);
@@ -175,7 +179,7 @@ const SubMenuWrapper = styled(Box)(
 `
 );
 
-function SidebarMenu() {
+function KitchenSidebarMenu() {
   const { closeSidebar } = useContext(SidebarContext);
   const router = useRouter();
   const currentRoute = router.pathname;
@@ -375,7 +379,11 @@ function SidebarMenu() {
                 <NextLink href="/management/VIP" passHref>
                   <Button
                     className={
-                      currentRoute === '/management/VIP' ? 'active' : ''
+
+                      currentRoute === '/management/VIP'
+                        ? 'active'
+                        : ''
+
                     }
                     disableRipple
                     component="a"
@@ -465,14 +473,14 @@ function SidebarMenu() {
                 <NextLink href="/kitchen/meal" passHref>
                   <Button
                     className={
-                      currentRoute === '//kitchen/meal' ? 'active' : ''
+                      currentRoute === '/kitchen/meal' ? 'active' : ''
                     }
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
-                    startIcon={<TableChartTwoToneIcon />}
+                    startIcon={<LunchDiningIcon />}
                   >
-                    菜品信息管理
+                    菜品及库存信息管理
                   </Button>
                 </NextLink>
               </ListItem>
@@ -489,7 +497,7 @@ function SidebarMenu() {
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
-                    startIcon={<TableChartTwoToneIcon />}
+                    startIcon={<SoupKitchenIcon />}
                   >
                     实时订单管理
                   </Button>
@@ -503,12 +511,12 @@ function SidebarMenu() {
                 <NextLink href="/kitchen/stock" passHref>
                   <Button
                     className={
-                      currentRoute === '//kitchen/stock' ? 'active' : ''
+                      currentRoute === '/kitchen/stock' ? 'active' : ''
                     }
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
-                    startIcon={<TableChartTwoToneIcon />}
+                    startIcon={<Battery60Icon />}
                   >
                     库存管理
                   </Button>
@@ -531,7 +539,7 @@ function SidebarMenu() {
                 <NextLink href="/ingredient/overview" passHref>
                   <Button
                     className={
-                      currentRoute === '//ingredient/overview' ? 'active' : ''
+                      currentRoute === '/ingredient/overview' ? 'active' : ''
                     }
                     disableRipple
                     component="a"
@@ -840,4 +848,4 @@ function SidebarMenu() {
   );
 }
 
-export default SidebarMenu;
+export default KitchenSidebarMenu;
