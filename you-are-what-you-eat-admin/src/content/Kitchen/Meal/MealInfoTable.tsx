@@ -160,6 +160,7 @@ const MealInfoTable = () => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [idChange, setidChange] = useState<string>('');
+  const [idLook, setIdLook] = useState<MealInfo>('');
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage);
 
@@ -443,6 +444,7 @@ const MealInfoTable = () => {
                           size="small"
                           onClick={() => {
                             handleClickDetailOpen();
+                            setIdLook(mealInfo);
                           }}
                         >
                           <DetailsIcon fontSize="small" />
@@ -468,7 +470,7 @@ const MealInfoTable = () => {
                             <div style={{ padding: '0 27px' }}>
                               <Grid container spacing={2}>
                                 <Grid item xs={9}>
-                                  <h2>{mealInfo.dis_name}</h2>
+                                  <h2>{idLook.dis_name}</h2>
                                 </Grid>
                                 <Grid item xs={1}>
                                   <StarRateIcon sx={{ mt: 2.2, color: "blue", }} />
@@ -481,12 +483,12 @@ const MealInfoTable = () => {
                               </Grid>
                               <Divider />
                               <div>
-                                <p style={{ fontSize: "18px" }}>{mealInfo.description}</p>
+                                <p style={{ fontSize: "18px" }}>{idLook.description}</p>
                               </div>
                               <Grid container spacing={2}>
                                 <Grid item xs={7}>
                                   <div>
-                                    <p style={getPriceStyles()}>¥ {mealInfo.price} / 份</p>
+                                    <p style={getPriceStyles()}>¥ {idLook.price} / 份</p>
                                   </div>
                                 </Grid>
                               </Grid>
