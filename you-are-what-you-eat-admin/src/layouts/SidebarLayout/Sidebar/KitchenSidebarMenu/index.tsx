@@ -473,7 +473,7 @@ function KitchenSidebarMenu() {
                 <NextLink href="/kitchen/meal" passHref>
                   <Button
                     className={
-                      currentRoute === '//kitchen/meal' ? 'active' : ''
+                      currentRoute === '/kitchen/meal' ? 'active' : ''
                     }
                     disableRipple
                     component="a"
@@ -511,7 +511,7 @@ function KitchenSidebarMenu() {
                 <NextLink href="/kitchen/stock" passHref>
                   <Button
                     className={
-                      currentRoute === '//kitchen/stock' ? 'active' : ''
+                      currentRoute === '/kitchen/stock' ? 'active' : ''
                     }
                     disableRipple
                     component="a"
@@ -539,7 +539,7 @@ function KitchenSidebarMenu() {
                 <NextLink href="/ingredient/overview" passHref>
                   <Button
                     className={
-                      currentRoute === '//ingredient/overview' ? 'active' : ''
+                      currentRoute === '/ingredient/overview' ? 'active' : ''
                     }
                     disableRipple
                     component="a"
