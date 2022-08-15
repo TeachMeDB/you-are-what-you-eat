@@ -362,6 +362,9 @@ function ScheduleDelete({
     if (compareAsc(this_time, date_times[0]) < 0) {
       return segs[0];
     }
+    if (compareAsc(this_time, date_times[date_times.length-1]) === 0) {
+      return segs[segs.length-2];
+    }
 
     for (let i = 0; i < segs.length - 2; i++) {
       if (
@@ -377,9 +380,6 @@ function ScheduleDelete({
     }
   };
 
-  const getRandom = () => {
-    return Math.floor(Math.random() * 100);
-  };
 
   const callback = (schedule: ScheduleEntity, index: number) => {
     let day: number = getDay(new Date(schedule.time_end));
@@ -399,7 +399,7 @@ function ScheduleDelete({
           ToTimeToSegment(schedule.time_end) +
           ' ' +
           'bg-' +
-          colors[(index + getRandom()) % 5]
+          colors[(index ^ parseInt(schedule.plan_id)) % 5]
         }
       >
         <Grid container direction="row">

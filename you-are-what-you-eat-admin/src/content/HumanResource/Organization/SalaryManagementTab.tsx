@@ -31,7 +31,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useRefMounted } from '@/hooks/useRefMounted';
 import { PayrollEntity, PayrollUpload, Salary } from '@/models/employee';
 import { salaryApi } from '@/queries/salary';
-import { format } from 'date-fns';
+import { compareDesc, format, parse } from 'date-fns';
 import { awardApi } from '@/queries/award';
 
 function SalaryManagementTab() {
@@ -77,7 +77,7 @@ function SalaryManagementTab() {
 
   const [upload, setUpload] = useState<PayrollUpload>({
     id: '',
-    time: format(Date.now(), 'yyyy-MM-dd HH:mm-ss')
+    time: format(Date.now(), 'yyyy-MM-dd HH:mm:ss')
   } as PayrollUpload);
 
   return (
@@ -190,7 +190,7 @@ function SalaryManagementTab() {
                     onChange={(event) => {
                       let upload = {
                         id: event.target.value,
-                        time: format(Date.now(), 'yyyy-MM-dd HH:mm-ss')
+                        time: format(Date.now(), 'yyyy-MM-dd HH:mm:ss')
                       } as PayrollUpload;
                       setUpload(upload);
                     }}
@@ -198,7 +198,7 @@ function SalaryManagementTab() {
                   <TextField
                     disabled
                     id="outlined-disabled"
-                    value={format(Date.now(), 'yyyy-MM-dd HH:mm-ss')}
+                    value={format(Date.now(), 'yyyy-MM-dd HH:mm:ss')}
                   />
                 </div>
               </Box>
@@ -256,7 +256,9 @@ function SalaryManagementTab() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {payrolls
+                {payrolls.sort((a,b)=>{
+                return compareDesc(parse(a.time,"yyyy-MM-dd HH:mm:ss",Date.now()),parse(b.time,"yyyy-MM-dd HH:mm:ss",Date.now()));
+              })
                   .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                   .map((payroll) => (
                     <TableRow key={payroll.id + payroll.time} hover>

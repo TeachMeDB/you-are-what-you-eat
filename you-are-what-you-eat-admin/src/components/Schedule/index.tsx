@@ -315,6 +315,10 @@ function Schedule({
       return segs[0];
     }
 
+    if (compareAsc(this_time, date_times[date_times.length-1]) === 0) {
+      return segs[segs.length-2];
+    }
+
     for (let i = 0; i < segs.length - 2; i++) {
       if (
         compareAsc(date_times[i], this_time) < 0 &&
@@ -329,9 +333,6 @@ function Schedule({
     }
   };
 
-  const getRandom = () => {
-    return Math.floor(Math.random() * 100);
-  };
 
   const callback = (schedule: ScheduleEntity, index: number) => {
     let day: number = getDay(new Date(schedule.time_end));
