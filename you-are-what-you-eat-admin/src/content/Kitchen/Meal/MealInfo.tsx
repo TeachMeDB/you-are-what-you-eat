@@ -1,8 +1,8 @@
 import { Card } from '@mui/material';
-import { MealInfo } from '@/models/meal_info';
 
 
-import React, { useState } from 'react';
+
+import React from 'react';
 
 import MealInfoTable from './MealInfoTable'
 

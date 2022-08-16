@@ -22,8 +22,7 @@ import WarningIcon from '@mui/icons-material/Warning';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { humanResourceApi } from '@/queries/employee';
 import { EmployeeDetail } from '@/models/employee';
-import { frontendURL } from '@/utils/config';
-import DetailEmployeePopup from './EmployeeManagement/DetailEmployeePopup';
+import GlobalConfig from '@/utils/config';
 import DetailEmployeeUpdate from './EmployeeManagement/DetailEmployeeUpdate';
 
 const ButtonError = styled(Button)(
@@ -46,6 +45,9 @@ const AvatarSuccess = styled(Avatar)(
 );
 
 function SelfManagementTab({ user }: { user: EmployeeDetail }) {
+
+  console.log("here",user)
+
   return (
     <Card>
       <List>
@@ -65,7 +67,7 @@ function SelfManagementTab({ user }: { user: EmployeeDetail }) {
             secondary="更新姓名、性别等重要信息"
           />
 
-          <DetailEmployeeUpdate userId={user.id} />
+          <DetailEmployeeUpdate key={user.id} userId={user.id} />
         </ListItem>
         <Divider component="li" />
         <ListItem sx={{ p: 3 }}>
@@ -94,7 +96,7 @@ function SelfManagementTab({ user }: { user: EmployeeDetail }) {
               conduct()
                 .then((value) => {
                   alert('删除结果：' + value + '\n');
-                  window.location.replace(frontendURL);
+                  window.location.replace(GlobalConfig.getFrontendURL());
                 })
                 .catch((value) => {
                   alert('删除失败：' + value);

@@ -4,7 +4,7 @@ import { GetApi,PostApi } from 'src/utils/requests';
 class QueryOrderApi {
   public getOrder: () => Promise<CryptoFullOrder> = async () => {
     try {
-      //const r = await (await fetch('http://106.14.212.200:8000/app/api/Order/GetAllOrder')).text();
+      //const r = await (await fetch(GlobalConfig.getBackendURL()+'/Order/GetAllOrder')).text();
       //console.log(JSON.parse(r));
       //console.log(data);
       //return JSON.parse(r) as CryptoFullOrder;

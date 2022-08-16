@@ -54,6 +54,8 @@ const LinearProgressWrapper = styled(LinearProgress)(
 export default function CheckList(curOrder: CurOrder) {
 
 
+
+
     const CountFinished = () => {
         var i = 0;
         curOrder.dish.map((item) => {
@@ -68,6 +70,12 @@ export default function CheckList(curOrder: CurOrder) {
 
     const [finished, setFinished] = useState<number>(f);
 
+    let c: boolean[] = [];
+    curOrder.dish.map(() => {
+        c.push(false);
+    })
+
+    const [checked, setChecked] = useState<boolean[]>(c);
 
 
 
@@ -98,57 +106,67 @@ export default function CheckList(curOrder: CurOrder) {
                         sx={{ width: '100%', maxWidth: 350, bgcolor: 'background.paper' }}
                     >
                         {
-                            curOrder.dish.map((item) =>
-                                <ListItem divider>
-                                    <ListItemText id={item.dish_name} primary={item.dish_name + "----备注:" + item.remark} />
-                                    <Switch
-                                        defaultChecked={check(item)}
-                                        {...label}
-                                        inputProps={{
-                                            'aria-labelledby': item.dish_name,
-                                        }}
-                                        onChange={() => {
-                                            const conduct1 = async () => {
-                                                s.dish_order_id = item.dish_order_id;
-                                                s.dish_status = "已完成"
-                                                return curOrderApi.updateDishStatus(
-                                                    s
-                                                );
-                                            }
-                                            const conduct2 = async () => {
-                                                b.order_id = curOrder.order_id;
-                                                b.order_status = "已完成"
 
-                                                return curOrderApi.updateOrderStatus(
-                                                    b
-                                                );
-                                            }
-                                            setFinished(finished + 1);
-                                            console.log("finished");
-                                            console.log(finished / curOrder.dish.length);
-                                            conduct1().then((value) => {
-                                                alert("成功：" + value);
-                                            }).catch((value) => {
+                            curOrder.dish.map((item, index) => {
 
-                                                alert("失败：" + value);
-                                            });
-                                            console.log("完成没？");
-                                            console.log(countUnFinished(curOrder));
-                                            if (finished + 1 == curOrder.dish.length) {
-                                                conduct2().then((value) => {
-
-                                                    alert("该订单已完成：" + value);
-                                                    window.location.reload();
-
+                                return (
+                                    <ListItem divider>
+                                        <ListItemText id={item.dish_name} primary={item.dish_name + "----备注:" + item.remark} />
+                                        <Switch
+                                            defaultChecked={check(item)}
+                                            disabled={checked[index]}
+                                            {...label}
+                                            inputProps={{
+                                                'aria-labelledby': item.dish_name,
+                                            }}
+                                            onChange={() => {
+                                                let a: boolean[] = [];
+                                                a = checked;
+                                                a[index] = true;
+                                                setChecked(a);
+                                                const conduct1 = async () => {
+                                                    s.dish_order_id = item.dish_order_id;
+                                                    s.dish_status = "已完成"
+                                                    return curOrderApi.updateDishStatus(
+                                                        s
+                                                    );
+                                                }
+                                                const conduct2 = async () => {
+                                                    b.order_id = curOrder.order_id;
+                                                    b.order_status = "已完成"
+                                                    return curOrderApi.updateOrderStatus(
+                                                        b
+                                                    );
+                                                }
+                                                setFinished(finished + 1);
+                                                console.log("finished");
+                                                console.log(finished / curOrder.dish.length);
+                                                conduct1().then((value) => {
+                                                    ;
                                                 }).catch((value) => {
 
                                                     alert("失败：" + value);
                                                 });
-                                            }
+                                                console.log("完成没？");
+                                                console.log(countUnFinished(curOrder));
+                                                if (finished + 1 == curOrder.dish.length) {
+                                                    conduct2().then((value) => {
 
-                                        }} />
+                                                        alert("该订单已完成：" + value);
+                                                        window.location.reload();
 
-                                </ListItem>
+                                                    }).catch((value) => {
+
+                                                        alert("失败：" + value);
+                                                    });
+                                                }
+
+                                            }} />
+
+                                    </ListItem>
+                                )
+                            }
+
                             )
                         }
                     </List>
