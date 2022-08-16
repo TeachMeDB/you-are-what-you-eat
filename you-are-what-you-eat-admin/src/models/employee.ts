@@ -133,35 +133,3 @@ export interface PrizeUpload {
   level: string;
   time: string;
 }
-
-export const defaultUser: EmployeeDetail = {
-  id: '1001',
-  name: '戴仁杰',
-  gender: '男',
-  occupation: '经理',
-  birthday: '2001-07-26',
-  avatar: 'http://106.14.212.200:8000/images/employees/employee_1001.png',
-  cover: 'http://106.14.212.200:8000/images/covers/cover_1001.png',
-  attends: [
-    {
-      plan_id: '2',
-      time_start: '2022-05-17 09:00:00',
-      time_end: '2022-05-19 18:00:00',
-      place: '大堂',
-      attendance: true
-    }
-  ],
-  payrolls: [
-    {
-      pay_datetime: '2001-06-06 00:00:00',
-      amount: 30000
-    }
-  ],
-  prizes: [
-    {
-      prize_datetime: '2022-01-09 12:00:00',
-      level: '全勤奖',
-      amount: 5000
-    }
-  ]
-} as EmployeeDetail;

@@ -1,5 +1,4 @@
-import { frontendURL } from './config';
-import { authorizationURL } from './config';
+import GlobalConfig from './config';
 
 export interface CasdoorSdkConfig {
   serverUrl: string; // your Casdoor server URL, e.g., "https://door.casbin.com" for the official demo site
@@ -26,7 +25,6 @@ export interface Account {
   accessToken: string;
 }
 
-const frontend: string = frontendURL;
 
 class CasdoorSdk {
   private config: CasdoorSdkConfig;
@@ -38,12 +36,12 @@ class CasdoorSdk {
     }
   }
 
-  public getSignupUrl(
-    redirectUrl: string = frontend,
+  public getSignupUrl=(
+    redirectUrl: string = GlobalConfig.getFrontendURL(),
     enablePassword: boolean = true
-  ): string {
+  ): string =>{
     if (enablePassword) {
-      //localStorage.setItem("signinUrl", this.getSigninUrl(redirectUrl));
+      localStorage.setItem("signinUrl", this.getSigninUrl(redirectUrl));
       return `${this.config.serverUrl.trim()}/signup/${this.config.appName}`;
     } else {
       return this.getSigninUrl(redirectUrl).replace(
@@ -53,7 +51,7 @@ class CasdoorSdk {
     }
   }
 
-  public getSigninUrl(redirectUrl: string = frontend): string {
+  public getSigninUrl=(redirectUrl: string = GlobalConfig.getFrontendURL()): string =>{
     const redirectUri = `${redirectUrl}${this.config.redirectPath}`;
     const scope = 'read';
     const state = this.config.appName;
@@ -64,7 +62,7 @@ class CasdoorSdk {
     )}&scope=${scope}&state=${state}`;
   }
 
-  public getUserProfileUrl(userName: string, account: Account): string {
+  public getUserProfileUrl=(userName: string, account: Account): string =>{
     let param = '';
     if (account !== undefined && account !== null) {
       param = `?access_token=${account.accessToken}`;
@@ -74,7 +72,7 @@ class CasdoorSdk {
     }/${userName}${param}`;
   }
 
-  public getMyProfileUrl(account: Account): string {
+  public getMyProfileUrl=(account: Account): string=>{
     let param = '';
     if (account !== undefined && account !== null) {
       param = `?access_token=${account.accessToken}`;
@@ -82,10 +80,10 @@ class CasdoorSdk {
     return `${this.config.serverUrl.trim()}/account${param}`;
   }
 
-  public signin(
-    redirectUrl: string = frontend,
+  public signin=(
+    redirectUrl: string = GlobalConfig.getFrontendURL(),
     serverUrl: string = this.config.serverUrl
-  ): Promise<Response> {
+  ): Promise<Response> =>{
     const params = new URLSearchParams(redirectUrl);
     return fetch(
       `${serverUrl}/api/signin?code=${params.get('code')}&state=${params.get(
@@ -100,7 +98,7 @@ class CasdoorSdk {
 }
 
 const sdkConfig: CasdoorSdkConfig = {
-  serverUrl: authorizationURL,
+  serverUrl: GlobalConfig.getAuthorizationURL(),
   clientId: '82737aac8ec89315c220',
   appName: 'application_dbks',
   organizationName: 'organization_dbks',

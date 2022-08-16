@@ -11,7 +11,7 @@ import { TransitionProps } from '@mui/material/transitions';
 import { Container, Grid } from '@mui/material';
 import ProfileCover from '../Profile/ProfileCover';
 import Summary from '../Profile/Summary';
-import { defaultUser, EmployeeDetail, EmployeeEntity } from '@/models/employee';
+import { EmployeeDetail, EmployeeEntity } from '@/models/employee';
 import { useRefMounted } from '@/hooks/useRefMounted';
 import { humanResourceApi } from '@/queries/employee';
 import { scheduleApi } from '@/queries/schedule';
@@ -28,7 +28,7 @@ const Transition = React.forwardRef(function Transition(
 
 export default function DetailEmployeePopup({ userId }: { userId: string }) {
   const isMountedRef = useRefMounted();
-  const [employee, setEmployee] = React.useState<EmployeeDetail>(defaultUser);
+  const [employee, setEmployee] = React.useState<EmployeeDetail>(null);
 
   const getAllData = React.useCallback(async () => {
     try {
@@ -54,7 +54,7 @@ export default function DetailEmployeePopup({ userId }: { userId: string }) {
   };
 
   return (
-    <div>
+    (employee)&&<div key={employee.id}>
       <Button variant="outlined" onClick={handleClickOpen} size="large">
         查看
       </Button>

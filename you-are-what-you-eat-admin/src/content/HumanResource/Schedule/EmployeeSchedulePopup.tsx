@@ -20,7 +20,7 @@ import { Container, Grid } from '@mui/material';
 import ProfileCover from '../Organization/Profile/ProfileCover';
 import Summary from '../Organization/Profile/Summary';
 import { Avaliable, ScheduleEntity } from '@/models/schedule';
-import { defaultUser, EmployeeDetail } from '@/models/employee';
+import { EmployeeDetail } from '@/models/employee';
 import { useRefMounted } from '@/hooks/useRefMounted';
 import { humanResourceApi } from '@/queries/employee';
 import { scheduleApi } from '@/queries/schedule';
@@ -54,7 +54,7 @@ export default function EmployeeSchedule({
   };
 
   const isMountedRef = useRefMounted();
-  const [employee, setEmployee] = React.useState<EmployeeDetail>(defaultUser);
+  const [employee, setEmployee] = React.useState<EmployeeDetail>(null);
 
   const [schedules, setSchedules] = React.useState<ScheduleEntity[]>([]);
 
@@ -82,7 +82,7 @@ export default function EmployeeSchedule({
   }, [isMountedRef]);
 
   return (
-    <div>
+    (employee)&&<div key={employee.id}>
       <Button
         variant="outlined"
         size="small"
