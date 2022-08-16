@@ -5,7 +5,7 @@ import { GetApi, PostApi } from '@/utils/requests';
 class QueryVipApi {
   public getVip: () => Promise<CryptoAllVip> = async () => {
     try {
-      //const r = await (await fetch('http://106.14.212.200:8000/app/api/VIP/GetAllVIPInfo')).text();
+      //const r = await (await fetch(GlobalConfig.getBackendURL()+'/VIP/GetAllVIPInfo')).text();
       //console.log(JSON.parse(r));
       //console.log(data);
       //let rawData: CryptoAllVip =JSON.parse(r) as CryptoAllVip;

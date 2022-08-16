@@ -7,7 +7,7 @@ class QueryDishOrderApi {
   ) => {
     try {
       /*const r = await (await 
-                fetch('http://106.14.212.200:8000/app/api/Order/GetOrderDish?order_id='+id)                
+                fetch(GlobalConfig.getBackendURL()+'/Order/GetOrderDish?order_id='+id)                
                 ).text();*/
       //console.log(JSON.parse(r));
       //console.log(data);
