@@ -3,9 +3,18 @@ import React, { ChangeEvent, FC, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
+  Button,
   Card,
   CardHeader,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Divider,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -13,17 +22,24 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Typography
+  TextField,
+  Tooltip,
+  Typography,
+  useTheme,
 } from '@mui/material';
 import { IngredientRecordInfo } from '@/models/ingredient_record_info';
 import { EmployeeInfo } from '@/models/employee_info';
-import { AssetInfo } from '@/models/asset_info';
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import { queryIngredientRecordApi } from '@/queries/query_ingredient_record';
+import { IngredientInfo } from '@/models/ingredient_info';
+import { DesktopDatePicker } from '@mui/lab';
 
 interface IngredientRecordInfoTableProps {
   className?: string;
   ingredientRecordInfoes: IngredientRecordInfo[];
   employees: EmployeeInfo[];
-  ingredients: AssetInfo[];
+  ingredients: IngredientInfo[];
   setIngredientRecordInfoes: any;
 }
 
@@ -39,28 +55,28 @@ interface IngredientRecordInfoTableProps {
 //   `,
 // );
 
-const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (
-  props
-) => {
+const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) => {
   const {
     ingredientRecordInfoes = [],
     ingredients = [],
     employees = [],
-    setIngredientRecordInfoes
+    setIngredientRecordInfoes,
   } = props;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   // const [list, setList] = useState(ingredientRecordInfoes);
   // const [keyword, setKeyword] = useState('');
-  // const [open, setOpen] = React.useState(false);
-  // const [formValue, setFormValue] = useState({
-  //   employee_id: 0,
-  //   ingr_id: 0,
-  //   ingredientRecord_type: '',
-  //   ingredientRecord_date: '',
-  //   ingredientRecord_reason: '',
-  //   ingredientRecord_cost: '',
-  // });
+  const [open, setOpen] = React.useState(false);
+  const [formValue, setFormValue] = useState({
+    record_id: 0,
+    ingr_id: 0,
+    purchasing_date: null,
+    measure_unit: '',
+    shelf_life: '0',
+    produced_date: null,
+    price: '',
+    director_id: 0,
+  });
 
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage);
@@ -71,20 +87,24 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (
     setLimit(newLimit);
   };
 
-  // const handleClickOpen = (ingredientRecordInfo) => {
-  //   console.log(ingredientRecordInfo, ' <-- ingredientRecordInfo');
-  //   setFormValue(ingredientRecordInfo);
-  //   setOpen(true);
-  // };
+  const handleClickOpen = (ingredientRecordInfo) => {
+    console.log(ingredientRecordInfo, ' <-- ingredientRecordInfo');
+    setFormValue(ingredientRecordInfo);
+    setOpen(true);
+  };
 
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
+  const handleClose = () => {
+    setOpen(false);
+  };
   // const handleSubmit = async () => {
   //   console.log(formValue, ' <-- formValue');
   //   await queryIngredientRecordApi.updateIngredientRecord(formValue);
   //   setOpen(false);
   // };
+
+  const handleFormDateChange = (field, e) => {
+    setFormValue({ ...formValue, [field]: e });
+  };
 
   // const handleSearch = async () => {
   //   const data = await queryIngredientRecordApi.getIngredientRecordList();
@@ -92,32 +112,29 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (
   //   setList(data);
   // };
 
-  // const handleFormChange = (field, e) => {
-  //   console.log(field, ' <-- field');
-  //   setFormValue({ ...formValue, [field]: e.target.value });
-  // };
+  const handleFormChange = (field, e) => {
+    console.log(field, ' <-- field');
+    setFormValue({ ...formValue, [field]: e.target.value });
+  };
 
-  // const handleSubmitForm = async () => {
-  //   console.log(formValue, ' <-- ingredientRecordFormValue');
-  //   // @ts-ignore
-  //   const { ingr_name, ingr_type, ...params } = formValue;
-  //   await queryIngredientRecordApi.addIngredientRecord(params);
-  //   const data = await queryIngredientRecordApi.getIngredientRecordList();
-  //   setIngredientRecordInfoes(data);
-  //   setOpen(false);
-  // };
+  const handleSubmitForm = async () => {
+    console.log(formValue, ' <-- ingredientRecordFormValue');
+    // @ts-ignore
+    const { director_name, ingr_name, ...params } = formValue;
+    await queryIngredientRecordApi.updateIngredientRecord(params);
+    const data = await queryIngredientRecordApi.getIngredientRecordList();
+    setIngredientRecordInfoes(data);
+    setOpen(false);
+  };
 
-  // const handleFormChange = (field, e) => {
-  //   setFormValue({ ...formValue, [field]: e.target.value });
-  // };
-
-  // const handleDelete = async (id: string) => {
-  //   await queryIngredientRecordApi.deleteIngredientRecord(id);
-  // };
+  const handleDelete = async (id: string | number) => {
+    await queryIngredientRecordApi.deleteIngredientRecord(id);
+    setIngredientRecordInfoes(ingredientRecordInfoes.filter(val => val.record_id !== id));
+  };
 
   const data = ingredientRecordInfoes.slice(page * limit, page * limit + limit);
 
-  // const theme = useTheme();
+  const theme = useTheme();
   return (
     <Card>
       {
@@ -126,7 +143,7 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (
           //   <FormControl variant="outlined" fullWidth>
           //     <OutlinedInputWrapper
           //       type="text"
-          //       placeholder="输入资产名称"
+          //       placeholder="输入耗材名称"
           //       value={keyword}
           //       onChange={(e) => setKeyword(e.target.value)}
           //       endAdornment={
@@ -148,7 +165,7 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (
           //     />
           //   </FormControl>
           // }
-          title="资产管理记录"
+          title="耗材管理记录"
         />
       }
       <Divider />
@@ -201,39 +218,6 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (
                       gutterBottom
                       noWrap
                     >
-                      {ingredientRecordInfo.measure_unit}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {ingredientRecordInfo.measure_unit}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {ingredientRecordInfo.shelf_life}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
                       {ingredientRecordInfo.purchasing_date}
                     </Typography>
                   </TableCell>
@@ -245,7 +229,7 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (
                       gutterBottom
                       noWrap
                     >
-                      {ingredientRecordInfo.price}
+                      {ingredientRecordInfo.measure_unit}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -256,107 +240,193 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (
                       gutterBottom
                       noWrap
                     >
-                      {ingredientRecordInfo.price}
+                      {ingredientRecordInfo.shelf_life}天
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {ingredientRecordInfo.produced_date}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {ingredientRecordInfo.price}元
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {ingredientRecordInfo.director_name}
                     </Typography>
                   </TableCell>
 
-                  {/*<TableCell>*/}
-                  {/*  <Tooltip title="编辑" arrow onClick={() => handleClickOpen(ingredientRecordInfo)}>*/}
-                  {/*    <IconButton*/}
-                  {/*      sx={{*/}
-                  {/*        '&:hover': {*/}
-                  {/*          background: theme.colors.primary.lighter,*/}
-                  {/*        },*/}
-                  {/*        color: theme.palette.primary.main,*/}
-                  {/*      }}*/}
-                  {/*      color="inherit"*/}
-                  {/*      size="small"*/}
-                  {/*    >*/}
-                  {/*      <EditTwoToneIcon fontSize="small" />*/}
-                  {/*    </IconButton>*/}
-                  {/*  </Tooltip>*/}
-                  {/*  <Dialog open={open} onClose={handleClose}>*/}
-                  {/*    <DialogTitle>资产信息</DialogTitle>*/}
-                  {/*    <DialogContent>*/}
-                  {/*      <InputLabel id="employee_id">资产管理员</InputLabel>*/}
-                  {/*      <Select*/}
-                  {/*        autoFocus*/}
-                  {/*        labelId="employee_id"*/}
-                  {/*        margin="dense"*/}
-                  {/*        id="employee_id"*/}
-                  {/*        label="资产管理员"*/}
-                  {/*        placeholder="资产管理员"*/}
-                  {/*        fullWidth*/}
-                  {/*        variant="standard"*/}
-                  {/*        value={formValue.employee_id}*/}
-                  {/*        onChange={(e) => handleFormChange('employee_id', e)}*/}
-                  {/*      >*/}
-                  {/*        {*/}
-                  {/*          employees.map((employee) =>*/}
-                  {/*            <MenuItem*/}
-                  {/*              key={employee.employee_id}*/}
-                  {/*              value={employee.employee_id}*/}
-                  {/*            >{employee.ingr_name}</MenuItem>)*/}
-                  {/*        }*/}
-                  {/*      </Select>*/}
-                  {/*      <InputLabel id="ingr_id">资产类型</InputLabel>*/}
-                  {/*      <Select*/}
-                  {/*        autoFocus*/}
-                  {/*        labelId="ingr_id"*/}
-                  {/*        margin="dense"*/}
-                  {/*        id="ingr_id"*/}
-                  {/*        label="资产类型"*/}
-                  {/*        placeholder="资产类型"*/}
-                  {/*        fullWidth*/}
-                  {/*        variant="standard"*/}
-                  {/*        value={formValue.ingr_id}*/}
-                  {/*        onChange={(e) => handleFormChange('ingr_id', e)}*/}
-                  {/*      >*/}
-                  {/*        {*/}
-                  {/*          ingredients.map((item) =>*/}
-                  {/*            <MenuItem*/}
-                  {/*              key={item.ingr_id}*/}
-                  {/*              value={item.ingr_id}*/}
-                  {/*            >{item.ingr_type}</MenuItem>)*/}
-                  {/*        }*/}
-                  {/*      </Select>*/}
-                  {/*      <TextField*/}
-                  {/*        autoFocus*/}
-                  {/*        margin="dense"*/}
-                  {/*        id="ingredientRecord_type"*/}
-                  {/*        label="资产管理类型"*/}
-                  {/*        fullWidth*/}
-                  {/*        variant="standard"*/}
-                  {/*        value={formValue.ingredientRecord_type}*/}
-                  {/*        onChange={(e) => handleFormChange('ingredientRecord_type', e)}*/}
-                  {/*      />*/}
-                  {/*      <TextField*/}
-                  {/*        autoFocus*/}
-                  {/*        margin="dense"*/}
-                  {/*        id="ingredientRecord_reason"*/}
-                  {/*        label="资产管理原因"*/}
-                  {/*        fullWidth*/}
-                  {/*        variant="standard"*/}
-                  {/*        value={formValue.ingredientRecord_reason}*/}
-                  {/*        onChange={(e) => handleFormChange('ingredientRecord_reason', e)}*/}
-                  {/*      />*/}
-                  {/*      <TextField*/}
-                  {/*        autoFocus*/}
-                  {/*        margin="dense"*/}
-                  {/*        id="ingredientRecord_cost"*/}
-                  {/*        label="资产管理耗费金额"*/}
-                  {/*        fullWidth*/}
-                  {/*        variant="standard"*/}
-                  {/*        value={formValue.ingredientRecord_cost}*/}
-                  {/*        onChange={(e) => handleFormChange('ingredientRecord_cost', e)}*/}
-                  {/*      />*/}
-                  {/*    </DialogContent>*/}
-                  {/*    <DialogActions>*/}
-                  {/*      <Button onClick={handleClose}>退出</Button>*/}
-                  {/*      <Button onClick={handleSubmitForm}>确定</Button>*/}
-                  {/*    </DialogActions>*/}
-                  {/*  </Dialog>*/}
-                  {/*</TableCell>*/}
+                  <TableCell>
+                    <Tooltip title="编辑" arrow onClick={() => handleClickOpen(ingredientRecordInfo)}>
+                      <IconButton
+                        sx={{
+                          '&:hover': {
+                            background: theme.colors.primary.lighter,
+                          },
+                          color: theme.palette.primary.main,
+                        }}
+                        color="inherit"
+                        size="small"
+                      >
+                        <EditTwoToneIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    <Dialog open={open} onClose={handleClose}>
+                      <DialogTitle>耗材信息</DialogTitle>
+                      <DialogContent>
+                        <TextField
+                          disabled
+                          margin="dense"
+                          id="record_id"
+                          label="记录编号"
+                          fullWidth
+                          variant="standard"
+                          value={formValue.record_id}
+                          style={{ minWidth: '400px' }}
+                        />
+                        <InputLabel id="employee_id">耗材</InputLabel>
+                        <Select
+                          autoFocus
+                          labelId="employee_id"
+                          margin="dense"
+                          id="employee_id"
+                          label="耗材"
+                          placeholder="耗材"
+                          fullWidth
+                          variant="standard"
+                          value={formValue.ingr_id}
+                          onChange={(e) => handleFormChange('ingr_id', e)}
+                        >
+                          {
+                            ingredients.map((item) =>
+                              <MenuItem
+                                key={item.ingr_id}
+                                value={item.ingr_id}
+                              >{item.ingr_name}</MenuItem>)
+                          }
+                        </Select>
+                        <TextField
+                          autoFocus
+                          margin="dense"
+                          id="measure_unit"
+                          label="原料的计量单位"
+                          fullWidth
+                          variant="standard"
+                          value={formValue.measure_unit}
+                          onChange={(e) => handleFormChange('measure_unit', e)}
+                        />
+                        <TextField
+                          autoFocus
+                          margin="dense"
+                          id="shelf_life"
+                          type="number"
+                          label="保质期(天)"
+                          fullWidth
+                          variant="standard"
+                          value={formValue.shelf_life}
+                          onChange={(e) => handleFormChange('shelf_life', e)}
+                        />
+                        <TextField
+                          autoFocus
+                          margin="dense"
+                          id="price"
+                          label="价格"
+                          type="number"
+                          fullWidth
+                          variant="standard"
+                          value={formValue.price}
+                          onChange={(e) => handleFormChange('price', e)}
+                        />
+                        <InputLabel id="employee_id">负责人</InputLabel>
+                        <Select
+                          autoFocus
+                          labelId="employee_id"
+                          margin="dense"
+                          id="employee_id"
+                          label="负责人"
+                          placeholder="负责人"
+                          fullWidth
+                          variant="standard"
+                          value={formValue.director_id}
+                          onChange={(e) => handleFormChange('director_id', e)}
+                        >
+                          {
+                            employees.map((employee) =>
+                              <MenuItem
+                                key={employee.employee_id}
+                                value={employee.employee_id}
+                              >{employee.employee_name}</MenuItem>)
+                          }
+                        </Select>
+                        <Box
+                          sx={{
+                            marginTop: '16px',
+                          }}
+                        >
+                          <DesktopDatePicker
+                            autoFocus
+                            label="购买日期"
+                            inputFormat="yyyy-MM-dd"
+                            value={formValue.purchasing_date}
+                            onChange={(e) => handleFormDateChange('purchasing_date', e)}
+                            renderInput={(params) => <TextField {...params} />}
+                          />
+                        </Box>
+                        <Box
+                          sx={{
+                            marginTop: '16px',
+                          }}
+                        >
+                          <DesktopDatePicker
+                            autoFocus
+                            label="生产日期"
+                            inputFormat="yyyy-MM-dd"
+                            value={formValue.produced_date}
+                            onChange={(e) => handleFormDateChange('produced_date', e)}
+                            renderInput={(params) => <TextField {...params} />}
+                          />
+                        </Box>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={handleClose}>退出</Button>
+                        <Button onClick={handleSubmitForm}>确定</Button>
+                      </DialogActions>
+                    </Dialog>
+                    <Tooltip arrow title="删除">
+                      <IconButton
+                        sx={{
+                          '&:hover': { background: theme.colors.error.lighter },
+                          color: theme.palette.error.main,
+                        }}
+                        color="inherit"
+                        size="small"
+                        onClick={() => handleDelete(ingredientRecordInfo.record_id)}
+                      >
+                        <DeleteTwoToneIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
                 </TableRow>
               );
             })}

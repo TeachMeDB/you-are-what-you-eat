@@ -233,7 +233,8 @@ const RecentIngredientTable: FC<IngredientInfoTableProps> = (props) => {
                           disabled
                           margin="dense"
                           id="ingr_id"
-                          label="新的耗材编号"
+                          label="耗材编号"
+                          type="number"
                           fullWidth
                           variant="standard"
                           value={formValue.ingr_id}

@@ -20,10 +20,7 @@ function ingredientOverview({
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [ingredientInfoes, setIngredientInfoes] = useState(ingredientList);
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [ingredientRecordInfoes, setIngredientRecordInfoes] =
-    useState(ingredientRecordList);
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [tab, setTab] = useState(1);
+  const [ingredientRecordInfoes, setIngredientRecordInfoes] = useState(ingredientRecordList);
   return (
     <>
       <Head>
@@ -35,8 +32,7 @@ function ingredientOverview({
           ingredients={ingredientInfoes}
           setIngredientInfoes={setIngredientInfoes}
           setIngredientRecordInfoes={setIngredientRecordInfoes}
-          currentTab={tab}
-          handleTabsChange={setTab}
+          currentTab={1}
         />
       </PageTitleWrapper>
       <Container maxWidth="lg">
@@ -48,19 +44,37 @@ function ingredientOverview({
           spacing={3}
         >
           <Grid item xs={12}>
-            {tab === 1 ? (
-              <AllIngredientInfoes
-                list={ingredientInfoes || []}
-                setIngredientInfoes={setIngredientInfoes}
-              />
-            ) : (
-              <AllIngredientRecordInfo
-                list={ingredientRecordInfoes || []}
-                ingredients={ingredientInfoes || []}
-                employees={employees || []}
-                setIngredientRecordInfoes={setIngredientRecordInfoes}
-              />
-            )}
+            <AllIngredientInfoes
+              list={ingredientInfoes || []}
+              setIngredientInfoes={setIngredientInfoes}
+            />
+          </Grid>
+        </Grid>
+      </Container>
+      <PageTitleWrapper>
+        <PageHeader
+          employees={employees}
+          ingredients={ingredientInfoes}
+          setIngredientInfoes={setIngredientInfoes}
+          setIngredientRecordInfoes={setIngredientRecordInfoes}
+          currentTab={2}
+        />
+      </PageTitleWrapper>
+      <Container maxWidth="lg">
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={3}
+        >
+          <Grid item xs={12}>
+            <AllIngredientRecordInfo
+              list={ingredientRecordInfoes || []}
+              ingredients={ingredientInfoes || []}
+              employees={employees || []}
+              setIngredientRecordInfoes={setIngredientRecordInfoes}
+            />
           </Grid>
         </Grid>
       </Container>
