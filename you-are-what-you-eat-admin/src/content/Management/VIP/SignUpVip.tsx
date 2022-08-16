@@ -175,6 +175,7 @@ export default function SignUpVip() {
   const handleSubmitEdit = async () => {
     console.log('edit confirm');
     //  检查数据
+    
 
     let submit: CryptoCreateVip = {
       user_name: user_name,
@@ -182,6 +183,8 @@ export default function SignUpVip() {
       birthday: birthday,
     };
 
+    console.log(submit);
+    
     try {
       let res = await queryVipApi.createVip(submit);
       console.log(res);
@@ -321,7 +324,7 @@ export default function SignUpVip() {
             startIcon={<AddTwoToneIcon fontSize="small" />}
             onClick={() => {
               handleSubmitEdit();
-              window.location.reload();
+              //window.location.reload();
             }}
           >
             确认创建
@@ -342,6 +345,7 @@ export default function SignUpVip() {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        fullWidth
       >
         <DialogTitle id="alert-dialog-title">{'修改成功'}</DialogTitle>
         <DialogContent>
@@ -361,8 +365,9 @@ export default function SignUpVip() {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        fullWidth
       >
-        <DialogTitle id="alert-dialog-title">{'修改错误'}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{'创建错误'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             创建失败
