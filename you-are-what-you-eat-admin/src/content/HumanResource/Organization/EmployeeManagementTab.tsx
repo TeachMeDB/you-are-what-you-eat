@@ -38,7 +38,6 @@ import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import DetailEmployeePopup from './EmployeeManagement/DetailEmployeePopup';
 import {
-  defaultUser,
   EmployeeDetail,
   EmployeeEntity,
   EmployeeUpload,
@@ -369,7 +368,7 @@ function EmployeeManagementTab() {
                         </Tooltip>
                       </TableCell>
                       <TableCell align="right">
-                        <DetailEmployeePopup userId={employee.id} />
+                        <DetailEmployeePopup key={employee.id} userId={employee.id} />
                       </TableCell>
                     </TableRow>
                   ))}

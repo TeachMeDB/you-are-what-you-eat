@@ -1,5 +1,6 @@
 import authorization from '@/utils/authorization';
 import GlobalConfig from '@/utils/config';
+import { Token } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -8,6 +9,7 @@ import {
   Typography,
   styled
 } from '@mui/material';
+import { compareAsc, parse } from 'date-fns';
 import { useRouter } from 'next/router';
 
 import Link from 'src/components/Link';
@@ -129,20 +131,22 @@ function Hero() {
             variant="contained"
             onClick={()=>{
 
+              GlobalConfig.setFrontendURL(window.location.host);
 
-              if(localStorage.getItem("token")){
+              if(localStorage.getItem("token")===null||compareAsc(parse(localStorage.getItem("token_expire_time"),"yyyy-MM-dd HH:mm:ss",Date.now()),Date.now())<=0){
+                
+                localStorage.clear();
 
-                GlobalConfig.setFrontendURL(window.location.host)
-                GlobalConfig.setAccessToken(localStorage.getItem("token"));
-
-                router.replace("/human_resource/organization");
+                window.location.replace(authorization.getSigninUrl(GlobalConfig.getFrontendURL()));
 
               }
               else{
 
-                GlobalConfig.setFrontendURL(window.location.host);
+                GlobalConfig.setAccessToken(localStorage.getItem("token"));
 
-                window.location.replace(authorization.getSigninUrl(GlobalConfig.getFrontendURL()));
+                router.replace("/human_resource/organization");
+
+                
 
               }
 

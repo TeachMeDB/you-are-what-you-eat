@@ -1,5 +1,6 @@
 import GlobalConfig from "@/utils/config";
 import { Typography } from "@mui/material";
+import { addDays, format } from "date-fns";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -20,6 +21,7 @@ function Callback(){
         localStorage.clear();
 
         localStorage.setItem("token",link);
+        localStorage.setItem("token_expire_time",format(addDays(Date.now(),5),"yyyy-MM-dd HH:mm:ss"))
 
         GlobalConfig.setAccessToken(link);
         

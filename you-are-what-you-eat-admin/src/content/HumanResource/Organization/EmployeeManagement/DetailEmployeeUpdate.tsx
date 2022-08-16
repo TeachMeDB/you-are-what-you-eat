@@ -12,7 +12,6 @@ import { Container, Grid, styled } from '@mui/material';
 import ProfileCover from '../Profile/ProfileCover';
 import Summary from '../Profile/Summary';
 import {
-  defaultUser,
   EmployeeDetail,
   EmployeeEntity,
   EmployeeUpload
@@ -46,23 +45,17 @@ const ButtonError = styled(Button)(
 
 export default function DetailEmployeeUpdate({ userId }: { userId: string }) {
   const isMountedRef = useRefMounted();
-  const [employee, setEmployee] = React.useState<EmployeeDetail>(defaultUser);
+  const [employee, setEmployee] = React.useState<EmployeeDetail>(null);
 
   const [open, setOpen] = React.useState(false);
 
-  const [upload, setUpload] = React.useState<EmployeeUpload>({
-    id: employee.id,
-    name: employee.name,
-    gender: employee.gender,
-    occupation: employee.occupation,
-    cover: employee.cover,
-    avatar: employee.avatar,
-    birthday: employee.birthday
-  } as EmployeeUpload);
+  const [upload, setUpload] = React.useState<EmployeeUpload>(null);
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  console.log("there is id",userId)
 
   const getAllData = React.useCallback(async () => {
     try {
@@ -72,13 +65,13 @@ export default function DetailEmployeeUpdate({ userId }: { userId: string }) {
         setEmployee(person);
 
         setUpload({
-          id: employee.id,
-          name: employee.name,
-          gender: employee.gender,
-          occupation: employee.occupation,
-          cover: employee.cover,
-          avatar: employee.avatar,
-          birthday: employee.birthday
+          id: person.id,
+          name: person.name,
+          gender: person.gender,
+          occupation: person.occupation,
+          cover: person.cover,
+          avatar: person.avatar,
+          birthday: person.birthday
         } as EmployeeUpload);
       }
     } catch (err) {
@@ -86,13 +79,19 @@ export default function DetailEmployeeUpdate({ userId }: { userId: string }) {
     }
   }, [isMountedRef]);
 
+  React.useEffect(()=>{
+
+    getAllData();
+
+  },[getAllData])
+
   const handleClickOpen = () => {
     getAllData();
     setOpen(true);
   };
 
   return (
-    <div>
+    (employee!=null&&upload!=null)&&<div key={employee.id}>
       <ButtonError
         size="large"
         variant="contained"
