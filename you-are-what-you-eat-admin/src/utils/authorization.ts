@@ -36,12 +36,12 @@ class CasdoorSdk {
     }
   }
 
-  public getSignupUrl(
+  public getSignupUrl=(
     redirectUrl: string = GlobalConfig.getFrontendURL(),
     enablePassword: boolean = true
-  ): string {
+  ): string =>{
     if (enablePassword) {
-      //localStorage.setItem("signinUrl", this.getSigninUrl(redirectUrl));
+      localStorage.setItem("signinUrl", this.getSigninUrl(redirectUrl));
       return `${this.config.serverUrl.trim()}/signup/${this.config.appName}`;
     } else {
       return this.getSigninUrl(redirectUrl).replace(
@@ -51,7 +51,7 @@ class CasdoorSdk {
     }
   }
 
-  public getSigninUrl(redirectUrl: string = GlobalConfig.getFrontendURL()): string {
+  public getSigninUrl=(redirectUrl: string = GlobalConfig.getFrontendURL()): string =>{
     const redirectUri = `${redirectUrl}${this.config.redirectPath}`;
     const scope = 'read';
     const state = this.config.appName;
@@ -62,7 +62,7 @@ class CasdoorSdk {
     )}&scope=${scope}&state=${state}`;
   }
 
-  public getUserProfileUrl(userName: string, account: Account): string {
+  public getUserProfileUrl=(userName: string, account: Account): string =>{
     let param = '';
     if (account !== undefined && account !== null) {
       param = `?access_token=${account.accessToken}`;
@@ -72,7 +72,7 @@ class CasdoorSdk {
     }/${userName}${param}`;
   }
 
-  public getMyProfileUrl(account: Account): string {
+  public getMyProfileUrl=(account: Account): string=>{
     let param = '';
     if (account !== undefined && account !== null) {
       param = `?access_token=${account.accessToken}`;
@@ -80,10 +80,10 @@ class CasdoorSdk {
     return `${this.config.serverUrl.trim()}/account${param}`;
   }
 
-  public signin(
+  public signin=(
     redirectUrl: string = GlobalConfig.getFrontendURL(),
     serverUrl: string = this.config.serverUrl
-  ): Promise<Response> {
+  ): Promise<Response> =>{
     const params = new URLSearchParams(redirectUrl);
     return fetch(
       `${serverUrl}/api/signin?code=${params.get('code')}&state=${params.get(

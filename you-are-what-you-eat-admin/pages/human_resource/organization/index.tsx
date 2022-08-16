@@ -37,7 +37,7 @@ import EmployeeManagementTab from '@/content/HumanResource/Organization/Employee
 import { EmployeeDetail, EmployeeEntity } from '@/models/employee';
 import { humanResourceApi } from '@/queries/employee';
 import { scheduleApi } from '@/queries/schedule';
-import { endOfWeek, format, startOfWeek } from 'date-fns';
+import { compareAsc, endOfWeek, format, parse, startOfWeek } from 'date-fns';
 import { ScheduleEntity } from '@/models/schedule';
 import Schedule from '@/components/Schedule';
 
@@ -45,6 +45,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import GlobalConfig from '@/utils/config';
 import { useRouter } from 'next/router';
 import { useRefMounted } from '@/hooks/useRefMounted';
+import { Token } from '@mui/icons-material';
 
 const TabsWrapper = styled(Tabs)(
   () => `
@@ -113,8 +114,8 @@ function Organization() {
 
   useEffect(()=>{
 
-    if(localStorage.getItem("token")===null){
-
+    if(localStorage.getItem("token")===null||compareAsc(parse(localStorage.getItem("token_expire_time"),"yyyy-MM-dd HH:mm:ss",Date.now()),Date.now())<=0){
+      localStorage.clear();
       router.replace('/')
 
     }
