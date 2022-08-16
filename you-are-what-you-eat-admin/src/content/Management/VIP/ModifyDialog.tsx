@@ -187,7 +187,7 @@ export default function ModifyDialog(props: VipProps) {
       user_name: props.info.user_name,
       gender: gender,
       birthday: birthday,
-      balance: balance,
+      balance: props.info.balance,
       credit: credit,
       status: props.info.status
     };
@@ -314,7 +314,7 @@ export default function ModifyDialog(props: VipProps) {
           </FormControl>
         </Box>
 
-        <Box
+        {/*<Box
           component="form"
           sx={{
             '& .MuiTextField-root': { m: 2, width: '30ch' }
@@ -352,7 +352,7 @@ export default function ModifyDialog(props: VipProps) {
             </DialogContentText>
             <DialogContentText>仅接受非负值</DialogContentText>
           </FormControl>
-        </Box>
+          </Box>*/}
 
         <Box
           component="form"
@@ -394,7 +394,7 @@ export default function ModifyDialog(props: VipProps) {
           </FormControl>
         </Box>
 
-        {balance >= 0 && credit >= 0 ? (
+        {credit >= 0 ? (
           <Button
             startIcon={<AddTwoToneIcon fontSize="small" />}
             onClick={() => {

@@ -114,12 +114,25 @@ class QueryVipApi {
 
   public createVip: (vip: CryptoCreateVip) => Promise<string> = async (vip) => {
     //api还没有准备好
-    const r = await PostApi('XXXXXX', vip);
+    const tempVip:tempCreateVip={
+      phone_number:vip.user_name,
+      birthday:vip.birthday,
+      gender:vip.gender
+    }
+    const r = await PostApi('VIP/AddVIP', tempVip);
     return r.statusText;
   };
 }
 
 export const queryVipApi = new QueryVipApi();
+
+//因为Api里面字段名称不一样所以暂时先用这个中转一下
+interface tempCreateVip
+{
+      phone_number:string;
+      birthday:string;
+      gender:string;
+}
 
 /*
         const data:CryptoAllVip = 

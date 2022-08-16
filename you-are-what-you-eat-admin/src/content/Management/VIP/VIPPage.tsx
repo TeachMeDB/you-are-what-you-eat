@@ -102,7 +102,7 @@ function VIPPage() {
             </AccordionDetails>
           </Accordion>
 
-          <Divider />
+          {/*<Divider />
 
           <Accordion
             expanded={expanded2 === 'panel1'}
@@ -120,8 +120,8 @@ function VIPPage() {
             <AccordionDetails>
               <VipSummary cryptoSummary={vipData.summary2} />
             </AccordionDetails>
-          </Accordion>
-        </Grid>
+          </Accordion>*/}
+          </Grid>
 
         <Grid item xs={12}>
           <VIPListTable cryptoVip={vipData.vips} />
