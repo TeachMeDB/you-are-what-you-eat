@@ -119,7 +119,7 @@ class QueryVipApi {
       birthday:vip.birthday,
       gender:vip.gender
     }
-    const r = await PostApi('VIP/AddVIP', tempVip);
+    const r = await PostApi('VIP/PostAddVIP', tempVip);
     return r.statusText;
   };
 }
