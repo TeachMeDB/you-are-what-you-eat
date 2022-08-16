@@ -8,15 +8,39 @@ import PageTitleWrapper from '@/components/PageTitleWrapper';
 import AllAssetInfoes from '@/content/Asset/Overview/AssetInfo';
 import { queryAssetApi } from '@/queries/query_asset';
 import { queryEmployeeApi } from '@/queries/query_employee';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import AllManageInfo from '@/content/Asset/Manage/ManageInfo';
 import { queryManageApi } from '@/queries/query_manage';
+import { useRefMounted } from '@/hooks/useRefMounted';
+import { EmployeeInfo } from '@/models/employee_info';
 
-function assetOverview({ list = [], manageList = [], employees = [] }) {
+function assetOverview({ list = [], manageList = [] }) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [assetInfoes, setAssetInfoes] = useState(list);
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [manageInfoes, setManageInfoes] = useState(manageList);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const isMountedRef = useRefMounted();
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [employees, setEmployees] = useState<EmployeeInfo[]>([]);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const getAllData = useCallback(async () => {
+    try {
+      const employees = await queryEmployeeApi.getEmployeeList();
+      if (isMountedRef()) {
+        setEmployees(employees || []);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    getAllData();
+  }, [getAllData]);
+
   return (
     <>
       <Head>
@@ -85,13 +109,11 @@ assetOverview.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
 export async function getServerSideProps() {
   const assetInfoes = await queryAssetApi.getAssetList('');
   const manageList = await queryManageApi.getManageList();
-  const employees = await queryEmployeeApi.getEmployeeList();
   return {
     props: {
       list: assetInfoes || [],
       manageList: manageList || [],
-      employees: employees || []
-    } // will be passed to the page component as props
+    }, // will be passed to the page component as props
   };
 }
 
