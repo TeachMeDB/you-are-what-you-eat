@@ -79,7 +79,7 @@ const RecentOrdersTable: FC = () => {
 
   const orders = [
     {
-      id: 'adgsvdsaf',
+      id: 'a',
       creation_time: new Date(),
       table_id: '35',
       status: 'running' as OrderStatus,
@@ -87,7 +87,7 @@ const RecentOrdersTable: FC = () => {
       discount_price: 0
     },
     {
-      id: 'adgsvdsaf',
+      id: 'ad',
       creation_time: new Date(),
       table_id: '35',
       status: 'running' as OrderStatus,
@@ -95,7 +95,7 @@ const RecentOrdersTable: FC = () => {
       discount_price: 0
     },
     {
-      id: 'adgsvdsaf',
+      id: 'adg',
       creation_time: new Date(),
       table_id: '35',
       status: 'running' as OrderStatus,
@@ -103,7 +103,7 @@ const RecentOrdersTable: FC = () => {
       discount_price: 0
     },
     {
-      id: 'adgsvdsaf',
+      id: 'adgs',
       creation_time: new Date(),
       table_id: '35',
       status: 'running' as OrderStatus,
@@ -111,7 +111,7 @@ const RecentOrdersTable: FC = () => {
       discount_price: 0
     },
     {
-      id: 'adgsvdsaf',
+      id: 'adgsv',
       creation_time: new Date(),
       table_id: '35',
       status: 'running' as OrderStatus,
@@ -119,7 +119,7 @@ const RecentOrdersTable: FC = () => {
       discount_price: 0
     },
     {
-      id: 'adgsvdsaf',
+      id: 'adgsvd',
       creation_time: new Date(),
       table_id: '35',
       status: 'running' as OrderStatus,

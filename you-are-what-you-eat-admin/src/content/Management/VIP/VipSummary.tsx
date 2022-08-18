@@ -35,7 +35,7 @@ const VipSummary: FC<VipSummaryProps> = ({ cryptoSummary }) => {
   return (
     <Card>
       <Chart
-        notMerge={true}
+        notmerge={"true"}
         options={cryptoSummary.options}
         series={cryptoSummary.series}
         type="bar"
