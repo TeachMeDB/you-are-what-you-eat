@@ -3,12 +3,12 @@ import { IngredientRecordInfo } from '@/models/ingredient_record_info';
 
 import IngredientRecordInfoTable from './IngredientRecordInfoTable';
 import { EmployeeInfo } from '@/models/employee_info';
-import { AssetInfo } from '@/models/asset_info';
+import { IngredientInfo } from '@/models/ingredient_info';
 
 interface IngredientRecordInfoProps {
   list: IngredientRecordInfo[];
   employees: EmployeeInfo[];
-  ingredients: AssetInfo[];
+  ingredients: IngredientInfo[];
   setIngredientRecordInfoes: any;
 }
 

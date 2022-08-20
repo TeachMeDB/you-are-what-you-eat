@@ -70,6 +70,7 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
   const [formValue, setFormValue] = useState({
     record_id: 0,
     ingr_id: 0,
+    purchases: 0,
     purchasing_date: null,
     measure_unit: '',
     shelf_life: '0',
@@ -118,7 +119,6 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
   };
 
   const handleSubmitForm = async () => {
-    console.log(formValue, ' <-- ingredientRecordFormValue');
     // @ts-ignore
     const { director_name, ingr_name, ...params } = formValue;
     await queryIngredientRecordApi.updateIngredientRecord(params);
@@ -176,6 +176,7 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
               <TableCell>记录编号</TableCell>
               <TableCell>原料名称</TableCell>
               <TableCell>购买日期</TableCell>
+              <TableCell>数量</TableCell>
               <TableCell>原料的计量单位</TableCell>
               <TableCell>保质期</TableCell>
               <TableCell>生产日期</TableCell>
@@ -219,6 +220,17 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
                       noWrap
                     >
                       {ingredientRecordInfo.purchasing_date}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {ingredientRecordInfo.purchases}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -330,7 +342,7 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
                           autoFocus
                           margin="dense"
                           id="measure_unit"
-                          label="原料的计量单位"
+                          label="原料的计量单位222"
                           fullWidth
                           variant="standard"
                           value={formValue.measure_unit}
