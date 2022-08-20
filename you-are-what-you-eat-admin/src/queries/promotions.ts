@@ -8,35 +8,8 @@ import { GetApi, PostApi, DeleteApi } from 'src/utils/requests';
 import { getTitle, getDesc } from 'src/utils/array';
 
 class PromotionsApi {
-  // Almost OK
+  // OK
   public getAllPromotion: () => Promise<Promotion[]> = async () => {
-    // const promotions = [
-    //     {
-    //         id: "4",
-    //         name: "疯狂星期四",
-    //         start: new Date(),
-    //         end: new Date(),
-    //         description: "疯狂星期四嗯嗯啊啊",
-    //         dishes: [
-    //             {
-    //                 name: '香辣鸡腿堡',
-    //                 discount: 0.3,
-    //                 price: 9
-    //             },
-    //             {
-    //                 name: '香辣鸡翅',
-    //                 discount: 0.2,
-    //                 price: 9
-    //             },
-    //             {
-    //                 name: '新奥尔良烤翅',
-    //                 discount: 0.1,
-    //                 price: 9
-    //             },
-    //         ],
-    //         status: "completed" as PromotionStatus
-    //     }
-    // ]
 
     const r = (await GetApi('/Promotions')).data;
     const promotions = r.map((promotion) => {
@@ -61,39 +34,13 @@ class PromotionsApi {
             : 'running'
       };
     });
+    promotions.sort((p1, p2) => p1.status === 'running' ? -1 : 1);
 
     return Promise.resolve(promotions);
   };
 
   // OK
   public getPromotionById: (id: string) => Promise<Promotion> = async (id) => {
-    // const promotions = [
-    //     {
-    //         id: "1",
-    //         name: "疯狂星期四",
-    //         start: new Date(),
-    //         end: new Date(),
-    //         description: "疯狂星期四嗯嗯啊啊",
-    //         dishes: [
-    //             {
-    //                 name: '香辣鸡腿堡',
-    //                 discount: 0.3,
-    //                 price: 25
-    //             },
-    //             {
-    //                 name: '香辣鸡翅',
-    //                 discount: 0.2,
-    //                 price: 9
-    //             },
-    //             {
-    //                 name: '新奥尔良烤翅',
-    //                 discount: 0.1,
-    //                 price: 9
-    //             },
-    //         ],
-    //         status: "completed" as PromotionStatus
-    //     },
-    // ]
 
     const r = (await GetApi('/Promotions')).data;
     console.log(r);
