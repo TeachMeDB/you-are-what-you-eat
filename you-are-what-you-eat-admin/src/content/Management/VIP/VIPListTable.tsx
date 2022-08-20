@@ -208,7 +208,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
             <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
               <TextField
                 id="outlined-basic"
-                label="搜索用户名"
+                label="搜索会员号"
                 variant="outlined"
                 onChange={handleSearchChange}
               />
@@ -247,7 +247,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoVip }) => {
                   onChange={handleSelectAllCryptoVip}
                 />
               </TableCell>
-              <TableCell>用户名</TableCell>
+              <TableCell>会员号</TableCell>
               <TableCell>出生日期</TableCell>
               <TableCell>性别</TableCell>
               {/*<TableCell align="right">余额</TableCell>*/}

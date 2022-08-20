@@ -241,13 +241,13 @@ export default function SignUpVip() {
               required
               fullWidth
               id="outlined-required"
-              label="姓名"
+              label="手机号"
               onChange={handleSetUserName}
             />
 
           <FormControl sx={{ m: 2, width: '30ch' }}>
             <DialogContentText>
-              输入会员名称
+              使用手机号作为会员号注册
             </DialogContentText>
           </FormControl>
         </Box>
