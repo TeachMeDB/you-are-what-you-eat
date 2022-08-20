@@ -197,9 +197,9 @@ function BestSellerData(data: WeekBestSellerData) {
                 }}
                 variant="subtitle2"
               >
-                <Text
+                {/* <Text
                   color={data.increase > 0 ? 'success' : 'error'}
-                >{`相比上周变化${data.increase * 100}%`}</Text>
+                >{`相比上周变化${data.increase * 100}%`}</Text> */}
               </Typography>
             </Box>
           </Box>

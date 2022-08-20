@@ -183,7 +183,7 @@ const PromotionBody: FC = () => {
 
 PromotionBody.propTypes = {
   // @ts-ignore
-  promotion: PropTypes.object.isRequired
+  promotion: PropTypes.object
 };
 
 export default PromotionBody;

@@ -64,11 +64,12 @@ function Overview() {
                 <Button
                   variant="contained"
                   sx={{ ml: 2 }}
-                  onClick={()=>{
+                  // onClick={()=>{
 
-                    window.location.replace(authorization.getSigninUrl(GlobalConfig.getFrontendURL()));
+                  //   window.location.replace(authorization.getSigninUrl(GlobalConfig.getFrontendURL()));
                   
-                  }}
+                  // }}
+                  href="/login"
                 >
                   {t('登陆')}
                 </Button>

@@ -104,7 +104,6 @@ function PageHeader(
     getSelectableDishes();
   }, [getSelectableDishes]);
 
-  // const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
 
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -213,6 +212,12 @@ function PageHeader(
                   ? null
                   : newPromotionCover.split('base64,')[1]
             };
+
+            if (value1 < value) {
+              alert("活动结束时间应当晚于开始时间");
+              return;
+            }
+
             try {
               await wait(1000);
               await promotionsApi.postNewPromotion(param);

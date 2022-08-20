@@ -56,7 +56,7 @@ const VipSummary: FC = () => {
   return (
     <Card>
       <Chart
-        notMerge={true}
+        notmerge={"true"}
         options={options}
         series={series}
         type="bar"

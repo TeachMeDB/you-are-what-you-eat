@@ -2,9 +2,10 @@ const { join } = require("path");
 const { BrowserWindow, app, ipcMain } = require("electron");
 const serveNext = require("next-electron-server");
 
-
+//var host="next://app";
+var host='http://localhost:3000';
 // Register your own scheme and host
-serveNext("next://app");
+serveNext(host);
 
 
 app.whenReady().then(async () => {
@@ -12,14 +13,14 @@ app.whenReady().then(async () => {
     width: 1600,
     height: 900,
     webPreferences: {
-      nodeIntegration: false,
+      nodeIntegration: true,
       preload: join(__dirname, "preload.js"),
     },
   });
 
   // Load renderer using a custom protocol:
 
-  mainWindow.loadURL("next://app");
+  mainWindow.loadURL(host);
 });
 
 // Quit the app once all windows are closed

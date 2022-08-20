@@ -137,7 +137,7 @@ function Hero() {
                 
                 localStorage.clear();
 
-                window.location.replace(authorization.getSigninUrl(GlobalConfig.getFrontendURL()));
+                router.replace("/login");
 
               }
               else{
@@ -149,9 +149,6 @@ function Hero() {
                 
 
               }
-
-
-
 
 
             }}
