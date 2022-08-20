@@ -176,10 +176,11 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
               <TableCell>记录编号</TableCell>
               <TableCell>原料名称</TableCell>
               <TableCell>购买日期</TableCell>
+              <TableCell>采购/消耗</TableCell>
               <TableCell>数量</TableCell>
-              <TableCell>原料的计量单位</TableCell>
-              <TableCell>保质期</TableCell>
+              <TableCell>单位</TableCell>
               <TableCell>生产日期</TableCell>
+              <TableCell>保质期</TableCell>
               <TableCell>价格</TableCell>
               <TableCell>负责人姓名</TableCell>
               <TableCell>操作</TableCell>
@@ -230,7 +231,18 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
                       gutterBottom
                       noWrap
                     >
-                      {ingredientRecordInfo.purchases}
+                      {ingredientRecordInfo.purchases !== 0 ? '采购' : '消耗'}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {ingredientRecordInfo.purchases !== 0 ? ingredientRecordInfo.purchases : ingredientRecordInfo.surplus}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -252,7 +264,7 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
                       gutterBottom
                       noWrap
                     >
-                      {ingredientRecordInfo.shelf_life}天
+                      {ingredientRecordInfo.produced_date}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -263,7 +275,7 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
                       gutterBottom
                       noWrap
                     >
-                      {ingredientRecordInfo.produced_date}
+                      {ingredientRecordInfo.shelf_life}天
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -342,7 +354,7 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
                           autoFocus
                           margin="dense"
                           id="measure_unit"
-                          label="原料的计量单位222"
+                          label="单位"
                           fullWidth
                           variant="standard"
                           value={formValue.measure_unit}
