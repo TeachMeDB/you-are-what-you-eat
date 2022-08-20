@@ -34,7 +34,7 @@ class PromotionsApi {
             : 'running'
       };
     });
-    promotions.sort((p1, p2) => p1.status === 'running' ? -1 : 1);
+    promotions.sort((p1, _) => p1.status === 'running' ? -1 : 1);
 
     return Promise.resolve(promotions);
   };
