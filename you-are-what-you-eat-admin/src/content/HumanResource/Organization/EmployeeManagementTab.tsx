@@ -47,7 +47,7 @@ import { humanResourceApi } from '@/queries/employee';
 import { salaryApi } from '@/queries/salary';
 import { useRefMounted } from '@/hooks/useRefMounted';
 import ProfileCoverNew from './Profile/ProfileCoverNew';
-import { compareDesc, parse } from 'date-fns';
+import { compareAsc, compareDesc, parse } from 'date-fns';
 
 function EmployeeManagementTab() {
   const isMountedRef = useRefMounted();
@@ -188,7 +188,7 @@ function EmployeeManagementTab() {
                         return;
                       }
       
-                      if(compareDesc(parse(upload.birthday,"yyyy-MM-dd",Date.now()),Date.now())){
+                      if(compareAsc(parse(upload.birthday,"yyyy-MM-dd",Date.now()),Date.now())>=0){
       
                         alert("生日不允许超过当前日期")
                         return;

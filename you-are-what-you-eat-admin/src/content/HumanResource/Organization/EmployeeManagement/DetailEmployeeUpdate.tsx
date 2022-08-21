@@ -131,7 +131,9 @@ export default function DetailEmployeeUpdate({ userId }: { userId: string }) {
                   return;
                 }
 
-                if(compareDesc(parse(upload.birthday,"yyyy-MM-dd",Date.now()),Date.now())){
+                if(compareAsc(parse(upload.birthday,"yyyy-MM-dd",Date.now()),Date.now())>=0){
+
+                  console.log(parse(upload.birthday,"yyyy-MM-dd",Date.now()),new Date(Date.now()))
 
                   alert("生日不允许超过当前日期")
                   return;
@@ -157,6 +159,8 @@ export default function DetailEmployeeUpdate({ userId }: { userId: string }) {
                     alert('更新成功：' + value);
 
                     handleClose();
+
+                    window.location.reload();
                   })
                   .catch((value) => {
                     alert('更新失败：' + value);
