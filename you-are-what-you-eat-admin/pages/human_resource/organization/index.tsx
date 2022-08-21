@@ -25,6 +25,8 @@ import {
   useEffect
 } from 'react';
 
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+
 import ProfileCover from '@/content/HumanResource/Organization/Profile/ProfileCover';
 import QuickLink from '@/content/HumanResource/Organization/Profile/QuickLink';
 import Stuff from '@/content/HumanResource/Organization/Profile/Stuff';
@@ -183,13 +185,13 @@ function Organization() {
                     <Grid item xs={2}>
                       <Button
                         size="large"
-                        variant="contained"
+                        variant="outlined"
                         onClick={() => {
                           //这里有个比较麻烦的签到
                         }}
                       >
-                        <CheckCircleIcon />
-                        今日签到
+                        <AssignmentTurnedInIcon />
+                        请准时指纹签到
                       </Button>
                     </Grid>
                   </Grid>

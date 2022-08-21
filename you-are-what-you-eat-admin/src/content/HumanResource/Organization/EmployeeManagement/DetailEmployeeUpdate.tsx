@@ -91,7 +91,7 @@ export default function DetailEmployeeUpdate({ userId }: { userId: string }) {
   };
 
   return (
-    (employee!=null&&upload!=null)&&<div key={employee.id}>
+    <div>
       <ButtonError
         size="large"
         variant="contained"
@@ -101,7 +101,7 @@ export default function DetailEmployeeUpdate({ userId }: { userId: string }) {
       >
         更新
       </ButtonError>
-      <Dialog
+      {(employee!=null&&upload!=null)&&<Dialog
         fullScreen
         open={open}
         onClose={handleClose}
@@ -175,7 +175,7 @@ export default function DetailEmployeeUpdate({ userId }: { userId: string }) {
             </Grid>
           </Grid>
         </Container>
-      </Dialog>
+      </Dialog>}
     </div>
   );
 }

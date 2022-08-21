@@ -34,6 +34,8 @@ export default function DetailEmployeePopup({ userId }: { userId: string }) {
     try {
       let person = await humanResourceApi.getEmployeeDetail(userId);
 
+      console.log("this is ok",person)
+
       if (isMountedRef()) {
         setEmployee(person);
       }
@@ -54,11 +56,11 @@ export default function DetailEmployeePopup({ userId }: { userId: string }) {
   };
 
   return (
-    (employee)&&<div key={employee.id}>
+    <div>
       <Button variant="outlined" onClick={handleClickOpen} size="large">
         查看
       </Button>
-      <Dialog
+      {(employee)&&<Dialog
         fullScreen
         open={open}
         onClose={handleClose}
@@ -103,7 +105,7 @@ export default function DetailEmployeePopup({ userId }: { userId: string }) {
             </Grid>
           </Grid>
         </Container>
-      </Dialog>
+      </Dialog>}
     </div>
   );
 }

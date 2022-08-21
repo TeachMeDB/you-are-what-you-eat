@@ -31,14 +31,23 @@ function QuickLink({ user }: { user: EmployeeDetail }) {
       <CardHeader title="快速访问" />
       <Divider />
       <ListWrapper disablePadding>
+        <ListSubheader>
+          <Typography sx={{ py: 1.5 }} variant="h4" color="text.primary">
+            国家官方网站
+          </Typography>
+        </ListSubheader>
+        <Divider />
         <ListItem
           sx={{
             color: `${theme.colors.primary.main}`,
             '&:hover': { color: `${theme.colors.primary.dark}` }
           }}
           button
+          onClick={()=>{
+            window.open("http://si.zwfw.mohrss.gov.cn/index.jhtml?ua=pc");
+          }}
         >
-          <ListItemText primary="到时候来点人社局" />
+          <ListItemText primary="国家社会保险服务平台"/>
         </ListItem>
         <Divider />
         <ListItem
@@ -47,95 +56,100 @@ function QuickLink({ user }: { user: EmployeeDetail }) {
             '&:hover': { color: `${theme.colors.primary.dark}` }
           }}
           button
-        >
-          <ListItemText primary="什么饿了吗" />
-        </ListItem>
-        <Divider />
-        <ListItem
-          sx={{
-            color: `${theme.colors.primary.main}`,
-            '&:hover': { color: `${theme.colors.primary.dark}` }
+          onClick={()=>{
+            window.open("http://www.12388.gov.cn/cfda/");
           }}
-          button
         >
-          <ListItemText primary="大众点评" />
-        </ListItem>
-        <Divider />
-        <ListItem
-          sx={{
-            color: `${theme.colors.primary.main}`,
-            '&:hover': { color: `${theme.colors.primary.dark}` }
-          }}
-          button
-        >
-          <ListItemText primary="之类的跳转" />
+          <ListItemText primary="食品药品监管局网站" />
         </ListItem>
         <Divider />
         <ListSubheader>
           <Typography sx={{ py: 1.5 }} variant="h4" color="text.primary">
-            收藏夹
+            平台官方网站
           </Typography>
         </ListSubheader>
         <Divider />
-        <ListItem button>
-          <ListItemAvatar>
-            <Avatar
-              sx={{
-                width: 38,
-                height: 38,
-                background: `${theme.colors.info.main}`,
-                color: `${theme.palette.info.contrastText}`
-              }}
-            >
-              WD
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText
-            primaryTypographyProps={{
-              variant: 'h5',
-              color: `${theme.colors.alpha.black[100]}`
-            }}
-            primary="自定义路由"
-          />
+        <ListItem
+          sx={{
+            color: `${theme.colors.primary.main}`,
+            '&:hover': { color: `${theme.colors.primary.dark}` }
+          }}
+          button
+          onClick={()=>{
+            window.open("https://www.dianping.com/citylist");
+          }}
+        >
+          <ListItemText primary="大众点评平台" />
         </ListItem>
         <Divider />
-        <ListItem button>
-          <ListItemAvatar>
-            <Avatar
-              sx={{
-                width: 38,
-                height: 38,
-                background: `${theme.colors.alpha.black[100]}`,
-                color: `${theme.colors.alpha.white[100]}`
-              }}
-            >
-              D
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText
-            primaryTypographyProps={{
-              variant: 'h5',
-              color: `${theme.colors.alpha.black[100]}`
-            }}
-            primary="自定义路由"
-          />
+        <ListItem
+          sx={{
+            color: `${theme.colors.primary.main}`,
+            '&:hover': { color: `${theme.colors.primary.dark}` }
+          }}
+          button
+          onClick={()=>{
+            window.open("https://kaidian.ele.me/")
+
+          }}
+        >
+          <ListItemText primary="饿了么商家端" />
         </ListItem>
         <Divider />
-        <ListItem button>
-          <ListItemAvatar>
-            <Avatar
-              sx={{ width: 38, height: 38 }}
-              src="/static/images/logo/google.svg"
-            />
-          </ListItemAvatar>
-          <ListItemText
-            primaryTypographyProps={{
-              variant: 'h5',
-              color: `${theme.colors.alpha.black[100]}`
-            }}
-            primary="自定义路由"
-          />
+        <ListItem
+          sx={{
+            color: `${theme.colors.primary.main}`,
+            '&:hover': { color: `${theme.colors.primary.dark}` }
+          }}
+          button
+          onClick={()=>{
+            window.open("https://ecom.meituan.com/emis/settle/merchantsSettle")
+
+          }}
+        >
+          <ListItemText primary="美团商家端" />
         </ListItem>
+        <Divider />
+
+        <ListSubheader>
+          <Typography sx={{ py: 1.5 }} variant="h4" color="text.primary">
+            餐饮学习网站
+          </Typography>
+        </ListSubheader>
+        <Divider />
+        <ListItem
+          sx={{
+            color: `${theme.colors.primary.main}`,
+            '&:hover': { color: `${theme.colors.primary.dark}` }
+          }}
+          button
+          onClick={()=>{
+            window.open("https://www.xiachufang.com/");
+          }}
+        >
+          <ListItemText primary="下厨房" />
+        </ListItem>
+        <Divider />
+        <ListItem
+          sx={{
+            color: `${theme.colors.primary.main}`,
+            '&:hover': { color: `${theme.colors.primary.dark}` }
+          }}
+          button
+          onClick={()=>{
+            window.open("https://www.bilibili.com/v/food")
+
+          }}
+        >
+          <ListItemText primary="哔哩哔哩美食区" />
+        </ListItem>
+        <Divider />
+
+
+        
+
+        
+        
       </ListWrapper>
     </Card>
   );

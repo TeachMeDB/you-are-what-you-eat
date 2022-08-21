@@ -25,6 +25,7 @@ import {
   formatRelative,
   subDays
 } from 'date-fns';
+import { wordApi } from '@/queries/word';
 
 const Input = styled('input')({
   display: 'none'
@@ -89,6 +90,33 @@ const CardCoverAction = styled(Box)(
 );
 
 const ProfileCover = ({ user }: { user: EmployeeDetail }) => {
+
+  const [word,setWord]=useState("");
+  const [author,setAuthor]=useState("");
+
+  const ref=useRefMounted();
+
+  const getAllData=useCallback(async ()=>{
+
+    let data=await wordApi.getWord();
+
+    if(data){
+
+      setWord(data.hitokoto);
+      setAuthor(data.from);
+
+      
+
+    }
+
+    
+
+  },[ref]);
+
+  useEffect(()=>{
+    getAllData();
+  },[getAllData])
+
   return (
     <>
       <Box display="flex" mb={3}>
@@ -117,10 +145,15 @@ const ProfileCover = ({ user }: { user: EmployeeDetail }) => {
           {user.name}
         </Typography>
 
-        <Typography variant="subtitle2">
-          这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话这里应该有一段非常大的话
-          等完了我找个每日一句贴上去
+        
+        <Typography gutterBottom variant="subtitle2">
+          {word}
         </Typography>
+        <Typography gutterBottom variant="subtitle1" textAlign="end">
+            ———— {author}
+        </Typography>
+
+        
         <Typography sx={{ py: 2 }} variant="subtitle2" color="text.primary">
           员工出生日期 ： {user.birthday} | 年龄 ：{' '}
           {differenceInYears(Date.now(), Date.parse(user.birthday))}岁
