@@ -11,11 +11,9 @@ import { TransitionProps } from '@mui/material/transitions';
 import { Container, Grid } from '@mui/material';
 import ProfileCover from '../Profile/ProfileCover';
 import Summary from '../Profile/Summary';
-import { EmployeeDetail, EmployeeEntity } from '@/models/employee';
+import { EmployeeDetail } from '@/models/employee';
 import { useRefMounted } from '@/hooks/useRefMounted';
 import { humanResourceApi } from '@/queries/employee';
-import { scheduleApi } from '@/queries/schedule';
-import { startOfWeek, endOfWeek, format } from 'date-fns';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {

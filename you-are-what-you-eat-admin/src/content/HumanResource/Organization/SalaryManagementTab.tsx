@@ -29,15 +29,18 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useRefMounted } from '@/hooks/useRefMounted';
-import { PayrollEntity, PayrollUpload, Salary } from '@/models/employee';
+import { EmployeeEntity, PayrollEntity, PayrollUpload, Salary } from '@/models/employee';
 import { salaryApi } from '@/queries/salary';
 import { compareDesc, format, parse } from 'date-fns';
 import { awardApi } from '@/queries/award';
+import { humanResourceApi } from '@/queries/employee';
 
 function SalaryManagementTab() {
   const isMountedRef = useRefMounted();
   const [payrolls, setPayrolls] = useState<PayrollEntity[]>([]);
   const [levels, setLevels] = useState<Salary[]>([]);
+
+  const [employees, setEmployees] = useState<EmployeeEntity[]>([]);
 
   const getAllData = useCallback(async () => {
     try {
@@ -45,9 +48,14 @@ function SalaryManagementTab() {
 
       let levels = await salaryApi.getSalary();
 
+      let employee = await humanResourceApi.getEmployees();
+
+      
+
       if (isMountedRef()) {
         setPayrolls(payrolls);
         setLevels(levels);
+        setEmployees(employee)
       }
     } catch (err) {
       console.error(err);
@@ -120,51 +128,6 @@ function SalaryManagementTab() {
         </Card>
       </Grid>
 
-      {/* <Grid item xs={12}>
-        <Box pb={2}>
-          <Typography variant="h3">添加新员工职位</Typography>
-          <Typography variant="subtitle2">
-            添加职位级别
-          </Typography>
-        </Box>
-        <Card>
-          <List>
-
-            <ListItem sx={{ p: 3 }}>
-              <Box
-                component="form"
-                sx={{
-                  '& .MuiTextField-root': { m: 1, width: '30ch' }
-                }}
-                noValidate
-                autoComplete="off"
-              >
-                <div>
-                  <TextField
-                    required
-                    id="occupation"
-                    label="职位名"
-                  />
-                  <TextField
-                    required
-                    id="amount"
-                    label="薪资"
-                  />
-                </div>
-
-                
-                
-              </Box>
-              <Grid item xs={3} textAlign="end">
-                <Button variant="contained" size="large">
-                <AddBoxIcon/>确认添加
-                </Button>
-              </Grid>
-            </ListItem>
-          </List>
-        </Card>
-      </Grid> */}
-
       <Grid item xs={12}>
         <Box pb={2}>
           <Typography variant="h3">添加薪资发放记录</Typography>
@@ -206,7 +169,15 @@ function SalaryManagementTab() {
                 <Button
                   variant="contained"
                   size="large"
+                  disabled={!(upload&&upload.id&&upload.time)}
                   onClick={() => {
+
+                    if(!employees.find((employee)=>employee.id===upload.id)){
+                      alert("员工ID必须存在");
+                      return;
+                    }
+                    
+
                     const conduct = async () => {
                       return await salaryApi.postPayroll(upload);
                     };

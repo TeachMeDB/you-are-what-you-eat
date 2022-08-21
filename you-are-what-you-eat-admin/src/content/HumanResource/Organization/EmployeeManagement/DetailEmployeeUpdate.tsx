@@ -19,7 +19,7 @@ import {
 import { useRefMounted } from '@/hooks/useRefMounted';
 import { humanResourceApi } from '@/queries/employee';
 import { scheduleApi } from '@/queries/schedule';
-import { startOfWeek, endOfWeek, format } from 'date-fns';
+import { startOfWeek, endOfWeek, format, compareAsc, parse, compareDesc } from 'date-fns';
 import ProfileCoverUpdate from '../Profile/ProfileCoverUpdate';
 import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 
@@ -55,7 +55,6 @@ export default function DetailEmployeeUpdate({ userId }: { userId: string }) {
     setOpen(false);
   };
 
-  console.log("there is id",userId)
 
   const getAllData = React.useCallback(async () => {
     try {
@@ -125,6 +124,19 @@ export default function DetailEmployeeUpdate({ userId }: { userId: string }) {
               color="inherit"
               size="large"
               onClick={() => {
+
+                if(upload.gender!='男'&&upload.gender!='女'){
+
+                  alert("性别必须是男或者是女")
+                  return;
+                }
+
+                if(compareDesc(parse(upload.birthday,"yyyy-MM-dd",Date.now()),Date.now())){
+
+                  alert("生日不允许超过当前日期")
+                  return;
+                }
+
                 const conduct = async () => {
                   let uploaded = {
                     id: upload.id,
@@ -138,6 +150,7 @@ export default function DetailEmployeeUpdate({ userId }: { userId: string }) {
 
                   return await humanResourceApi.postEmployee(uploaded);
                 };
+
 
                 conduct()
                   .then((value) => {

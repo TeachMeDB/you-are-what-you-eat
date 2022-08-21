@@ -46,72 +46,8 @@ import {
 import { humanResourceApi } from '@/queries/employee';
 import { salaryApi } from '@/queries/salary';
 import { useRefMounted } from '@/hooks/useRefMounted';
-import ProfileCoverUpdate from './Profile/ProfileCoverUpdate';
 import ProfileCoverNew from './Profile/ProfileCoverNew';
-
-const Input = styled('input')({
-  display: 'none'
-});
-
-const AvatarWrapper = styled(Card)(
-  ({ theme }) => `
-
-    position: absolute;
-    overflow: visible;
-    display: inline-block;
-    margin-top: ${theme.spacing(5)};
-    //margin-left: ${theme.spacing(2)};
-
-    .MuiAvatar-root {
-      width: ${theme.spacing(16)};
-      height: ${theme.spacing(16)};
-    }
-`
-);
-
-const ButtonUploadWrapper = styled(Box)(
-  ({ theme }) => `
-    position: absolute;
-    width: ${theme.spacing(4)};
-    height: ${theme.spacing(4)};
-    bottom: -${theme.spacing(1)};
-    right: -${theme.spacing(1)};
-
-    .MuiIconButton-root {
-      border-radius: 100%;
-      background: ${theme.colors.primary.main};
-      color: ${theme.palette.primary.contrastText};
-      box-shadow: ${theme.colors.shadows.primary};
-      width: ${theme.spacing(4)};
-      height: ${theme.spacing(4)};
-      padding: 0;
-  
-      &:hover {
-        background: ${theme.colors.primary.dark};
-      }
-    }
-`
-);
-
-const CardCover = styled(Card)(
-  ({ theme }) => `
-    // position: relative;
-
-    .MuiCardMedia-root {
-      width: ${theme.spacing(40)};
-      height: ${theme.spacing(20)};
-
-    }
-`
-);
-
-const CardCoverAction = styled(Box)(
-  ({ theme }) => `
-    // position: absolute;
-    // right: ${theme.spacing(2)};
-    // bottom: ${theme.spacing(2)};
-`
-);
+import { compareDesc, parse } from 'date-fns';
 
 function EmployeeManagementTab() {
   const isMountedRef = useRefMounted();
@@ -142,13 +78,6 @@ function EmployeeManagementTab() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const [value, setValue] = useState<Date | null>(
-    new Date('2014-08-18 21:11:54')
-  );
-
-  const handleChange = (newValue: Date | null) => {
-    setValue(newValue);
-  };
 
   const handleChangePage = (
     _event: MouseEvent<HTMLButtonElement> | null,
@@ -252,6 +181,18 @@ function EmployeeManagementTab() {
                     }
                     onClick={() => {
                       console.log(upload);
+
+                      if(upload.gender!='男'&&upload.gender!='女'){
+
+                        alert("性别必须是男或者是女")
+                        return;
+                      }
+      
+                      if(compareDesc(parse(upload.birthday,"yyyy-MM-dd",Date.now()),Date.now())){
+      
+                        alert("生日不允许超过当前日期")
+                        return;
+                      }
 
                       const conduct = async () => {
                         return await humanResourceApi.postEmployee({

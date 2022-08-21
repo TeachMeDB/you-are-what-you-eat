@@ -64,6 +64,7 @@ function PrizeManagementTab() {
   const isMountedRef = useRefMounted();
   const [prizes, setPrizes] = useState<PrizeEntity[]>([]);
   const [awards, setAwards] = useState<Award[]>([]);
+  const [employees,setEmployees]=useState<EmployeeEntity[]>(null);
 
   const getAllData = useCallback(async () => {
     try {
@@ -71,9 +72,12 @@ function PrizeManagementTab() {
 
       let awards = await awardApi.getAward();
 
+      let employees_data = await humanResourceApi.getEmployees();
+
       if (isMountedRef()) {
         setPrizes(prizes);
         setAwards(awards);
+        setEmployees(employees_data);
       }
     } catch (err) {
       console.error(err);
@@ -155,7 +159,9 @@ function PrizeManagementTab() {
                           }}
                           color="inherit"
                           size="small"
+                          
                           onClick={() => {
+
                             const conduct = async () => {
                               return awardApi.deleteAward(award.level);
                             };
@@ -229,7 +235,10 @@ function PrizeManagementTab() {
                 <Button
                   variant="contained"
                   size="large"
+                  disabled={!(uploadAward.amount&&uploadAward.level&&uploadAward.level!=""&&uploadAward.amount>0)}
                   onClick={() => {
+
+
                     const conduct = async () => {
                       return await awardApi.postAward(uploadAward);
                     };
@@ -308,7 +317,18 @@ function PrizeManagementTab() {
                 <Button
                   variant="contained"
                   size="large"
+                  disabled={!(uploadPrize&&uploadPrize.id!=""&&uploadPrize.level!="")}
                   onClick={() => {
+
+                    if(!employees.find((employee)=>employee.id===uploadPrize.id)){
+                      alert("员工ID必须存在");
+                      return;
+                    }
+                    if(!awards.find((award)=>award.level===uploadPrize.level)){
+                      alert("奖励等级必须存在");
+                      return;
+                    }
+
                     const conduct = async () => {
                       return await awardApi.postPrize(uploadPrize);
                     };
