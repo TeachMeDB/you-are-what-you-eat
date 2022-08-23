@@ -11,7 +11,6 @@ import {
 import { GetApi } from 'src/utils/requests';
 import { getDayTime } from 'src/utils/date';
 import { arrSum } from '@/utils/array';
-// import { count } from 'src/utils/array';
 
 class OrdersApi {
   // OK
@@ -40,6 +39,8 @@ class OrdersApi {
         discount_price: item.discount_price
       };
     });
+
+    orders.sort((o1, o2) => o1.creation_time > o2.creation_time ? -1 : 1);
 
     return Promise.resolve(orders);
   };
@@ -125,7 +126,8 @@ class OrdersApi {
         begin: todayStart,
         end: todayEnd
       })
-    ).data.data;
+    ).data.orders;
+    console.log('ttt',todayOrders);
     const breakfastOrders = todayOrders.filter((order) => {
       var h = new Date(order.creation_time).getHours();
       return h < 10;
@@ -241,35 +243,11 @@ class OrdersApi {
   public getOrderDetail: (order_id: string) => Promise<OrderDetail> = async (
     order_id
   ) => {
-    // const data = {
-    //     order_id: 'ADF7284',
-    //     table_id: 'A32',
-    //     creation_time: '2022-7-20 20:00:00',
-    //     ori_price: 100,
-    //     final_payment: 95,
-    //     order_status: 'running' as OrderStatus,
-    //     dishes: [
-    //         {
-    //             dish_name: '鱼香肉丝',
-    //             ori_price: 25,
-    //             final_payment: 20,
-    //             dish_status: '已完成'
-    //         },
-    //         {
-    //             dish_name: '清炒包菜',
-    //             ori_price: 12,
-    //             final_payment: 12,
-    //             dish_status: '已完成'
-    //         }
-    //     ]
-    // }
     const order = (
       await GetApi('Order/GetOrderById', {
         order_id: order_id
       })
     ).data;
-
-    // console.log('order:', order);
 
     const dishList = (
       await GetApi('Order/GetOrderDish', {
@@ -295,8 +273,6 @@ class OrdersApi {
       })
     );
 
-    // console.log(dishes);
-
     const data = {
       order_id: order.order_id,
       table_id: order.table_id,
@@ -310,8 +286,6 @@ class OrdersApi {
         : 'failed') as OrderStatus,
       dishes: dishes
     };
-
-    // console.log(data);
 
     if (!order) {
       return null;
