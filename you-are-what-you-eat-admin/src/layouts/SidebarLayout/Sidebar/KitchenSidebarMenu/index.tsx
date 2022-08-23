@@ -187,7 +187,7 @@ function KitchenSidebarMenu() {
   return (
     <>
       <MenuWrapper>
-        <List component="div">
+        {/* <List component="div">
           <SubMenuWrapper>
             <List component="div">
               <ListItem component="div">
@@ -199,13 +199,61 @@ function KitchenSidebarMenu() {
                     onClick={closeSidebar}
                     startIcon={<DesignServicesTwoToneIcon />}
                   >
-                    Overview
+                    首页
+                  </Button>
+                </NextLink>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List> */}
+
+<List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              人事管理
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <NextLink href="/human_resource/organization" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/human_resource/organization'
+                        ? 'active'
+                        : ''
+                    }
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    startIcon={<AccountCircleTwoToneIcon />}
+                  >
+                    员工详情与管理
+                  </Button>
+                </NextLink>
+              </ListItem>
+              <ListItem component="div">
+                <NextLink href="/human_resource/schedule" passHref>
+                  <Button
+                    className={
+                      currentRoute === '/management/schedule' ? 'active' : ''
+                    }
+                    disableRipple
+                    component="a"
+                    onClick={closeSidebar}
+                    startIcon={<DisplaySettingsTwoToneIcon />}
+                  >
+                    排班管理
                   </Button>
                 </NextLink>
               </ListItem>
             </List>
           </SubMenuWrapper>
         </List>
+
+
         <List
           component="div"
           subheader={
@@ -309,50 +357,7 @@ function KitchenSidebarMenu() {
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
-              Dashboards
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
-                <NextLink href="/dashboards/crypto" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/dashboards/crypto' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<BrightnessLowTwoToneIcon />}
-                  >
-                    Cryptocurrency
-                  </Button>
-                </NextLink>
-              </ListItem>
-              <ListItem component="div">
-                <NextLink href="/applications/messenger" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/applications/messenger' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<MmsTwoToneIcon />}
-                  >
-                    Messenger
-                  </Button>
-                </NextLink>
-              </ListItem>
-            </List>
-          </SubMenuWrapper>
-        </List>
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Management
+              营业管理
             </ListSubheader>
           }
         >
@@ -413,51 +418,7 @@ function KitchenSidebarMenu() {
           </SubMenuWrapper>
         </List>
 
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              人事管理
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
-                <NextLink href="/human_resource/organization" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/human_resource/organization'
-                        ? 'active'
-                        : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<AccountCircleTwoToneIcon />}
-                  >
-                    员工详情与管理
-                  </Button>
-                </NextLink>
-              </ListItem>
-              <ListItem component="div">
-                <NextLink href="/human_resource/schedule" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/management/schedule' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<DisplaySettingsTwoToneIcon />}
-                  >
-                    排班管理
-                  </Button>
-                </NextLink>
-              </ListItem>
-            </List>
-          </SubMenuWrapper>
-        </List>
+        
 
         <List
           component="div"
@@ -574,7 +535,7 @@ function KitchenSidebarMenu() {
             </List>
           </SubMenuWrapper>
         </List>
-        <List
+        {/* <List
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
@@ -835,7 +796,7 @@ function KitchenSidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-        </List>
+        </List> */}
       </MenuWrapper>
     </>
   );

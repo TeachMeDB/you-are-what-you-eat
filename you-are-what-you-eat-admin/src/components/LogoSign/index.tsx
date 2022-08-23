@@ -99,7 +99,7 @@ function Logo() {
 
   return (
     <TooltipWrapper
-      title="Tokyo Free White Next.js Typescript Admin Dashboard"
+      title="人如其食智慧餐厅"
       arrow
     >
       <LogoWrapper href="/">

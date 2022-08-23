@@ -44,10 +44,15 @@ class CasdoorSdk {
       localStorage.setItem("signinUrl", this.getSigninUrl(redirectUrl));
       return `${this.config.serverUrl.trim()}/signup/${this.config.appName}`;
     } else {
-      return this.getSigninUrl(redirectUrl).replace(
-        '/login/oauth/authorize',
-        '/signup/oauth/authorize'
-      );
+
+      const redirectUri = `${redirectUrl}${this.config.redirectPath}`;
+      const scope = 'read';
+      const state = this.config.appName;
+      return `${this.config.serverUrl.trim()}/signup/oauth/authorize?client_id=${
+        this.config.clientId
+      }&response_type=token&redirect_uri=${encodeURIComponent(
+        redirectUri
+      )}&scope=${scope}&state=${state}`;
     }
   }
 

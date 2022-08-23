@@ -18,7 +18,7 @@ function Footer() {
       >
         <Box>
           <Typography variant="subtitle1">
-            &copy; 2022 - Tokyo Free White Next.js Typescript Admin Dashboard
+            &copy; 人如其食智慧餐厅
           </Typography>
         </Box>
         <Typography
@@ -27,13 +27,13 @@ function Footer() {
           }}
           variant="subtitle1"
         >
-          Crafted by{' '}
+          课程项目来源：{' '}
           <Link
-            href="https://bloomui.com"
+            href="sse.tongji.edu.cn"
             target="_blank"
             rel="noopener noreferrer"
           >
-            BloomUI.com
+            同济大学软件学院
           </Link>
         </Typography>
       </Box>

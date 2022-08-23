@@ -41,22 +41,10 @@ const SidebarLayout: FC<SidebarLayoutProps> = ({ children }) => {
           }
         }}
       >
-        <Header />
+        <Header>{children}</Header>
+        
         <Sidebar />
-        <Box
-          sx={{
-            position: 'relative',
-            zIndex: 5,
-            display: 'block',
-            flex: 1,
-            pt: `${theme.header.height}`,
-            [theme.breakpoints.up('lg')]: {
-              ml: `${theme.sidebar.width}`
-            }
-          }}
-        >
-          <Box display="block">{children}</Box>
-        </Box>
+        
       </Box>
     </>
   );

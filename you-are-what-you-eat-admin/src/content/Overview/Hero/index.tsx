@@ -160,11 +160,11 @@ function Hero() {
             component="a"
             target="_blank"
             rel="noopener"
-            href="https://bloomui.com/product/tokyo-free-white-nextjs-typescript-material-ui-admin-dashboard/"
+            href="/"
             size="large"
             variant="text"
           >
-            奇怪的按钮
+            客户端
           </Button>
           <Grid container spacing={3} mt={5}>
             <Grid item md={4}>
@@ -210,8 +210,7 @@ function Hero() {
                   <b>Built with Typescript</b>
                 </Box>
                 <Typography component="span" variant="subtitle2">
-                  Tokyo Free White features a modern technology stack and is
-                  built with React + Typescript.
+                  人如其食智慧餐厅
                 </Typography>
               </Typography>
             </Grid>
