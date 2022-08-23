@@ -114,7 +114,7 @@ function Hero() {
         container
       >
         <Grid item md={10} lg={8} mx="auto">
-          <LabelWrapper color="success">Version 1.0.0</LabelWrapper>
+          {/* <LabelWrapper color="success">Version 1.0.0</LabelWrapper> */}
           <TypographyH1 sx={{ mb: 2 }} variant="h1">
             人如其食
           </TypographyH1>
@@ -166,7 +166,7 @@ function Hero() {
           >
             客户端
           </Button>
-          <Grid container spacing={3} mt={5}>
+          {/* <Grid container spacing={3} mt={5}>
             <Grid item md={4}>
               <MuiAvatar>
                 <img
@@ -214,7 +214,7 @@ function Hero() {
                 </Typography>
               </Typography>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </Container>
