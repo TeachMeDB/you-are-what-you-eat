@@ -399,7 +399,7 @@ export default function ModifyDialog(props: VipProps) {
             startIcon={<AddTwoToneIcon fontSize="small" />}
             onClick={() => {
               handleSubmitEdit();
-              window.location.reload();
+              //window.location.reload();
             }}
           >
             确认修改
