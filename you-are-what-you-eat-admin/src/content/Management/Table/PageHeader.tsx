@@ -15,7 +15,7 @@ function PageHeader() {
           场地管理
         </Typography>
         <Typography variant="subtitle2">
-          {user.name}, 餐厅的场地状态如下
+          查看餐厅场地状态，管理座位
         </Typography>
       </Grid>
       <Grid item>{<AssignSeat />}</Grid>

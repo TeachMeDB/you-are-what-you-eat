@@ -15,7 +15,7 @@ function PageHeader() {
           会员管理
         </Typography>
         <Typography variant="subtitle2">
-          {user.name}, 您所能管理的会员如下
+          查看并管理全部会员信息
         </Typography>
       </Grid>
       <Grid item>{<SignUpVip />}</Grid>
