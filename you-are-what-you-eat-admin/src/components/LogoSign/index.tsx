@@ -103,24 +103,7 @@ function Logo() {
       arrow
     >
       <LogoWrapper href="/">
-        <Badge
-          sx={{
-            '.MuiBadge-badge': {
-              fontSize: theme.typography.pxToRem(11),
-              right: -2,
-              top: 8
-            }
-          }}
-          overlap="circular"
-          color="success"
-          badgeContent="1.0"
-        >
-          <LogoSignWrapper>
-            <LogoSign>
-              <LogoSignInner />
-            </LogoSign>
-          </LogoSignWrapper>
-        </Badge>
+        <img src='/static/images/logo/icon.png' alt='' style={{width:"100%"}}/>
       </LogoWrapper>
     </TooltipWrapper>
   );
