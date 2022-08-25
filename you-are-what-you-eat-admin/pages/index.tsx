@@ -73,17 +73,7 @@ function Overview() {
                 >
                   {t('登陆')}
                 </Button>
-                <Button
-                  variant="contained"
-                  sx={{ ml: 2 }}
-                  onClick={()=>{
-
-                    window.location.replace(authorization.getSignupUrl(GlobalConfig.getFrontendURL()));
-                  
-                  }}
-                >
-                  {t('注册')}
-                </Button>
+                
               </Box>
             </Box>
           </Box>

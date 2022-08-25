@@ -210,9 +210,9 @@ function EmployeeManagementTab() {
 
                       conduct()
                         .then((value) => {
-                          alert('添加成功：' + value);
+                          alert('添加成功：' + value+"\n请在表格中查看点击详情查看员工ID，并使用ID注册账号");
 
-                          //这里应该跳到鉴权那边设置登陆密码之类的
+                          
                         })
                         .catch((value) => {
                           alert('添加失败：' + value);

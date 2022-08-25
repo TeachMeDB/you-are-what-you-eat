@@ -14,6 +14,9 @@ import Summary from '../Profile/Summary';
 import { EmployeeDetail } from '@/models/employee';
 import { useRefMounted } from '@/hooks/useRefMounted';
 import { humanResourceApi } from '@/queries/employee';
+import authorization from '@/utils/authorization';
+import GlobalConfig from '@/utils/config';
+import { useRouter } from 'next/router';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -25,6 +28,8 @@ const Transition = React.forwardRef(function Transition(
 });
 
 export default function DetailEmployeePopup({ userId }: { userId: string }) {
+
+  const router=useRouter();
   const isMountedRef = useRefMounted();
   const [employee, setEmployee] = React.useState<EmployeeDetail>(null);
 
@@ -77,6 +82,15 @@ export default function DetailEmployeePopup({ userId }: { userId: string }) {
             <Typography sx={{ ml: 4, flex: 1 }} variant="h2" component="div">
               员工详情界面
             </Typography>
+            <Button
+              color="inherit"
+              onClick={()=>{
+
+                window.open(authorization.getSignupUrl(GlobalConfig.getFrontendURL()));
+              
+              }}>
+                  为改员工注册登陆账号
+            </Button>
             <Button
               autoFocus
               color="inherit"
