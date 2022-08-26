@@ -3,18 +3,10 @@ import React, { ChangeEvent, FC, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
-  Button,
   Card,
   CardHeader,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Divider,
   IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
   Table,
   TableBody,
   TableCell,
@@ -22,18 +14,15 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  TextField,
   Tooltip,
   Typography,
   useTheme,
 } from '@mui/material';
 import { IngredientRecordInfo } from '@/models/ingredient_record_info';
 import { EmployeeInfo } from '@/models/employee_info';
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import { queryIngredientRecordApi } from '@/queries/query_ingredient_record';
 import { IngredientInfo } from '@/models/ingredient_info';
-import { DesktopDatePicker } from '@mui/lab';
 
 interface IngredientRecordInfoTableProps {
   className?: string;
@@ -58,25 +47,12 @@ interface IngredientRecordInfoTableProps {
 const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) => {
   const {
     ingredientRecordInfoes = [],
-    ingredients = [],
-    employees = [],
     setIngredientRecordInfoes,
   } = props;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   // const [list, setList] = useState(ingredientRecordInfoes);
   // const [keyword, setKeyword] = useState('');
-  const [open, setOpen] = React.useState(false);
-  const [formValue, setFormValue] = useState({
-    record_id: 0,
-    ingr_id: 0,
-    purchasing_date: null,
-    measure_unit: '',
-    shelf_life: '0',
-    produced_date: null,
-    price: '',
-    director_id: 0,
-  });
 
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage);
@@ -87,45 +63,17 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
     setLimit(newLimit);
   };
 
-  const handleClickOpen = (ingredientRecordInfo) => {
-    console.log(ingredientRecordInfo, ' <-- ingredientRecordInfo');
-    setFormValue(ingredientRecordInfo);
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
   // const handleSubmit = async () => {
   //   console.log(formValue, ' <-- formValue');
   //   await queryIngredientRecordApi.updateIngredientRecord(formValue);
   //   setOpen(false);
   // };
 
-  const handleFormDateChange = (field, e) => {
-    setFormValue({ ...formValue, [field]: e });
-  };
-
   // const handleSearch = async () => {
   //   const data = await queryIngredientRecordApi.getIngredientRecordList();
   //   setPage(0);
   //   setList(data);
   // };
-
-  const handleFormChange = (field, e) => {
-    console.log(field, ' <-- field');
-    setFormValue({ ...formValue, [field]: e.target.value });
-  };
-
-  const handleSubmitForm = async () => {
-    console.log(formValue, ' <-- ingredientRecordFormValue');
-    // @ts-ignore
-    const { director_name, ingr_name, ...params } = formValue;
-    await queryIngredientRecordApi.updateIngredientRecord(params);
-    const data = await queryIngredientRecordApi.getIngredientRecordList();
-    setIngredientRecordInfoes(data);
-    setOpen(false);
-  };
 
   const handleDelete = async (id: string | number) => {
     await queryIngredientRecordApi.deleteIngredientRecord(id);
@@ -175,10 +123,12 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
             <TableRow>
               <TableCell>记录编号</TableCell>
               <TableCell>原料名称</TableCell>
-              <TableCell>购买日期</TableCell>
-              <TableCell>原料的计量单位</TableCell>
-              <TableCell>保质期</TableCell>
+              <TableCell>修改日期</TableCell>
+              <TableCell>采购/消耗</TableCell>
+              <TableCell>数量</TableCell>
+              <TableCell>单位</TableCell>
               <TableCell>生产日期</TableCell>
+              <TableCell>保质期</TableCell>
               <TableCell>价格</TableCell>
               <TableCell>负责人姓名</TableCell>
               <TableCell>操作</TableCell>
@@ -229,6 +179,28 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
                       gutterBottom
                       noWrap
                     >
+                      {ingredientRecordInfo.purchases !== 0 ? '采购' : '消耗'}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {ingredientRecordInfo.purchases !== 0 ? ingredientRecordInfo.purchases : ingredientRecordInfo.surplus}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
                       {ingredientRecordInfo.measure_unit}
                     </Typography>
                   </TableCell>
@@ -240,7 +212,7 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
                       gutterBottom
                       noWrap
                     >
-                      {ingredientRecordInfo.shelf_life}天
+                      {ingredientRecordInfo.produced_date}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -251,7 +223,7 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
                       gutterBottom
                       noWrap
                     >
-                      {ingredientRecordInfo.produced_date}
+                      {ingredientRecordInfo.shelf_life}天
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -278,141 +250,6 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
                   </TableCell>
 
                   <TableCell>
-                    <Tooltip title="编辑" arrow onClick={() => handleClickOpen(ingredientRecordInfo)}>
-                      <IconButton
-                        sx={{
-                          '&:hover': {
-                            background: theme.colors.primary.lighter,
-                          },
-                          color: theme.palette.primary.main,
-                        }}
-                        color="inherit"
-                        size="small"
-                      >
-                        <EditTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    <Dialog open={open} onClose={handleClose}>
-                      <DialogTitle>耗材信息</DialogTitle>
-                      <DialogContent>
-                        <TextField
-                          disabled
-                          margin="dense"
-                          id="record_id"
-                          label="记录编号"
-                          fullWidth
-                          variant="standard"
-                          value={formValue.record_id}
-                          style={{ minWidth: '400px' }}
-                        />
-                        <InputLabel id="employee_id">耗材</InputLabel>
-                        <Select
-                          autoFocus
-                          labelId="employee_id"
-                          margin="dense"
-                          id="employee_id"
-                          label="耗材"
-                          placeholder="耗材"
-                          fullWidth
-                          variant="standard"
-                          value={formValue.ingr_id}
-                          onChange={(e) => handleFormChange('ingr_id', e)}
-                        >
-                          {
-                            ingredients.map((item) =>
-                              <MenuItem
-                                key={item.ingr_id}
-                                value={item.ingr_id}
-                              >{item.ingr_name}</MenuItem>)
-                          }
-                        </Select>
-                        <TextField
-                          autoFocus
-                          margin="dense"
-                          id="measure_unit"
-                          label="原料的计量单位"
-                          fullWidth
-                          variant="standard"
-                          value={formValue.measure_unit}
-                          onChange={(e) => handleFormChange('measure_unit', e)}
-                        />
-                        <TextField
-                          autoFocus
-                          margin="dense"
-                          id="shelf_life"
-                          type="number"
-                          label="保质期(天)"
-                          fullWidth
-                          variant="standard"
-                          value={formValue.shelf_life}
-                          onChange={(e) => handleFormChange('shelf_life', e)}
-                        />
-                        <TextField
-                          autoFocus
-                          margin="dense"
-                          id="price"
-                          label="价格"
-                          type="number"
-                          fullWidth
-                          variant="standard"
-                          value={formValue.price}
-                          onChange={(e) => handleFormChange('price', e)}
-                        />
-                        <InputLabel id="employee_id">负责人</InputLabel>
-                        <Select
-                          autoFocus
-                          labelId="employee_id"
-                          margin="dense"
-                          id="employee_id"
-                          label="负责人"
-                          placeholder="负责人"
-                          fullWidth
-                          variant="standard"
-                          value={formValue.director_id}
-                          onChange={(e) => handleFormChange('director_id', e)}
-                        >
-                          {
-                            employees.map((employee) =>
-                              <MenuItem
-                                key={employee.employee_id}
-                                value={employee.employee_id}
-                              >{employee.employee_name}</MenuItem>)
-                          }
-                        </Select>
-                        <Box
-                          sx={{
-                            marginTop: '16px',
-                          }}
-                        >
-                          <DesktopDatePicker
-                            autoFocus
-                            label="购买日期"
-                            inputFormat="yyyy-MM-dd"
-                            value={formValue.purchasing_date}
-                            onChange={(e) => handleFormDateChange('purchasing_date', e)}
-                            renderInput={(params) => <TextField {...params} />}
-                          />
-                        </Box>
-                        <Box
-                          sx={{
-                            marginTop: '16px',
-                          }}
-                        >
-                          <DesktopDatePicker
-                            autoFocus
-                            label="生产日期"
-                            inputFormat="yyyy-MM-dd"
-                            value={formValue.produced_date}
-                            onChange={(e) => handleFormDateChange('produced_date', e)}
-                            renderInput={(params) => <TextField {...params} />}
-                          />
-                        </Box>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button onClick={handleClose}>退出</Button>
-                        <Button onClick={handleSubmitForm}>确定</Button>
-                      </DialogActions>
-                    </Dialog>
                     <Tooltip arrow title="删除">
                       <IconButton
                         sx={{
@@ -449,11 +286,11 @@ const RecentIngredientRecordTable: FC<IngredientRecordInfoTableProps> = (props) 
 };
 
 RecentIngredientRecordTable.propTypes = {
-  ingredientRecordInfoes: PropTypes.array.isRequired
+  ingredientRecordInfoes: PropTypes.array.isRequired,
 };
 
 RecentIngredientRecordTable.defaultProps = {
-  ingredientRecordInfoes: []
+  ingredientRecordInfoes: [],
 };
 
 export default RecentIngredientRecordTable;

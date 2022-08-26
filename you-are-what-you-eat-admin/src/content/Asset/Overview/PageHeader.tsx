@@ -1,4 +1,13 @@
-import { Button, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from '@mui/material';
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import * as React from 'react';
@@ -14,7 +23,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { queryAssetApi } from '@/queries/query_asset';
 import { queryManageApi } from '@/queries/query_manage';
 import { DesktopDatePicker } from '@mui/lab';
-import { Box } from '@mui/system';
 
 function PageHeader(props) {
   const {
@@ -23,7 +31,9 @@ function PageHeader(props) {
   } = props;
   const [open, setOpen] = React.useState(false);
   const defaultFormValue = { assets_type: '', assets_status: '', employee_id: 0 };
+  const defaultFormErrors = { assets_type: '', assets_status: '', employee_id: '' };
   const [formValue, setFormValue] = useState(defaultFormValue);
+  const [formErrors, setFormErrors] = useState(defaultFormErrors);
   const defaultManageValue = {
     employee_id: '',
     assets_id: '',
@@ -32,7 +42,16 @@ function PageHeader(props) {
     manage_reason: '',
     manage_cost: '',
   };
+  const defaultManageErrors = {
+    employee_id: '',
+    assets_id: '',
+    manage_type: '',
+    manage_date: '',
+    manage_reason: '',
+    manage_cost: '',
+  };
   const [manageFormValue, setManageFormValue] = useState(defaultManageValue);
+  const [manageFormErrors, setManageFormErrors] = useState(defaultManageErrors);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -42,23 +61,53 @@ function PageHeader(props) {
   };
   const handleSubmit = async () => {
     const {
-      // assets_id: assetsId = '',
       assets_type: assetsType = '',
       assets_status: assetsStatus = '',
-      employee_id: employeeId = 0
+      employee_id: employeeId = 0,
     } = formValue;
-    await queryAssetApi.addAsset({ assetsType, assetsStatus, employeeId });
+    setFormErrors({
+      assets_type: !assetsType ? '资产类型不能为空' : '',
+      assets_status: !assetsStatus ? '资产状态不能为空' : '',
+      employee_id: !employeeId ? '资产管理员ID不能为空' : '',
+    });
+    if (!assetsType || !assetsStatus || !employeeId) {
+      return;
+    }
+
+    const resp = await queryAssetApi.addAsset({ assetsType, assetsStatus, employeeId });
+    if (!resp.ok) {
+      alert('提交失败，请检查后重试');
+      return;
+    }
     const data = await queryAssetApi.getAssetList('');
     setAssetInfoes(data);
     setFormValue(defaultFormValue);
     setOpen(false);
   };
   const handleSubmitManageForm = async () => {
-    // console.log(manageFormValue, ' <-- manageFormValue');
-    const { manage_date, ...params } = manageFormValue;
+    const {
+      employee_id,
+      assets_id,
+      manage_type,
+      manage_date,
+      manage_reason,
+      manage_cost,
+    } = manageFormValue;
+    const costValue = parseFloat(manage_cost);
+    setManageFormErrors({
+      employee_id: !employee_id ? '请选择资产管理员' : '',
+      assets_id: !assets_id ? '请选择资产类型' : '',
+      manage_type: !manage_type ? '资产管理类型不能为空' : '',
+      manage_cost: !manage_cost ? '请选择资产管理耗费金额' : (costValue < 0 ? '资产管理耗费金额不能小于0' : ''),
+      manage_reason: !manage_reason ? '请选择资产管理原因' : '',
+      manage_date: !manage_date ? '请选择资产管理日期' : '',
+    });
+    if (!employee_id || !assets_id || !manage_type || !manage_cost || !manage_reason || !manage_cost) {
+      return;
+    }
     await queryManageApi.addManage({
-      ...params,
-      manage_date: format(manage_date, 'yyyy-MM-dd')
+      ...manageFormValue,
+      manage_date: format(manage_date, 'yyyy-MM-dd'),
     });
     const data = await queryManageApi.getManageList();
     setManageInfoes(data);
@@ -114,54 +163,67 @@ function PageHeader(props) {
                 autoFocus
                 margin="dense"
                 id="assets_type"
-                label="新的资产类型"
+                label="资产类型"
                 fullWidth
                 variant="standard"
                 value={formValue.assets_type}
                 onChange={(e) => handleFormChange('assets_type', e)}
                 style={{ minWidth: '400px' }}
+                error={!!formErrors.assets_type}
+                helperText={formErrors.assets_type}
               />
-              <InputLabel id="assets_status">新的资产状态</InputLabel>
-              <Select
-                autoFocus
-                labelId="assets_status"
-                margin="dense"
-                id="assets_status"
-                label="新的资产状态"
-                placeholder="新的资产状态"
-                fullWidth
-                variant="standard"
-                value={formValue.assets_status}
-                onChange={(e) => handleFormChange('assets_status', e)}
+
+              <FormControl
+                sx={{ width: '100%', marginTop: '12px' }}
+                error={!!formErrors.assets_status}
               >
-                {assetsStatusItems.map((item) => (
-                  <MenuItem key={item} value={item}>
-                    {item}
-                  </MenuItem>
-                ))}
-              </Select>
-              <InputLabel id="employee_id">新的资产管理员ID</InputLabel>
-              <Select
-                autoFocus
-                labelId="employee_id"
-                margin="dense"
-                id="employee_id"
-                label="新的资产管理员"
-                placeholder="新的资产管理员"
-                fullWidth
-                variant="standard"
-                value={formValue.employee_id}
-                onChange={(e) => handleFormChange('employee_id', e)}
+                <InputLabel id="assets_status">资产状态</InputLabel>
+                <Select
+                  autoFocus
+                  labelId="assets_status"
+                  margin="dense"
+                  id="assets_status"
+                  label="资产状态"
+                  placeholder="资产状态"
+                  value={formValue.assets_status}
+                  onChange={(e) => handleFormChange('assets_status', e)}
+                >
+                  {assetsStatusItems.map((item) => (
+                    <MenuItem key={item} value={item}>
+                      {item}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{formErrors.assets_status}</FormHelperText>
+              </FormControl>
+
+              <FormControl
+                sx={{ width: '100%', marginTop: '12px' }}
+                error={!!formErrors.employee_id}
               >
-                {employees.map((employee) => (
-                  <MenuItem
-                    key={employee.employee_id}
-                    value={employee.employee_id}
-                  >
-                    {employee.employee_name}
-                  </MenuItem>
-                ))}
-              </Select>
+                <InputLabel id="employee_id">资产管理员ID</InputLabel>
+                <Select
+                  autoFocus
+                  labelId="employee_id"
+                  margin="dense"
+                  id="employee_id"
+                  label="资产管理员"
+                  placeholder="资产管理员"
+                  value={formValue.employee_id}
+                  onChange={(e) => handleFormChange('employee_id', e)}
+                >
+                  {employees.map((employee) => (
+                    <MenuItem
+                      key={employee.employee_id}
+                      value={employee.employee_id}
+                    >
+                      {employee.employee_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{formErrors.employee_id}</FormHelperText>
+              </FormControl>
+
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>退出</Button>
@@ -172,47 +234,59 @@ function PageHeader(props) {
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle>资产管理记录</DialogTitle>
             <DialogContent>
-              <InputLabel id="employee_id">资产管理员</InputLabel>
-              <Select
-                autoFocus
-                labelId="employee_id"
-                margin="dense"
-                id="employee_id"
-                label="资产管理员"
-                placeholder="资产管理员"
-                fullWidth
-                variant="standard"
-                value={manageFormValue.employee_id}
-                onChange={(e) => handleManageFormChange('employee_id', e)}
+              <FormControl
+                sx={{ width: '100%', marginTop: '12px' }}
+                error={!!manageFormErrors.employee_id}
               >
-                {employees.map((employee) => (
-                  <MenuItem
-                    key={employee.employee_id}
-                    value={employee.employee_id}
-                  >
-                    {employee.employee_name}
-                  </MenuItem>
-                ))}
-              </Select>
-              <InputLabel id="assets_id">资产类型</InputLabel>
-              <Select
-                autoFocus
-                labelId="assets_id"
-                margin="dense"
-                id="assets_id"
-                label="资产类型"
-                placeholder="资产类型"
-                fullWidth
-                variant="standard"
-                value={manageFormValue.assets_id}
-                onChange={(e) => handleManageFormChange('assets_id', e)}
+                <InputLabel id="employee_id">资产管理员</InputLabel>
+                <Select
+                  autoFocus
+                  labelId="employee_id"
+                  margin="dense"
+                  id="employee_id"
+                  label="资产管理员"
+                  placeholder="资产管理员"
+                  fullWidth
+                  variant="standard"
+                  value={manageFormValue.employee_id}
+                  onChange={(e) => handleManageFormChange('employee_id', e)}
+                >
+                  {employees.map((employee) => (
+                    <MenuItem
+                      key={employee.employee_id}
+                      value={employee.employee_id}
+                    >
+                      {employee.employee_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{manageFormErrors.employee_id}</FormHelperText>
+              </FormControl>
+
+              <FormControl
+                sx={{ width: '100%', marginTop: '12px' }}
+                error={!!manageFormErrors.assets_id}
               >
-                {assets.map((item) => (
-                  <MenuItem key={item.assets_id} value={item.assets_id}>
-                    {item.assets_type}
-                  </MenuItem>
-                ))}
-              </Select>
+                <InputLabel id="assets_id">资产类型</InputLabel>
+                <Select
+                  autoFocus
+                  labelId="assets_id"
+                  margin="dense"
+                  id="assets_id"
+                  label="资产类型"
+                  placeholder="资产类型"
+                  value={manageFormValue.assets_id}
+                  onChange={(e) => handleManageFormChange('assets_id', e)}
+                >
+                  {(assets || []).map((item) => (
+                    <MenuItem key={item.assets_id} value={item.assets_id}>
+                      {item.assets_type}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{manageFormErrors.assets_id}</FormHelperText>
+              </FormControl>
+
               <TextField
                 autoFocus
                 margin="dense"
@@ -222,6 +296,8 @@ function PageHeader(props) {
                 variant="standard"
                 value={manageFormValue.manage_type}
                 onChange={(e) => handleManageFormChange('manage_type', e)}
+                error={!!manageFormErrors.manage_type}
+                helperText={manageFormErrors.manage_type}
               />
 
               {/*<TextField*/}
@@ -243,6 +319,8 @@ function PageHeader(props) {
                 variant="standard"
                 value={manageFormValue.manage_reason}
                 onChange={(e) => handleManageFormChange('manage_reason', e)}
+                error={!!manageFormErrors.manage_reason}
+                helperText={manageFormErrors.manage_reason}
               />
               <TextField
                 autoFocus
@@ -253,11 +331,12 @@ function PageHeader(props) {
                 variant="standard"
                 value={manageFormValue.manage_cost}
                 onChange={(e) => handleManageFormChange('manage_cost', e)}
+                error={!!manageFormErrors.manage_cost}
+                helperText={manageFormErrors.manage_cost}
               />
-              <Box
-                sx={{
-                  marginTop: '16px'
-                }}
+              <FormControl
+                sx={{ width: '100%', marginTop: '12px' }}
+                error={!!manageFormErrors.manage_date}
               >
                 <DesktopDatePicker
                   autoFocus
@@ -267,7 +346,9 @@ function PageHeader(props) {
                   onChange={(e) => handleDateChange(e)}
                   renderInput={(params) => <TextField {...params} />}
                 />
-              </Box>
+                <FormHelperText>{manageFormErrors.manage_date}</FormHelperText>
+              </FormControl>
+
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>退出</Button>
