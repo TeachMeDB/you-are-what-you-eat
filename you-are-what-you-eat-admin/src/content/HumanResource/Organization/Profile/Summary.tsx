@@ -13,6 +13,7 @@ import WorkIcon from '@mui/icons-material/Work';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { EmployeeDetail, Prize } from '@/models/employee';
+import { endOfMonth,compareAsc, parse, startOfMonth, compareDesc } from 'date-fns';
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `
@@ -25,6 +26,7 @@ const AvatarPrimary = styled(Avatar)(
 
 function Summary({ user }: { user: EmployeeDetail }) {
   const theme = useTheme();
+
 
   return (
     <Card>
@@ -46,7 +48,19 @@ function Summary({ user }: { user: EmployeeDetail }) {
               >
                 本月排班日
               </Typography>
-              <Typography variant="h2">{user.attends.length}</Typography>
+              <Typography variant="h2">{user.attends.filter((attend)=>{
+
+                let time=parse(attend.time_start,"yyyy-MM-dd HH:mm:ss",Date.now());
+
+                let now=new Date(Date.now());
+
+                let month_start=startOfMonth(now);
+
+                let month_end=endOfMonth(now);
+
+                return compareAsc(month_start,time)<=0&&compareAsc(time,month_end)<=0
+
+              }).length}</Typography>
             </Box>
             <Box>
               <Typography
@@ -58,7 +72,19 @@ function Summary({ user }: { user: EmployeeDetail }) {
               </Typography>
               <Typography variant="h2">
                 {
-                  user.attends.filter((value) => {
+                  user.attends.filter((attend)=>{
+
+                    let time=parse(attend.time_start,"yyyy-MM-dd HH:mm:ss",Date.now());
+    
+                    let now=new Date(Date.now());
+    
+                    let month_start=startOfMonth(now);
+    
+                    let month_end=endOfMonth(now);
+    
+                    return compareAsc(month_start,time)<=0&&compareAsc(time,month_end)<=0
+    
+                  }).filter((value) => {
                     return value.attendance === true;
                   }).length
                 }
@@ -85,7 +111,13 @@ function Summary({ user }: { user: EmployeeDetail }) {
                 薪资金额
               </Typography>
               <Typography variant="h2">
-                {user.payrolls.length > 0 && user.payrolls[0].amount}
+                {user.payrolls.length > 0 && user.payrolls.sort((a,b)=>{
+
+                  let ta=parse(a.pay_datetime,"yyyy-MM-dd HH:mm:ss",Date.now());
+                  let tb=parse(b.pay_datetime,"yyyy-MM-dd HH:mm:ss",Date.now());
+
+                  return compareDesc(ta,tb);
+                })[0].amount}
                 {user.payrolls.length <= 0 && '未知'}
               </Typography>
             </Box>
@@ -99,7 +131,13 @@ function Summary({ user }: { user: EmployeeDetail }) {
               </Typography>
               <Typography variant="h4">
                 {user.payrolls.length > 0 &&
-                  user.payrolls[0].pay_datetime.split(' ')[0]}
+                  user.payrolls.sort((a,b)=>{
+
+                    let ta=parse(a.pay_datetime,"yyyy-MM-dd HH:mm:ss",Date.now());
+                    let tb=parse(b.pay_datetime,"yyyy-MM-dd HH:mm:ss",Date.now());
+  
+                    return compareDesc(ta,tb);
+                  })[0].pay_datetime.split(' ')[0]}
                 {user.payrolls.length <= 0 && '未知'}
               </Typography>
             </Box>
