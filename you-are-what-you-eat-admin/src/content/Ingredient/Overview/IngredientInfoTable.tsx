@@ -86,7 +86,6 @@ const RecentIngredientTable: FC<IngredientInfoTableProps> = (props) => {
   };
 
   const handleSubmit = async () => {
-    console.log(formValue, ' <-- formValue');
     await queryIngredientApi.updateIngredient(formValue);
     const data = await queryIngredientApi.getIngredientList(keyword);
     setIngredientInfoes(data);

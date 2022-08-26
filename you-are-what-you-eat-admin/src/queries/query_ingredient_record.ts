@@ -5,9 +5,8 @@ class QueryIngredientRecordApi {
   public getIngredientRecordList: () => Promise<IngredientRecordInfo[]> = async () => {
     try {
       const r = await (await
-          fetch(GlobalConfig.getBackendURL()+`/Ingredient/GetIngredientRecord?token=${GlobalConfig.getAccessToken()}`)
+          fetch(GlobalConfig.getBackendURL() + `/Ingredient/GetIngredientRecord?token=${GlobalConfig.getAccessToken()}`)
       ).text();
-      console.log(r, ' <-- r');
       const content = JSON.parse(r) || {};
       return (content.data || []) as IngredientRecordInfo[];
     } catch (err) {
@@ -16,38 +15,29 @@ class QueryIngredientRecordApi {
     }
   };
 
-  public addIngredientRecord: (params: any) => Promise<string> = async (
-    params
-  ) => {
-    try {
-      return await (
-        await fetch(
-          GlobalConfig.getBackendURL()+'/Ingredient/PostAddIngredientRecord',
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...params, token:GlobalConfig.getAccessToken() })
-          }
-        )
-      ).text();
-    } catch (err) {
-      console.log(err);
-      return null;
-    }
+  public addIngredientRecord: (params) => Promise<Response> = async (params) => {
+    return await fetch(
+      GlobalConfig.getBackendURL() + '/Ingredient/PostAddIngredientRecord',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...params, token: GlobalConfig.getAccessToken() }),
+      },
+    );
   };
 
   public updateIngredientRecord: (params: any) => Promise<string> = async (
-    params
+    params,
   ) => {
     try {
       return await (
         await fetch(
-          GlobalConfig.getBackendURL()+'/Ingredient/PostUpdateIngredientRecord',
+          GlobalConfig.getBackendURL() + '/Ingredient/PostUpdateIngredientRecord',
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...params, token:GlobalConfig.getAccessToken() })
-          }
+            body: JSON.stringify({ ...params, token: GlobalConfig.getAccessToken() }),
+          },
         )
       ).text();
     } catch (err) {
@@ -60,8 +50,8 @@ class QueryIngredientRecordApi {
     try {
       return await (
         await fetch(
-          GlobalConfig.getBackendURL()+`/Ingredient/DeleteIngredientRecord?id=${id}&token=${GlobalConfig.getAccessToken()}`,
-          { method: 'DELETE' }
+          GlobalConfig.getBackendURL() + `/Ingredient/DeleteIngredientRecord?id=${id}&token=${GlobalConfig.getAccessToken()}`,
+          { method: 'DELETE' },
         )
       ).text();
     } catch (err) {

@@ -8,7 +8,7 @@ import {
   CardHeader,
   Collapse,
   Divider,
-  FormControl,
+  FormControl, FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -25,7 +25,7 @@ import {
   TableRow,
   Tooltip,
   Typography,
-  useTheme
+  useTheme,
 } from '@mui/material';
 
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
@@ -55,16 +55,17 @@ interface AssetInfoTableProps {
 const OutlinedInputWrapper = styled(OutlinedInput)(
   ({ theme }) => `
       background-color: ${theme.colors.alpha.white[100]};
-  `
+  `,
 );
 
 const ButtonSearch = styled(Button)(
   ({ theme }) => `
       margin-right: -${theme.spacing(1)};
-  `
+  `,
 );
 
 const defaultRepairFormValue = { assetsId: '', name: '', phone: '', longitude: '', latitude: '' };
+const defaultRepairFormErrors = { name: '', phone: '', longitude: '', latitude: '' };
 
 function Row(props: any) {
   const { assetInfo, repair, setRepair, children } = props;
@@ -180,16 +181,23 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [keyword, setKeyword] = useState('');
+  const [formErrors, setFormErrors] = useState({
+    assets_id: '',
+    assets_type: '',
+    assets_status: '',
+    employee_id: '',
+  });
   const [formValue, setFormValue] = useState({
     assets_id: '',
     assets_type: '',
     assets_status: '',
-    employee_id: 0
+    employee_id: 0,
   });
   const [open, setOpen] = React.useState(false);
   const [repairOpen, setRepairOpen] = useState(false);
   const [repair, setRepair] = useState<Repair[]>([]);
   const [repairFormValue, setRepairFormValue] = useState(defaultRepairFormValue);
+  const [repairFormErrors, setRepairFormErrors] = useState(defaultRepairFormErrors);
 
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage);
@@ -223,14 +231,28 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
       assets_id: assetsId = '',
       assets_type: assetsType = '',
       assets_status: assetsStatus = '',
-      employee_id: employeeId = 0
+      employee_id: employeeId = 0,
     } = formValue;
-    await queryAssetApi.updateAsset({
+    setFormErrors({
+      assets_id: '',
+      assets_type: !assetsType ? '资产类型不能为空' : '',
+      assets_status: !assetsStatus ? '资产状态不能为空' : '',
+      employee_id: !employeeId ? '资产管理员ID不能为空' : '',
+    });
+    if (!assetsId || !assetsType || !assetsStatus || !employeeId) {
+      return;
+    }
+
+    const resp = await queryAssetApi.updateAsset({
       assetsId,
       assetsType,
       assetsStatus,
-      employeeId
+      employeeId,
     });
+    if (!resp.ok) {
+      alert('提交失败，请检查后重试');
+      return;
+    }
     const data = await queryAssetApi.getAssetList(keyword);
     setAssetInfoes(data);
     setOpen(false);
@@ -257,7 +279,20 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
 
   const submitRepairForm = async () => {
     const { latitude, longitude, name, phone } = repairFormValue;
-    if (!name || !phone || !latitude || !longitude) {
+    const latitudeValue = parseFloat(latitude);
+    const longitudeValue = parseFloat(longitude);
+    setRepairFormErrors({
+      name: !name ? '维修点地址不能为空' : '',
+      phone: !phone ? '联系方式不能为空' : '',
+      longitude: !longitude ? '经度不能为空' :
+        (longitudeValue > 180 ? '经度不能大于180°' :
+          (longitudeValue < 0 ? '经度不能小于0°' : '')),
+      latitude: !latitude ? '纬度不能为空' :
+        (latitudeValue > 90 ? '纬度不能大于90°' :
+          (latitudeValue < 0 ? '纬度不能小于0°' : '')),
+    });
+    if (!name || !phone || !latitude  || longitudeValue > 90 || longitudeValue < 0
+      || !longitude || longitudeValue > 180 || longitudeValue < 0) {
       return;
     }
     await queryAssetApi.addAssetRepair(repairFormValue);
@@ -355,6 +390,8 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
                         variant="standard"
                         value={formValue.assets_id}
                         style={{ minWidth: '400px' }}
+                        error={!!formErrors.assets_id}
+                        helperText={formErrors.assets_id}
                       />
                       <TextField
                         autoFocus
@@ -365,49 +402,65 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
                         variant="standard"
                         value={formValue.assets_type}
                         onChange={(e) => handleFormChange('assets_type', e)}
+                        error={!!formErrors.assets_type}
+                        helperText={formErrors.assets_type}
                       />
-                      <InputLabel id="assets_status">新的资产状态</InputLabel>
-                      <Select
-                        autoFocus
-                        labelId="assets_status"
-                        margin="dense"
-                        id="assets_status"
-                        label="新的资产状态"
-                        placeholder="新的资产状态"
-                        fullWidth
-                        variant="standard"
-                        value={formValue.assets_status}
-                        onChange={(e) => handleFormChange('assets_status', e)}
+                      <FormControl
+                        sx={{ width: '100%', marginTop: '12px' }}
+                        error={!!formErrors.assets_status}
                       >
-                        {
-                          assetsStatusItems.map((item) =>
-                            <MenuItem
-                              key={item}
-                              value={item}
-                            >{item}</MenuItem>)
-                        }
-                      </Select>
-                      <InputLabel id="employee_id">新的资产管理员ID</InputLabel>
-                      <Select
-                        autoFocus
-                        labelId="employee_id"
-                        margin="dense"
-                        id="employee_id"
-                        label="新的资产管理员"
-                        placeholder="新的资产管理员"
-                        fullWidth
-                        variant="standard"
-                        value={formValue.employee_id}
-                        onChange={(e) => handleFormChange('employee_id', e)}
+                        <InputLabel id="assets_status">新的资产状态</InputLabel>
+                        <Select
+                          autoFocus
+                          labelId="assets_status"
+                          margin="dense"
+                          id="assets_status"
+                          label="新的资产状态"
+                          placeholder="新的资产状态"
+                          fullWidth
+                          variant="standard"
+                          value={formValue.assets_status}
+                          onChange={(e) => handleFormChange('assets_status', e)}
+                        >
+                          {
+                            assetsStatusItems.map((item) =>
+                              <MenuItem
+                                key={item}
+                                value={item}
+                              >{item}</MenuItem>)
+                          }
+                        </Select>
+                        <FormHelperText>{formErrors.assets_status}</FormHelperText>
+                      </FormControl>
+
+                      <FormControl
+                        sx={{ width: '100%', marginTop: '12px' }}
+                        error={!!formErrors.employee_id}
                       >
-                        {
-                          employees.map((employee) =>
-                            <MenuItem
-                              key={employee.employee_id}
-                              value={employee.employee_id}
-                            >{employee.employee_name}</MenuItem>)
-                        }
-                      </Select>
+                        <InputLabel id="employee_id">新的资产管理员ID</InputLabel>
+                        <Select
+                          autoFocus
+                          labelId="employee_id"
+                          margin="dense"
+                          id="employee_id"
+                          label="新的资产管理员"
+                          placeholder="新的资产管理员"
+                          fullWidth
+                          variant="standard"
+                          value={formValue.employee_id}
+                          onChange={(e) => handleFormChange('employee_id', e)}
+                        >
+                          {
+                            employees.map((employee) =>
+                              <MenuItem
+                                key={employee.employee_id}
+                                value={employee.employee_id}
+                              >{employee.employee_name}</MenuItem>)
+                          }
+                        </Select>
+                        <FormHelperText>{formErrors.employee_id}</FormHelperText>
+                      </FormControl>
+
                     </DialogContent>
                     <DialogActions>
                       <Button onClick={handleClose}>退出</Button>
@@ -440,6 +493,8 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
                         variant="standard"
                         value={repairFormValue.name}
                         onChange={(e) => handleRepairFormChange('name', e)}
+                        error={!!repairFormErrors.name}
+                        helperText={repairFormErrors.name}
                       />
                       <TextField
                         margin="dense"
@@ -448,24 +503,32 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
                         fullWidth
                         variant="standard"
                         onChange={(e) => handleRepairFormChange('phone', e)}
+                        error={!!repairFormErrors.phone}
+                        helperText={repairFormErrors.phone}
                       />
                       <TextField
                         margin="dense"
                         id="name"
                         label="经度"
+                        type="number"
                         fullWidth
                         variant="standard"
                         value={repairFormValue.longitude}
                         onChange={(e) => handleRepairFormChange('longitude', e)}
+                        error={!!repairFormErrors.longitude}
+                        helperText={repairFormErrors.longitude}
                       />
                       <TextField
                         margin="dense"
                         id="name"
                         label="纬度"
+                        type="number"
                         fullWidth
                         variant="standard"
                         value={repairFormValue.latitude}
                         onChange={(e) => handleRepairFormChange('latitude', e)}
+                        error={!!repairFormErrors.latitude}
+                        helperText={repairFormErrors.latitude}
                       />
                       <Box sx={{ marginTop: '12px' }}>
                         <span>提示：经纬度可通过</span>
@@ -515,11 +578,11 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
 };
 
 RecentAssetsTable.propTypes = {
-  assetInfoes: PropTypes.array.isRequired
+  assetInfoes: PropTypes.array.isRequired,
 };
 
 RecentAssetsTable.defaultProps = {
-  assetInfoes: []
+  assetInfoes: [],
 };
 
 export default RecentAssetsTable;
