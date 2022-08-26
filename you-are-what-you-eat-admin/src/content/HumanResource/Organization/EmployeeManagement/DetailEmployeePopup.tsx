@@ -89,7 +89,7 @@ export default function DetailEmployeePopup({ userId }: { userId: string }) {
                 window.open(authorization.getSignupUrl(GlobalConfig.getFrontendURL()));
               
               }}>
-                  为改员工注册登陆账号
+                  为该员工注册登陆账号
             </Button>
             <Button
               autoFocus
