@@ -292,8 +292,8 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
         (latitudeValue > 90 ? '纬度不能大于90°' :
           (latitudeValue < 0 ? '纬度不能小于0°' : '')),
     });
-    if (!name || !phone || !latitude || longitudeValue > 90 || longitudeValue < 0
-      || !longitude || longitudeValue > 180 || longitudeValue < 0) {
+    if (!name || !phone || !latitude || longitudeValue > 180 || longitudeValue < 0
+      || !longitude || latitudeValue > 90 || latitudeValue < 0) {
       return;
     }
     const resp = await queryAssetApi.addAssetRepair({
