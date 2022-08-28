@@ -21,6 +21,7 @@ import Brightness1Icon from '@mui/icons-material/Brightness1';
 import { CryptoSummary2 } from '@/models/crypto_table';
 import { FC, ChangeEvent, useState } from 'react';
 import { Chart } from 'src/components/Chart';
+import dynamic from 'next/dynamic';
 
 interface TableSummaryProps {
   className?: string;
@@ -34,7 +35,7 @@ const TableSummary2: FC<TableSummaryProps> = ({ cryptoSummary2 }) => {
   return (
     <Card>
       <Chart
-        options={cryptoSummary2.options}
+        options={(cryptoSummary2.options) as unknown}
         series={cryptoSummary2.series}
         type="bar"
         height={350}

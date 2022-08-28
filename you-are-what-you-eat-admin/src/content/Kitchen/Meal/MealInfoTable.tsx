@@ -165,7 +165,7 @@ const MealInfoTable = () => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [idChange, setidChange] = useState<string>('');
-  const [idLook, setIdLook] = useState<MealInfo>('');
+  const [idLook, setIdLook] = useState<MealInfo>(null);
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage);
 
@@ -482,7 +482,7 @@ const MealInfoTable = () => {
                         <DialogTitle>菜品具体信息</DialogTitle>
 
                         <DialogContent>
-                          <iframe src={"//player.bilibili.com/player.html?bvid=" + idLook.video + "&high_quality=1&danmaku=0"} allowfullscreen="allowfullscreen" width="100%" height="270px" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
+                          <iframe src={"//player.bilibili.com/player.html?bvid=" + idLook.video + "&high_quality=1&danmaku=0"} allowFullScreen={true} width="100%" height="270px" scrolling="no" frameBorder={0} sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
                           <Grid item xs={12}>
                             <Box m={2}>
                               <Box pb={1} mb={1}>
