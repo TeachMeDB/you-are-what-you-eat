@@ -216,6 +216,7 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
   };
 
   const handleOpenRepair = (assetInfo) => {
+    console.log(assetInfo, ' <-- assetInfo');
     setRepairOpen(true);
     setRepairFormValue({ ...defaultRepairFormValue, assetsId: assetInfo.assets_id });
   };
@@ -279,6 +280,7 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
 
   const submitRepairForm = async () => {
     const { latitude, longitude, name, phone } = repairFormValue;
+    console.log(repairFormValue,' <-- latitude');
     const latitudeValue = parseFloat(latitude);
     const longitudeValue = parseFloat(longitude);
     setRepairFormErrors({
@@ -295,7 +297,11 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
       || !longitude || longitudeValue > 180 || longitudeValue < 0) {
       return;
     }
-    await queryAssetApi.addAssetRepair(repairFormValue);
+    const resp = await queryAssetApi.addAssetRepair(repairFormValue);
+    if (!resp.ok) {
+      alert('提交失败，请检查后重试');
+      return;
+    }
     setRepair([
       ...repair,
       { ...repairFormValue, longitude: parseFloat(longitude), latitude: parseFloat(latitude) },
@@ -303,6 +309,7 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
     setRepairFormValue(defaultRepairFormValue);
     const data = await queryAssetApi.getAssetList(keyword);
     setAssetInfoes(data);
+    setRepairOpen(false);
   };
 
   const data = assetInfoes.slice(page * limit, page * limit + limit);
@@ -460,7 +467,6 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
                         </Select>
                         <FormHelperText>{formErrors.employee_id}</FormHelperText>
                       </FormControl>
-
                     </DialogContent>
                     <DialogActions>
                       <Button onClick={handleClose}>退出</Button>

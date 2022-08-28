@@ -34,19 +34,13 @@ class QueryAssetApi {
     });
   };
 
-  public addAssetRepair: (params: any) => Promise<string> = async (params) => {
-    try {
-      return await (await
-          fetch(GlobalConfig.getBackendURL() + '/Asset/PostAddAssetRepair', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...params, token: GlobalConfig.getAccessToken() }),
-          })
-      ).text();
-    } catch (err) {
-      console.log(err);
-      return null;
-    }
+  public addAssetRepair: (params) => Promise<Response> = async (params) => {
+    return await
+      fetch(GlobalConfig.getBackendURL() + '/Asset/PostAddAssetRepair', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...params, token: GlobalConfig.getAccessToken() }),
+      });
   };
 
   public updateAsset: (params) => Promise<Response> = async (params) => {
