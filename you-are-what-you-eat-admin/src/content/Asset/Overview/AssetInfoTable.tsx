@@ -280,7 +280,6 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
 
   const submitRepairForm = async () => {
     const { latitude, longitude, name, phone } = repairFormValue;
-    console.log(repairFormValue,' <-- latitude');
     const latitudeValue = parseFloat(latitude);
     const longitudeValue = parseFloat(longitude);
     setRepairFormErrors({
@@ -293,11 +292,15 @@ const RecentAssetsTable: FC<AssetInfoTableProps> = ({ assetInfoes, employees, se
         (latitudeValue > 90 ? '纬度不能大于90°' :
           (latitudeValue < 0 ? '纬度不能小于0°' : '')),
     });
-    if (!name || !phone || !latitude  || longitudeValue > 90 || longitudeValue < 0
+    if (!name || !phone || !latitude || longitudeValue > 90 || longitudeValue < 0
       || !longitude || longitudeValue > 180 || longitudeValue < 0) {
       return;
     }
-    const resp = await queryAssetApi.addAssetRepair(repairFormValue);
+    const resp = await queryAssetApi.addAssetRepair({
+      ...repairFormValue,
+      longitude: longitudeValue,
+      latitude: latitudeValue,
+    });
     if (!resp.ok) {
       alert('提交失败，请检查后重试');
       return;
