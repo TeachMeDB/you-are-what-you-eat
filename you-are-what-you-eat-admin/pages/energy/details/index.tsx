@@ -8,17 +8,22 @@ import Footer from 'src/components/Footer';
 import Statistics from 'src/content/Energy/Details/Statistics';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 
-import { Grid } from '@mui/material';
+import { Grid, TablePagination } from '@mui/material';
 import { useRefMounted } from 'src/hooks/useRefMounted';
 import type { OriginalSensorData } from 'src/models/energy';
 import { energyApi } from 'src/queries/energy';
 import Results from '@/content/Energy/Details/DetailsTable';
 import { count } from 'src/utils/array';
 import { format } from 'date-fns';
+import { ChangeEvent } from 'react';
+
 
 function SensorDataCards() {
   const isMountedRef = useRefMounted();
   const [originalData, setOriginalData] = useState<OriginalSensorData[]>([]);
+
+  const [pageNumber, setPageNumber] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const getOriginalData = useCallback(async () => {
     try {
@@ -63,7 +68,7 @@ function SensorDataCards() {
         <Grid item xs={12}>
           {Statistics(water, power, gas)}
         </Grid>
-        {originalData.map((data) => (
+        {originalData.slice(pageNumber * rowsPerPage, (pageNumber + 1) * rowsPerPage).map((data) => (
           <Grid key={data.sensor_id} item xs={12}>
             <Results
               logs={data.logs}
@@ -74,6 +79,19 @@ function SensorDataCards() {
             />
           </Grid>
         ))}
+        <Grid item xs={4}>
+        </Grid>
+        <Grid item xs={4}>
+            <TablePagination 
+            count={originalData.length}
+            page={pageNumber}
+            onPageChange={(_event: any, newPage: number) => setPageNumber(newPage)}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={(e: ChangeEvent<HTMLInputElement>) => setRowsPerPage(parseInt(e.target.value))}
+            />
+        </Grid>
+        <Grid item xs={4}>
+        </Grid>
       </Grid>
       <Footer />
     </>
