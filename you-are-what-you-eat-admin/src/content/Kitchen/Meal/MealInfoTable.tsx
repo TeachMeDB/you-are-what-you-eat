@@ -481,7 +481,7 @@ const MealInfoTable = () => {
                       <Dialog open={detailOpen} onClose={handleDetailClose} fullWidth={true}>
                         <DialogTitle>菜品具体信息</DialogTitle>
 
-                        <DialogContent>
+                        {(idLook)&&<DialogContent>
                           <iframe src={"//player.bilibili.com/player.html?bvid=" + idLook.video + "&high_quality=1&danmaku=0"} allowFullScreen={true} width="100%" height="270px" scrolling="no" frameBorder={0} sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
                           <Grid item xs={12}>
                             <Box m={2}>
@@ -529,7 +529,7 @@ const MealInfoTable = () => {
 
 
 
-                        </DialogContent>
+                        </DialogContent>}
 
                       </Dialog>
                     </TableCell>
