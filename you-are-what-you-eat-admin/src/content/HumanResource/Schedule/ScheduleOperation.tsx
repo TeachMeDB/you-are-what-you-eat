@@ -475,14 +475,22 @@ function ScheduleOperation({
           </AvatarGroup>
 
           <Button
-            disabled={occupation === '' || place === ''}
+            disabled={!(
+              occupation != '' 
+            &&place != '' 
+            && start_time!=""
+            && end_time!=""
+            && week!=null
+            && day!=null
+            && people.length>0
+            )}
             key={
               occupation +
               place +
               start_time +
               end_time +
               week.toISOString() +
-              day.toString
+              day.toString()
             }
             variant="contained"
             size="large"
