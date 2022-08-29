@@ -19,6 +19,7 @@ import {
     TableContainer,
 
 } from '@mui/material'
+
 import CheckList from './CheckList'
 import { CurOrder } from '@/models/cur_order'
 
@@ -441,28 +442,33 @@ const CurOrderTable = () => {
                     <Divider />
 
                     <Box p={2}>
-                        <Grid container spacing={3}>
-                            {
-                                CurOrders.map((i) => {
-                                    if (i.order_status != "已完成") {
-                                        return (
-                                            < Grid item xs={4} >
-                                                <CheckList
-                                                    order_id={i.order_id}
-                                                    order_status={i.order_status}
-                                                    dish={i.dish}
+                        {
+                            AllDishes - AllFinishedDishes > 0 && <Grid container spacing={3}>
+                                {
+                                    CurOrders.map((i) => {
+                                        if (i.order_status != "已完成") {
+                                            return (
+                                                < Grid item xs={4} >
+                                                    <CheckList
+                                                        order_id={i.order_id}
+                                                        order_status={i.order_status}
+                                                        dish={i.dish}
+                                                    />
+                                                </Grid>
+                                            )
 
-
-
-                                                />
-                                            </Grid>
-                                        )
-
+                                        }
                                     }
+                                    )
                                 }
-                                )
-                            }
-                        </Grid>
+                            </Grid>
+                        }
+                        {
+                            AllDishes - AllFinishedDishes == 0 &&
+                            <Typography variant="h2" gutterBottom>当前无未完成订单</Typography>
+
+                        }
+
 
                     </Box>
 

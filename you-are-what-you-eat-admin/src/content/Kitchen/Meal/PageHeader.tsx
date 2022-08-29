@@ -24,6 +24,10 @@ import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone'
 
 import { useTranslation } from 'react-i18next';
 
+import { queryIngredientApi } from '@/queries/query_ingredient';
+import { IngredientInfo } from '@/models/ingredient_info';
+
+import { useRefMounted } from '@/hooks/useRefMounted';
 
 let m: MealInfoAdd = {
   id: 123,
@@ -61,11 +65,44 @@ const CardCoverAction = styled(Box)(
 
 function PageHeader() {
 
-
+  const [judgeIng, setJudgeIng] = React.useState(false);
+  let a = [];
   const { t }: { t: any } = useTranslation();
 
   const [open, setOpen] = React.useState(false);
   const [newPromotionCover, setNewPromotionCover] = useState<string>('');
+  const [judgeID, setJudgeID] = React.useState(false);
+  const [judgePrice, setJudgePrice] = React.useState(false);
+  const [ing, setIng] = useState<IngredientInfo[]>([]);
+  const isMountedRef = useRefMounted();
+
+
+  const getAllData = useCallback(async () => {
+    try {
+
+      let ig = await queryIngredientApi.getIngredientList('');
+      if (isMountedRef()) {
+
+        setIng(ig);
+
+      }
+
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
+
+
+
+
+
+
+  useEffect(() => {
+    getAllData();
+  }, [getAllData]);
+
+
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -76,12 +113,31 @@ function PageHeader() {
   const idInputChange = (e) => {
 
     m.id = Number(e.target.value);
+    var rex = /^[0-9]+$/;//正则表达式
+    var flag = (rex.test(m.id.toString()));//通过表达式进行匹配
+    if (flag) {
+      setJudgeID(false);
+    }
+
+    else {
+      setJudgeID(true);
+    }
+
   }
   const nameInputChange = (e) => {
     m.dis_name = e.target.value;
   }
   const priceInputChange = (e) => {
     m.price = Number(e.target.value);
+    var rex = /^[0-9]+$/;//正则表达式
+    var flag = (rex.test(m.price.toString()));//通过表达式进行匹配
+    if (flag) {
+      setJudgePrice(false);
+    }
+
+    else {
+      setJudgePrice(true);
+    }
   }
   const descriptionInputChange = (e) => {
     m.description = e.target.value;
@@ -92,12 +148,32 @@ function PageHeader() {
   }
   const ingInputChange = (e) => {
     m.ingredient = e.target.value.split(" ");
+    let j = 1;
+    m.ingredient.map((item) => {
+      if (a.indexOf(item) == -1) {
+        j = 0;
+        console.log(item);
+      }
+      if (j == 0) {
+        setJudgeIng(true);
+      }
+      else {
+        setJudgeIng(false);
+      }
+
+    })
 
   }
   const viedoInputChange = (e) => {
     m.video = e.target.value;
   }
 
+  ing.map((item) => {
+    a.push(item.ingr_name);
+  })
+  console.log("库存啦啦啦");
+  console.log(a);
+  console.log(ing);
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
@@ -132,6 +208,8 @@ function PageHeader() {
               fullWidth
               variant="standard"
               onChange={idInputChange}
+              helperText="请输入合法数字"
+              error={judgeID}
             />
             <TextField
               autoFocus
@@ -151,6 +229,8 @@ function PageHeader() {
               fullWidth
               variant="standard"
               onChange={priceInputChange}
+              helperText="请输入合法数字"
+              error={judgePrice}
             />
             <TextField
               autoFocus
@@ -162,6 +242,7 @@ function PageHeader() {
               onChange={descriptionInputChange}
             />
             <TextField
+
               autoFocus
               margin="dense"
               id="name"
@@ -169,6 +250,8 @@ function PageHeader() {
               fullWidth
               variant="standard"
               onChange={ingInputChange}
+              helperText="请输入现有的原料"
+              error={judgeIng}
             />
             <TextField
               autoFocus
@@ -178,6 +261,7 @@ function PageHeader() {
               fullWidth
               variant="standard"
               onChange={tagsInputChange}
+              helperText="单锅，拼锅，全新套餐，季节新品，牛羊肉类，水产鱼类，丸滑虾类，美味主食，豆面制品"
             />
             <TextField
               autoFocus
@@ -231,16 +315,23 @@ function PageHeader() {
                 console.log(m.tags);
                 return mealInfoApi.addMeal(m);
               }
+              var rex = /^[0-9]+$/;//正则表达式
+              var flag = (rex.test(m.price.toString()) && rex.test(m.id.toString()));//通过表达式进行匹配
 
-              conduct().then((value) => {
+              if (flag) {
+                conduct().then((value) => {
+                  alert("增加成功：" + value);
+                  window.location.reload();
 
-                alert("增加成功：" + value);
-                window.location.reload();
+                }).catch((value) => {
 
-              }).catch((value) => {
+                  alert("增加失败：" + value);
+                });
+              } else {
+                alert("数据类型不合法");
+              }
 
-                alert("增加失败：" + value);
-              });
+
 
             }}>确定</Button>
           </DialogActions>

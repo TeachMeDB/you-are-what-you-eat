@@ -97,7 +97,7 @@ export default function CheckList(curOrder: CurOrder) {
             <Card >
                 <div>
 
-                    <CardHeader title={curOrder.order_id} />
+                    <CardHeader title={"订单号: " + curOrder.order_id} />
                 </div>
 
                 <Divider />

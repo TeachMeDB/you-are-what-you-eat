@@ -20,7 +20,7 @@ function stockInfo() {
         <title>库存信息</title>
       </Head>
       <PageTitleWrapper>
-        <StockPageHeader />
+
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid

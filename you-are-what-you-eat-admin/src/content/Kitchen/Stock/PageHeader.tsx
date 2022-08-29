@@ -8,9 +8,9 @@ import DialogContent from '@mui/material/DialogContent';
 
 import DialogTitle from '@mui/material/DialogTitle';
 
-
+import { DesktopDatePicker } from '@mui/lab';
 import { StockInfo } from '@/models/stock_info';
-
+import { Box } from '@mui/system';
 import { stockInfoApi } from '@/queries/stock';
 
 let n: StockInfo = {
@@ -23,7 +23,15 @@ let n: StockInfo = {
 
 function StockPageHeader() {
 
+  var a = new Date();
+
+  const [date, setDate] = React.useState(a);
+  n.date = date.toString();
   const [open, setOpen] = React.useState(false);
+
+  const [judgeID, setJudgeID] = React.useState(false);
+  const [judgeAmount, setJudgeAmount] = React.useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -38,17 +46,39 @@ function StockPageHeader() {
   const handleAmountChange = (e) => {
     n.amount = parseInt(e.target.value);
     n.surplus = n.amount;
+    var rex = /^[0-9]+$/;//正则表达式
+    var flag = (rex.test(n.amount.toString()));//通过表达式进行匹配
+    if (flag) {
+      setJudgeAmount(false);
+    }
+
+    else {
+      setJudgeAmount(true);
+    }
   }
+
   const handleDateChange = (e) => {
-    n.date = e.target.value;
-  }
+    setDate(e);
+    n.date = date.toString();
+    console.log(n.date);
+  };
   const handleNameChange = (e) => {
     n.ing_name = e.target.value;
   }
   const handleIdChange = (e) => {
     n.record_id = e.target.value;
+    var rex = /^[0-9]+$/;//正则表达式
+    var flag = (rex.test(n.record_id.toString()));//通过表达式进行匹配
+    if (flag) {
+      setJudgeID(false);
+    }
+
+    else {
+      setJudgeID(true);
+    }
   }
   console.log(stockInfoApi);
+
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
@@ -63,19 +93,13 @@ function StockPageHeader() {
 
       <Grid item>
 
-        <Button
-          sx={{ mt: { xs: 2, md: 0 } }}
-          variant="contained"
-          startIcon={<AddTwoToneIcon fontSize="small" />}
-          onClick={handleClickOpen}
-        >
-          新增库存信息
-        </Button>
+
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>库存信息</DialogTitle>
           <DialogContent>
 
             <TextField
+
               autoFocus
               margin="dense"
               id="id"
@@ -83,6 +107,8 @@ function StockPageHeader() {
               fullWidth
               variant="standard"
               onChange={handleIdChange}
+              helperText="请输入合法数字"
+              error={judgeID}
             />
             <TextField
               autoFocus
@@ -97,26 +123,34 @@ function StockPageHeader() {
               autoFocus
               margin="dense"
               id="name"
-              label="日期"
-              fullWidth
-              variant="standard"
-              onChange={handleDateChange}
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
               label="原料采购量"
               fullWidth
               variant="standard"
               onChange={handleAmountChange}
+              helperText="请输入合法数字"
+              error={judgeAmount}
             />
+            <Box
+              sx={{
+                marginTop: '20px'
+              }}
+            >
+              <DesktopDatePicker
+                autoFocus
+                label="日期"
+                inputFormat="yyyy-MM-dd"
+                value={date}
+                onChange={handleDateChange}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </Box>
+
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>退出</Button>
             <Button onClick={() => {
               const conduct = async () => {
-                console.log(stockInfoApi);
+                console.log("n!")
                 console.log(n);
                 return await stockInfoApi.addStock(
                   {
@@ -126,22 +160,25 @@ function StockPageHeader() {
                     record_id: n.record_id,
                     surplus: n.surplus
                   } as StockInfo);
-
               }
 
-              conduct().then((value) => {
+              var rex = /^[0-9]+$/;//正则表达式
+              var flag = (rex.test(n.amount.toString()) && rex.test(n.record_id.toString()));//通过表达式进行匹配
 
-                alert("成功：" + value);
+              if (flag) {
+                conduct().then((value) => {
+                  alert("增加成功：" + value);
+                  window.location.reload();
 
-                window.location.reload();
+                }).catch((value) => {
 
+                  alert("增加失败：" + value);
+                });
+              } else {
+                alert("数据类型不合法");
+              }
 
-              }).catch((value) => {
-
-                alert("失败：" + value);
-              });
-
-            }} href="javascript:location.reload(true)">确定</Button>
+            }} >确定</Button>
           </DialogActions>
         </Dialog>
       </Grid>

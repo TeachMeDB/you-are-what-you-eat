@@ -47,8 +47,8 @@ import {
   CardMedia,
 } from '@mui/material';
 
-
-
+import { queryIngredientApi } from '@/queries/query_ingredient';
+import { IngredientInfo } from '@/models/ingredient_info';
 import { useTranslation } from 'react-i18next';
 const CardCover = styled(Card)(
   ({ theme }) => `
@@ -60,7 +60,18 @@ const CardCover = styled(Card)(
   `
 );
 
+let i: MealInfo = {
+  description: "",
+  dis_name: "",
+  id: "",
+  price: 0,
+  tags: [""],
+  picture: "",
+  rate: "",
+  video: "",
+  ingredient: [""]
 
+}
 
 
 
@@ -117,8 +128,11 @@ const ButtonSearch = styled(Button)(
 
 
 const MealInfoTable = () => {
+  const [judgePrice, setJudgePrice] = React.useState(false);
 
+  const [judgeIng, setJudgeIng] = React.useState(false);
 
+  let a = [];
 
   const { t }: { t: any } = useTranslation();
   const nameInputChange = (e) => {
@@ -126,6 +140,16 @@ const MealInfoTable = () => {
   }
   const priceInputChange = (e) => {
     m.price = Number(e.target.value);
+
+    var rex = /^[0-9]+$/;//正则表达式
+    var flag = (rex.test(m.price.toString()));//通过表达式进行匹配
+    if (flag) {
+      setJudgePrice(false);
+    }
+
+    else {
+      setJudgePrice(true);
+    }
   }
   const descriptionInputChange = (e) => {
     m.description = e.target.value;
@@ -136,6 +160,20 @@ const MealInfoTable = () => {
   }
   const ingInputChange = (e) => {
     m.ingredient = e.target.value.split(" ");
+    let j = 1;
+    m.ingredient.map((item) => {
+      if (a.indexOf(item) == -1) {
+        j = 0;
+        console.log(item);
+      }
+      if (j == 0) {
+        setJudgeIng(true);
+      }
+      else {
+        setJudgeIng(false);
+      }
+
+    })
 
   }
 
@@ -143,18 +181,33 @@ const MealInfoTable = () => {
   const [MealInfoes, setMealInfoes] = useState<MealInfo[]>([]);
   const [SearchMealInfoes, setSearchMealInfoes] = useState<MealInfo[]>([]);
 
+  const [ing, setIng] = useState<IngredientInfo[]>([]);
+
+
+
+
   const getAllData = useCallback(async () => {
     try {
       let MealInfoes = await mealInfoApi.getMealInfo();
-      console.log(MealInfoes);
+      let ig = await queryIngredientApi.getIngredientList('');
       if (isMountedRef()) {
         setSearchMealInfoes(MealInfoes);
         setMealInfoes(MealInfoes);
+        setIng(ig);
+
       }
+
+
+
     } catch (err) {
       console.error(err);
     }
   }, [isMountedRef]);
+
+
+
+
+
 
   useEffect(() => {
     getAllData();
@@ -165,7 +218,12 @@ const MealInfoTable = () => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [idChange, setidChange] = useState<string>('');
+
+
+
+
   const [idLook, setIdLook] = useState<MealInfo>(null);
+
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage);
 
@@ -220,7 +278,17 @@ const MealInfoTable = () => {
   const handleSearchClick = () => {
     setMealInfoes(newM);
   }
-  console.log(MealInfoes);
+
+
+  ing.map((item) => {
+    a.push(item.ingr_name);
+  })
+  console.log("a");
+
+  console.log(ing);
+
+
+  console.log(a);
   return (
     <Card>
       {(
@@ -384,6 +452,8 @@ const MealInfoTable = () => {
                             fullWidth
                             variant="standard"
                             onChange={priceInputChange}
+                            helperText="请输入合法数字"
+                            error={judgePrice}
                           />
                           <TextField
                             autoFocus
@@ -402,6 +472,7 @@ const MealInfoTable = () => {
                             fullWidth
                             variant="standard"
                             onChange={tagsInputChange}
+                            helperText="单锅，拼锅，全新套餐，季节新品，牛羊肉类，水产鱼类，丸滑虾类，美味主食，豆面制品"
                           />
                           <TextField
                             autoFocus
@@ -411,6 +482,8 @@ const MealInfoTable = () => {
                             fullWidth
                             variant="standard"
                             onChange={ingInputChange}
+                            helperText="请输入现有的原料"
+                            error={judgeIng}
                           />
                         </DialogContent>
                         <DialogActions>
@@ -421,15 +494,21 @@ const MealInfoTable = () => {
                             const conduct = async () => {
                               return mealInfoApi.updateMeal(m);
                             }
+                            var rex = /^[0-9]+$/;//正则表达式
+                            var flag = (rex.test(m.price.toString()));//通过表达式进行匹配
 
-                            conduct().then((value) => {
+                            if (flag) {
+                              conduct().then((value) => {
+                                alert("修改成功：" + value);
+                                window.location.reload();
 
-                              alert("修改成功：" + value);
+                              }).catch((value) => {
 
-                            }).catch((value) => {
-
-                              alert("修改失败：" + value);
-                            });
+                                alert("修改失败：" + value);
+                              });
+                            } else {
+                              alert("数据类型不合法");
+                            }
 
                           }} href="javascript:location.reload(true)">确定</Button>
                         </DialogActions>
@@ -481,7 +560,7 @@ const MealInfoTable = () => {
                       <Dialog open={detailOpen} onClose={handleDetailClose} fullWidth={true}>
                         <DialogTitle>菜品具体信息</DialogTitle>
 
-                        {(idLook)&&<DialogContent>
+                        {(idLook) && <DialogContent>
                           <iframe src={"//player.bilibili.com/player.html?bvid=" + idLook.video + "&high_quality=1&danmaku=0"} allowFullScreen={true} width="100%" height="270px" scrolling="no" frameBorder={0} sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
                           <Grid item xs={12}>
                             <Box m={2}>

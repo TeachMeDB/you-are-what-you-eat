@@ -151,7 +151,7 @@ const StockInfoesTable = () => {
     s.surplus = parseInt(e.target.value);
 
   }
-  console.log(StockInfoes);
+
   return (
     <Card>
       {(
@@ -179,7 +179,7 @@ const StockInfoesTable = () => {
               />
             </FormControl>
           }
-          title="菜品信息列表"
+          title="库存信息列表"
         />
       )}
       <Divider />
@@ -190,10 +190,12 @@ const StockInfoesTable = () => {
 
               <TableCell>采购编号</TableCell>
               <TableCell>原料名称</TableCell>
-              <TableCell >日期</TableCell>
-              <TableCell>采购量</TableCell>
-              <TableCell >剩余量</TableCell>
-              <TableCell >操作</TableCell>
+
+              <TableCell >生产日期</TableCell>
+
+              <TableCell>采购</TableCell>
+              <TableCell >消耗</TableCell>
+
             </TableRow>
           </TableHead>
           <TableBody>
@@ -258,101 +260,14 @@ const StockInfoesTable = () => {
                       gutterBottom
                       noWrap
                     >
-                      {(stockInfo.surplus)}
+                      {(stockInfo.amount + stockInfo.surplus)}
 
                     </Typography>
 
                   </TableCell>
 
-                  <TableCell >
-                    <Tooltip title="编辑" arrow onClick={() => {
 
-                      setidChange(stockInfo.record_id);
-                      setOpen(true);
-                    }}>
-                      <IconButton
-                        sx={{
-                          '&:hover': {
-                            background: theme.colors.primary.lighter
-                          },
-                          color: theme.palette.primary.main
-                        }}
-                        color="inherit"
-                        size="small"
-                      >
-                        <EditTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    <Dialog open={open} onClose={handleClose}>
-                      <DialogTitle>剩余量编辑</DialogTitle>
-                      <DialogContent>
 
-                        <TextField
-                          onChange={surplusChange}
-                          autoFocus
-                          margin="dense"
-                          id="id"
-                          label="剩余"
-                          fullWidth
-                          variant="standard"
-                        />
-
-                      </DialogContent>
-                      <DialogActions>
-                        <Button onClick={handleClose}>退出</Button>
-                        <Button onClick={() => {
-
-                          const conduct = async () => {
-                            s.record_id = idChange;
-                            return stockInfoApi.updateStock(
-                              s
-                            );
-                          }
-
-                          conduct().then((value) => {
-
-                            alert("修改成功：" + value);
-
-                          }).catch((value) => {
-
-                            alert("修改失败：" + value);
-                          });
-                          setOpen(false);
-                          window.location.reload();
-
-                        }} >确定</Button>
-                      </DialogActions>
-                    </Dialog>
-                    <Tooltip title="删除" arrow >
-                      <IconButton
-                        onClick={() => {
-                          const conduct = async () => {
-                            console.log(stockInfoApi);
-                            console.log(stockInfo.record_id);
-
-                            return stockInfoApi.delStock(
-                              parseInt(stockInfo.record_id))
-                          }
-                          conduct().then((value) => {
-                            alert("成功：" + value);
-                            window.location.reload();
-                          }).catch((value) => {
-
-                            alert("失败：" + value);
-                          });
-                        }}
-                        sx={{
-                          '&:hover': { background: theme.colors.error.lighter },
-                          color: theme.palette.error.main
-                        }}
-                        color="inherit"
-                        size="small"
-
-                      >
-                        <DeleteTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
                 </TableRow>
               );
             })}
