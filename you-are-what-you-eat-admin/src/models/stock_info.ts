@@ -12,3 +12,11 @@ export interface SurplusUpload {
   surplus: number;
 }
 
+
+export interface StockInfoData {
+  ing_name: string;
+  amount: number;
+
+}
+
+
