@@ -77,6 +77,11 @@ const applyFilters = (
       matches = false;
     }
 
+    if(cryptoOrder.user_name == "default")
+    {
+      matches=false;
+    }
+
     /*
     if (filters.search && cryptoOrder.user_name !== filters.search) {
       matches = false;

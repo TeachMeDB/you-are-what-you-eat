@@ -41,6 +41,7 @@ import { FC, ChangeEvent, useState } from 'react';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { queryVipApi } from '@/queries/query_vip';
 import { Refresh } from '@mui/icons-material';
+import { compareAsc, compareDesc, parse } from 'date-fns';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -202,6 +203,9 @@ export default function SignUpVip() {
     setGender(null);
   };
 
+  //console.log(birthday);
+  //console.log(compareAsc(Date.parse(birthday),Date.now()));
+
   return (
     <div>
       <Button
@@ -299,19 +303,28 @@ export default function SignUpVip() {
             }}
             label="出生日期"
             renderInput={(params) => (
+              
               <TextField
                 value={birthday}
                 fullWidth
                 placeholder={t('出生日期')}
                 {...params}
-              />
+              />              
             )}
           />
 
           <FormControl sx={{ m: 2, width: '30ch' }}>
-            <DialogContentText>
-              设定该会员生日
+            {            
+            compareAsc(Date.parse(birthday),Date.now())>=0 ?
+            <DialogContentText color={"error"}>
+            生日不能超过当前日期
             </DialogContentText>
+            :
+            <DialogContentText>
+            设定该会员生日
+            </DialogContentText>
+          }
+            
           </FormControl>
         </Box>
 
@@ -319,7 +332,7 @@ export default function SignUpVip() {
 
         
 
-        {user_name&&birthday&&gender ? (
+        {user_name&&birthday&&gender&&compareAsc(Date.parse(birthday),Date.now())<0 ? (
           <Button
             startIcon={<AddTwoToneIcon fontSize="small" />}
             onClick={() => {
