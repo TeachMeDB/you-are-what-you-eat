@@ -25,35 +25,19 @@ import PromotionDetail from 'src/content/Overview/Highlights/PromotionCover/Prom
 import VipSummary from './VIPCover/VIPSummary';
 import EnergyChart from 'src/content/Overview/Highlights/EnergyCover/EnergyChart';
 import TableSummary from './TableCover/TableSummary';
-// import authorization from 'src/utils/authorization';
 
-// function Casdoor(){
-
-//   return (
-//         <div>
-
-//           <Button
-//             component={Link}
-//             href={authorization.getSigninUrl()}
-//             variant="contained"
-//             sx={{ ml: 2 }}
-//           >
-//             点击跳转Casdoor登陆
-//             </Button>
-//             <Button
-//             component={Link}
-//             href={authorization.getSignupUrl()}
-//             variant="contained"
-//             sx={{ ml: 2 }}
-//           >
-//             点击跳转Casdoor注册
-//             </Button>
-
-//         </div>
-
-//   )
-
-// }
+const group = [
+  '1950849 李乐天',
+  '1951510 姜文渊',
+  '1951477 孟  宇',
+  '1953824 杨淳屹',
+  '1950787 杨  鑫',
+  '1951650 戴仁杰',
+  '1951138 王铭邦',
+  '1953243 杨孟臻',
+  '2052717 陈  晨',
+  '2056173 何红昌'
+]
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -1009,14 +993,14 @@ function Highlights() {
                     <CardActionArea>
                       <CardMedia
                         component={'img'}
-                        image={'/static/cover/energyRawData.png'}
+                        image={'/static/cover/finger.png'}
                         alt="Management Section 1"
                       />
                     </CardActionArea>
                   </Card>
                 </Box>
               </Box>
-              <Box
+              {/* <Box
                 sx={{
                   position: 'absolute',
                   top: 30,
@@ -1041,7 +1025,7 @@ function Highlights() {
                     </CardActionArea>
                   </Card>
                 </Box>
-              </Box>
+              </Box> */}
               <Box
                 sx={{
                   position: 'absolute',
@@ -1188,7 +1172,7 @@ function Highlights() {
                     }}
                     variant="subtitle2"
                   >
-                    {t('来点啥来点啥来点啥来点啥')}
+                    {t('请联系系统管理员')}
                   </Typography>
                 </Box>
               </Box>
@@ -1229,14 +1213,19 @@ function Highlights() {
                   }}
                 >
                   <Typography variant="h3">{t('联系我们')}</Typography>
-                  <Typography
+                  {group.map((p) => {
+                    return (
+                      <Typography
                     sx={{
                       pt: 1
                     }}
                     variant="subtitle2"
                   >
-                    {t('联系方式联系方式联系方式')}
+                    {t(p)}
                   </Typography>
+                    )
+                  })}
+
                 </Box>
               </Box>
             </Card>
