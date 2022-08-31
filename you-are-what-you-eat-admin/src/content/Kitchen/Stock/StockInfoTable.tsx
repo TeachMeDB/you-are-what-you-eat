@@ -78,19 +78,51 @@ const StockInfoesTable = () => {
 
 
 
+  const [SearchStockInfoes, setSearchStockInfoes] = useState<StockInfoData[]>([]);
 
+  const [AllInfo, setAllinfo] = useState<StockInfoData[]>([]);
 
   const isMountedRef = useRefMounted();
   const [StockInfoes, setStockInfoes] = useState<StockInfo[]>([]);
-  const [SearchStockInfoes, setSearchStockInfoes] = useState<StockInfo[]>([]);
+
 
   const getAllData = useCallback(async () => {
     try {
 
       let stockInfoes = await stockInfoApi.getStockInfo();
       if (isMountedRef()) {
+        let ALL: StockInfoData[] = [];
+
+        let AllStockInfoDataCount: number[] = [];
+        for (let i = 0; i < AllStockInfoDataName.length; i++) {
+          AllStockInfoDataCount[i] = 0;
+        }
+        StockInfoes.map((item) => {
+
+          for (let i = 0; i < AllStockInfoDataName.length; i++) {
+            if (item.ing_name == AllStockInfoDataName[i]) {
+
+              AllStockInfoDataCount[i] += item.surplus;
+              AllStockInfoDataCount[i] += item.amount;
+            }
+          }
+        })
+        for (let j = 0; j < AllStockInfoDataName.length; j++) {
+          let item: StockInfoData = {
+            ing_name: "",
+            amount: 0
+          };
+          item.amount = AllStockInfoDataCount[j];
+          item.ing_name = AllStockInfoDataName[j];
+          ALL.push(item);
+
+        }
+
         setStockInfoes(stockInfoes);
-        setSearchStockInfoes(stockInfoes);
+        setSearchStockInfoes(ALL);
+        setAllinfo(ALL);
+        console.log(ALL);
+
       }
     } catch (err) {
       alert(err);
@@ -133,51 +165,24 @@ const StockInfoesTable = () => {
     if (AllStockInfoDataName.indexOf(item.ing_name) == -1)
       AllStockInfoDataName.push(item.ing_name);
   })
-  let i = 1;
-  StockInfoes.map((item) => {
-    if (item.ing_name == "羊肉")
-      i += item.surplus;
-  })
 
 
-  let AllStockInfoDataCount: number[] = [];
-  for (let i = 0; i < AllStockInfoDataName.length; i++) {
-    AllStockInfoDataCount[i] = 0;
-  }
-  StockInfoes.map((item) => {
-
-    for (let i = 0; i < AllStockInfoDataName.length; i++) {
-      if (item.ing_name == AllStockInfoDataName[i]) {
-
-        AllStockInfoDataCount[i] += item.surplus;
-        AllStockInfoDataCount[i] += item.amount;
-      }
-    }
-  })
 
 
-  let ALL: StockInfoData[] = [];
 
-  for (let j = 0; j < AllStockInfoDataName.length; j++) {
-    let item: StockInfoData = {
-      ing_name: "",
-      amount: 0
-    };
-    item.amount = AllStockInfoDataCount[j];
-    item.ing_name = AllStockInfoDataName[j];
-    ALL.push(item);
 
-  }
-  console.log("miingzi");
-  console.log(ALL);
+
 
   console.log("miingzi");
+
+  console.log(SearchStockInfoes);
+
   console.log("miingzi");
-  const paginatedPromotions = applyPagination(ALL, page, limit);
+  const paginatedPromotions = applyPagination(AllInfo, page, limit);
 
   var Search: string;
 
-  let newM: StockInfo[] = [];
+  let newM: StockInfoData[] = [];
   const handleSearchChange = (e) => {
     newM = [];
     Search = e.target.value;
@@ -187,7 +192,7 @@ const StockInfoesTable = () => {
     })
   }
   const handleSearchClick = () => {
-    setStockInfoes(newM);
+    setAllinfo(newM);
   }
   let s: SurplusUpload = {
     record_id: "",
@@ -289,7 +294,7 @@ const StockInfoesTable = () => {
       <Box p={2}>
         <TablePagination
           component="div"
-          count={ALL.length}
+          count={AllInfo.length}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}
