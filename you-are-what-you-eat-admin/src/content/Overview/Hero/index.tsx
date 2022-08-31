@@ -160,7 +160,7 @@ function Hero() {
             component="a"
             target="_blank"
             rel="noopener"
-            href="/"
+            href="http://106.54.160.244/"
             size="large"
             variant="text"
           >
