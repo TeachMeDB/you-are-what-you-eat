@@ -1156,7 +1156,7 @@ function Highlights() {
                 alignItems="flex-start"
               >
                 <img
-                  src="/static/images/overview/figma.svg"
+                  src="icon-192x192.png"
                   style={{ width: 60 }}
                   alt="TechSupport"
                 />
@@ -1216,6 +1216,7 @@ function Highlights() {
                   {group.map((p) => {
                     return (
                       <Typography
+                      key={p}
                     sx={{
                       pt: 1
                     }}

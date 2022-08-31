@@ -466,7 +466,7 @@ function KitchenSidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-          <SubMenuWrapper>
+          {/* <SubMenuWrapper>
             <List component="div">
               <ListItem component="div">
                 <NextLink href="/kitchen/stock" passHref>
@@ -484,7 +484,7 @@ function KitchenSidebarMenu() {
                 </NextLink>
               </ListItem>
             </List>
-          </SubMenuWrapper>
+          </SubMenuWrapper> */}
         </List>
         <List
           component="div"
