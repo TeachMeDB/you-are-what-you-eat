@@ -41,6 +41,7 @@ import { FC, ChangeEvent, useState } from 'react';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { queryVipApi } from '@/queries/query_vip';
 import { Refresh } from '@mui/icons-material';
+import { compareAsc, compareDesc, parse } from 'date-fns';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -308,9 +309,16 @@ export default function ModifyDialog(props: VipProps) {
           />
 
           <FormControl sx={{ m: 2, width: '30ch' }}>
-            <DialogContentText>
-              修改该会员生日，当前为:{props.info.birthday}
+            {            
+            compareAsc(Date.parse(birthday),Date.now())>=0 ?
+            <DialogContentText color={"error"}>
+            生日不能超过当前日期，当前为:{props.info.birthday}
             </DialogContentText>
+            :
+            <DialogContentText>
+            修改该会员生日，当前为:{props.info.birthday}
+            </DialogContentText>
+          }
           </FormControl>
         </Box>
 
@@ -394,7 +402,7 @@ export default function ModifyDialog(props: VipProps) {
           </FormControl>
         </Box>
 
-        {credit >= 0 ? (
+        {credit >= 0 && compareAsc(Date.parse(birthday),Date.now()) < 0 ? (
           <Button
             startIcon={<AddTwoToneIcon fontSize="small" />}
             onClick={() => {

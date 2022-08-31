@@ -150,15 +150,23 @@ export default function CheckList(curOrder: CurOrder) {
                                                 console.log("完成没？");
                                                 console.log(countUnFinished(curOrder));
                                                 if (finished + 1 == curOrder.dish.length) {
-                                                    conduct2().then((value) => {
-
-                                                        alert("该订单已完成：" + value);
+                                                    if (curOrder.order_status == "已支付") {
+                                                        alert("该订单已完成");
                                                         window.location.reload();
 
-                                                    }).catch((value) => {
+                                                    }
+                                                    else {
+                                                        conduct2().then((value) => {
 
-                                                        alert("失败：" + value);
-                                                    });
+                                                            alert("该订单已完成：" + value);
+                                                            window.location.reload();
+
+                                                        }).catch((value) => {
+
+                                                            alert("失败：" + value);
+                                                        });
+                                                    }
+
                                                 }
 
                                             }} />

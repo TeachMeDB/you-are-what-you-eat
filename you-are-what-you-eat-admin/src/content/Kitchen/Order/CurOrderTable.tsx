@@ -49,6 +49,7 @@ import Brightness1Icon from '@mui/icons-material/Brightness1';
 
 import { number } from 'yup/lib/locale';
 import curOrder from 'pages/kitchen/order';
+import { count } from 'console'
 
 
 
@@ -159,6 +160,14 @@ const CurOrderTable = () => {
                 if (item.status == "已完成")
                     i++;
             })
+        })
+        return i;
+    }
+    const countOrder = (curOrder: CurOrder) => {
+        let i = 0;
+        curOrder.dish.map((item) => {
+            if (item.status == "已完成")
+                i++;
         })
         return i;
     }
@@ -446,7 +455,7 @@ const CurOrderTable = () => {
                             AllDishes - AllFinishedDishes > 0 && <Grid container spacing={3}>
                                 {
                                     CurOrders.map((i) => {
-                                        if (i.order_status != "已完成") {
+                                        if (countOrder(i) != i.dish.length) {
                                             return (
                                                 < Grid item xs={4} >
                                                     <CheckList

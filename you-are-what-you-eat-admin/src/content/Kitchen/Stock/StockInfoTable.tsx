@@ -27,7 +27,7 @@ import {
 } from '@mui/material';
 
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import { StockInfo, SurplusUpload } from '@/models/stock_info';
+import { StockInfo, SurplusUpload, StockInfoData } from '@/models/stock_info';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import TextField from '@mui/material/TextField';
@@ -41,11 +41,14 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { stockInfoApi } from '@/queries/stock';
 import { useRefMounted } from '@/hooks/useRefMounted';
 
+
+let AllStockInfoDataName: string[] = [];
+
 const applyPagination = (
-  stockInfoes: StockInfo[],
+  stockInfoes: StockInfoData[],
   page: number,
   limit: number
-): StockInfo[] => {
+): StockInfoData[] => {
   return stockInfoes.slice(page * limit, page * limit + limit);
 };
 
@@ -72,6 +75,7 @@ const ButtonSearch = styled(Button)(
 
 
 const StockInfoesTable = () => {
+
 
 
 
@@ -125,9 +129,51 @@ const StockInfoesTable = () => {
 
   const theme = useTheme();
 
+  StockInfoes.map((item) => {
+    if (AllStockInfoDataName.indexOf(item.ing_name) == -1)
+      AllStockInfoDataName.push(item.ing_name);
+  })
+  let i = 1;
+  StockInfoes.map((item) => {
+    if (item.ing_name == "羊肉")
+      i += item.surplus;
+  })
 
 
-  const paginatedPromotions = applyPagination(StockInfoes, page, limit);
+  let AllStockInfoDataCount: number[] = [];
+  for (let i = 0; i < AllStockInfoDataName.length; i++) {
+    AllStockInfoDataCount[i] = 0;
+  }
+  StockInfoes.map((item) => {
+
+    for (let i = 0; i < AllStockInfoDataName.length; i++) {
+      if (item.ing_name == AllStockInfoDataName[i]) {
+
+        AllStockInfoDataCount[i] += item.surplus;
+        AllStockInfoDataCount[i] += item.amount;
+      }
+    }
+  })
+
+
+  let ALL: StockInfoData[] = [];
+
+  for (let j = 0; j < AllStockInfoDataName.length; j++) {
+    let item: StockInfoData = {
+      ing_name: "",
+      amount: 0
+    };
+    item.amount = AllStockInfoDataCount[j];
+    item.ing_name = AllStockInfoDataName[j];
+    ALL.push(item);
+
+  }
+  console.log("miingzi");
+  console.log(ALL);
+
+  console.log("miingzi");
+  console.log("miingzi");
+  const paginatedPromotions = applyPagination(ALL, page, limit);
 
   var Search: string;
 
@@ -151,6 +197,9 @@ const StockInfoesTable = () => {
     s.surplus = parseInt(e.target.value);
 
   }
+
+
+
 
   return (
     <Card>
@@ -188,13 +237,13 @@ const StockInfoesTable = () => {
           <TableHead>
             <TableRow>
 
-              <TableCell>采购编号</TableCell>
+
               <TableCell>原料名称</TableCell>
 
-              <TableCell >生产日期</TableCell>
 
-              <TableCell>采购</TableCell>
-              <TableCell >消耗</TableCell>
+
+              <TableCell>当前库存</TableCell>
+
 
             </TableRow>
           </TableHead>
@@ -205,17 +254,6 @@ const StockInfoesTable = () => {
                 <TableRow
                   hover
                 >
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {stockInfo.record_id}
-                    </Typography>
-                  </TableCell>
                   <TableCell>
                     <Typography
                       variant="body1"
@@ -235,36 +273,10 @@ const StockInfoesTable = () => {
                       gutterBottom
                       noWrap
                     >
-                      {stockInfo.date}
-                    </Typography>
-
-                  </TableCell>
-                  <TableCell >
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
                       {stockInfo.amount}
-
                     </Typography>
-
                   </TableCell>
-                  <TableCell >
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {(stockInfo.amount + stockInfo.surplus)}
 
-                    </Typography>
-
-                  </TableCell>
 
 
 
@@ -277,7 +289,7 @@ const StockInfoesTable = () => {
       <Box p={2}>
         <TablePagination
           component="div"
-          count={StockInfoes.length}
+          count={ALL.length}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}
