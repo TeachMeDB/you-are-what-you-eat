@@ -29,7 +29,7 @@ function Footer() {
         >
           课程项目来源：{' '}
           <Link
-            href="sse.tongji.edu.cn"
+            href="https://sse.tongji.edu.cn"
             target="_blank"
             rel="noopener noreferrer"
           >
