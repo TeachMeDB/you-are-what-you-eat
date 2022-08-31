@@ -125,6 +125,15 @@ const ButtonSearch = styled(Button)(
 );
 
 
+const AddSpace = (item: string[]) => {
+  let j: string[] = item;
+
+  for (let i = 1; i < item.length; i += 2) {
+    j.splice(i, 0, "   ");
+  }
+  return j;
+}
+
 
 
 const MealInfoTable = () => {
@@ -190,8 +199,12 @@ const MealInfoTable = () => {
     try {
       let MealInfoes = await mealInfoApi.getMealInfo();
       let ig = await queryIngredientApi.getIngredientList('');
+
+
+
       if (isMountedRef()) {
         setSearchMealInfoes(MealInfoes);
+
         setMealInfoes(MealInfoes);
         setIng(ig);
 
@@ -394,7 +407,7 @@ const MealInfoTable = () => {
                         gutterBottom
                         noWrap
                       >
-                        {mealInfo.ingredient}
+                        {AddSpace(mealInfo.ingredient)}
 
                       </Typography>
 
@@ -407,7 +420,7 @@ const MealInfoTable = () => {
                         gutterBottom
                         noWrap
                       >
-                        {mealInfo.tags}
+                        {AddSpace(mealInfo.tags)}
 
                       </Typography>
 
