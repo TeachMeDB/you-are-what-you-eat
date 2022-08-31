@@ -88,16 +88,25 @@ const StockInfoesTable = () => {
 
   const getAllData = useCallback(async () => {
     try {
-
       let stockInfoes = await stockInfoApi.getStockInfo();
+
       if (isMountedRef()) {
+
+
+
+        setStockInfoes(stockInfoes);
+
+
+
         let ALL: StockInfoData[] = [];
 
         let AllStockInfoDataCount: number[] = [];
+
         for (let i = 0; i < AllStockInfoDataName.length; i++) {
           AllStockInfoDataCount[i] = 0;
         }
-        StockInfoes.map((item) => {
+
+        stockInfoes.map((item) => {
 
           for (let i = 0; i < AllStockInfoDataName.length; i++) {
             if (item.ing_name == AllStockInfoDataName[i]) {
@@ -117,10 +126,9 @@ const StockInfoesTable = () => {
           ALL.push(item);
 
         }
-
-        setStockInfoes(stockInfoes);
         setSearchStockInfoes(ALL);
         setAllinfo(ALL);
+        console.log("ALL");
         console.log(ALL);
 
       }
