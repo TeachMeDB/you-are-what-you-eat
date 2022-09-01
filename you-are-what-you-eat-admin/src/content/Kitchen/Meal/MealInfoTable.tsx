@@ -485,7 +485,7 @@ const MealInfoTable = () => {
                             fullWidth
                             variant="standard"
                             onChange={tagsInputChange}
-                            helperText="单锅，拼锅，全新套餐，季节新品，牛羊肉类，水产鱼类，丸滑虾类，美味主食，豆面制品"
+                            helperText="单锅，拼锅，全新套餐，季节新品，牛羊肉类，水产鱼类，丸滑虾类，美味主食，豆面制品，根茎菌菇，酒水，甜点小食"
                           />
                           <TextField
                             autoFocus
