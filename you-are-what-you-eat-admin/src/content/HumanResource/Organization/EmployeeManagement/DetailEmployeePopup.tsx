@@ -110,7 +110,7 @@ export default function DetailEmployeePopup({ userId }: { userId: string }) {
             spacing={3}
           >
             <Grid item xs={12} md={8}>
-              <ProfileCover key={user.id} user={employee} />
+              <ProfileCover key={employee.id} user={employee} />
             </Grid>
             <Grid item xs={12} md={4}>
               <Summary user={employee} />
