@@ -22,6 +22,8 @@ import { scheduleApi } from '@/queries/schedule';
 import { startOfWeek, endOfWeek, format, compareAsc, parse, compareDesc } from 'date-fns';
 import ProfileCoverUpdate from '../Profile/ProfileCoverUpdate';
 import { unstable_renderSubtreeIntoContainer } from 'react-dom';
+import { Router } from '@mui/icons-material';
+import { useRouter } from 'next/router';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -55,6 +57,7 @@ export default function DetailEmployeeUpdate({ userId }: { userId: string }) {
     setOpen(false);
   };
 
+  const router=useRouter();
 
   const getAllData = React.useCallback(async () => {
     try {
@@ -160,7 +163,9 @@ export default function DetailEmployeeUpdate({ userId }: { userId: string }) {
 
                     handleClose();
 
-                    window.location.reload();
+                    router.replace({ pathname: '/human_resource/organization' });
+
+                    
                   })
                   .catch((value) => {
                     alert('更新失败：' + value);
