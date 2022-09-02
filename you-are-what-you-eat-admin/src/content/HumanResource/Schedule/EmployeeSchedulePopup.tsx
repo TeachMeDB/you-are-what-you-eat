@@ -130,7 +130,7 @@ export default function EmployeeSchedule({
             spacing={3}
           >
             <Grid item xs={12} md={8}>
-              <ProfileCover user={employee} />
+              <ProfileCover key={employee.id} user={employee} />
             </Grid>
             <Grid item xs={12} md={4}>
               <Summary user={employee} />

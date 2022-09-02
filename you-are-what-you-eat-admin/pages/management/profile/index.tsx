@@ -38,7 +38,7 @@ function ManagementUserProfile() {
           spacing={3}
         >
           <Grid item xs={12} md={8}>
-            <ProfileCover user={user} />
+            <ProfileCover key={user.id} user={user} />
           </Grid>
           <Grid item xs={12} md={4}>
             <RecentActivity />

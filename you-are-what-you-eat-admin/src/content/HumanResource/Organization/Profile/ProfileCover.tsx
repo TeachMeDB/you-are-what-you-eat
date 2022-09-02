@@ -135,10 +135,10 @@ const ProfileCover = ({ user }: { user: EmployeeDetail }) => {
         </Box>
       </Box>
       <CardCover>
-        <CardMedia image={user.cover} />
+        <CardMedia key={user.cover} image={user.cover} />
       </CardCover>
       <AvatarWrapper>
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        <Avatar variant="rounded" key={user.avatar} alt={user.name} src={user.avatar} />
       </AvatarWrapper>
       <Box py={2} pl={2} mb={3}>
         <Typography gutterBottom variant="h4">
