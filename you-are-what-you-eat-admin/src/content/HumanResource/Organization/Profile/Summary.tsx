@@ -68,7 +68,7 @@ function Summary({ user }: { user: EmployeeDetail }) {
                 variant="caption"
                 sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}
               >
-                出勤率
+                出勤数
               </Typography>
               <Typography variant="h2">
                 {
