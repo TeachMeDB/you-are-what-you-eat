@@ -1,147 +1,162 @@
-import { Card } from '@mui/material';
-import { CryptoOrder } from '@/models/crypto_order';
+import {
+  CryptoOrder,
+  CryptoFullOrder,
+  CryptoSummary
+} from '@/models/crypto_order';
 import RecentOrdersTable from './RecentOrdersTable';
-import { subDays } from 'date-fns';
+import OrderSummary from '@/content/Dashboards/Crypto/OrderSummary';
+import { Grid } from '@mui/material';
+import { useState, useEffect, useCallback } from 'react';
+import { useRefMounted } from 'src/hooks/useRefMounted';
+import { queryOrderApi } from 'src/queries/query_order';
+import { Console } from 'console';
+import Skeleton from '@mui/material/Skeleton';
+import Box from '@mui/material/Box';
+import OrderSummarySkeleton from '@/content/Dashboards/Crypto/OrderSummarySkeleton';
+import RecentOrdersTableSkeleton from './RecentOrdersTableSkeleton';
+import CurOrder from '@/content/Kitchen/Order/CurOrder';
 
 function RecentOrders() {
-  const cryptoOrders: CryptoOrder[] = [
-    {
-      id: '1',
-      orderDetails: 'Fiat Deposit',
-      orderDate: new Date().getTime(),
-      status: 'completed',
-      orderID: 'VUVX709ET7BY',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 34.4565,
-      amount: 56787,
-      cryptoCurrency: 'ETH',
-      currency: '$'
-    },
-    {
-      id: '2',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 1).getTime(),
-      status: 'completed',
-      orderID: '23M3UOG65G8K',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 6.58454334,
-      amount: 8734587,
-      cryptoCurrency: 'BTC',
-      currency: '$'
-    },
-    {
-      id: '3',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 5).getTime(),
-      status: 'failed',
-      orderID: 'F6JHK65MS818',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 6.58454334,
-      amount: 8734587,
-      cryptoCurrency: 'BTC',
-      currency: '$'
-    },
-    {
-      id: '4',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 55).getTime(),
-      status: 'completed',
-      orderID: 'QJFAI7N84LGM',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 6.58454334,
-      amount: 8734587,
-      cryptoCurrency: 'BTC',
-      currency: '$'
-    },
-    {
-      id: '5',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 56).getTime(),
-      status: 'pending',
-      orderID: 'BO5KFSYGC0YW',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 6.58454334,
-      amount: 8734587,
-      cryptoCurrency: 'BTC',
-      currency: '$'
-    },
-    {
-      id: '6',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 33).getTime(),
-      status: 'completed',
-      orderID: '6RS606CBMKVQ',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 6.58454334,
-      amount: 8734587,
-      cryptoCurrency: 'BTC',
-      currency: '$'
-    },
-    {
-      id: '7',
-      orderDetails: 'Fiat Deposit',
-      orderDate: new Date().getTime(),
-      status: 'pending',
-      orderID: '479KUYHOBMJS',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1212',
-      amountCrypto: 2.346546,
-      amount: 234234,
-      cryptoCurrency: 'BTC',
-      currency: '$'
-    },
-    {
-      id: '8',
-      orderDetails: 'Paypal Withdraw',
-      orderDate: subDays(new Date(), 22).getTime(),
-      status: 'completed',
-      orderID: 'W67CFZNT71KR',
-      sourceName: 'Paypal Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 3.345456,
-      amount: 34544,
-      cryptoCurrency: 'BTC',
-      currency: '$'
-    },
-    {
-      id: '9',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 11).getTime(),
-      status: 'completed',
-      orderID: '63GJ5DJFKS4H',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 2222',
-      amountCrypto: 1.4389567945,
-      amount: 123843,
-      cryptoCurrency: 'BTC',
-      currency: '$'
-    },
-    {
-      id: '10',
-      orderDetails: 'Wallet Transfer',
-      orderDate: subDays(new Date(), 123).getTime(),
-      status: 'failed',
-      orderID: '17KRZHY8T05M',
-      sourceName: 'Wallet Transfer',
-      sourceDesc: "John's Cardano Wallet",
-      amountCrypto: 765.5695,
-      amount: 7567,
-      cryptoCurrency: 'ADA',
-      currency: '$'
+  const isMountedRef = useRefMounted();
+  const [orderData, setOrderData] = useState<CryptoFullOrder>(null);
+
+  const getOrderData = useCallback(async () => {
+    try {
+      const response = await queryOrderApi.getOrder();
+
+      //console.log("--response--");
+      //console.log(response);
+
+      if (isMountedRef()) {
+        setOrderData(response);
+      }
+    } catch (err) {
+      console.error(err);
     }
-  ];
+  }, [isMountedRef]);
+
+  useEffect(() => {
+    getOrderData();
+  }, [getOrderData]);
+
+  //console.log("--orderData--");
+  //console.log(orderData);
+  if (!orderData)
+    return (
+      <>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={4}
+        >
+          <Grid item xs={12}>
+            <OrderSummarySkeleton />
+          </Grid>
+          <Grid item xs={12}>
+            <RecentOrdersTableSkeleton />
+          </Grid>
+        </Grid>
+      </>
+    );
 
   return (
-    <Card>
-      <RecentOrdersTable cryptoOrders={cryptoOrders} />
-    </Card>
+    <>
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="stretch"
+        spacing={4}
+      >
+        <Grid item xs={12}>
+          <OrderSummary cryptoSummary={orderData.summary} />
+        </Grid>
+        <Grid item xs={12}>
+          <RecentOrdersTable cryptoOrders={orderData.orders} />
+        </Grid>
+        <Grid item xs={12}>
+          <CurOrder />
+        </Grid>
+      </Grid>
+    </>
   );
 }
 
 export default RecentOrders;
+
+/*
+  const cryptoOrders: CryptoOrder[] = [
+    {
+      order_id : 'sidfh3f7sdh',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'A32',
+      status: '已支付',
+      total_price: 145.14
+    },
+    {
+      order_id : 'hsudfg82dsf',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'B10',
+      status: '已完成',
+      total_price: 98.10
+    },
+    {
+      order_id : '87fehrug2ug',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'C96',
+      status: '已支付',
+      total_price: 39.99
+    },
+    {
+      order_id : '7neygfwurtw',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'A02',
+      status: '待处理',
+      total_price: 105.00
+    },
+    {
+      order_id : '7nysdg8sn3a',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'D27',
+      status: '制作中',
+      total_price: 90.50
+    },
+    {
+      order_id : '283nx8ewyfs',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'A32',
+      status: '已支付',
+      total_price: 9
+    },
+    {
+      order_id : '4783cnyergx',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'A32',
+      status: '制作中',
+      total_price: 9
+    },
+    {
+      order_id : '4nefugng68l',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'A32',
+      status: '已支付',
+      total_price: 9
+    },
+    {
+      order_id : '9snfsd9dfsf',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'A32',
+      status: '已完成',
+      total_price: 9
+    },
+    {
+      order_id : '12hejhfbdys',
+      creation_time : '2022-04-27 00:00:00',
+      table_id : 'A32',
+      status: '已支付',
+      total_price: 9
+    }
+  ];
+  */

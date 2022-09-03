@@ -14,7 +14,7 @@ import {
   darken
 } from '@mui/material';
 
-import SidebarMenu from './SidebarMenu';
+import KitchenSidebarMenu from './KitchenSidebarMenu';
 import Logo from 'src/components/LogoSign';
 
 const SidebarWrapper = styled(Box)(
@@ -71,7 +71,7 @@ function Sidebar() {
               background: theme.colors.alpha.trueWhite[10]
             }}
           />
-          <SidebarMenu />
+          <KitchenSidebarMenu />
         </Scrollbar>
         <Divider
           sx={{
@@ -80,7 +80,7 @@ function Sidebar() {
         />
         <Box p={2}>
           <Button
-            href="https://bloomui.com"
+            href="/"
             target="_blank"
             rel="noopener noreferrer"
             variant="contained"
@@ -88,7 +88,7 @@ function Sidebar() {
             size="small"
             fullWidth
           >
-            Upgrade to PRO
+            回到首页
           </Button>
         </Box>
       </SidebarWrapper>
@@ -128,7 +128,7 @@ function Sidebar() {
                 background: theme.colors.alpha.trueWhite[10]
               }}
             />
-            <SidebarMenu />
+            <KitchenSidebarMenu />
           </Scrollbar>
         </SidebarWrapper>
       </Drawer>

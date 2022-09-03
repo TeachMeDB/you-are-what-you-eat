@@ -1,34 +1,33 @@
-import React from 'react'
+import React from 'react';
 
-
-import { FC, ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, useEffect, useCallback } from 'react';
 
 import PropTypes from 'prop-types';
 import {
-    Tooltip,
-    Divider,
-    Box,
-    FormControl,
-    Card,
-    Button,
-    IconButton,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TablePagination,
-    TableRow,
-    TableContainer,
-    styled,
-    InputAdornment,
-    Typography,
-    useTheme,
-    CardHeader,
-    OutlinedInput,
+  Tooltip,
+  Divider,
+  Box,
+  FormControl,
+  Card,
+  Button,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TableContainer,
+  styled,
+  InputAdornment,
+  Typography,
+  useTheme,
+  CardHeader,
+  OutlinedInput
 } from '@mui/material';
 
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import { StockInfo } from '@/models/stock_info';
+import { StockInfo, SurplusUpload, StockInfoData } from '@/models/stock_info';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import TextField from '@mui/material/TextField';
@@ -39,244 +38,289 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
 
+import { stockInfoApi } from '@/queries/stock';
+import { useRefMounted } from '@/hooks/useRefMounted';
+
+
+let AllStockInfoDataName: string[] = [];
+
+const applyPagination = (
+  stockInfoes: StockInfoData[],
+  page: number,
+  limit: number
+): StockInfoData[] => {
+  return stockInfoes.slice(page * limit, page * limit + limit);
+};
 
 
 
 
 
-interface StockInfoTableProps {
-    className?: string;
-    stockInfoes: StockInfo[];
-}
+
+
 
 const OutlinedInputWrapper = styled(OutlinedInput)(
-    ({ theme }) => `
+  ({ theme }) => `
       background-color: ${theme.colors.alpha.white[100]};
   `
 );
 
-
-
-
-
 const ButtonSearch = styled(Button)(
-    ({ theme }) => `
+  ({ theme }) => `
       margin-right: -${theme.spacing(1)};
   `
 );
 
 
 
-const StockInfoesTable: FC<StockInfoTableProps> = ({ stockInfoes }) => {
-    const [page, setPage] = useState<number>(0);
-    const [limit, setLimit] = useState<number>(5);
-    const handlePageChange = (_event: any, newPage: number): void => {
-        setPage(newPage);
-    };
-    const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-        setLimit(parseInt(event.target.value));
-    };
+
+const StockInfoesTable = () => {
 
 
-    const [open, setOpen] = React.useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+  const [SearchStockInfoes, setSearchStockInfoes] = useState<StockInfoData[]>([]);
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+  const [AllInfo, setAllinfo] = useState<StockInfoData[]>([]);
 
-    const theme = useTheme();
+  const isMountedRef = useRefMounted();
+  const [StockInfoes, setStockInfoes] = useState<StockInfo[]>([]);
 
 
-    return (
-        <Card>
-            {(
+  const getAllData = useCallback(async () => {
+    try {
+      let stockInfoes = await stockInfoApi.getStockInfo();
 
-                <CardHeader
-                    action={
-                        <FormControl variant="outlined" fullWidth>
-                            <OutlinedInputWrapper
-                                type="text"
-                                placeholder="输入原料名称"
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <ButtonSearch variant="contained" size="small" >
-                                            搜索
-                                        </ButtonSearch>
+      if (isMountedRef()) {
 
-                                    </InputAdornment>
-                                }
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <SearchTwoToneIcon />
-                                    </InputAdornment>
-                                }
-                            />
-                        </FormControl>
-                    }
-                    title="菜品信息列表"
-                />
-            )}
-            <Divider />
-            <TableContainer>
-                <Table>
-                    <TableHead>
-                        <TableRow>
 
-                            <TableCell>采购编号</TableCell>
-                            <TableCell>原料名称</TableCell>
-                            <TableCell >日期</TableCell>
-                            <TableCell>采购量</TableCell>
-                            <TableCell >剩余量</TableCell>
-                            <TableCell >操作</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {stockInfoes.map((stockInfo) => {
-                            return (
-                                <TableRow
-                                    hover
-                                    key={stockInfo.id}
 
-                                >
-                                    <TableCell>
-                                        <Typography
-                                            variant="body1"
-                                            fontWeight="bold"
-                                            color="text.primary"
-                                            gutterBottom
-                                            noWrap
-                                        >
-                                            {stockInfo.id}
-                                        </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography
-                                            variant="body1"
-                                            fontWeight="bold"
-                                            color="text.primary"
-                                            gutterBottom
-                                            noWrap
-                                        >
-                                            {stockInfo.IngName}
-                                        </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography
-                                            variant="body1"
-                                            fontWeight="bold"
-                                            color="text.primary"
-                                            gutterBottom
-                                            noWrap
-                                        >
-                                            {stockInfo.Date}
-                                        </Typography>
+        setStockInfoes(stockInfoes);
 
-                                    </TableCell>
-                                    <TableCell >
-                                        <Typography
-                                            variant="body1"
-                                            fontWeight="bold"
-                                            color="text.primary"
-                                            gutterBottom
-                                            noWrap
-                                        >
-                                            {stockInfo.amount}
 
-                                        </Typography>
 
-                                    </TableCell>
-                                    <TableCell >
-                                        <Typography
-                                            variant="body1"
-                                            fontWeight="bold"
-                                            color="text.primary"
-                                            gutterBottom
-                                            noWrap
-                                        >
-                                            {stockInfo.surplus}
+        let ALL: StockInfoData[] = [];
 
-                                        </Typography>
+        let AllStockInfoDataCount: number[] = [];
 
-                                    </TableCell>
+        for (let i = 0; i < AllStockInfoDataName.length; i++) {
+          AllStockInfoDataCount[i] = 0;
+        }
 
-                                    <TableCell >
-                                        <Tooltip title="编辑" arrow onClick={handleClickOpen}>
-                                            <IconButton
-                                                sx={{
-                                                    '&:hover': {
-                                                        background: theme.colors.primary.lighter
-                                                    },
-                                                    color: theme.palette.primary.main
-                                                }}
-                                                color="inherit"
-                                                size="small"
-                                            >
-                                                <EditTwoToneIcon fontSize="small" />
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Dialog open={open} onClose={handleClose}>
-                                            <DialogTitle>剩余量编辑</DialogTitle>
-                                            <DialogContent>
+        stockInfoes.map((item) => {
 
-                                                <TextField
-                                                    autoFocus
-                                                    margin="dense"
-                                                    id="id"
-                                                    label="剩余量"
-                                                    fullWidth
-                                                    variant="standard"
-                                                />
+          for (let i = 0; i < AllStockInfoDataName.length; i++) {
+            if (item.ing_name == AllStockInfoDataName[i]) {
 
-                                            </DialogContent>
-                                            <DialogActions>
-                                                <Button onClick={handleClose}>退出</Button>
-                                                <Button onClick={handleClose}>确定</Button>
-                                            </DialogActions>
-                                        </Dialog>
-                                        <Tooltip title="删除" arrow>
-                                            <IconButton
-                                                sx={{
-                                                    '&:hover': { background: theme.colors.error.lighter },
-                                                    color: theme.palette.error.main
-                                                }}
-                                                color="inherit"
-                                                size="small"
-                                            >
-                                                <DeleteTwoToneIcon fontSize="small" />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </TableCell>
-                                </TableRow>
-                            );
-                        })}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <Box p={2}>
-                <TablePagination
-                    component="div"
-                    count={stockInfoes.length}
-                    onPageChange={handlePageChange}
-                    onRowsPerPageChange={handleLimitChange}
-                    page={page}
-                    rowsPerPage={limit}
-                    rowsPerPageOptions={[5, 10, 25, 30]}
-                />
-            </Box>
-        </Card>
-    );
+              AllStockInfoDataCount[i] += item.surplus;
+              AllStockInfoDataCount[i] += item.amount;
+            }
+          }
+        })
+        for (let j = 0; j < AllStockInfoDataName.length; j++) {
+          let item: StockInfoData = {
+            ing_name: "",
+            amount: 0
+          };
+          item.amount = AllStockInfoDataCount[j];
+          item.ing_name = AllStockInfoDataName[j];
+          ALL.push(item);
+
+        }
+        setSearchStockInfoes(ALL);
+        setAllinfo(ALL);
+        console.log("ALL");
+        console.log(ALL);
+
+      }
+    } catch (err) {
+      alert(err);
+    }
+  }, [isMountedRef]);
+
+  useEffect(() => {
+    getAllData();
+  }, [getAllData]);
+
+
+
+
+  const [page, setPage] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(5);
+  const [idChange, setidChange] = useState<string>('');
+  const handlePageChange = (_event: any, newPage: number): void => {
+    setPage(newPage);
+
+  };
+
+  const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    setLimit(parseInt(event.target.value));
+  };
+
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const theme = useTheme();
+
+  StockInfoes.map((item) => {
+    if (AllStockInfoDataName.indexOf(item.ing_name) == -1)
+      AllStockInfoDataName.push(item.ing_name);
+  })
+
+
+
+
+
+
+
+
+  console.log("miingzi");
+
+  console.log(SearchStockInfoes);
+
+  console.log("miingzi");
+  const paginatedPromotions = applyPagination(AllInfo, page, limit);
+
+  var Search: string;
+
+  let newM: StockInfoData[] = [];
+  const handleSearchChange = (e) => {
+    newM = [];
+    Search = e.target.value;
+    SearchStockInfoes.map((item) => {
+      if (item.ing_name.indexOf(Search) != -1)
+        newM.push(item);
+    })
+  }
+  const handleSearchClick = () => {
+    setAllinfo(newM);
+  }
+  let s: SurplusUpload = {
+    record_id: "",
+    surplus: 0
+  };
+  const surplusChange = (e) => {
+    s.surplus = parseInt(e.target.value);
+
+  }
+
+
+
+
+  return (
+    <Card>
+      {(
+
+        <CardHeader
+          action={
+            <FormControl variant="outlined" fullWidth>
+              <OutlinedInputWrapper
+                onChange={handleSearchChange}
+                type="text"
+                placeholder="输入原料名称"
+                endAdornment={
+                  <InputAdornment position="end">
+                    <ButtonSearch variant="contained" size="small" onClick={handleSearchClick} >
+                      搜索
+                    </ButtonSearch>
+
+                  </InputAdornment>
+                }
+                startAdornment={
+                  <InputAdornment position="start">
+                    <SearchTwoToneIcon />
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          }
+          title="库存信息列表"
+        />
+      )}
+      <Divider />
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+
+
+              <TableCell>原料名称</TableCell>
+
+
+
+              <TableCell>当前库存</TableCell>
+
+
+            </TableRow>
+          </TableHead>
+          <TableBody>
+
+            {paginatedPromotions.map((stockInfo) => {
+              return (
+                <TableRow
+                  hover
+                >
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {stockInfo.ing_name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {stockInfo.amount}
+                    </Typography>
+                  </TableCell>
+
+
+
+
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Box p={2}>
+        <TablePagination
+          component="div"
+          count={AllInfo.length}
+          onPageChange={handlePageChange}
+          onRowsPerPageChange={handleLimitChange}
+          page={page}
+          rowsPerPage={limit}
+          rowsPerPageOptions={[5, 10, 25, 30]}
+        />
+      </Box>
+    </Card>
+  );
+
 };
 
 StockInfoesTable.propTypes = {
-    stockInfoes: PropTypes.array.isRequired
+  stockInfoes: PropTypes.array.isRequired
 };
 
 StockInfoesTable.defaultProps = {
-    stockInfoes: []
+  stockInfoes: []
 };
 
 export default StockInfoesTable;

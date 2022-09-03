@@ -11,13 +11,14 @@ function PageHeader() {
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
         <Typography variant="h3" component="h3" gutterBottom>
-          Transactions
+          订单管理
         </Typography>
         <Typography variant="subtitle2">
-          {user.name}, these are your recent transactions
+          查看并管理全部订单，并实时控制订单进度
         </Typography>
       </Grid>
       <Grid item>
+        {/** 
         <Button
           sx={{ mt: { xs: 2, md: 0 } }}
           variant="contained"
@@ -25,6 +26,7 @@ function PageHeader() {
         >
           Create transaction
         </Button>
+        */}
       </Grid>
     </Grid>
   );

@@ -1,3 +1,6 @@
+import authorization from '@/utils/authorization';
+import GlobalConfig from '@/utils/config';
+import { Token } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -6,6 +9,8 @@ import {
   Typography,
   styled
 } from '@mui/material';
+import { compareAsc, parse } from 'date-fns';
+import { useRouter } from 'next/router';
 
 import Link from 'src/components/Link';
 
@@ -96,6 +101,10 @@ const NextJsAvatar = styled(Box)(
 );
 
 function Hero() {
+
+  const router=useRouter();
+
+
   return (
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
       <Grid
@@ -105,9 +114,9 @@ function Hero() {
         container
       >
         <Grid item md={10} lg={8} mx="auto">
-          <LabelWrapper color="success">Version 1.0.0</LabelWrapper>
+          {/* <LabelWrapper color="success">Version 1.0.0</LabelWrapper> */}
           <TypographyH1 sx={{ mb: 2 }} variant="h1">
-            Tokyo Free White Next.js Typescript Admin Dashboard
+            人如其食
           </TypographyH1>
           <TypographyH2
             sx={{ lineHeight: 1.5, pb: 4 }}
@@ -115,30 +124,49 @@ function Hero() {
             color="text.secondary"
             fontWeight="normal"
           >
-            High performance React template built with lots of powerful
-            Material-UI components across multiple product niches for fast &
-            perfect apps development processes
+            你和你的餐厅一样现代。
           </TypographyH2>
           <Button
-            component={Link}
-            href="/dashboards/crypto"
             size="large"
             variant="contained"
+            onClick={()=>{
+
+              GlobalConfig.setFrontendURL(window.location.host);
+
+              if(localStorage.getItem("token")===null||compareAsc(parse(localStorage.getItem("token_expire_time"),"yyyy-MM-dd HH:mm:ss",Date.now()),Date.now())<=0){
+                
+                localStorage.clear();
+
+                router.replace("/login");
+
+              }
+              else{
+
+                GlobalConfig.setAccessToken(localStorage.getItem("token"));
+
+                router.replace("/human_resource/organization");
+
+                
+
+              }
+
+
+            }}
           >
-            Browse Live Preview
+              进入界面
           </Button>
           <Button
             sx={{ ml: 2 }}
             component="a"
             target="_blank"
             rel="noopener"
-            href="https://bloomui.com/product/tokyo-free-white-nextjs-typescript-material-ui-admin-dashboard/"
+            href="http://106.54.160.244/"
             size="large"
             variant="text"
           >
-            Key Features
+            客户端
           </Button>
-          <Grid container spacing={3} mt={5}>
+          {/* <Grid container spacing={3} mt={5}>
             <Grid item md={4}>
               <MuiAvatar>
                 <img
@@ -182,12 +210,11 @@ function Hero() {
                   <b>Built with Typescript</b>
                 </Box>
                 <Typography component="span" variant="subtitle2">
-                  Tokyo Free White features a modern technology stack and is
-                  built with React + Typescript.
+                  人如其食智慧餐厅
                 </Typography>
               </Typography>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </Container>

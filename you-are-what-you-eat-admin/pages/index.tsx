@@ -1,19 +1,17 @@
-import {
-  Typography,
-  Box,
-  Card,
-  Container,
-  Button,
-  styled
-} from '@mui/material';
-import type { ReactElement } from 'react';
+import { Box, Card, Container, Button, styled } from '@mui/material';
+import { ReactElement, useEffect } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
 
 import Link from 'src/components/Link';
 import Head from 'next/head';
-
+import { useTranslation } from 'react-i18next';
 import Logo from 'src/components/LogoSign';
 import Hero from 'src/content/Overview/Hero';
+import Highlights from 'src/content/Overview/Highlights';
+import Footer from 'src/components/Footer';
+import authorization from '@/utils/authorization';
+import GlobalConfig from '@/utils/config';
+import { useRouter } from 'next/router';
 
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
@@ -35,10 +33,21 @@ const OverviewWrapper = styled(Box)(
 );
 
 function Overview() {
+  const { t }: { t: any } = useTranslation();
+
+
+  useEffect(()=>{
+
+    console.log(window.location.host);
+
+    GlobalConfig.setFrontendURL(window.location.host)
+
+  })
+
   return (
     <OverviewWrapper>
       <Head>
-        <title>Tokyo Free White NextJS Typescript Admin Dashboard</title>
+        <title>人如其食</title>
       </Head>
       <HeaderWrapper>
         <Container maxWidth="lg">
@@ -53,31 +62,26 @@ function Overview() {
               <Box />
               <Box>
                 <Button
-                  component={Link}
-                  href="/dashboards/crypto"
                   variant="contained"
                   sx={{ ml: 2 }}
+                  // onClick={()=>{
+
+                  //   window.location.replace(authorization.getSigninUrl(GlobalConfig.getFrontendURL()));
+                  
+                  // }}
+                  href="/login"
                 >
-                  Live Preview
+                  {t('登陆')}
                 </Button>
+                
               </Box>
             </Box>
           </Box>
         </Container>
       </HeaderWrapper>
       <Hero />
-      <Container maxWidth="lg" sx={{ mt: 8 }}>
-        <Typography textAlign="center" variant="subtitle1">
-          Crafted by{' '}
-          <Link
-            href="https://bloomui.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            BloomUI.com
-          </Link>
-        </Typography>
-      </Container>
+      <Highlights />
+      <Footer />
     </OverviewWrapper>
   );
 }
